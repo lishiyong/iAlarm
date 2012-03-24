@@ -1,0 +1,11 @@
+/* 
+   InfoPlist.strings
+   iAlarm
+
+   Created by li shiyong on 11-3-21.
+   Copyright 2011 __MyCompanyName__. All rights reserved.
+ */
+
+
+"CFBundleDisplayName" = "位置鬧鈴提醒";
+"CFBundleName" = "位置鬧鈴提醒";

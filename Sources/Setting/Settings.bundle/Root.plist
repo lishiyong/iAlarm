@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>StringsTable</key>
+	<string>Root</string>
+	<key>PreferenceSpecifiers</key>
+	<array>
+		<!--无GPS信号是否警告 -->
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>FooterText</key>
+			<string>FooterTextCannotLocation</string>
+		</dict>
+		
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>TitleCannotLocation</string>
+			<key>Key</key>
+			<string>CannotLocationPreference</string>
+			<key>DefaultValue</key>
+			<false/>
+		</dict>
+
+		
+		
+		<!--版本 -->
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>FooterText</key>
+			<string>FooterTextVersion</string>
+		</dict>
+		
+		<dict>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
+			<key>Title</key>
+			<string>TitleVersion</string>
+			<key>Key</key>
+			<string>VersionPreference</string>
+			
+			<key>DefaultValue</key>
+			<string>1.0</string>
+			
+		</dict>
+		
+		
+	</array>
+</dict>
+</plist>

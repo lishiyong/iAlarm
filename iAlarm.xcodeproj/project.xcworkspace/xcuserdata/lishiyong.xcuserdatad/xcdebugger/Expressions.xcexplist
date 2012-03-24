@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesStackState
+   version = "1.0">
+   <StackStates>
+      <StackState
+         stackFrameDescription = "-[IARegion containsCoordinate:]:IARegion.m">
+         <expressions>
+            <expression
+               value = "(NSCFString *)((self)-&gt;alarm)-&gt;alarmName">
+            </expression>
+         </expressions>
+      </StackState>
+   </StackStates>
+</VariablesStackState>
