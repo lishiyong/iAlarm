@@ -611,8 +611,14 @@
 #pragma mark YCMessageComposeControllerDelegate 
 
 - (void)messageComposeYCViewController:(UIViewController *)controller didFinishWithResult:(BOOL)result{
-    if (self.presentedViewController) {
-        [self performSelector:@selector(dismissModalViewControllerAnimated:) withInteger:YES afterDelay:0.75];
+    if ([self respondsToSelector:@selector(presentedViewController)]) { //5.0后才有这个 presentedViewController
+        if (self.presentedViewController) {
+            [self performSelector:@selector(dismissModalViewControllerAnimated:) withInteger:YES afterDelay:0.75];
+        }
+    }else{
+        if (self.modalViewController) {
+            [self performSelector:@selector(dismissModalViewControllerAnimated:) withInteger:YES afterDelay:0.75];
+        }
     }
 }
 

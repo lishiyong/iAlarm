@@ -272,10 +272,18 @@ static NSString* kFacebookAppId = @"146975985381829";
     NSNotification *aNotif = [NSNotification notificationWithName:YCShareAppAuthorizeDidChangeNotification object:self userInfo:nil];
     [notificationCenter performSelector:@selector(postNotification:) withObject:aNotif afterDelay:0.0];
     
+    if (superViewController.modalViewController){ //关闭twitter认证view
+        [superViewController dismissModalViewControllerAnimated:YES];
+    }     
+    
+}
+
+- (void) OAuthTwitterControllerViewDidDisappear: (SA_OAuthTwitterController *) controller didFinishWithResult: (BOOL)result{
     if (sendShardFlag) {
         sendShardFlag = NO;
-        //弹出twitter发信息
-        [superViewController presentModalViewController:self.twTweetNavController animated:YES];
+        if (result) //弹出twitter发信息
+            [superViewController presentModalViewController:self.twTweetNavController  animated:YES];
+        
     }
 }
 

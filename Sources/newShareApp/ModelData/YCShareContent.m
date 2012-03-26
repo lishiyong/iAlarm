@@ -169,7 +169,6 @@
     return [YCShareContent randomObject];
 }
 
-//kk aa
 
 
 @end

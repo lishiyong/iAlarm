@@ -9,15 +9,19 @@
 //  See ReadMe for further attributions, copyrights and license info.
 //
 
+#import "NSObject-YC.h"
 #import <UIKit/UIKit.h>
 
 @class SA_OAuthTwitterEngine, SA_OAuthTwitterController;
 
-@protocol SA_OAuthTwitterControllerDelegate <NSObject>
+@protocol SA_OAuthTwitterControllerDelegate <YCObject>
 @optional
 - (void) OAuthTwitterController: (SA_OAuthTwitterController *) controller authenticatedWithUsername: (NSString *) username;
 - (void) OAuthTwitterControllerFailed: (SA_OAuthTwitterController *) controller;
 - (void) OAuthTwitterControllerCanceled: (SA_OAuthTwitterController *) controller;
+//lishiyong 2012-03-26添加 
+- (void) OAuthTwitterControllerViewDidDisappear: (SA_OAuthTwitterController *) controller didFinishWithResult: (BOOL)result;
+
 @end
 
 

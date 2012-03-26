@@ -132,8 +132,19 @@ static NSString* const kGGTwitterLoadingBackgroundImage = @"twitter_load.png";
 	_engine.pin = pin;
 	[_engine requestAccessToken];
 	
-	if ([_delegate respondsToSelector: @selector(OAuthTwitterController:authenticatedWithUsername:)]) [_delegate OAuthTwitterController: self authenticatedWithUsername: _engine.username];
-	[self performSelector: @selector(dismissModalViewControllerAnimated:) withObject: (id) kCFBooleanTrue afterDelay: 1.0];
+    
+	if ([_delegate respondsToSelector: @selector(OAuthTwitterController:authenticatedWithUsername:)]) 
+        [_delegate OAuthTwitterController: self authenticatedWithUsername: _engine.username];
+    
+    //lishiyong 2012-03-26 删除 
+    //[self performSelector: @selector(dismissModalViewControllerAnimated:) withObject: (id) kCFBooleanTrue afterDelay: 1.0];
+    
+    /*
+    if ([_delegate respondsToSelector: @selector(OAuthTwitterController:authenticatedWithUsername:)]) {
+        [_delegate performSelector:@selector(OAuthTwitterController:authenticatedWithUsername:) withObject:self withObject:_engine.username afterDelay:1.0];
+    }
+     */
+	
 }
 
 - (void) cancel: (id) sender {
@@ -143,6 +154,13 @@ static NSString* const kGGTwitterLoadingBackgroundImage = @"twitter_load.png";
 
 //=============================================================================================================================
 #pragma mark View Controller Stuff
+//lishiyong 2012-03-26 添加
+- (void)viewDidDisappear:(BOOL)animated{
+    
+    if ([_delegate respondsToSelector: @selector(OAuthTwitterControllerViewDidDisappear:didFinishWithResult:)]) 
+        [_delegate OAuthTwitterControllerViewDidDisappear:self didFinishWithResult:self.engine.isAuthorized];
+    
+}
 
 - (void)viewDidAppear:(BOOL)animated{
 	if (!self.engine.OAuthSetup) [self.engine requestRequestToken];

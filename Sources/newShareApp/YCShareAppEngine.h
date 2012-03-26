@@ -23,6 +23,7 @@
 @interface YCShareAppEngine : NSObject <UIActionSheetDelegate,MFMailComposeViewControllerDelegate,MFMessageComposeViewControllerDelegate,SA_OAuthTwitterEngineDelegate,SA_OAuthTwitterControllerDelegate,FBSessionDelegate,FBRequestDelegate,YCMessageComposeControllerDelegate>{
     
     BOOL sendShardFlag; //发送共享的标识；用来区别“认证”和“发共享数据前的认证”
+    BOOL twitterAuthviewDidDisappeaFlag; //
     
     //YCSoundPlayer *player;
     UIViewController *superViewController; //引用这个类的view控制器。 循环引用的变量，不能retain
