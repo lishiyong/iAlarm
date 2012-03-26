@@ -27,6 +27,8 @@
     
     //YCSoundPlayer *player;
     UIViewController *superViewController; //引用这个类的view控制器。 循环引用的变量，不能retain
+    NSString *sharedMessage;
+    UIImage *sharedImage;
     
     SA_OAuthTwitterEngine *twitterEngine;
     Facebook *facebookEngine;
@@ -52,5 +54,6 @@
 
 - (id)initWithSuperViewController:(id)viewController;
 - (void)shareApp; 
+- (void)shareAppWithMessage:(NSString*)message image:(UIImage*)image;
 
 @end

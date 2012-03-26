@@ -145,6 +145,13 @@ static NSString* kFacebookAppId = @"146975985381829";
     [shareAppSheet showInView:superViewController.view];
 }
 
+- (void)shareAppWithMessage:(NSString*)message image:(UIImage*)image{
+    sharedMessage = [message copy];
+    sharedImage = [image retain];
+    [self shareApp];
+}
+
+
 
 - (id)twitterEngine{
 	if (twitterEngine == nil) {
@@ -474,32 +481,21 @@ static NSString* kFacebookAppId = @"146975985381829";
 - (void)sendEmail{
 	if (![self canSendMail]) return;
 	
-	//拆分文件名
-	NSArray *sArray = [[YCShareContent mailShareContent].mailImageName componentsSeparatedByString:@"."];
-	NSString *imageName = @"";
-	NSString *imageType = @"";
-	if (sArray.count >= 2) {
-		imageName = [sArray objectAtIndex:0];
-		imageType = [sArray lastObject];
-	}
-	
-	
+
 	MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
 	picker.mailComposeDelegate = self;
 	
+    YCShareContent *shareContent = [YCShareContent mailShareContent];
     
 	// Attach an image to the email
-	NSString *path = [[NSBundle mainBundle] pathForResource:imageName ofType:imageType];
-	NSData *myData = [NSData dataWithContentsOfFile:path];
-	[picker addAttachmentData:myData mimeType:@"image/png" fileName:@"001"];
+    NSData *myData = UIImageJPEGRepresentation(shareContent.image1, 1.0);
+    [picker addAttachmentData:myData mimeType:@"image/jpg" fileName:@"a1"];
 	
 	
-	[picker setSubject:[YCShareContent mailShareContent].mailTitle];
-	
-	
+	[picker setSubject:shareContent.title];
 	
 	// Fill out the email body text
-	NSString *emailBody = [NSString stringWithFormat:@"%@\n%@",[YCShareContent mailShareContent].mailMessage,KLinkCustomAppStore];
+	NSString *emailBody = [NSString stringWithFormat:@"%@\n%@",shareContent.message,shareContent.link1];
 	[picker setMessageBody:emailBody isHTML:NO];
 	
 	[superViewController presentModalViewController:picker animated:YES];
@@ -511,7 +507,9 @@ static NSString* kFacebookAppId = @"146975985381829";
 	
 	MFMessageComposeViewController*picker = [[MFMessageComposeViewController alloc] init];
 	picker.messageComposeDelegate= self;
-	NSString *s = [NSString stringWithFormat:@"%@\n%@",[YCShareContent mailShareContent].mailTitle,KLinkCustomAppStore];
+    
+    YCShareContent *shareContent = [YCShareContent messageShareContent];
+	NSString *s = [NSString stringWithFormat:@"%@\n%@",shareContent.message,shareContent.link1];
     picker.body = s; 
 	[superViewController presentModalViewController:picker animated:YES];
     [picker release];

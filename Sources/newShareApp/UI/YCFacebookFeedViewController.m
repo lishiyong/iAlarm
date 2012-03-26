@@ -268,7 +268,7 @@
 
 - (id)publishParam{
 	if (publishParam == nil) {
-		
+		/*
 		NSString *appCustomLink = KLinkCustomAppStore;
 		NSString *appLink = KLinkAppStore;
 		
@@ -279,6 +279,16 @@
 									   appCustomLink,@"caption",
 									   shareContent.imageLinkFB,@"picture",
 									   nil];
+         */
+        
+        publishParam = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                        shareContent.message, @"message",
+                        shareContent.link1, @"link",   //链接
+                        KShareContentTextGetTheApp, @"name",
+                        shareContent.link2,@"caption", 
+                        shareContent.imageLink1,@"picture",
+                        nil];
+        
 		
 		[publishParam retain];
 	}
@@ -379,8 +389,8 @@
 	
 	//分享的消息体
 	MessageBodyCell *cell = (MessageBodyCell*)self.messageBodyCellDescription.tableViewCell;
-	cell.textView.text = shareContent.mailMessage;
-	cell.imageView.image = [UIImage imageNamed:shareContent.imageNameFB];
+	cell.textView.text = shareContent.message;
+	cell.imageView.image = shareContent.image1;
 	
 
 }

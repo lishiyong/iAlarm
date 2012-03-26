@@ -503,7 +503,6 @@
 	[UIView setAnimationTransition:trType forView:theButton cache:YES];
 	[UIView commitAnimations];
     
-    
 }
 
 

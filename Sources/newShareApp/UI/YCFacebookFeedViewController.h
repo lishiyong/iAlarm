@@ -40,7 +40,7 @@
 	NSMutableDictionary *publishParam; //发布到墙上的
 		
 	id<YCMessageComposeControllerDelegate> messageDelegate;
-    YCShareContent *shareContent;  //当前取得的随机的共享数据
+    YCShareContent *shareContent;  
     Facebook *facebookEngine;
     
     NSInteger publishI;  //当前发送的

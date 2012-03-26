@@ -10,50 +10,31 @@
 
 
 @interface YCShareContent : NSObject {
-	/*
-	NSString *title;
-	NSString *body;
-	NSString *imageLink;  //在图床上的链接
-	NSString *imageName;
-	*/
-	
-	NSString *twitterMessage;
-	NSString *mailMessage;
-	NSString *mailTitle;
-	
-	NSString *mailImageName;
-	NSString *imageNameFB;
-	NSString *imageLinkFB;  //在图床上的链接－FB
-	NSString *imageNameMB;
-	NSString *imageLinkMB;  //在图床上的链接－微薄
+    
+    NSString *message;
+    NSString *title;
+    UIImage  *image1;
+    UIImage  *image2;
+    NSString *imageLink1; //在图床上的链接
+    NSString *imageLink2;
+    NSString *link1;
+    NSString *link2;
 
 }
-/*
-@property(nonatomic, copy) NSString *title;
-@property(nonatomic, copy) NSString *body;
-@property(nonatomic, copy) NSString *imageLink;
-@property(nonatomic, copy) NSString *imageName;
-*/
-
-@property(nonatomic, copy) NSString *twitterMessage;
-@property(nonatomic, copy) NSString *mailMessage;
-@property(nonatomic, copy) NSString *mailTitle;
-
-@property(nonatomic, copy) NSString *mailImageName;
-@property(nonatomic, copy) NSString *imageNameFB;
-@property(nonatomic, copy) NSString *imageLinkFB;
-@property(nonatomic, copy) NSString *imageNameMB;
-@property(nonatomic, copy) NSString *imageLinkMB;  
-
-
-+ (NSArray*)shareDataArray;
-+ (YCShareContent*)randomObject;
 
 + (YCShareContent*)facebookShareContent;
 + (YCShareContent*)twitterShareContent;
 + (YCShareContent*)mailShareContent;
 + (YCShareContent*)messageShareContent;
 
+@property(nonatomic, copy) NSString *message;
+@property(nonatomic, copy) NSString *title;
+@property(nonatomic, retain) UIImage *image1;
+@property(nonatomic, retain) UIImage *image2;
+@property(nonatomic, copy) NSString *imageLink1;
+@property(nonatomic, copy) NSString *imageLink2;
+@property(nonatomic, copy) NSString *link1;
+@property(nonatomic, copy) NSString *link2;
 
 
 

@@ -170,7 +170,7 @@
 	
 	//共享的消息
 	//NSString *s = [NSString stringWithFormat:@"%@\n%@",self.anShareData.twitterMessage,KLinkCustomAppStore];
-	NSString *s = [NSString stringWithFormat:@"%@\n%@",shareContent.twitterMessage,KLinkCustomAppStoreFullVersion];//twitter上直接完全版
+	NSString *s = [NSString stringWithFormat:@"%@\n%@",shareContent.message,KLinkCustomAppStoreFullVersion];//twitter上直接完全版
 	self.textView.text = s;
 	
 }
