@@ -13,4 +13,5 @@ static NSString *kAppStoreAppID = @"427929181"; //Lite
 static NSString *kAppStoreAppID = @"468639288"; //Full
 #endif
 
-static NSInteger kLetOneVisibleBecomeActiveNumber = 2;//启动程序多少次，才有rate cell
+//启动程序多少次，才有rate
+#define kLetOneVisibleBecomeActiveNumber 2

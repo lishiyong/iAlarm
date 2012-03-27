@@ -176,7 +176,7 @@ static NSString* kFacebookAppId = @"146975985381829";
 - (id)twTweetViewController{
 	if (twTweetViewController == nil) {
         
-        twTweetViewController = [[YCTwitterTweetViewController alloc] initWithNibName:@"YCTwitterFeedViewController" bundle:nil engine:self.twitterEngine messageDelegate:self shareData:[YCShareContent twitterShareContent]];
+        twTweetViewController = [[YCTwitterTweetViewController alloc] initWithNibName:@"YCTwitterFeedViewController" bundle:nil engine:self.twitterEngine messageDelegate:self shareData:[YCShareContent twitterShareContentWithMessage:sharedMessage image:sharedImage]];
         
 	}
 	return twTweetViewController;
@@ -191,7 +191,7 @@ static NSString* kFacebookAppId = @"146975985381829";
 
 - (id)fbFeedViewController{
 	if (fbFeedViewController == nil) {
-		fbFeedViewController = [[YCFacebookFeedViewController alloc] initWithNibName:@"YCFacebookFeedViewController" bundle:nil engine:self.facebookEngine messageDelegate:self shareData:[YCShareContent facebookShareContent]];
+		fbFeedViewController = [[YCFacebookFeedViewController alloc] initWithNibName:@"YCFacebookFeedViewController" bundle:nil engine:self.facebookEngine messageDelegate:self shareData:[YCShareContent facebookShareContentWithMessage:sharedMessage image:sharedImage]];
 	}
 	return fbFeedViewController;
 }
@@ -485,7 +485,7 @@ static NSString* kFacebookAppId = @"146975985381829";
 	MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
 	picker.mailComposeDelegate = self;
 	
-    YCShareContent *shareContent = [YCShareContent mailShareContent];
+    YCShareContent *shareContent = [YCShareContent mailShareContentWithMessage:sharedMessage image:sharedImage];
     
 	// Attach an image to the email
     NSData *myData = UIImageJPEGRepresentation(shareContent.image1, 1.0);
@@ -508,7 +508,7 @@ static NSString* kFacebookAppId = @"146975985381829";
 	MFMessageComposeViewController*picker = [[MFMessageComposeViewController alloc] init];
 	picker.messageComposeDelegate= self;
     
-    YCShareContent *shareContent = [YCShareContent messageShareContent];
+    YCShareContent *shareContent = [YCShareContent messageShareContentWithMessage:sharedMessage];
 	NSString *s = [NSString stringWithFormat:@"%@\n%@",shareContent.message,shareContent.link1];
     picker.body = s; 
 	[superViewController presentModalViewController:picker animated:YES];

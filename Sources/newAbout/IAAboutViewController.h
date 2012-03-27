@@ -20,13 +20,14 @@
     
     NSArray *cellDescriptions;
 	TableViewCellDescription *rateAndReviewCellDescription;            //评分
-	TableViewCellDescription *facebookCellDescription;                 //facebook
-	TableViewCellDescription *twitterCellDescription;                  //twitter
-    TableViewCellDescription *kxCellDescription;                       //开心网
 	TableViewCellDescription *versionCellDescription;                  //版本
 	TableViewCellDescription *buyFullVersionCellDescription;           //购买
     TableViewCellDescription *feedbackCellDescription;                 //反馈
     TableViewCellDescription *shareAppCellDescription;                 //分享
+    
+    TableViewCellDescription *shareSettingCellDescription;             //共享设置
+    TableViewCellDescription *followTwitterCellDescription;            //关注tw
+    TableViewCellDescription *followFacebookCellDescription;           //关注fb
     
 }
 
@@ -35,13 +36,14 @@
 
 @property(nonatomic,retain) NSArray *cellDescriptions;   
 @property(nonatomic,retain) TableViewCellDescription *rateAndReviewCellDescription;
-@property(nonatomic,retain) TableViewCellDescription *facebookCellDescription;
-@property(nonatomic,retain) TableViewCellDescription *twitterCellDescription;
-@property(nonatomic,retain) TableViewCellDescription *kxCellDescription;
 @property(nonatomic,retain) TableViewCellDescription *versionCellDescription;
 @property(nonatomic,retain) TableViewCellDescription *buyFullVersionCellDescription;
 @property(nonatomic,retain) TableViewCellDescription *feedbackCellDescription;
-@property(nonatomic,retain) TableViewCellDescription *shareAppCellDescription;                 
+@property(nonatomic,retain) TableViewCellDescription *shareAppCellDescription;  
+
+@property(nonatomic,retain) TableViewCellDescription *shareSettingCellDescription; 
+@property(nonatomic,retain) TableViewCellDescription *followTwitterCellDescription; 
+@property(nonatomic,retain) TableViewCellDescription *followFacebookCellDescription; 
 
 
 @end

@@ -283,9 +283,6 @@
 		
 	BOOL alreadyRate = [YCSystemStatus deviceStatusSingleInstance].alreadyRate;
 	BOOL notToRemindRate = [YCSystemStatus deviceStatusSingleInstance].notToRemindRate;
-	//NSInteger alarmAlertNumber = [YCSystemStatus deviceStatusSingleInstance].alarmAlertNumber;
-	//NSInteger applicationDidBecomeActiveNumber = [YCSystemStatus deviceStatusSingleInstance].applicationDidBecomeActiveNumber;
-	//applicationDidBecomeActiveNumber = (applicationDidBecomeActiveNumber == 0) ? 1 : applicationDidBecomeActiveNumber; //防止下面的0取摸
 	
 	//没有评过 且 没点过不再提示 且 (闹钟提示过一次 或 每启动x次)
 	BOOL letAlertShow = (!alreadyRate) && (!notToRemindRate) && ( application.applicationIconBadgeNumber > 0 );//没有评过 且 没点过不再提示 且 提醒过

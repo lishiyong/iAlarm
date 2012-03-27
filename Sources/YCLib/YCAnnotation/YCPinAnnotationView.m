@@ -62,7 +62,7 @@
 		[self->leftNormalCalloutAccessoryView release];
 		[self->rightNormalCalloutAccessoryView release];
 		self->leftNormalCalloutAccessoryView = [self.leftCalloutAccessoryView retain];
-		self->rightNormalCalloutAccessoryView = [self.rightCalloutAccessoryView retain];
+		self->rightNormalCalloutAccessoryView = (YCButton*)[self.rightCalloutAccessoryView retain];
 
 		//先赋值nil，可以显示按钮转换动画效果
 		self.leftCalloutAccessoryView = nil;  

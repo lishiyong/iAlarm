@@ -12,7 +12,8 @@
 #import "MGTwitterParserDelegate.h"
 
 @interface MGTwitterLibXMLParser : NSObject {
-	__weak NSObject <MGTwitterParserDelegate> *delegate; // weak ref
+	//__weak NSObject <MGTwitterParserDelegate> *delegate; // weak ref
+    id<MGTwitterParserDelegate> delegate;
 	NSString *identifier;
 	MGTwitterRequestType requestType;
 	MGTwitterResponseType responseType;

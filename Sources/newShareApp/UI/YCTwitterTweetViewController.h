@@ -25,7 +25,7 @@
 
 	
 	MGTwitterEngine *twitterEngine;
-    YCShareContent *shareContent;  //当前取得的随机的共享数据
+    YCShareContent *shareContent;  
     id<YCMessageComposeControllerDelegate> messageDelegate;
 
 }

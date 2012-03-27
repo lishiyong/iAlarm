@@ -34,6 +34,7 @@
     [super dealloc];
 }
 
+/*
 + (YCShareContent*)facebookShareContent{
     YCShareContent* obj = [[[YCShareContent alloc] init] autorelease];
     obj.message = KShareContentTwitterMessage;
@@ -91,7 +92,64 @@
     
     return obj;
 }
+*/
 
++ (YCShareContent*)facebookShareContentWithMessage:(NSString*)theMessage image:(UIImage*)theImage{
+    YCShareContent* obj = [[[YCShareContent alloc] init] autorelease];
+    obj.message = KShareContentTwitterMessage;
+    obj.title = nil;
+    obj.image1 = nil;
+    obj.image2 = nil;
+    obj.imageLink1 = @"http://i54.tinypic.com/317ff4p.png";
+    obj.imageLink2 = nil;
+    obj.link1 = nil;
+    obj.link2 = nil;
+    
+    return obj;
+}
 
++ (YCShareContent*)twitterShareContentWithMessage:(NSString*)theMessage image:(UIImage*)theImage{
+    
+    YCShareContent* obj = [[[YCShareContent alloc] init] autorelease];
+    obj.message = KShareContentTwitterMessage;
+    obj.title = nil;
+    obj.image1 = nil;
+    obj.image2 = nil;
+    obj.imageLink1 = @"http://i54.tinypic.com/317ff4p.png";
+    obj.imageLink2 = nil;
+    obj.link1 = nil;
+    obj.link2 = nil;
+    
+    return obj;
+    
+}
+
++ (YCShareContent*)mailShareContentWithMessage:(NSString*)theMessage image:(UIImage*)theImage{
+    YCShareContent* obj = [[[YCShareContent alloc] init] autorelease];
+    obj.message = KShareContentMailMessage;
+    obj.title = KShareContentMailTitle;
+    obj.image1 = [UIImage imageNamed:@"MailShareImage.jpg"];
+    obj.image2 = nil;
+    obj.imageLink1 = nil;
+    obj.imageLink2 = nil;
+    obj.link1 = KLinkCustomAppStore;
+    obj.link2 = nil;
+    
+    return obj;
+}
+
++ (YCShareContent*)messageShareContentWithMessage:(NSString*)theMessage{
+    YCShareContent* obj = [[[YCShareContent alloc] init] autorelease];
+    obj.message = @"";
+    obj.title = nil;
+    obj.image1 = nil;
+    obj.image2 = nil;
+    obj.imageLink1 = nil;
+    obj.imageLink2 = nil;
+    obj.link1 = KLinkCustomAppStore;
+    obj.link2 = nil;
+    
+    return obj;
+}
 
 @end

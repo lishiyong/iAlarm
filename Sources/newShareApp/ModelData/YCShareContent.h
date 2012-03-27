@@ -21,11 +21,17 @@
     NSString *link2;
 
 }
-
+/*
 + (YCShareContent*)facebookShareContent;
 + (YCShareContent*)twitterShareContent;
 + (YCShareContent*)mailShareContent;
 + (YCShareContent*)messageShareContent;
+ */
+
++ (YCShareContent*)facebookShareContentWithMessage:(NSString*)theMessage image:(UIImage*)theImage;
++ (YCShareContent*)twitterShareContentWithMessage:(NSString*)theMessage image:(UIImage*)theImage;
++ (YCShareContent*)mailShareContentWithMessage:(NSString*)theMessage image:(UIImage*)theImage;
++ (YCShareContent*)messageShareContentWithMessage:(NSString*)theMessage;
 
 @property(nonatomic, copy) NSString *message;
 @property(nonatomic, copy) NSString *title;

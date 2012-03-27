@@ -8,6 +8,7 @@
 
 #import "YCMessageComposeControllerDelegate.h"
 #import "Facebook.h"
+#import "SA_OAuthTwitterController.h"
 #import "SA_OAuthTwitterEngine.h"
 #import <Foundation/Foundation.h>
 #import <MessageUI/MessageUI.h>
