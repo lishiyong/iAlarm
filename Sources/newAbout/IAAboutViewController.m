@@ -5,6 +5,7 @@
 //  Created by li shiyong on 12-3-8.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
+#import "IAGlobal.h"
 #import "IAShareSettingViewController.h"
 #import "IAFeedbackViewController.h"
 #import "YCShareAppNotifications.h"
@@ -18,14 +19,24 @@
 #import "TableViewCellDescription.h"
 #import "LocalizedStringAbout.h"
 #import "IAAboutViewController.h"
+#import <Accounts/Accounts.h>
+#import <Twitter/Twitter.h>
 
 @interface IAAboutViewController(private) 
 
 - (void)addFiveStar;
 - (void)registerNotifications;
 - (void)unRegisterNotifications;
-- (void)didSelectPullNavCell:(id)sender; //通用的cell选择
-- (void) didSelectNavCell:(id)sender;//通用的cell选择
+
+- (IBAction)cancelButtonItemPressed:(id)sender;
+- (void)didSelectModalNavCell:(id)sender; //通用的cell选择
+- (void)didSelectNavCell:(id)sender;//通用的cell选择
+- (void)didSelectRateAndReviewCell:(id)sender; //评分cell
+- (void)didSelectShareAppCell:(id)sender; //共享cell
+- (void)didSelectFollowTwitterCell:(id)sender;//跟随twitter cell
+- (void)didSelectFollowFacebookCell:(id)sender;//跟随facebook cell
+
+
 
 @end
 
@@ -260,7 +271,7 @@
         cell.imageView.image = [UIImage imageNamed:@"feedback-Icon-Small.png"];
 		self->feedbackCellDescription.tableViewCell = cell;
 		
-		self->feedbackCellDescription.didSelectCellSelector = @selector(didSelectPullNavCell:);        
+		self->feedbackCellDescription.didSelectCellSelector = @selector(didSelectModalNavCell:);        
         IAFeedbackViewController *viewCtler = [[[IAFeedbackViewController alloc] initWithStyle:UITableViewStyleGrouped messageDelegate:self] autorelease];
 		self->feedbackCellDescription.didSelectCellObject = viewCtler;
 		
@@ -324,7 +335,7 @@
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.imageView.image = [UIImage imageNamed:@"twitter-Icon-Small.png"];
 		self->followTwitterCellDescription.tableViewCell = cell;
-        //self->followTwitterCellDescription.didSelectCellSelector = @selector(didSelectNavCell:);
+        self->followTwitterCellDescription.didSelectCellSelector = @selector(didSelectFollowTwitterCell:);
 	}
 	
 	return self->followTwitterCellDescription;
@@ -342,7 +353,7 @@
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.imageView.image = [UIImage imageNamed:@"facebook-Icon-Small.png"];
 		self->followFacebookCellDescription.tableViewCell = cell;
-        //self->followFacebookCellDescription.didSelectCellSelector = @selector(didSelectNavCell:);
+        self->followFacebookCellDescription.didSelectCellSelector = @selector(didSelectFollowFacebookCell:);
 	}
 	
 	return self->followFacebookCellDescription;
@@ -423,7 +434,7 @@
 
 #pragma mark - ViewControl Event Action
 
--(IBAction)cancelButtonItemPressed:(id)sender{
+- (IBAction)cancelButtonItemPressed:(id)sender{
 	[self dismissModalViewControllerAnimated:YES];
 }
 
@@ -437,7 +448,7 @@
 	
 }
 
-- (void) didSelectPullNavCell:(id)sender{
+- (void)didSelectModalNavCell:(id)sender{
 	UIViewController *detailController1 = (UIViewController*)sender;
     UINavigationController *detailNavigationController1 = [[[UINavigationController alloc] initWithRootViewController:detailController1] autorelease];
 	[self presentModalViewController:detailNavigationController1 animated:YES];
@@ -450,6 +461,95 @@
 
 - (void)didSelectShareAppCell:(id)sender{
 	[self.shareAppEngine shareApp];
+}
+
+- (void)followOnTwitterByAfterIOS5ForUserName:(NSString*)userName{
+    
+     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+     
+     ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+     
+    [accountStore requestAccessToAccountsWithType:accountType withCompletionHandler:^(BOOL granted, NSError *error) {
+         if(granted) {
+             // Get the list of Twitter accounts.
+             NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
+             
+             // For the sake of brevity, we'll assume there is only one Twitter account present.
+             // You would ideally ask the user which account they want to tweet from, if there is more than one Twitter account present.
+             if ([accountsArray count] > 0) {
+                 // Grab the initial Twitter account to tweet from.
+                 ACAccount *twitterAccount = [accountsArray objectAtIndex:0];
+                 
+                 NSMutableDictionary *tempDict = [[NSMutableDictionary alloc] init];
+                 [tempDict setValue:@"sortitapps" forKey:@"screen_name"];
+                 [tempDict setValue:@"true" forKey:@"follow"];
+                 
+                 TWRequest *postRequest = [[TWRequest alloc] initWithURL:[NSURL URLWithString:@"http://api.twitter.com/1/friendships/create.format"] 
+                 parameters:tempDict 
+                 requestMethod:TWRequestMethodPOST];
+                 
+                 
+                 [postRequest setAccount:twitterAccount];
+                 
+                 [postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
+                     NSString *output = [NSString stringWithFormat:@"HTTP response status: %i", [urlResponse statusCode]];
+                     NSLog(@"%@", output);
+                     NSLog(@"%@",error);
+                 }];
+             }
+         }
+     }];
+     
+}
+
+- (void)followOnTwitterByBeforeIOS5ForUserName:(NSString*)userName{
+    NSArray *urls = [NSArray arrayWithObjects:
+                     @"twitter:@{username}", // Twitter
+                     @"tweetbot:///user_profile/{username}", // TweetBot
+                     @"echofon:///user_timeline?{username}", // Echofon              
+                     @"twit:///user?screen_name={username}", // Twittelator Pro
+                     @"x-seesmic://twitter_profile?twitter_screen_name={username}", // Seesmic
+                     @"x-birdfeed://user?screen_name={username}", // Birdfeed
+                     @"tweetings:///user?screen_name={username}", // Tweetings
+                     @"simplytweet:?link=http://twitter.com/{username}", // SimplyTweet
+                     @"icebird://user?screen_name={username}", // IceBird
+                     @"fluttr://user/{username}", // Fluttr
+                     /** uncomment if you don't have a special handling for no registered twitter clients */
+                     //@"http://twitter.com/{username}", // Web fallback, 
+                     nil];
+    
+    BOOL didOpenOtherApp = NO; 
+    UIApplication *application = [UIApplication sharedApplication];
+    for (NSString *candidate in urls) {
+        candidate = [candidate stringByReplacingOccurrencesOfString:@"{username}" withString:userName];
+        NSURL *url = [NSURL URLWithString:candidate];
+        if ([application canOpenURL:url]) {
+            [application openURL:url];
+            didOpenOtherApp = YES;
+            break;
+        }
+    }
+    
+    //没有客户端
+    if (!didOpenOtherApp) {
+        NSString *urlString  = [NSString stringWithFormat:@"https://twitter.com/%@", userName]; 
+        [application openURL:[NSURL URLWithString:urlString]];
+    }
+}
+
+- (void)didSelectFollowTwitterCell:(id)sender{
+    [self followOnTwitterByBeforeIOS5ForUserName:kTwitterUserNameFollowed];         
+}
+
+- (void)didSelectFollowFacebookCell:(id)sender;{
+    UIApplication *application = [UIApplication sharedApplication];
+    NSString *urlString  = [NSString stringWithFormat:@"fb://page/%@",kFacebookIdFollowed];
+    NSURL *url = [NSURL URLWithString:urlString];
+    if ([application canOpenURL:url]) {
+        [application openURL:[NSURL URLWithString:urlString]];
+    }else{
+        urlString  = [NSString stringWithFormat:@"http://www.facebook.com/profile.php?id=%@", kFacebookIdFollowed];
+    }
 }
 
 #pragma mark - View lifecycle

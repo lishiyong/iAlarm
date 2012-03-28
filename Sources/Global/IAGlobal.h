@@ -19,4 +19,8 @@ extern const double kRadiusAccuracyRateWhenLowAccuracyThreshold;
 
 extern const CLLocationDistance kMixAlarmRadius;                                 //最小闹钟半径
 
+#define kFacebookIdFollowed          @"100003678702383"
+#define kFacebookUserNameFollowed    @"iAlarmABC"
+#define kTwitterUserNameFollowed     @"iAlarmABC"
+
 

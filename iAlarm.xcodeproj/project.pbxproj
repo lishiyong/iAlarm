@@ -502,6 +502,8 @@
 		9C8AB2D013B0C92100120AD5 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CE8970713000275008FBD45 /* AudioToolbox.framework */; };
 		9C8AB2D113B0C92100120AD5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3D7FD41339BDDB00A9C4D6 /* StoreKit.framework */; };
 		9C8AB2D213B0C92100120AD5 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CD2791713470C0B00A7EAAB /* AVFoundation.framework */; };
+		9C90A1371522BD3A00695881 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C90A1361522BD3A00695881 /* Accounts.framework */; };
+		9C90A1391522BD4400695881 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C90A1381522BD4400695881 /* Twitter.framework */; };
 		9C93F250132E009000986C44 /* YCAnimateRemoveFileView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C93F24F132E009000986C44 /* YCAnimateRemoveFileView.m */; };
 		9C93F395132E315F00986C44 /* YCPoof1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C93F38B132E315F00986C44 /* YCPoof1@2x.png */; };
 		9C93F396132E315F00986C44 /* YCPoof2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C93F38C132E315F00986C44 /* YCPoof2@2x.png */; };
@@ -1141,6 +1143,8 @@
 		9C8977D91302D2A500B6942E /* YCTapHideBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCTapHideBarView.m; sourceTree = "<group>"; };
 		9C8AB2D813B0C92100120AD5 /* iAlarm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iAlarm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C8AB2DA13B0C92100120AD5 /* iAlarm-Info-FullVersion.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iAlarm-Info-FullVersion.plist"; sourceTree = "<group>"; };
+		9C90A1361522BD3A00695881 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		9C90A1381522BD4400695881 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		9C93F24E132E009000986C44 /* YCAnimateRemoveFileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCAnimateRemoveFileView.h; sourceTree = "<group>"; };
 		9C93F24F132E009000986C44 /* YCAnimateRemoveFileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCAnimateRemoveFileView.m; sourceTree = "<group>"; };
 		9C93F38B132E315F00986C44 /* YCPoof1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCPoof1@2x.png"; sourceTree = "<group>"; };
@@ -1674,6 +1678,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C90A1391522BD4400695881 /* Twitter.framework in Frameworks */,
+				9C90A1371522BD3A00695881 /* Accounts.framework in Frameworks */,
 				9CA485E11519D87500B9C8D6 /* CFNetwork.framework in Frameworks */,
 				9C8AB2C813B0C92100120AD5 /* Foundation.framework in Frameworks */,
 				9C8AB2C913B0C92100120AD5 /* UIKit.framework in Frameworks */,
@@ -1736,6 +1742,8 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9C90A1381522BD4400695881 /* Twitter.framework */,
+				9C90A1361522BD3A00695881 /* Accounts.framework */,
 				9CA485DF1519D86000B9C8D6 /* CFNetwork.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
