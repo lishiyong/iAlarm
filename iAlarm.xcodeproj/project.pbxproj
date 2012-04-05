@@ -4399,7 +4399,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Sources/ShareApp/Shares/Services/Twitter/Twitter+OAuth/Libraries & Headers\"",
 					"\"$(SRCROOT)/Sources/newShareApp/Services/Twitter/Twitter+OAuth/Libraries & Headers\"",
 				);
 				PRODUCT_NAME = iAlarm;
@@ -4412,7 +4411,10 @@
 		9C12C03113B1E95B00FB8158 /* Release FullVersion */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv6,
+					"$(ARCHS_STANDARD_32_BIT)",
+				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: li shiyong (G46T6DCB7F)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -4439,7 +4441,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Sources/ShareApp/Shares/Services/Twitter/Twitter+OAuth/Libraries & Headers\"",
 					"\"$(SRCROOT)/Sources/newShareApp/Services/Twitter/Twitter+OAuth/Libraries & Headers\"",
 				);
 				PRODUCT_NAME = iAlarm;
@@ -4463,7 +4464,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Sources/ShareApp/Shares/Services/Twitter/Twitter+OAuth/Libraries & Headers\"",
 					"\"$(SRCROOT)/Sources/newShareApp/Services/Twitter/Twitter+OAuth/Libraries & Headers\"",
 				);
 				OTHER_CFLAGS = (
@@ -4480,7 +4480,10 @@
 		9C12C03413B1E97000FB8158 /* Distribution FullVersion */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv6,
+					"$(ARCHS_STANDARD_32_BIT)",
+				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: li shiyong";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -4496,6 +4499,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					armv6,
+					"$(ARCHS_STANDARD_32_BIT)",
+				);
 				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
@@ -4507,7 +4514,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Sources/ShareApp/Shares/Services/Twitter/Twitter+OAuth/Libraries & Headers\"",
 					"\"$(SRCROOT)/Sources/newShareApp/Services/Twitter/Twitter+OAuth/Libraries & Headers\"",
 				);
 				PRODUCT_NAME = iAlarm;
@@ -4534,7 +4540,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Sources/ShareApp/Shares/Services/Twitter/Twitter+OAuth/Libraries & Headers\"",
 					"\"$(SRCROOT)/Sources/newShareApp/Services/Twitter/Twitter+OAuth/Libraries & Headers\"",
 				);
 				OTHER_CFLAGS = (
@@ -4545,7 +4550,6 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B0DACFB0-D312-4CA0-9EAC-D403715801CE";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
-				"VALID_ARCHS[sdk=*]" = "armv6 armv7";
 			};
 			name = "Distribution FullVersion";
 		};
@@ -4565,7 +4569,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Sources/ShareApp/Shares/Services/Twitter/Twitter+OAuth/Libraries & Headers\"",
 					"\"$(SRCROOT)/Sources/newShareApp/Services/Twitter/Twitter+OAuth/Libraries & Headers\"",
 				);
 				OTHER_CFLAGS = "-DFULL_VERSION=1";
@@ -4592,7 +4595,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Sources/ShareApp/Shares/Services/Twitter/Twitter+OAuth/Libraries & Headers\"",
 					"\"$(SRCROOT)/Sources/newShareApp/Services/Twitter/Twitter+OAuth/Libraries & Headers\"",
 				);
 				OTHER_CFLAGS = (
@@ -4608,7 +4610,10 @@
 		9CD8A96B134CAF8A00D16865 /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv6,
+					"$(ARCHS_STANDARD_32_BIT)",
+				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: li shiyong";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -4624,6 +4629,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					armv6,
+					"$(ARCHS_STANDARD_32_BIT)",
+				);
 				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: li shiyong";
 				COPY_PHASE_STRIP = YES;
@@ -4635,7 +4644,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Sources/ShareApp/Shares/Services/Twitter/Twitter+OAuth/Libraries & Headers\"",
 					"\"$(SRCROOT)/Sources/newShareApp/Services/Twitter/Twitter+OAuth/Libraries & Headers\"",
 				);
 				PRODUCT_NAME = iAlarm;
@@ -4648,7 +4656,10 @@
 		9CDF696613D5BF4200E4EA65 /* Debug FullVersion */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv6,
+					"$(ARCHS_STANDARD_32_BIT)",
+				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: li shiyong (G46T6DCB7F)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -4677,7 +4688,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Sources/ShareApp/Shares/Services/Twitter/Twitter+OAuth/Libraries & Headers\"",
 					"\"$(SRCROOT)/Sources/newShareApp/Services/Twitter/Twitter+OAuth/Libraries & Headers\"",
 				);
 				PRODUCT_NAME = iAlarm;
@@ -4702,7 +4712,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Sources/ShareApp/Shares/Services/Twitter/Twitter+OAuth/Libraries & Headers\"",
 					"\"$(SRCROOT)/Sources/newShareApp/Services/Twitter/Twitter+OAuth/Libraries & Headers\"",
 				);
 				OTHER_CFLAGS = "-DFULL_VERSION=1";
@@ -4716,7 +4725,10 @@
 		9CEB319613B1849B000AD3B8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv6,
+					"$(ARCHS_STANDARD_32_BIT)",
+				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: li shiyong (G46T6DCB7F)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -4743,7 +4755,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Sources/ShareApp/Shares/Services/Twitter/Twitter+OAuth/Libraries & Headers\"",
 					"\"$(SRCROOT)/Sources/newShareApp/Services/Twitter/Twitter+OAuth/Libraries & Headers\"",
 				);
 				PRODUCT_NAME = iAlarm;
@@ -4767,7 +4778,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Sources/ShareApp/Shares/Services/Twitter/Twitter+OAuth/Libraries & Headers\"",
 					"\"$(SRCROOT)/Sources/newShareApp/Services/Twitter/Twitter+OAuth/Libraries & Headers\"",
 				);
 				OTHER_CFLAGS = (
@@ -4783,7 +4793,10 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv6,
+					"$(ARCHS_STANDARD_32_BIT)",
+				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: li shiyong (G46T6DCB7F)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;

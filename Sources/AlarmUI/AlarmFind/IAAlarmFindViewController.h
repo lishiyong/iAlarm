@@ -14,12 +14,11 @@
     
     UIBarButtonItem *doneButtonItem;
     UIBarButtonItem *upDownBarItem;
-    MapPointAnnotation *annotation;
+    MapPointAnnotation *pointAnnotation;
     MKCircle *circleOverlay;
     
     NSArray *alarmNotifitions;
     IAAlarmNotification *viewedAlarmNotification;
-    
     
 }
 @property (nonatomic,retain) IBOutlet UITableView *tableView;

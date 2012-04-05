@@ -13,34 +13,39 @@
 #import "UIColor+YC.h"
 #import <QuartzCore/QuartzCore.h>
 #import "IAAlarmFindViewController.h"
-#import <MapKit/MapKit.h>
 
 
 @interface MapPointAnnotation : NSObject<MKAnnotation> {
     NSString *title;
-    NSString *subTitle;
+    NSString *subtitle;
     CLLocationCoordinate2D coordinate;
 }
 
 @property (nonatomic,readonly) CLLocationCoordinate2D coordinate;
 @property (nonatomic,copy) NSString *title;
-@property (nonatomic,copy) NSString *subTitle;
+@property (nonatomic,copy) NSString *subtitle;
 
 -(id) initWithCoordinate:(CLLocationCoordinate2D) coord title:(NSString *) theTitle subTitle:(NSString *) theSubTitle;
 
 @end
 
 @implementation MapPointAnnotation
-@synthesize coordinate, title, subTitle;
+@synthesize coordinate, title, subtitle;
 
 -(id) initWithCoordinate:(CLLocationCoordinate2D) coord title:(NSString *) theTitle subTitle:(NSString *) theSubTitle{
     self = [super init];
     if (self) {
         coordinate = coord;
         title = [theTitle copy];
-        theSubTitle = [theSubTitle copy];
+        subtitle = [theSubTitle copy];
     }
     return self;
+}
+
+- (void)dealloc{
+    [title release];
+    [subtitle release];
+    [super dealloc];
 }
 
 @end
@@ -92,11 +97,29 @@
         upDownBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
         
     }
-    NSLog(@"upDownBarItem = %@",upDownBarItem);
-    NSLog(@"upDownBarItem.customView = %@",upDownBarItem.customView);
     return upDownBarItem;
 }
 
+/*
+cell使用后height竟然会加1。奇怪！
+   所以必须每次都重新做它的frame。
+ 注意：IBOutlet类型，在view加载后在使用下面属性，才会有正确的frame。
+ */
+- (id)mapViewCell{
+    mapViewCell.frame = CGRectMake(0, 0, 300, 195);
+    return mapViewCell;
+}
+
+- (id)notesCell{
+    notesCell.frame = CGRectMake(0, 0, 300, 0);
+    return notesCell;
+}
+
+- (id)buttonCell{
+    buttonCell.frame = CGRectMake(0, 0, 300, 108);
+    return buttonCell;
+}
+ 
 #pragma mark - Controll Event
 - (void)doneButtonItemPressed:(id)sender{
     [self dismissModalViewControllerAnimated:YES];
@@ -111,19 +134,29 @@
         return;
     }
     
+    NSString *animationSubtype = nil;
 	UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
     switch (segmentedControl.selectedSegmentIndex) {
         case 0:
             index = [alarmNotifitions indexOfObject:viewedAlarmNotification] - 1; //up
+            animationSubtype = kCATransitionFromBottom;
             break;
         case 1:
             index = [alarmNotifitions indexOfObject:viewedAlarmNotification] + 1; //down
+            animationSubtype = kCATransitionFromTop;
             break;
         default:
             break;
     }
     
-    [self loadViewDataWithIndexOfNotifications:index]; 
+    [self loadViewDataWithIndexOfNotifications:index];
+    
+    CATransition *animation = [CATransition animation];
+    animation.type = kCATransitionPush;
+    animation.subtype = animationSubtype;
+    animation.duration = 0.75;
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    [self.tableView.layer addAnimation:animation forKey:@"upDown AlarmNotification"];
 }
 
 #pragma mark - Utility
@@ -165,40 +198,55 @@
     
     
     /**地图相关**/
+    
     if (circleOverlay) {
         [self.mapView removeOverlay:circleOverlay];
         [circleOverlay release];
     }
-    if (annotation) {
-        [self.mapView removeAnnotation:annotation];
-        [annotation release];
+    if (pointAnnotation) {
+        [self.mapView removeAnnotation:pointAnnotation];
+        [pointAnnotation release];
     }
     
     CLLocationCoordinate2D coord = alarm.coordinate;
     CLLocationDistance radius = alarm.radius;
     
     //大头针
-    annotation = [[MapPointAnnotation alloc] initWithCoordinate:alarm.coordinate title:alarm.alarmName subTitle:@"距离当前位置:1.5公里"];    
-    [self.mapView addAnnotation:annotation];
+    pointAnnotation = [[MapPointAnnotation alloc] initWithCoordinate:alarm.coordinate title:alarm.alarmName subTitle:@"距离当前位置:1.5公里"];    
+    [self.mapView addAnnotation:pointAnnotation];
     
     //地图的显示region
+    
+    //先按老的坐标显示
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(coord, radius*2.5, radius*2.5);
     MKCoordinateRegion regionFited =  [self.mapView regionThatFits:region];
     [self.mapView setRegion:regionFited animated:NO];
+    
+    CGPoint oldPoint = [self.mapView convertCoordinate:coord toPointToView:self.mapView];
+    CGPoint newPoint = CGPointMake(oldPoint.x, oldPoint.y - 15.0); //下移,避免pin的callout到屏幕外
+    CLLocationCoordinate2D newCoord = [self.mapView convertPoint:newPoint toCoordinateFromView:self.mapView];
+    MKCoordinateRegion newRegion = MKCoordinateRegionMakeWithDistance(newCoord, radius*2.5, radius*2.5);
+    MKCoordinateRegion newRegionFited =  [self.mapView regionThatFits:newRegion];
+    [self.mapView setRegion:newRegionFited animated:NO];
     
     //圈
     circleOverlay = [[MKCircle circleWithCenterCoordinate:coord radius:radius] retain];
     [self.mapView addOverlay:circleOverlay];
     
     //选中大头针
-    [self.mapView selectAnnotation:annotation animated:NO];
+    [self.mapView selectAnnotation:pointAnnotation animated:NO];
+    
+    //其他数据
+    [self.tableView reloadData];
+
+    
 }
 
 #pragma mark - MapView delegate
 
-- (MKAnnotationView *)mapView:(MKMapView *)mv viewForAnnotation:(id <MKAnnotation>)annotation{
+- (MKAnnotationView *)mapView:(MKMapView *)mv viewForAnnotation:(id <MKAnnotation>)theAnnotation{
     
-    if([annotation isKindOfClass:[MKUserLocation class]])
+    if([theAnnotation isKindOfClass:[MKUserLocation class]])
         return nil;
 
     NSString *annotationIdentifier = @"PinViewAnnotation";
@@ -214,7 +262,7 @@
         
         
         pinView = [[[MKPinAnnotationView alloc]
-                                      initWithAnnotation:annotation
+                                      initWithAnnotation:theAnnotation
                                          reuseIdentifier:annotationIdentifier] autorelease];
         
         [pinView setPinColor:MKPinAnnotationColorGreen];
@@ -223,7 +271,7 @@
         pinView.leftCalloutAccessoryView = sfIconView;
         
     }else{
-        pinView.annotation = annotation;
+        pinView.annotation = theAnnotation;
     }
     
     return pinView;
@@ -246,9 +294,9 @@
 
 - (void)mapView:(MKMapView *)theMapView didAddAnnotationViews:(NSArray *)views{
 	for (id oneObj in views) {
-		id annotation = ((MKAnnotationView*)oneObj).annotation;
-		if ([ annotation isKindOfClass:[MapPointAnnotation class]]) {
-            [self.mapView selectAnnotation:annotation animated:NO];
+		id anAnnotation = ((MKAnnotationView*)oneObj).annotation;
+		if ([anAnnotation isKindOfClass:[MapPointAnnotation class]]) {
+            [self.mapView selectAnnotation:anAnnotation animated:NO];
 		}
 	}
 }
@@ -294,7 +342,6 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section{
-	
     if (section == 1) {
         NSString *s = [viewedAlarmNotification.alarm.description trim];
         if ([s length] == 0) s = @"\n";//备注为空，1空行占空间
@@ -307,13 +354,13 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     switch (indexPath.section) {
         case 0:
-            return self.mapViewCell.bounds.size.height;
+            return self.mapViewCell.frame.size.height;
             break;
         case 1:
-            return self.notesCell.bounds.size.height;
+            return self.notesCell.frame.size.height;
             break;
         case 2:
-            return self.buttonCell.bounds.size.height;
+            return self.buttonCell.frame.size.height;
             break;
         default:
             return 0.0;
@@ -327,6 +374,7 @@
     }
     return 0.0;
 }
+ 
 
 #pragma mark - View lifecycle
 
@@ -368,7 +416,7 @@
 	self.tableView = nil;
     [doneButtonItem release];doneButtonItem = nil;
     [upDownBarItem release];upDownBarItem = nil;
-    [annotation release];annotation = nil;
+    [pointAnnotation release];pointAnnotation = nil;
     [circleOverlay release];circleOverlay = nil; 
     
     self.mapViewCell = nil;
@@ -408,7 +456,7 @@
     
     [alarmNotifitions release];
     [viewedAlarmNotification release];
-    [annotation release];
+    [pointAnnotation release];
     [circleOverlay release];
     [super dealloc];
 }
