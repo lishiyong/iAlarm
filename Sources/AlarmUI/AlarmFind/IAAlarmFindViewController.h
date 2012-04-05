@@ -9,16 +9,17 @@
 #import <MapKit/MapKit.h>
 #import <UIKit/UIKit.h>
 
-@class MKMapView;
-@protocol MKMapViewDelegate;
-@class IAAlarmNotification;
+@class IAAlarmNotification, MapPointAnnotation;
 @interface IAAlarmFindViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate>{
     
     UIBarButtonItem *doneButtonItem;
     UIBarButtonItem *upDownBarItem;
+    MapPointAnnotation *annotation;
+    MKCircle *circleOverlay;
     
     NSArray *alarmNotifitions;
     IAAlarmNotification *viewedAlarmNotification;
+    
     
 }
 @property (nonatomic,retain) IBOutlet UITableView *tableView;

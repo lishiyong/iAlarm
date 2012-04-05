@@ -1083,13 +1083,14 @@
             self.ringplayer = [[[AVAudioPlayer alloc] initWithContentsOfURL:self.alarmTemp.sound.soundFileURL error:NULL] autorelease];
             self.ringplayer.delegate = self;
             self.ringplayer.numberOfLoops = 100;
-            [self.ringplayer play];
+            [self.ringplayer performSelector:@selector(play) withObject:nil afterDelay:0.0];
         }
     }
     
     if (self.alarmTemp.vibrate) {
         if (!self.vibratePlayer.playing)
-            [self.vibratePlayer playRepeatNumber:2]; //振动2次
+            [self.vibratePlayer performSelector:@selector(playRepeatNumber:) withInteger:2 afterDelay:0.0];
+            //[self.vibratePlayer playRepeatNumber:2]; //振动2次
     }
     ///////////////////////////////////
 }
@@ -1114,11 +1115,24 @@
 		NSNotification *aNotification = [NSNotification notificationWithName:IAAlarmDidViewNotification object:self userInfo:userInfoDic];
 		[notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
          */
+        /*
         IAAlarmNotification *aNotification = [[[IAAlarmNotification alloc] initWithAlarm:self.alarmTemp] autorelease];
         NSArray *notifications = [NSArray arrayWithObject:aNotification];
         IAAlarmFindViewController *ctler = [[[IAAlarmFindViewController alloc] initWithNibName:@"IAAlarmFindViewController" bundle:nil alarmNotifitions:notifications] autorelease];
         UINavigationController *navCtler = [[[UINavigationController alloc] initWithRootViewController:ctler] autorelease];
         [self presentModalViewController:navCtler animated:YES];
+         */
+        
+        NSMutableArray *notifications = [NSMutableArray array];
+        for (IAAlarm *anAlarm in [IAAlarm alarmArray]) {
+            IAAlarmNotification *aNotification = [[[IAAlarmNotification alloc] initWithAlarm:anAlarm] autorelease];
+            [notifications addObject:aNotification];
+        }
+        
+        IAAlarmFindViewController *ctler = [[[IAAlarmFindViewController alloc] initWithNibName:@"IAAlarmFindViewController" bundle:nil alarmNotifitions:notifications] autorelease];
+        UINavigationController *navCtler = [[[UINavigationController alloc] initWithRootViewController:ctler] autorelease];
+        [self presentModalViewController:navCtler animated:YES];
+        
         
 	}else{
         //不查看。
