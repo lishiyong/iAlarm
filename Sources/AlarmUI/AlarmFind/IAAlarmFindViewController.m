@@ -6,6 +6,8 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "IANotifications.h"
+#import "YCSystemStatus.h"
 #import "LocalizedString.h"
 #import "NSString-YC.h"
 #import "IAAlarm.h"
@@ -24,13 +26,15 @@
 @property (nonatomic,readonly) CLLocationCoordinate2D coordinate;
 @property (nonatomic,copy) NSString *title;
 @property (nonatomic,copy) NSString *subtitle;
+@property (nonatomic) CLLocationDistance distanceFromCurrentLocation;
 
 -(id) initWithCoordinate:(CLLocationCoordinate2D) coord title:(NSString *) theTitle subTitle:(NSString *) theSubTitle;
 
 @end
 
+
 @implementation MapPointAnnotation
-@synthesize coordinate, title, subtitle;
+@synthesize coordinate, title, subtitle, distanceFromCurrentLocation;
 
 -(id) initWithCoordinate:(CLLocationCoordinate2D) coord title:(NSString *) theTitle subTitle:(NSString *) theSubTitle{
     self = [super init];
@@ -38,6 +42,7 @@
         coordinate = coord;
         title = [theTitle copy];
         subtitle = [theSubTitle copy];
+        distanceFromCurrentLocation = -1.0; //小于0，表示未初始化
     }
     return self;
 }
@@ -51,11 +56,13 @@
 @end
 
 
-
 @interface IAAlarmFindViewController(private)
 
 - (UIImage*)takePhotoFromTheMapView;
 - (void)loadViewDataWithIndexOfNotifications:(NSInteger)index;
+- (void)setDistanceWithCurrentLocation:(CLLocation*)location;//显示距离当前位置XX公里
+- (void)registerNotifications;
+- (void)unRegisterNotifications;
 
 @end
 
@@ -212,8 +219,9 @@ cell使用后height竟然会加1。奇怪！
     CLLocationDistance radius = alarm.radius;
     
     //大头针
-    pointAnnotation = [[MapPointAnnotation alloc] initWithCoordinate:alarm.coordinate title:alarm.alarmName subTitle:@"距离当前位置:1.5公里"];    
+    pointAnnotation = [[MapPointAnnotation alloc] initWithCoordinate:alarm.coordinate title:alarm.alarmName subTitle:nil];    
     [self.mapView addAnnotation:pointAnnotation];
+    [self performSelector:@selector(setDistanceWithCurrentLocation:) withObject:[YCSystemStatus deviceStatusSingleInstance].lastLocation afterDelay:0.0]; //距离
     
     //地图的显示region
     
@@ -239,6 +247,30 @@ cell使用后height竟然会加1。奇怪！
     //其他数据
     [self.tableView reloadData];
 
+}
+
+- (void)setDistanceWithCurrentLocation:(CLLocation*)location{
+    
+    if (pointAnnotation == nil || location == nil || ![location isKindOfClass:[CLLocation class]]) {
+        pointAnnotation.subtitle = nil;
+        pointAnnotation.distanceFromCurrentLocation = 0.0;
+        return;
+    }
+    
+    CLLocation *aLocation = [[[CLLocation alloc] initWithLatitude:pointAnnotation.coordinate.latitude longitude:pointAnnotation.coordinate.longitude] autorelease];
+	CLLocationDistance distance = [location distanceFromLocation:aLocation];
+    
+    NSString *s = nil;
+    if (distance > 100.0) 
+        s = [NSString stringWithFormat:KTextPromptDistanceCurrentLocation,[location distanceFromLocation:aLocation]/1000.0];
+    else
+        s = KTextPromptCurrentLocation;
+    
+    //未设置过 或 与上次的距离超过100米
+    if (pointAnnotation.distanceFromCurrentLocation < 0.0 || fabs(pointAnnotation.distanceFromCurrentLocation - distance) > 100.0) {
+        pointAnnotation.distanceFromCurrentLocation = distance;
+        pointAnnotation.subtitle = s;
+    }
     
 }
 
@@ -397,8 +429,38 @@ cell使用后height竟然会加1。奇怪！
     self.containerView.layer.shadowColor = [UIColor blackColor].CGColor;
     self.containerView.layer.shadowOffset = CGSizeMake(0, 1.0);
     
-    [self loadViewDataWithIndexOfNotifications:0];
+    [self loadViewDataWithIndexOfNotifications:0]; //加载数据
     
+    [self registerNotifications];
+    
+}
+
+#pragma mark - Notification
+
+- (void)handle_standardLocationDidFinish: (NSNotification*) notification{
+    //还没加载
+	if (![self isViewLoaded]) return;
+    CLLocation *location = [[notification userInfo] objectForKey:IAStandardLocationKey];
+	[self setDistanceWithCurrentLocation:location];
+    
+}
+
+- (void)registerNotifications {
+	
+	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+	
+	//有新的定位数据产生
+	[notificationCenter addObserver: self
+						   selector: @selector (handle_standardLocationDidFinish:)
+							   name: IAStandardLocationDidFinishNotification
+							 object: nil];
+    
+	
+}
+
+- (void)unRegisterNotifications{
+	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+	[notificationCenter removeObserver:self	name: IAStandardLocationDidFinishNotification object: nil];
 }
 
 #pragma mark - memory manager
@@ -413,6 +475,7 @@ cell使用后height竟然会加1。奇怪！
 
 - (void)viewDidUnload {
     [super viewDidUnload];
+    [self unRegisterNotifications];
 	self.tableView = nil;
     [doneButtonItem release];doneButtonItem = nil;
     [upDownBarItem release];upDownBarItem = nil;
@@ -434,8 +497,8 @@ cell使用后height竟然会加1。奇怪！
     self.notesCell = nil;
 }
 
-
 - (void)dealloc {
+    [self unRegisterNotifications];
 	[tableView release];
     [doneButtonItem release];
     [upDownBarItem release];
