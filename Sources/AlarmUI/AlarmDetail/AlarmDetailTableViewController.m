@@ -6,6 +6,8 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "IAAlarmFindViewController.h"
+#import "IAAlarmNotification.h"
 #import "AlarmDescriptionViewController.h"
 #import "NSString-YC.h"
 #import "YCSoundPlayer.h"
@@ -223,21 +225,21 @@
         
         self->testAlarmButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         self->testAlarmButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-        [self->testAlarmButton setTitle:@"测试" forState:UIControlStateNormal & UIControlStateHighlighted & UIControlStateSelected];
-        self->testAlarmButton.titleLabel.font            = [UIFont boldSystemFontOfSize: 20];
+        [self->testAlarmButton setTitle:@"测试" forState:UIControlStateNormal & UIControlStateHighlighted];
+        self->testAlarmButton.titleLabel.font            = [UIFont boldSystemFontOfSize: 19];
         self->testAlarmButton.titleLabel.lineBreakMode   = UILineBreakModeTailTruncation;
         self->testAlarmButton.titleLabel.shadowOffset    = CGSizeMake (0.0, -1.0);
         
-        [self->testAlarmButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal & UIControlStateHighlighted & UIControlStateHighlighted];
-        [self->testAlarmButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
-        [self->testAlarmButton setTitleShadowColor:[UIColor blackColor] forState:UIControlStateNormal& UIControlStateHighlighted & UIControlStateSelected];
-        [self->testAlarmButton setTitleShadowColor:[UIColor grayColor] forState:UIControlStateDisabled];
+        [self->testAlarmButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self->testAlarmButton setTitleShadowColor:[UIColor blackColor] forState:UIControlStateNormal];
 
 
-        
-        UIImage *image = [UIImage imageNamed:@"IAGreenButtonNormal.png"];
+        UIImage *image = [UIImage imageNamed:@"UIPopoverButton.png"];
         UIImage *newImage = [image stretchableImageWithLeftCapWidth:6 topCapHeight:6];
-        [self->testAlarmButton setBackgroundImage:newImage forState:UIControlStateNormal & UIControlStateHighlighted];
+        [self->testAlarmButton setBackgroundImage:newImage forState:UIControlStateNormal];
+        UIImage *imagePressed = [UIImage imageNamed:@"UIPopoverButtonPressed.png"];
+        UIImage *newImagePressed = [imagePressed stretchableImageWithLeftCapWidth:6 topCapHeight:6];
+        [self->testAlarmButton setBackgroundImage:newImagePressed forState: UIControlStateHighlighted];
         
         [self->testAlarmButton addTarget:self action:@selector(testAlarmButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         self->testAlarmButton.adjustsImageWhenDisabled = YES;
@@ -405,9 +407,9 @@
 		self->repeatCellDescription.didSelectCellSelector = @selector(didSelectNavCell:);
 		AlarmLRepeatTypeViewController *viewCtler = [[[AlarmLRepeatTypeViewController alloc] initWithStyle:UITableViewStyleGrouped alarm:self.alarmTemp] autorelease];
 		self->repeatCellDescription.didSelectCellObject = viewCtler;
-
 	}
 	self->repeatCellDescription.tableViewCell.detailTextLabel.text = self.alarmTemp.repeatType.repeatTypeName;
+    
 	
 	/*
 	NSLog(@"textLabel:%@",self->repeatCellDescription.tableViewCell.textLabel.font);
@@ -1106,10 +1108,17 @@
 	[self.ringplayer stop];
 	[self.vibratePlayer stop];
 	if (buttonIndex == 1) { //查看按钮
+        /*
 		NSDictionary *userInfoDic = [NSDictionary dictionaryWithObject:self.alarmTemp forKey:IAViewedAlarmKey];
 		NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 		NSNotification *aNotification = [NSNotification notificationWithName:IAAlarmDidViewNotification object:self userInfo:userInfoDic];
 		[notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
+         */
+        IAAlarmNotification *aNotification = [[[IAAlarmNotification alloc] initWithAlarm:self.alarmTemp] autorelease];
+        NSArray *notifications = [NSArray arrayWithObject:aNotification];
+        IAAlarmFindViewController *ctler = [[[IAAlarmFindViewController alloc] initWithNibName:@"IAAlarmFindViewController" bundle:nil alarmNotifitions:notifications] autorelease];
+        UINavigationController *navCtler = [[[UINavigationController alloc] initWithRootViewController:ctler] autorelease];
+        [self presentModalViewController:navCtler animated:YES];
         
 	}else{
         //不查看。
