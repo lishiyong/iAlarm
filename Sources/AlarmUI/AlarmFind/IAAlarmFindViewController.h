@@ -39,10 +39,11 @@
 
 @property (nonatomic,retain) IBOutlet UITableViewCell *notesCell;
 
-
-
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil alarmNotifitions:(NSArray *)theAlarmNotifitions;
+
+- (IBAction)tellFriendsButtonPressed:(id)sender;
+- (IBAction)delayAlarm10ButtonPressed:(id)sender;
+- (IBAction)delayAlarm30ButtonPressed:(id)sender;
 
 
 @end

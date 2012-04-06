@@ -112,22 +112,48 @@ cell使用后height竟然会加1。奇怪！
    所以必须每次都重新做它的frame。
  注意：IBOutlet类型，在view加载后在使用下面属性，才会有正确的frame。
  */
+
+- (UIColor*)clearCellBackupgroundColor{ 
+    //根据ios版本,为透明颜色的cell采用不同的背景色
+    NSString *systemVerionString = [[UIDevice currentDevice] systemVersion];
+    float systemVerion = [systemVerionString floatValue];
+    if (systemVerion - 5.0 >= 0.0) //5.0以上
+        return [UIColor clearColor];
+    else
+        return [UIColor groupTableViewBackgroundColor];
+    //5.0以下 cell背景设成透明后，显示背景后面竟然是黑的。没搞懂，到底是谁的颜色。
+}
+
 - (id)mapViewCell{
+    mapViewCell.backgroundColor = [self clearCellBackupgroundColor];
     mapViewCell.frame = CGRectMake(0, 0, 300, 195);
     return mapViewCell;
 }
 
 - (id)notesCell{
+    notesCell.backgroundColor = [self clearCellBackupgroundColor];
     notesCell.frame = CGRectMake(0, 0, 300, 0);
     return notesCell;
 }
 
 - (id)buttonCell{
+    buttonCell.backgroundColor = [self clearCellBackupgroundColor]; 
     buttonCell.frame = CGRectMake(0, 0, 300, 108);
     return buttonCell;
 }
  
 #pragma mark - Controll Event
+- (IBAction)tellFriendsButtonPressed:(id)sender{
+    
+}
+- (IBAction)delayAlarm10ButtonPressed:(id)sender{
+    
+}
+- (IBAction)delayAlarm30ButtonPressed:(id)sender{
+    
+}
+
+
 - (void)doneButtonItemPressed:(id)sender{
     [self dismissModalViewControllerAnimated:YES];
 }
@@ -158,12 +184,28 @@ cell使用后height竟然会加1。奇怪！
     
     [self loadViewDataWithIndexOfNotifications:index];
     
+    //动画
     CATransition *animation = [CATransition animation];
+    animation.delegate = self;
     animation.type = kCATransitionPush;
     animation.subtype = animationSubtype;
-    animation.duration = 0.75;
+    animation.duration = 0.5;
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     [self.tableView.layer addAnimation:animation forKey:@"upDown AlarmNotification"];
+}
+
+#pragma mark - Animation delegate
+
+- (void)animationDidStart:(CAAnimation *)theAnimation{
+    //self.view.userInteractionEnabled = NO;
+    //self.navigationController.navigationBar.userInteractionEnabled = NO;
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+}
+
+- (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag{
+    //self.view.userInteractionEnabled = YES;
+    //self.navigationController.navigationBar.userInteractionEnabled = YES;
+    [[UIApplication sharedApplication] endIgnoringInteractionEvents];
 }
 
 #pragma mark - Utility
@@ -221,7 +263,7 @@ cell使用后height竟然会加1。奇怪！
     //大头针
     pointAnnotation = [[MapPointAnnotation alloc] initWithCoordinate:alarm.coordinate title:alarm.alarmName subTitle:nil];    
     [self.mapView addAnnotation:pointAnnotation];
-    [self performSelector:@selector(setDistanceWithCurrentLocation:) withObject:[YCSystemStatus deviceStatusSingleInstance].lastLocation afterDelay:0.0]; //距离
+    [self setDistanceWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];//距离
     
     //地图的显示region
     
@@ -424,8 +466,8 @@ cell使用后height竟然会加1。奇怪！
     self.containerView.layer.cornerRadius = 6;
     self.containerView.layer.borderColor = [UIColor grayColor].CGColor;
     self.containerView.layer.borderWidth = 1.0;
-    self.containerView.layer.shadowRadius = 1.0;
-    self.containerView.layer.shadowOpacity = 0.5;
+    self.containerView.layer.shadowRadius = 2.0;
+    self.containerView.layer.shadowOpacity = 0.3;
     self.containerView.layer.shadowColor = [UIColor blackColor].CGColor;
     self.containerView.layer.shadowOffset = CGSizeMake(0, 1.0);
     
