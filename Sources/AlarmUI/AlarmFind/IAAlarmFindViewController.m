@@ -6,6 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCShareAppEngine.h"
 #import "IANotifications.h"
 #import "YCSystemStatus.h"
 #import "LocalizedString.h"
@@ -16,6 +17,40 @@
 #import <QuartzCore/QuartzCore.h>
 #import "IAAlarmFindViewController.h"
 
+NSString* YCTimeIntervalStringSinceNow(NSDate *date);
+
+NSString* YCTimeIntervalStringSinceNow(NSDate *date){    
+    
+    NSString *returnString = nil;
+    
+    NSTimeInterval interval= fabs([date timeIntervalSinceNow]) ;
+    if ((interval/60) < 1) {
+        
+        returnString = @"现在";
+        
+    }else if((interval/60) > 1 && (interval/(60*60)) < 1){
+        
+        returnString=[NSString stringWithFormat:@"%d分钟前", (NSInteger)(interval/60)];
+        
+    }else if((interval/(60*60)) > 1  && (interval/(60*60*24)) < 1){
+        
+        returnString=[NSString stringWithFormat:@"%d小时前", (NSInteger)(interval/(60*60))];
+        
+    }else if((interval/(60*60*24)) > 1  && (interval/(60*60*24*30)) < 1){
+        
+        returnString=[NSString stringWithFormat:@"%d天前", (NSInteger)(interval/(60*60*24))];
+        
+    }else if((interval/(60*60*24*30)) > 1  && (interval/(60*60*24*30*12)) < 1){
+        
+        returnString=[NSString stringWithFormat:@"%d月前", (NSInteger)(interval/(60*60*24*30))];
+        
+    }else {
+        
+        returnString=[NSString stringWithFormat:@"%d年前", (NSInteger)(interval/(60*60*24*30*12))];
+    }
+    
+    return returnString;
+}
 
 @interface MapPointAnnotation : NSObject<MKAnnotation> {
     NSString *title;
@@ -72,7 +107,7 @@
 #pragma mark - property
 
 @synthesize tableView;
-@synthesize mapViewCell, containerView, mapView, imageView, timeStampLabel, timeStampBackgroundView;
+@synthesize mapViewCell, containerView, mapView, imageView, timeIntervalLabel;
 @synthesize buttonCell, button1, button2, button3;
 @synthesize notesCell;
 
@@ -144,13 +179,21 @@ cell使用后height竟然会加1。奇怪！
  
 #pragma mark - Controll Event
 - (IBAction)tellFriendsButtonPressed:(id)sender{
-    
+    [engine shareAppWithMessage:@"abc" image:[self takePhotoFromTheMapView]];
 }
-- (IBAction)delayAlarm10ButtonPressed:(id)sender{
-    
+
+- (IBAction)delayAlarm1ButtonPressed:(id)sender{
+    if (!actionSheet1) {
+        actionSheet1 = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:kAlertBtnCancel  destructiveButtonTitle:@"过10分钟再提醒" otherButtonTitles:nil];
+    }
+    [actionSheet1 showInView:self.view];
 }
-- (IBAction)delayAlarm30ButtonPressed:(id)sender{
-    
+
+- (IBAction)delayAlarm2ButtonPressed:(id)sender{
+    if (!actionSheet2) {
+        actionSheet2 = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:kAlertBtnCancel  destructiveButtonTitle:@"过30分钟再提醒" otherButtonTitles:nil];
+    }
+    [actionSheet2 showInView:self.view];
 }
 
 
@@ -193,6 +236,23 @@ cell使用后height竟然会加1。奇怪！
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     [self.tableView.layer addAnimation:animation forKey:@"upDown AlarmNotification"];
 }
+
+
+#pragma mark - UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+    if ([actionSheet cancelButtonIndex] == buttonIndex) {
+        return;
+    }
+    
+    if (actionSheet == actionSheet1) {
+        //延时1
+    }else if (actionSheet == actionSheet2) {
+        //延时2
+    }
+    
+}
+
 
 #pragma mark - Animation delegate
 
@@ -286,6 +346,21 @@ cell使用后height竟然会加1。奇怪！
     //选中大头针
     [self.mapView selectAnnotation:pointAnnotation animated:NO];
     
+    /**地图相关**/
+    
+    //时间间隔
+    NSString *s = YCTimeIntervalStringSinceNow(viewedAlarmNotification.timeStamp);
+    self.timeIntervalLabel.text = s;
+    
+    [self.timeIntervalLabel sizeToFit];//bounds调整到合适
+    self.timeIntervalLabel.bounds = CGRectInset(self.timeIntervalLabel.bounds, -6, -2); //在字的周围留有空白
+    
+           //position在父view的左下角向上8像素
+    CGSize superViewSize = self.timeIntervalLabel.superview.bounds.size;
+    CGPoint thePosition = CGPointMake(superViewSize.width-8, superViewSize.height-8); 
+    self.timeIntervalLabel.layer.position = thePosition;
+
+        
     //其他数据
     [self.tableView reloadData];
 
@@ -471,10 +546,13 @@ cell使用后height竟然会加1。奇怪！
     self.containerView.layer.shadowColor = [UIColor blackColor].CGColor;
     self.containerView.layer.shadowOffset = CGSizeMake(0, 1.0);
     
-    [self loadViewDataWithIndexOfNotifications:0]; //加载数据
+    //把position设置到左下角
+    self.timeIntervalLabel.layer.anchorPoint = CGPointMake(1, 1);
+    
+    //加载数据
+    [self loadViewDataWithIndexOfNotifications:0]; 
     
     [self registerNotifications];
-    
 }
 
 #pragma mark - Notification
@@ -511,6 +589,7 @@ cell使用后height竟然会加1。奇怪！
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         alarmNotifitions = [theAlarmNotifitions retain];
+        engine = [[YCShareAppEngine alloc] initWithSuperViewController:self];
     }
     return self;
 }
@@ -528,8 +607,7 @@ cell使用后height竟然会加1。奇怪！
     self.containerView = nil;
     self.mapView = nil;
     self.imageView = nil;
-    self.timeStampLabel = nil;
-    self.timeStampBackgroundView = nil;
+    self.timeIntervalLabel = nil;
     
     self.buttonCell = nil;
     self.button1 = nil;
@@ -549,8 +627,7 @@ cell使用后height竟然会加1。奇怪！
     [containerView release];
     [mapView release];
     [imageView release];
-    [timeStampLabel release];
-    [timeStampBackgroundView release];
+    [timeIntervalLabel release];
     
     [buttonCell release];
     [button1 release];
@@ -563,6 +640,7 @@ cell使用后height竟然会加1。奇怪！
     [viewedAlarmNotification release];
     [pointAnnotation release];
     [circleOverlay release];
+    [engine release];
     [super dealloc];
 }
 

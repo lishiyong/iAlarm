@@ -9,16 +9,19 @@
 #import <MapKit/MapKit.h>
 #import <UIKit/UIKit.h>
 
-@class IAAlarmNotification, MapPointAnnotation;
-@interface IAAlarmFindViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate>{
+@class IAAlarmNotification, MapPointAnnotation, YCShareAppEngine;
+@interface IAAlarmFindViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, UIActionSheetDelegate>{
     
     UIBarButtonItem *doneButtonItem;
     UIBarButtonItem *upDownBarItem;
-    MapPointAnnotation *pointAnnotation;
-    MKCircle *circleOverlay;
-    
+
     NSArray *alarmNotifitions;
     IAAlarmNotification *viewedAlarmNotification;
+    MapPointAnnotation *pointAnnotation;
+    MKCircle *circleOverlay;
+    YCShareAppEngine *engine;
+    UIActionSheet *actionSheet1;
+    UIActionSheet *actionSheet2;
     
 }
 @property (nonatomic,retain) IBOutlet UITableView *tableView;
@@ -29,8 +32,7 @@
 @property (nonatomic,retain) IBOutlet UIView *containerView;
 @property (nonatomic,retain) IBOutlet MKMapView *mapView;
 @property (nonatomic,retain) IBOutlet UIImageView *imageView;
-@property (nonatomic,retain) IBOutlet UILabel *timeStampLabel;
-@property (nonatomic,retain) IBOutlet UIView *timeStampBackgroundView;
+@property (nonatomic,retain) IBOutlet UILabel *timeIntervalLabel;
 
 @property (nonatomic,retain) IBOutlet UITableViewCell *buttonCell;
 @property (nonatomic,retain) IBOutlet UIButton *button1;
@@ -42,8 +44,8 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil alarmNotifitions:(NSArray *)theAlarmNotifitions;
 
 - (IBAction)tellFriendsButtonPressed:(id)sender;
-- (IBAction)delayAlarm10ButtonPressed:(id)sender;
-- (IBAction)delayAlarm30ButtonPressed:(id)sender;
+- (IBAction)delayAlarm1ButtonPressed:(id)sender;
+- (IBAction)delayAlarm2ButtonPressed:(id)sender;
 
 
 @end
