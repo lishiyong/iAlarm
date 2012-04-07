@@ -6,9 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
-#ifndef iAlarm_YCGFunctions_h
-#define iAlarm_YCGFunctions_h
+#import <Foundation/Foundation.h>
 
-
-
-#endif
+//产生一个唯一的序列号
+NSString* YCSerialCode();

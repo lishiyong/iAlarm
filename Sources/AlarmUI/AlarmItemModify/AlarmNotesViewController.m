@@ -10,15 +10,15 @@
 #import "YCTextView.h"
 #import "NSString-YC.h"
 #import "IAAlarm.h"
-#import "AlarmDescriptionViewController.h"
+#import "AlarmNotesViewController.h"
 
-@implementation AlarmDescriptionViewController
+@implementation AlarmNotesViewController
 @synthesize textView;
 
 - (IBAction)doneButtonPressed:(id)sender
 {	
 	
-    self.alarm.description = self.textView.text;
+    self.alarm.notes = self.textView.text;
 	
 	[self.textView keyboardAppearance];
 	[self.navigationController popViewControllerAnimated:YES];
@@ -72,7 +72,7 @@
         self.textView.textColor = [UIColor lightGrayColor];
     }*/
     
-	self.textView.text = self.alarm.description;
+	self.textView.text = self.alarm.notes;
 	[self.view reloadInputViews];
 }
 

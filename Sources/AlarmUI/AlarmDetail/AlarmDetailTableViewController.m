@@ -6,9 +6,10 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "UIColor+YC.h"
 #import "IAAlarmFindViewController.h"
 #import "IAAlarmNotification.h"
-#import "AlarmDescriptionViewController.h"
+#import "AlarmNotesViewController.h"
 #import "NSString-YC.h"
 #import "YCSoundPlayer.h"
 #import "IADestinationCell.h"
@@ -66,7 +67,7 @@
 @synthesize radiusCellDescription;
 @synthesize triggerCellDescription; 
 @synthesize destionationCellDescription;
-@synthesize descriptionCellDescription;
+@synthesize notesCellDescription;
 @synthesize titleForFooter;
 @synthesize footerView;
 
@@ -138,7 +139,7 @@
 			[alarmTemp addObserver:self forKeyPath:@"alarmName" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"position" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"positionShort" options:0 context:nil];
-			[alarmTemp addObserver:self forKeyPath:@"description" options:0 context:nil];
+			[alarmTemp addObserver:self forKeyPath:@"notes" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"enabling" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"coordinate" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"vibrate" options:0 context:nil];
@@ -147,7 +148,7 @@
 			[alarmTemp addObserver:self forKeyPath:@"alarmRadiusType" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"radius" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"positionType" options:0 context:nil];
-            [alarmTemp addObserver:self forKeyPath:@"description" options:0 context:nil];
+            [alarmTemp addObserver:self forKeyPath:@"notes" options:0 context:nil];
 		//}
 		
 	}
@@ -268,7 +269,7 @@
                         ,self.soundCellDescription
                         ,self.triggerCellDescription
                         ,self.radiusCellDescription
-                        ,self.descriptionCellDescription
+                        ,self.notesCellDescription
                         ,self.nameCellDescription
                         ,self.destionationCellDescription
                         ,nil];
@@ -278,7 +279,7 @@
                         ,self.soundCellDescription
                         //,self.triggerCellDescription
                         ,self.radiusCellDescription
-                        ,self.descriptionCellDescription
+                        ,self.notesCellDescription
                         ,self.nameCellDescription
                         ,self.destionationCellDescription
                         ,nil];
@@ -475,33 +476,33 @@
 	return self->nameCellDescription;
 }
 
-- (id)descriptionCellDescription{
+- (id)notesCellDescription{
 	
-	static NSString *CellIdentifier = @"descriptionCellDescription";
+	static NSString *CellIdentifier = @"notesCellDescription";
 	
-	if (!self->descriptionCellDescription) {
-		self->descriptionCellDescription = [[TableViewCellDescription alloc] init];
+	if (!self->notesCellDescription) {
+		self->notesCellDescription = [[TableViewCellDescription alloc] init];
 		UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
 		cell.textLabel.text = @"备注";
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		
-		self->descriptionCellDescription.tableViewCell = cell;
-		self->descriptionCellDescription.didSelectCellSelector = @selector(didSelectNavCell:);
-		AlarmDescriptionViewController *viewCtler = [[[AlarmDescriptionViewController alloc] initWithNibName:@"AlarmDescriptionViewController" bundle:nil alarm:self.alarmTemp] autorelease];
-		self->descriptionCellDescription.didSelectCellObject = viewCtler;
+		self->notesCellDescription.tableViewCell = cell;
+		self->notesCellDescription.didSelectCellSelector = @selector(didSelectNavCell:);
+		AlarmNotesViewController *viewCtler = [[[AlarmNotesViewController alloc] initWithNibName:@"AlarmNotesViewController" bundle:nil alarm:self.alarmTemp] autorelease];
+		self->notesCellDescription.didSelectCellObject = viewCtler;
 		
 	}
     
-    if (self.alarmTemp.description && [[self.alarmTemp.description trim] length] >0) {
-        self->descriptionCellDescription.tableViewCell.detailTextLabel.textColor = [UIColor colorWithRed:56.0/255.0 green:84.0/255.0 blue:135.0/255.0 alpha:1.0];
-        self->descriptionCellDescription.tableViewCell.detailTextLabel.text = self.alarmTemp.description;
+    if (self.alarmTemp.notes && [[self.alarmTemp.notes trim] length] >0) {
+        self->notesCellDescription.tableViewCell.detailTextLabel.textColor = [UIColor textColor];
+        self->notesCellDescription.tableViewCell.detailTextLabel.text = self.alarmTemp.notes;
     }else{
-        self->descriptionCellDescription.tableViewCell.detailTextLabel.textColor = [UIColor lightGrayColor];
-        self->descriptionCellDescription.tableViewCell.detailTextLabel.text = @"例如：到达后要做什么";
+        self->notesCellDescription.tableViewCell.detailTextLabel.textColor = [UIColor lightGrayColor];
+        self->notesCellDescription.tableViewCell.detailTextLabel.text = @"例如：到达后要做什么";
     }
 	
 	
-	return self->descriptionCellDescription;
+	return self->notesCellDescription;
 }
 
 
@@ -761,9 +762,9 @@
      //self.addressCellDescription.tableViewCell.userInteractionEnabled = enabled;
 	 */
     
-	self.descriptionCellDescription.tableViewCell.userInteractionEnabled = enabled;
-	self.descriptionCellDescription.tableViewCell.textLabel.enabled = enabled;
-	self.descriptionCellDescription.tableViewCell.detailTextLabel.enabled = enabled;
+	self.notesCellDescription.tableViewCell.userInteractionEnabled = enabled;
+	self.notesCellDescription.tableViewCell.textLabel.enabled = enabled;
+	self.notesCellDescription.tableViewCell.detailTextLabel.enabled = enabled;
     
     self.testAlarmButton.enabled = enabled;
     
@@ -1053,7 +1054,7 @@
 	self.alarm.alarmRadiusType = self.alarmTemp.alarmRadiusType;
 	self.alarm.radius = self.alarmTemp.radius;
 	self.alarm.positionType = self.alarmTemp.positionType;
-    self.alarm.description = self.alarmTemp.description;
+    self.alarm.notes = self.alarmTemp.notes;
     
     self.alarm.reserve1 = self.alarmTemp.reserve1;
     self.alarm.reserve2 = self.alarmTemp.reserve2;
@@ -1115,24 +1116,12 @@
 		NSNotification *aNotification = [NSNotification notificationWithName:IAAlarmDidViewNotification object:self userInfo:userInfoDic];
 		[notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
          */
-        /*
+        
         IAAlarmNotification *aNotification = [[[IAAlarmNotification alloc] initWithAlarm:self.alarmTemp] autorelease];
         NSArray *notifications = [NSArray arrayWithObject:aNotification];
         IAAlarmFindViewController *ctler = [[[IAAlarmFindViewController alloc] initWithNibName:@"IAAlarmFindViewController" bundle:nil alarmNotifitions:notifications] autorelease];
         UINavigationController *navCtler = [[[UINavigationController alloc] initWithRootViewController:ctler] autorelease];
         [self presentModalViewController:navCtler animated:YES];
-         */
-        
-        NSMutableArray *notifications = [NSMutableArray array];
-        for (IAAlarm *anAlarm in [IAAlarm alarmArray]) {
-            IAAlarmNotification *aNotification = [[[IAAlarmNotification alloc] initWithAlarm:anAlarm] autorelease];
-            [notifications addObject:aNotification];
-        }
-        
-        IAAlarmFindViewController *ctler = [[[IAAlarmFindViewController alloc] initWithNibName:@"IAAlarmFindViewController" bundle:nil alarmNotifitions:notifications] autorelease];
-        UINavigationController *navCtler = [[[UINavigationController alloc] initWithRootViewController:ctler] autorelease];
-        [self presentModalViewController:navCtler animated:YES];
-        
         
 	}else{
         //不查看。
@@ -1726,7 +1715,7 @@
 	[soundCellDescription release];              
 	[vibrateCellDescription release];            
 	[nameCellDescription release];    
-	[descriptionCellDescription release];
+	[notesCellDescription release];
 	
 	[addressCellDescription release];
 	[radiusCellDescription release];
@@ -1744,7 +1733,7 @@
 			[alarmTemp removeObserver:self forKeyPath:@"alarmName"];
 			[alarmTemp removeObserver:self forKeyPath:@"position"];
 			[alarmTemp removeObserver:self forKeyPath:@"positionShort"];
-			[alarmTemp removeObserver:self forKeyPath:@"description"];
+			[alarmTemp removeObserver:self forKeyPath:@"notes"];
 			[alarmTemp removeObserver:self forKeyPath:@"enabling"];
 			[alarmTemp removeObserver:self forKeyPath:@"coordinate"];
 			[alarmTemp removeObserver:self forKeyPath:@"vibrate"];
@@ -1753,7 +1742,7 @@
 			[alarmTemp removeObserver:self forKeyPath:@"alarmRadiusType"];
 			[alarmTemp removeObserver:self forKeyPath:@"radius"];
 			[alarmTemp removeObserver:self forKeyPath:@"positionType"];
-            [alarmTemp removeObserver:self forKeyPath:@"description"];
+            [alarmTemp removeObserver:self forKeyPath:@"notes"];
 		//}
 	}
 	[alarmTemp release];

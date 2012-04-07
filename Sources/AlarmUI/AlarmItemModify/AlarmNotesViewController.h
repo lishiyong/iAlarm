@@ -10,7 +10,7 @@
 #import "AlarmModifyViewController.h"
 
 @class YCTextView;
-@interface AlarmDescriptionViewController : AlarmModifyViewController{
+@interface AlarmNotesViewController : AlarmModifyViewController{
 	YCTextView *textView;
 }
 

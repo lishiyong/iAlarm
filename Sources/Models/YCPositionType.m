@@ -28,9 +28,9 @@
 - (id)initWithCoder:(NSCoder *)decoder {
     self = [super init];
     if (self) {		
-		self.positionTypeId = [decoder decodeObjectForKey:kpositionTypeId];
-		self.positionTypeName = [decoder decodeObjectForKey:kpositionTypeName];
-		self.sortId = [decoder decodeIntegerForKey:kpositionSortId];
+		positionTypeId = [[decoder decodeObjectForKey:kpositionTypeId] copy];
+		positionTypeName = [[decoder decodeObjectForKey:kpositionTypeName] copy];
+		sortId = [decoder decodeIntegerForKey:kpositionSortId];
     }
     return self;
 }

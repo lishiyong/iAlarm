@@ -73,7 +73,7 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 	BOOL ring;                               //是否静音                    --目前未使用
 	YCPositionType *positionType;            //位置类型 当前位置，地图指定位置。--使用作为“触发警告的类型”
 	NSString *positionTypeId;                //                          --目前未使用
-	NSString *description;                   //描述                       --使用2012-2-23
+	NSString *notes;                   //描述                       --使用2012-2-23
 	
 	NSString *reserve1;                      //作为addressTitle，为alarmName临时存储
 	NSString *reserve2;
@@ -81,12 +81,12 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 	
 }
 
-@property (nonatomic,retain) NSString *alarmId;
-@property (nonatomic,retain) NSString *alarmName;
+@property (nonatomic,copy) NSString *alarmId;
+@property (nonatomic,copy) NSString *alarmName;
 @property (nonatomic,assign) BOOL nameChanged;
 
-@property (nonatomic,retain) NSString *position;
-@property (nonatomic,retain) NSString *positionShort;
+@property (nonatomic,copy) NSString *position;
+@property (nonatomic,copy) NSString *positionShort;
 @property (nonatomic,assign) BOOL      usedCoordinateAddress;
 @property (nonatomic,assign) CLLocationCoordinate2D coordinate;
 @property (nonatomic,assign) CLLocationAccuracy locationAccuracy;
@@ -105,12 +105,12 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 @property (nonatomic,assign) BOOL vibrate;
 @property (nonatomic,assign) BOOL ring;
 @property (nonatomic,retain) YCPositionType *positionType;
-@property (nonatomic,retain) NSString *positionTypeId;
-@property (nonatomic,retain) NSString *description;
+@property (nonatomic,copy) NSString *positionTypeId;
+@property (nonatomic,copy) NSString *notes;
 
-@property (nonatomic,retain) NSString *reserve1;
-@property (nonatomic,retain) NSString *reserve2;
-@property (nonatomic,retain) NSString *reserve3;
+@property (nonatomic,copy) NSString *reserve1;
+@property (nonatomic,copy) NSString *reserve2;
+@property (nonatomic,copy) NSString *reserve3;
 
 //发送save通知
 - (void)sendSaveNotificationWithInfo:(IASaveInfo*)saveInfo fromSender:(id)sender;

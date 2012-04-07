@@ -16,12 +16,14 @@
     UIBarButtonItem *upDownBarItem;
 
     NSArray *alarmNotifitions;
+    NSUInteger indexForView;
     IAAlarmNotification *viewedAlarmNotification;
     MapPointAnnotation *pointAnnotation;
     MKCircle *circleOverlay;
     YCShareAppEngine *engine;
     UIActionSheet *actionSheet1;
     UIActionSheet *actionSheet2;
+    NSTimer *timer;
     
 }
 @property (nonatomic,retain) IBOutlet UITableView *tableView;
@@ -42,6 +44,7 @@
 @property (nonatomic,retain) IBOutlet UITableViewCell *notesCell;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil alarmNotifitions:(NSArray *)theAlarmNotifitions;
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil alarmNotifitions:(NSArray *)theAlarmNotifitions indexForView:(NSUInteger)theIndexForView;
 
 - (IBAction)tellFriendsButtonPressed:(id)sender;
 - (IBAction)delayAlarm1ButtonPressed:(id)sender;

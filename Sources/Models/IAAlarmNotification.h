@@ -10,8 +10,9 @@
 #import <Foundation/Foundation.h>
 
 @class IAAlarm;
-@interface IAAlarmNotification : NSObject
+@interface IAAlarmNotification : NSObject<NSCoding>
 
+@property(nonatomic, readonly) NSString *notificationId;
 @property(nonatomic, readonly) IAAlarm *alarm;
 @property(nonatomic, readonly) NSDate *timeStamp;
 @property(nonatomic, getter = isViewed) BOOL viewed;

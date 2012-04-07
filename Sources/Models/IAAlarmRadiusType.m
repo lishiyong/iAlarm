@@ -29,10 +29,10 @@
 
 - (id)initWithCoder:(NSCoder *)decoder {
     if (self = [super init]) {		
-		alarmRadiusTypeId = [[decoder decodeObjectForKey:kvehicleTypeId] retain];
-		alarmRadiusName = [[decoder decodeObjectForKey:kvehicleTypeName] retain];
+		alarmRadiusTypeId = [[decoder decodeObjectForKey:kvehicleTypeId] copy];
+		alarmRadiusName = [[decoder decodeObjectForKey:kvehicleTypeName] copy];
 		alarmRadiusValue = [decoder decodeDoubleForKey:kalarmRadiusValue];
-		alarmRadiusTypeImageName = [[decoder decodeObjectForKey:kalarmRadiusTypeImageName] retain];
+		alarmRadiusTypeImageName = [[decoder decodeObjectForKey:kalarmRadiusTypeImageName] copy];
     }
     return self;
 }

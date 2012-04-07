@@ -14,10 +14,10 @@
 
 @implementation IAAlarmNotificationCenter
 
-+ (id)defaultCenter{
-    static IAAlarmNotificationCenter *center = nil;
-    if (!center) {
-        center = [[IAAlarmNotificationCenter alloc] init];
+static IAAlarmNotificationCenter *center = nil;
++ (IAAlarmNotificationCenter*)defaultCenter{
+    if (center == nil) {
+        center = [[super allocWithZone:NULL] init];
     }
     return center;
 }
@@ -28,7 +28,7 @@
     NSMutableArray *allNotifications = (NSMutableArray*)[self allNotifications];
     if (!allNotifications) 
         allNotifications = [NSMutableArray array];
-    [allNotifications addObject:notification];
+    [allNotifications insertObject:notification atIndex:0];
     
     [NSKeyedArchiver archiveRootObject:allNotifications toFile:filePathName];
 }
@@ -66,6 +66,37 @@
     
     return ([resultArray count] == 0) ? nil : resultArray;
     
+}
+
+
++ (id)allocWithZone:(NSZone *)zone
+{
+    return [[self defaultCenter] retain];
+}
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    return self;
+}
+
+- (id)retain
+{
+    return self;
+}
+
+- (NSUInteger)retainCount
+{
+    return NSUIntegerMax;  //denotes an object that cannot be released
+}
+
+- (oneway void)release
+{
+    //do nothing
+}
+
+- (id)autorelease
+{
+    return self;
 }
 
 

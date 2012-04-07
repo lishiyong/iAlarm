@@ -11,7 +11,7 @@
 @class IAAlarmNotification;
 @interface IAAlarmNotificationCenter : NSObject
 
-+ (id)defaultCenter;
++ (IAAlarmNotificationCenter*)defaultCenter;
 
 - (void)addNotification:(IAAlarmNotification*)notification;
 - (void)removeAllNotifications;

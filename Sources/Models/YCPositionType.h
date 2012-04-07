@@ -18,8 +18,8 @@
 	NSUInteger sortId;    //排序
 }
 
-@property (nonatomic,retain) NSString *positionTypeId;
-@property (nonatomic,retain) NSString *positionTypeName;
+@property (nonatomic,copy) NSString *positionTypeId;
+@property (nonatomic,copy) NSString *positionTypeName;
 @property (nonatomic,assign) NSUInteger sortId;
 
 @end

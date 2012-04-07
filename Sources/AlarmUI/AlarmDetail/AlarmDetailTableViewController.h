@@ -46,7 +46,7 @@ typedef enum {
 	TableViewCellDescription *radiusCellDescription;              //警示半径
 	TableViewCellDescription *triggerCellDescription;             //警示触发条件
 	TableViewCellDescription *destionationCellDescription;        //目的地
-    TableViewCellDescription *descriptionCellDescription;         //备注
+    TableViewCellDescription *notesCellDescription;         //备注
 	
 
 	CLLocationManager *locationManager;
@@ -90,7 +90,7 @@ typedef enum {
 @property(nonatomic,retain) TableViewCellDescription *radiusCellDescription; 
 @property(nonatomic,retain) TableViewCellDescription *triggerCellDescription;
 @property(nonatomic,retain) TableViewCellDescription *destionationCellDescription;
-@property(nonatomic,retain) TableViewCellDescription *descriptionCellDescription;
+@property(nonatomic,retain) TableViewCellDescription *notesCellDescription;
 
 @property (nonatomic,retain,readonly) CLLocationManager *locationManager;
 @property (nonatomic,retain) CLLocation *bestEffortAtLocation;

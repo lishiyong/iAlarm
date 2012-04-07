@@ -23,7 +23,7 @@ typedef NSUInteger IASaveType;
 	IASaveType saveType;
 }
 
-@property (nonatomic,retain) NSString *objId;
+@property (nonatomic,copy) NSString *objId;
 @property (nonatomic,assign) IASaveType saveType;
 
 

@@ -27,9 +27,9 @@
 
 - (id)initWithCoder:(NSCoder *)decoder {
     if (self = [super init]) {		
-		self.repeatTypeId = [decoder decodeObjectForKey:krepeatTypeId];
-		self.repeatTypeName = [decoder decodeObjectForKey:krepeatTypeName];
-		self.sortId = [decoder decodeIntegerForKey:ksortId];
+		repeatTypeId = [[decoder decodeObjectForKey:krepeatTypeId] copy];
+		repeatTypeName = [[decoder decodeObjectForKey:krepeatTypeName] copy];
+		sortId = [decoder decodeIntegerForKey:ksortId];
     }
     return self;
 }

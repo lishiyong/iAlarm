@@ -6,6 +6,10 @@
 //  Copyright __MyCompanyName__ 2010. All rights reserved.
 //
 
+#import "NSString-YC.h"
+#import "IAAlarmFindViewController.h"
+#import "IAAlarmNotification.h"
+#import "IAAlarmNotificationCenter.h"
 #import "LocationManagerFactory.h"
 #import "IABasicLocationManager.h"
 #import "IARegionMonitoringLocationManager.h"
@@ -158,24 +162,25 @@
 
 #pragma mark -
 #pragma mark Application lifecycle
-/*
+
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-	//角标
-    application.applicationIconBadgeNumber = 0;
-	
-	//清空
-	YCSystemStatus *status = [YCSystemStatus deviceStatusSingleInstance];
-	NSMutableArray *alarmIds = status.localNotificationIdentifiers;
-	[alarmIds removeAllObjects];
-	
-	//点了通知的查看按钮
-	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-	NSNotification *aNotification = [NSNotification notificationWithName:IAAlarmDidViewNotification object:self userInfo:nil];
-	[notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
-	
+    //找到点是是那个通知，在通知列表中
+    NSString *notificationId = [[notification.userInfo allValues] objectAtIndex:0];
+    if (notificationId) {
+        
+        NSArray *array = [[IAAlarmNotificationCenter defaultCenter] notificationsForViewed:NO];
+        for (IAAlarmNotification *anObj in array) {
+            if ([anObj.notificationId isEqualToString:notificationId]) {
+                indexForView = [array indexOfObject:anObj];
+                break;
+            }
+        }
+
+    }
+    	
 }
- */
+ 
 
 
 //const NSInteger kMapViewControllerIndex = 0;
@@ -189,19 +194,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {  
 	
-	//[[[NSBundle mainBundle] infoDictionary] setValue:@"Default-list.png" forKey:@"UILaunchImageFile"];
-
-	
-    //处理没有被查看的到达区域
-    ////角标
-    //application.applicationIconBadgeNumber = 0; //放在判断的外边，免得总有角标 
-	[application performSelector:@selector(setApplicationIconBadgeNumber:) withInteger:0 afterDelay:0.1];//延时为了给弹评分对话框提供依据
-
-	
-	//清空
-	YCSystemStatus *status = [YCSystemStatus deviceStatusSingleInstance]; //一定要有这个初始化
-	NSMutableArray *alarmIds = status.localNotificationIdentifiers;
-	[alarmIds removeAllObjects];
+	[YCSystemStatus deviceStatusSingleInstance]; //一定要有这个初始化
 
 	
     //self.window.rootViewController = self.viewController;
@@ -240,41 +233,20 @@
 	//[self.soundPlayer stop];
 	[self.ringplayer stop];
 	[self.vibratePlayer stop];
+    
+    isResignActive = YES;
 }
 
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-	//NSString *appversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"UILaunchImageFile"];
-	//[[[NSBundle mainBundle] infoDictionary] setValue:@"Default-list.png" forKey:@"UILaunchImageFile"];
 	
 }
  
 
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-	
-    if (application.applicationIconBadgeNumber > 0) {
-        
-        //application.applicationIconBadgeNumber = 0;
-		[application performSelector:@selector(setApplicationIconBadgeNumber:) withInteger:0 afterDelay:0.1];//延时为了给弹评分对话框提供依据
-		
-		//清空
-		YCSystemStatus *status = [YCSystemStatus deviceStatusSingleInstance];
-		NSMutableArray *alarmIds = status.localNotificationIdentifiers;
-		[alarmIds removeAllObjects];
-        
-        //打开地图，查看最后一个到达的区域
-		NSDictionary *userInfoDic = [NSDictionary dictionaryWithObject:self.lastRegion.alarm forKey:IAViewedAlarmKey];
-        NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-        NSNotification *aNotification = [NSNotification notificationWithName:IAAlarmDidViewNotification object:self userInfo:userInfoDic];
-        [notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
-        
-    } 
-	
 	//检测定位服务状态。如果不可用或未授权，弹出对话框
 	[self.locationServicesUsableAlert performSelector:@selector(locationServicesUsable) withObject:nil afterDelay:1.0];
-
-	
 }
 
 
@@ -294,12 +266,27 @@
 	if (letAlertShow) {
 		[self.confirmRateAlertView performSelector:@selector(show) withObject:nil afterDelay:4.0];
 	}
+    
+    if (application.applicationIconBadgeNumber > 0) {
+        
+        application.applicationIconBadgeNumber = 0;        
+		
+		//清空
+		YCSystemStatus *status = [YCSystemStatus deviceStatusSingleInstance];
+		NSMutableArray *alarmIds = status.localNotificationIdentifiers;
+		[alarmIds removeAllObjects];
+        
+        //弹出显示曾经的通知
+        NSArray *notifications =[[IAAlarmNotificationCenter defaultCenter] notificationsForViewed:NO];
+        IAAlarmFindViewController *ctler = [[[IAAlarmFindViewController alloc] initWithNibName:@"IAAlarmFindViewController" bundle:nil alarmNotifitions:notifications indexForView:indexForView] autorelease];
+        UINavigationController *navCtler = [[[UINavigationController alloc] initWithRootViewController:ctler] autorelease];
+        [self.navigationController presentModalViewController:navCtler animated:isResignActive]; //程序在启动中:NO。从后台进入:YES
+        
+    } 
 }
 
 
 - (void)applicationWillTerminate:(UIApplication *)application{
-    //NSLog(@"位置闹钟 applicationWillTerminate");
-    //[[YCLog logSingleInstance] addlog:@"位置闹钟 applicationWillTerminate"];
 }
 
 
@@ -440,11 +427,27 @@
 		
 		
 	}else {
+        UIApplication *app = [UIApplication sharedApplication];
         
-        YCSystemStatus *systmStaus = [YCSystemStatus deviceStatusSingleInstance];
-        NSInteger applicationIconBadgeNumber = [systmStaus.localNotificationIdentifiers count]; //角标数
-        [UIUtility sendNotifyWithAlertBody:alertBody soundName:alarm.sound.soundFileName applicationIconBadgeNumber:applicationIconBadgeNumber];
-		
+        //保存到文件
+        IAAlarmNotification *aNotification = [[[IAAlarmNotification alloc] initWithAlarm:alarm] autorelease];
+        [[IAAlarmNotificationCenter defaultCenter] addNotification:aNotification];
+        
+        //发本地通知
+        NSInteger badgeNumber = app.applicationIconBadgeNumber + 1; //角标数
+        NSString *alarmNotes = [alarm.notes trim];
+        if (alarm.notes && alarmNotes.length > 0) {
+            alertBody = [NSString stringWithFormat:@"%@: %@",alertBody,alarmNotes];
+        }
+        UILocalNotification *notification = [[[UILocalNotification alloc] init] autorelease];
+        notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:1];
+        notification.timeZone = [NSTimeZone defaultTimeZone];
+        notification.repeatInterval = 0;
+        notification.soundName = alarm.sound.soundFileName;
+        notification.alertBody = alertBody;
+        notification.applicationIconBadgeNumber = badgeNumber;
+        notification.userInfo = [NSDictionary dictionaryWithObject:aNotification.notificationId forKey:@"knotificationId"];
+        [app scheduleLocalNotification:notification];
 	}
 }
 

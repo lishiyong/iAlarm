@@ -20,9 +20,9 @@
 	NSString *alarmRadiusTypeImageName;
 }
 
-@property (nonatomic,retain) NSString *alarmRadiusTypeId;
-@property (nonatomic,retain) NSString *alarmRadiusName;
+@property (nonatomic,copy) NSString *alarmRadiusTypeId;
+@property (nonatomic,copy) NSString *alarmRadiusName;
 @property (nonatomic,assign) double alarmRadiusValue;
-@property (nonatomic,retain) NSString *alarmRadiusTypeImageName;
+@property (nonatomic,copy) NSString *alarmRadiusTypeImageName;
 
 @end

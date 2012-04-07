@@ -7,6 +7,7 @@
 //
 
 #import "YCShareAppEngine.h"
+#import "IAAlarmNotificationCenter.h"
 #import "IANotifications.h"
 #import "YCSystemStatus.h"
 #import "LocalizedString.h"
@@ -96,6 +97,7 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
 - (UIImage*)takePhotoFromTheMapView;
 - (void)loadViewDataWithIndexOfNotifications:(NSInteger)index;
 - (void)setDistanceWithCurrentLocation:(CLLocation*)location;//显示距离当前位置XX公里
+- (void)reloadTimeIntervalLabel;
 - (void)registerNotifications;
 - (void)unRegisterNotifications;
 
@@ -237,6 +239,9 @@ cell使用后height竟然会加1。奇怪！
     [self.tableView.layer addAnimation:animation forKey:@"upDown AlarmNotification"];
 }
 
+- (void)timerFireMethod:(NSTimer*)theTimer{
+    [self reloadTimeIntervalLabel];
+}
 
 #pragma mark - UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
@@ -349,17 +354,11 @@ cell使用后height竟然会加1。奇怪！
     /**地图相关**/
     
     //时间间隔
-    NSString *s = YCTimeIntervalStringSinceNow(viewedAlarmNotification.timeStamp);
-    self.timeIntervalLabel.text = s;
+    [self reloadTimeIntervalLabel];
     
-    [self.timeIntervalLabel sizeToFit];//bounds调整到合适
-    self.timeIntervalLabel.bounds = CGRectInset(self.timeIntervalLabel.bounds, -6, -2); //在字的周围留有空白
-    
-           //position在父view的左下角向上8像素
-    CGSize superViewSize = self.timeIntervalLabel.superview.bounds.size;
-    CGPoint thePosition = CGPointMake(superViewSize.width-8, superViewSize.height-8); 
-    self.timeIntervalLabel.layer.position = thePosition;
-
+    [timer invalidate];
+    [timer release];
+    timer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(timerFireMethod:) userInfo:nil repeats:YES];
         
     //其他数据
     [self.tableView reloadData];
@@ -389,6 +388,18 @@ cell使用后height竟然会加1。奇怪！
         pointAnnotation.subtitle = s;
     }
     
+}
+
+- (void)reloadTimeIntervalLabel{
+    NSString *s = YCTimeIntervalStringSinceNow(viewedAlarmNotification.timeStamp);
+    self.timeIntervalLabel.text = s;
+    
+    [self.timeIntervalLabel sizeToFit];//bounds调整到合适
+    self.timeIntervalLabel.bounds = CGRectInset(self.timeIntervalLabel.bounds, -6, -2); //在字的周围留有空白
+    //position在父view的左下角向上8像素
+    CGSize superViewSize = self.timeIntervalLabel.superview.bounds.size;
+    CGPoint thePosition = CGPointMake(superViewSize.width-8, superViewSize.height-8); 
+    self.timeIntervalLabel.layer.position = thePosition;
 }
 
 #pragma mark - MapView delegate
@@ -492,7 +503,7 @@ cell使用后height竟然会加1。奇怪！
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section{
     if (section == 1) {
-        NSString *s = [viewedAlarmNotification.alarm.description trim];
+        NSString *s = [viewedAlarmNotification.alarm.notes trim];
         if ([s length] == 0) s = @"\n";//备注为空，1空行占空间
         return s;
     }
@@ -550,10 +561,21 @@ cell使用后height竟然会加1。奇怪！
     self.timeIntervalLabel.layer.anchorPoint = CGPointMake(1, 1);
     
     //加载数据
-    [self loadViewDataWithIndexOfNotifications:0]; 
+    [self loadViewDataWithIndexOfNotifications:indexForView]; 
+    
+    /*
+    //把所有的都改成已查看，为了方便。
+    NSArray *allNotifications = [IAAlarmNotificationCenter defaultCenter].allNotifications;
+    for (IAAlarmNotification *anObj in allNotifications) {
+        anObj.viewed = YES;
+    }
+    [[IAAlarmNotificationCenter defaultCenter] updateNotifications:allNotifications];
+    */
+    [[IAAlarmNotificationCenter defaultCenter] removeAllNotifications];
     
     [self registerNotifications];
 }
+
 
 #pragma mark - Notification
 
@@ -586,9 +608,14 @@ cell使用后height竟然会加1。奇怪！
 #pragma mark - memory manager
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil alarmNotifitions:(NSArray *)theAlarmNotifitions{
+    return [self initWithNibName:nibNameOrNil bundle:nibBundleOrNil alarmNotifitions:theAlarmNotifitions indexForView:0];
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil alarmNotifitions:(NSArray *)theAlarmNotifitions indexForView:(NSUInteger)theIndexForView{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         alarmNotifitions = [theAlarmNotifitions retain];
+        indexForView = theIndexForView;
         engine = [[YCShareAppEngine alloc] initWithSuperViewController:self];
     }
     return self;
@@ -615,6 +642,9 @@ cell使用后height竟然会加1。奇怪！
     self.button3 = nil;
     
     self.notesCell = nil;
+    [actionSheet1 release];actionSheet1 = nil;
+    [actionSheet2 release];actionSheet2 = nil;
+    [timer invalidate]; [timer release]; timer = nil;
 }
 
 - (void)dealloc {
@@ -641,6 +671,9 @@ cell使用后height竟然会加1。奇怪！
     [pointAnnotation release];
     [circleOverlay release];
     [engine release];
+    [actionSheet1 release];
+    [actionSheet2 release];
+    [timer invalidate]; [timer release];
     [super dealloc];
 }
 

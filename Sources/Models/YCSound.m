@@ -31,10 +31,10 @@
 
 - (id)initWithCoder:(NSCoder *)decoder {
     if (self = [super init]) {		
-		self.soundId = [decoder decodeObjectForKey:ksoundId];
-		self.soundName = [decoder decodeObjectForKey:ksoundName];
-		self.soundFileName = [decoder decodeObjectForKey:ksoundFileName];
-		self.sortId = [decoder decodeIntegerForKey:ksoundSortId];
+        soundId = [[decoder decodeObjectForKey:ksoundId] copy];
+		soundName = [[decoder decodeObjectForKey:ksoundName] copy];
+		soundFileName = [[decoder decodeObjectForKey:ksoundFileName] copy];
+		sortId = [decoder decodeIntegerForKey:ksoundSortId];
     }
     return self;
 }

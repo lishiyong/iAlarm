@@ -6,6 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCGFunctions.h"
 #import "IABuyManager.h"
 #import "UIApplication-YC.h"
 #import "IASaveInfo.h"
@@ -52,33 +53,24 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 @synthesize ring;
 @synthesize positionType;
 @synthesize positionTypeId;
-@synthesize description;
+@synthesize notes;
 
 @synthesize reserve1;
 @synthesize reserve2;
 @synthesize reserve3;
 
-//产生一个唯一的序列号
-+ (NSString*) genSerialCode
-{
-	NSUInteger x = arc4random()/100;
-	NSString *s = [NSString stringWithFormat:@"%d", time(NULL)];
-	NSString *ss = [NSString stringWithFormat:@"%@%d",s,x];
-	
-	return ss;
-}
 
 - (id)init
 {
     self = [super init];
 	if (self) 
 	{
-		alarmId = [[IAAlarm genSerialCode] retain];
-		alarmName = [KDefaultAlarmName retain];
+		alarmId = [YCSerialCode() copy];
+		alarmName = [KDefaultAlarmName copy];
 		nameChanged = NO;
 		
-		position = [@"" retain];
-		positionShort = [@"" retain];
+		position = nil;
+		positionShort = nil;
 		usedCoordinateAddress = YES;
 		coordinate = CLLocationCoordinate2DMake(-10000.0,-10000.0);
 		locationAccuracy = 101.1;
@@ -98,11 +90,11 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 			vibrate = NO;
 		ring = YES;
 		positionType = [[[DicManager positionTypeDictionary] objectForKey:@"p002"] retain]; //默认通过地图指定
-	    description  = [@"" retain];              
+	    notes  = nil;
 
-		reserve1 = [@"" retain];
-		reserve2 = [@"" retain];
-		reserve3 = [@"" retain];
+		reserve1 = nil;
+		reserve2 = nil;
+		reserve3 = nil;
 	}
 	return self;
 }
@@ -134,7 +126,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	[encoder encodeBool:vibrate forKey:kvibration];
 	[encoder encodeBool:ring forKey:kring];
 	[encoder encodeObject:positionType.positionTypeId forKey:kpositionTypeId];
-	[encoder encodeObject:description forKey:kdescription];
+	[encoder encodeObject:notes forKey:kdescription];
 	
 	[encoder encodeObject:reserve1 forKey:kreserve1];
 	[encoder encodeObject:reserve2 forKey:kreserve2];
@@ -170,10 +162,10 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 		sortId = [decoder decodeIntegerForKey:ksortId];
 		vibrate =[decoder decodeBoolForKey:kvibration];
 		ring =[decoder decodeBoolForKey:kring];
-		description = [[decoder decodeObjectForKey:kdescription] retain];
+		notes = [[decoder decodeObjectForKey:kdescription] retain];
 		positionTypeId = [[decoder decodeObjectForKey:kpositionTypeId] retain];
 		positionType = [[[DicManager positionTypeDictionary] objectForKey:positionTypeId] retain];
-		description = [decoder decodeObjectForKey:kdescription];
+		notes = [decoder decodeObjectForKey:kdescription];
 
 		reserve1 = [[decoder decodeObjectForKey:kreserve1] retain];
 		reserve2 = [[decoder decodeObjectForKey:kreserve2] retain];
@@ -216,7 +208,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	copy.ring = self.ring;
 	copy.positionType = self.positionType;
 	copy.positionTypeId = self.positionTypeId;
-    copy.description = self.description;
+    copy.notes = self.notes;
 	
 	copy.reserve1 = self.reserve1;
 	copy.reserve2 = self.reserve2;
@@ -242,7 +234,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	
 	[positionType release];
 	[positionTypeId release];
-	[description release];
+	[notes release];
 	
 	[reserve1 release];
 	[reserve2 release];

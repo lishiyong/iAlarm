@@ -23,9 +23,9 @@
 	BOOL customSound;  //自定义的铃声
 }
 
-@property (nonatomic,retain) NSString *soundId;
-@property (nonatomic,retain) NSString *soundName;
-@property (nonatomic,retain) NSString *soundFileName;
+@property (nonatomic,copy) NSString *soundId;
+@property (nonatomic,copy) NSString *soundName;
+@property (nonatomic,copy) NSString *soundFileName;
 @property (nonatomic,retain) NSURL *soundFileURL;
 @property (nonatomic,assign) NSUInteger sortId;
 @property (nonatomic,assign) BOOL customSound;

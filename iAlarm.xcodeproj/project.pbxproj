@@ -85,6 +85,8 @@
 		9C0DFE47133ADE8C002DB01E /* YCInAppPurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0DFE45133ADE8C002DB01E /* YCInAppPurchaseManager.m */; };
 		9C0DFEDC133AFFD8002DB01E /* YCMaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0DFEDA133AFFD8002DB01E /* YCMaskViewController.m */; };
 		9C0DFEDD133AFFD8002DB01E /* YCMaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C0DFEDB133AFFD8002DB01E /* YCMaskViewController.xib */; };
+		9C0E30C4153066EE002DDAFD /* YCGFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0E30C3153066EE002DDAFD /* YCGFunctions.m */; };
+		9C0E30C5153066EE002DDAFD /* YCGFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0E30C3153066EE002DDAFD /* YCGFunctions.m */; };
 		9C119007138CAEDA0091933E /* iAlarmList_row@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C119006138CAEDA0091933E /* iAlarmList_row@2x.png */; };
 		9C21489D135EAF03004D16F1 /* IAFlagBlueDeep.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C21489A135EAF03004D16F1 /* IAFlagBlueDeep.png */; };
 		9C21489E135EAF03004D16F1 /* IAFlagOrange.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C21489B135EAF03004D16F1 /* IAFlagOrange.png */; };
@@ -98,10 +100,10 @@
 		9C230136150DB1CC005E5E08 /* IAAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C230133150DB1CC005E5E08 /* IAAboutViewController.m */; };
 		9C2323D614BB206F00A364D8 /* IARegionMonitoringLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2323D514BB206F00A364D8 /* IARegionMonitoringLocationManager.m */; };
 		9C2323D714BB206F00A364D8 /* IARegionMonitoringLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2323D514BB206F00A364D8 /* IARegionMonitoringLocationManager.m */; };
-		9C2B806114F690C000B2CC53 /* AlarmDescriptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2B805F14F690C000B2CC53 /* AlarmDescriptionViewController.m */; };
-		9C2B806214F690C000B2CC53 /* AlarmDescriptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2B805F14F690C000B2CC53 /* AlarmDescriptionViewController.m */; };
-		9C2B806314F690C000B2CC53 /* AlarmDescriptionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C2B806014F690C000B2CC53 /* AlarmDescriptionViewController.xib */; };
-		9C2B806414F690C000B2CC53 /* AlarmDescriptionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C2B806014F690C000B2CC53 /* AlarmDescriptionViewController.xib */; };
+		9C2B806114F690C000B2CC53 /* AlarmNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2B805F14F690C000B2CC53 /* AlarmNotesViewController.m */; };
+		9C2B806214F690C000B2CC53 /* AlarmNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2B805F14F690C000B2CC53 /* AlarmNotesViewController.m */; };
+		9C2B806314F690C000B2CC53 /* AlarmNotesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C2B806014F690C000B2CC53 /* AlarmNotesViewController.xib */; };
+		9C2B806414F690C000B2CC53 /* AlarmNotesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C2B806014F690C000B2CC53 /* AlarmNotesViewController.xib */; };
 		9C340FFC131BC36A002F1FB0 /* YClocationServicesUsableAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C340FFB131BC36A002F1FB0 /* YClocationServicesUsableAlert.m */; };
 		9C36924613D4FEE700F3258C /* focusBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C36924313D4FEE700F3258C /* focusBox.png */; };
 		9C36924713D4FEE700F3258C /* focusBox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C36924413D4FEE700F3258C /* focusBox@2x.png */; };
@@ -1073,6 +1075,8 @@
 		9C0DFED9133AFFD8002DB01E /* YCMaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCMaskViewController.h; sourceTree = "<group>"; };
 		9C0DFEDA133AFFD8002DB01E /* YCMaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCMaskViewController.m; sourceTree = "<group>"; };
 		9C0DFEDB133AFFD8002DB01E /* YCMaskViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = YCMaskViewController.xib; sourceTree = "<group>"; };
+		9C0E30C2153066BD002DDAFD /* YCGFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCGFunctions.h; sourceTree = "<group>"; };
+		9C0E30C3153066EE002DDAFD /* YCGFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCGFunctions.m; sourceTree = "<group>"; };
 		9C119006138CAEDA0091933E /* iAlarmList_row@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iAlarmList_row@2x.png"; sourceTree = "<group>"; };
 		9C21489A135EAF03004D16F1 /* IAFlagBlueDeep.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IAFlagBlueDeep.png; sourceTree = "<group>"; };
 		9C21489B135EAF03004D16F1 /* IAFlagOrange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IAFlagOrange.png; sourceTree = "<group>"; };
@@ -1087,9 +1091,9 @@
 		9C2323D414BB206F00A364D8 /* IARegionMonitoringLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IARegionMonitoringLocationManager.h; sourceTree = "<group>"; };
 		9C2323D514BB206F00A364D8 /* IARegionMonitoringLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IARegionMonitoringLocationManager.m; sourceTree = "<group>"; };
 		9C2323D814BB232A00A364D8 /* IALocationManagerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IALocationManagerInterface.h; sourceTree = "<group>"; };
-		9C2B805E14F690C000B2CC53 /* AlarmDescriptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmDescriptionViewController.h; sourceTree = "<group>"; };
-		9C2B805F14F690C000B2CC53 /* AlarmDescriptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmDescriptionViewController.m; sourceTree = "<group>"; };
-		9C2B806014F690C000B2CC53 /* AlarmDescriptionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlarmDescriptionViewController.xib; sourceTree = "<group>"; };
+		9C2B805E14F690C000B2CC53 /* AlarmNotesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmNotesViewController.h; sourceTree = "<group>"; };
+		9C2B805F14F690C000B2CC53 /* AlarmNotesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmNotesViewController.m; sourceTree = "<group>"; };
+		9C2B806014F690C000B2CC53 /* AlarmNotesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlarmNotesViewController.xib; sourceTree = "<group>"; };
 		9C340FFA131BC36A002F1FB0 /* YClocationServicesUsableAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YClocationServicesUsableAlert.h; sourceTree = "<group>"; };
 		9C340FFB131BC36A002F1FB0 /* YClocationServicesUsableAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YClocationServicesUsableAlert.m; sourceTree = "<group>"; };
 		9C36924313D4FEE700F3258C /* focusBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = focusBox.png; sourceTree = "<group>"; };
@@ -2450,6 +2454,8 @@
 				9C8977D71302D2A500B6942E /* YCTapHideBar */,
 				9CA993BE130284D300298E5D /* YCControl */,
 				9CA993B41302815900298E5D /* YCAlert */,
+				9C0E30C2153066BD002DDAFD /* YCGFunctions.h */,
+				9C0E30C3153066EE002DDAFD /* YCGFunctions.m */,
 			);
 			path = YCLib;
 			sourceTree = "<group>";
@@ -3152,9 +3158,9 @@
 				9CE894BA12FFFFD2008FBD45 /* CustomPickerController.m */,
 				9C3CF75013B32DAA005DFB09 /* AlarmTriggerTableViewController.h */,
 				9C3CF75113B32DAA005DFB09 /* AlarmTriggerTableViewController.m */,
-				9C2B805E14F690C000B2CC53 /* AlarmDescriptionViewController.h */,
-				9C2B805F14F690C000B2CC53 /* AlarmDescriptionViewController.m */,
-				9C2B806014F690C000B2CC53 /* AlarmDescriptionViewController.xib */,
+				9C2B805E14F690C000B2CC53 /* AlarmNotesViewController.h */,
+				9C2B805F14F690C000B2CC53 /* AlarmNotesViewController.m */,
+				9C2B806014F690C000B2CC53 /* AlarmNotesViewController.xib */,
 			);
 			path = AlarmItemModify;
 			sourceTree = "<group>";
@@ -3646,7 +3652,7 @@
 				9C3E118814B94E8100A80FAF /* IAMap@2x.png in Resources */,
 				9CE12D0314F4FBF10086D16B /* IAGreenButtonNormal.png in Resources */,
 				9CE12D0514F4FBF10086D16B /* IAGreenButtonNormal@2x.png in Resources */,
-				9C2B806314F690C000B2CC53 /* AlarmDescriptionViewController.xib in Resources */,
+				9C2B806314F690C000B2CC53 /* AlarmNotesViewController.xib in Resources */,
 				9C04958014F902AF00A89996 /* IARedButtonNormal.png in Resources */,
 				9C04958214F902AF00A89996 /* IARedButtonNormal@2x.png in Resources */,
 				9C04958614F902AF00A89996 /* IAWhiteButtonNormal@2x.png in Resources */,
@@ -3977,7 +3983,7 @@
 				9C3E118914B94E8100A80FAF /* IAMap@2x.png in Resources */,
 				9CE12D0414F4FBF10086D16B /* IAGreenButtonNormal.png in Resources */,
 				9CE12D0614F4FBF10086D16B /* IAGreenButtonNormal@2x.png in Resources */,
-				9C2B806414F690C000B2CC53 /* AlarmDescriptionViewController.xib in Resources */,
+				9C2B806414F690C000B2CC53 /* AlarmNotesViewController.xib in Resources */,
 				9C04958114F902AF00A89996 /* IARedButtonNormal.png in Resources */,
 				9C04958314F902AF00A89996 /* IARedButtonNormal@2x.png in Resources */,
 				9C04958714F902AF00A89996 /* IAWhiteButtonNormal@2x.png in Resources */,
@@ -4144,7 +4150,7 @@
 				9C2323D614BB206F00A364D8 /* IARegionMonitoringLocationManager.m in Sources */,
 				9C4A29E614F2AE4700949794 /* IABasicLocationManager.m in Sources */,
 				9CE12CEC14F4CF680086D16B /* LocationManagerFactory.m in Sources */,
-				9C2B806114F690C000B2CC53 /* AlarmDescriptionViewController.m in Sources */,
+				9C2B806114F690C000B2CC53 /* AlarmNotesViewController.m in Sources */,
 				9C85F38614FBA99F00B49FF4 /* IAAlarmFindViewController.m in Sources */,
 				9CE5955D14FFAE9100C0E28C /* YCTextView.m in Sources */,
 				9C230135150DB1CC005E5E08 /* IAAboutViewController.m in Sources */,
@@ -4197,6 +4203,7 @@
 				9C0BBCA81529DC58002509F3 /* UIColor+YC.m in Sources */,
 				9C0706DC152C036000AC4207 /* IAAlarmNotification.m in Sources */,
 				9C0706E0152C086900AC4207 /* IAAlarmNotificationCenter.m in Sources */,
+				9C0E30C4153066EE002DDAFD /* YCGFunctions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4298,7 +4305,7 @@
 				9C2323D714BB206F00A364D8 /* IARegionMonitoringLocationManager.m in Sources */,
 				9C4A29E714F2AE4700949794 /* IABasicLocationManager.m in Sources */,
 				9CE12CED14F4CF680086D16B /* LocationManagerFactory.m in Sources */,
-				9C2B806214F690C000B2CC53 /* AlarmDescriptionViewController.m in Sources */,
+				9C2B806214F690C000B2CC53 /* AlarmNotesViewController.m in Sources */,
 				9C85F38714FBA99F00B49FF4 /* IAAlarmFindViewController.m in Sources */,
 				9CE5955E14FFAE9100C0E28C /* YCTextView.m in Sources */,
 				9C230136150DB1CC005E5E08 /* IAAboutViewController.m in Sources */,
@@ -4351,6 +4358,7 @@
 				9C0BBCA91529DC58002509F3 /* UIColor+YC.m in Sources */,
 				9C0706DD152C036000AC4207 /* IAAlarmNotification.m in Sources */,
 				9C0706E1152C086900AC4207 /* IAAlarmNotificationCenter.m in Sources */,
+				9C0E30C5153066EE002DDAFD /* YCGFunctions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

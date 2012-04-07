@@ -41,7 +41,8 @@
 	//要求评分的对话框
 	UIAlertView *confirmRateAlertView;
 
-	
+	BOOL isResignActive;//是否曾经退到后台过
+    NSUInteger indexForView;//查看的index
 }
 
 @property (nonatomic,retain) IBOutlet UIWindow *window;
