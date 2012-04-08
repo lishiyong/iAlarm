@@ -65,12 +65,17 @@
 -(void)viewNotificationedAlarm:(BOOL)animated{
     //弹出显示曾经的通知
     NSArray *notifications =[[IAAlarmNotificationCenter defaultCenter] notificationsForFired:YES];
-    IAAlarmFindViewController *ctler = [[[IAAlarmFindViewController alloc] initWithNibName:@"IAAlarmFindViewController" bundle:nil alarmNotifitions:notifications indexForView:indexForView] autorelease];
-    UINavigationController *navCtler = [[[UINavigationController alloc] initWithRootViewController:ctler] autorelease];
+    if (notifications.count > 0) {
+        IAAlarmFindViewController *ctler = [[[IAAlarmFindViewController alloc] initWithNibName:@"IAAlarmFindViewController" bundle:nil alarmNotifitions:notifications indexForView:indexForView] autorelease];
+        UINavigationController *navCtler = [[[UINavigationController alloc] initWithRootViewController:ctler] autorelease];
+        
+        UIViewController *currentController = self.navigationController.modalViewController;
+        currentController = currentController ? currentController : self.navigationController; 
+        [currentController presentModalViewController:navCtler animated:animated]; //程序在启动中:NO。从后台进入:YES
+        
+        [[IAAlarmNotificationCenter defaultCenter] removeFiredNotification];
+    }
     
-    UIViewController *currentController = self.navigationController.modalViewController;
-    currentController = currentController ? currentController : self.navigationController; 
-    [currentController presentModalViewController:navCtler animated:animated]; //程序在启动中:NO。从后台进入:YES
     
 }
 
@@ -182,11 +187,15 @@
     //因为响应本地通知到达而启动的
     id theLocalNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
     if (theLocalNotification) {
-        [application performSelector:@selector(setApplicationIconBadgeNumber:) withInteger:0 afterDelay:0.1];//为评分判断留时间
         [self setAlarmNotificationWithLocalNotification:theLocalNotification];
-        [self viewNotificationedAlarm:NO];
-
+    }else{
+        indexForView = 0;
+        [alarmNotification_ release];
+        alarmNotification_ = nil;
     }
+    [self viewNotificationedAlarm:NO];
+    
+    [application performSelector:@selector(setApplicationIconBadgeNumber:) withInteger:0 afterDelay:0.1];//为评分判断留时间
     
     return YES;
 }
@@ -206,6 +215,12 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application {
 	//检测定位服务状态。如果不可用或未授权，弹出对话框
 	[self.locationServicesUsableAlert performSelector:@selector(locationServicesUsable) withObject:nil afterDelay:1.0];
+    
+    //
+    indexForView = 0;
+    [alarmNotification_ release];
+    alarmNotification_ = nil;
+    [self viewNotificationedAlarm:NO];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
