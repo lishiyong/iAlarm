@@ -109,7 +109,7 @@
     [application performSelector:@selector(setApplicationIconBadgeNumber:) withInteger:0 afterDelay:0.1];//为评分判断留时间
     
     [self setAlarmNotificationWithLocalNotification:notification];
-    if (UIApplicationStateActive == state) {
+    if (UIApplicationStateActive == state) {//第五种情况：程序在激活状态下收到本地通知
         //框
         if (!viewAlarmAlertView) {
             viewAlarmAlertView = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:kAlertBtnClose otherButtonTitles:kAlertBtnView, nil];
@@ -136,7 +136,7 @@
             
         }
         ///////////////////////////////////
-    }else{
+    }else{//第三种情况：程序因响应本地通知而激活
         [self viewNotificationedAlarm:YES];
     }
     
@@ -186,9 +186,9 @@
     
     //因为响应本地通知到达而启动的
     id theLocalNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
-    if (theLocalNotification) {
+    if (theLocalNotification) { //第一种情况：程序因响应本地通知的到达而启动
         [self setAlarmNotificationWithLocalNotification:theLocalNotification];
-    }else{
+    }else{//第二种情况：程序直接启动
         indexForView = 0;
         [alarmNotification_ release];
         alarmNotification_ = nil;
@@ -216,7 +216,7 @@
 	//检测定位服务状态。如果不可用或未授权，弹出对话框
 	[self.locationServicesUsableAlert performSelector:@selector(locationServicesUsable) withObject:nil afterDelay:1.0];
     
-    //
+    //第四种情况：程序直接进入前台
     indexForView = 0;
     [alarmNotification_ release];
     alarmNotification_ = nil;
