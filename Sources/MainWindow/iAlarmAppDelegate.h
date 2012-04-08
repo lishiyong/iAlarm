@@ -10,10 +10,7 @@
 #import <UIKit/UIKit.h>
 #import "IALocationManagerInterface.h"
 
-
-@class YCSoundPlayer;
-@class YClocationServicesUsableAlert;
-@class BackgroundViewController;
+@class YCSoundPlayer, YClocationServicesUsableAlert, BackgroundViewController, IAAlarmNotification;
 @interface iAlarmAppDelegate : NSObject 
 <UIApplicationDelegate,IALocationManagerDelegate,UIAlertViewDelegate,AVAudioPlayerDelegate> 
 {
@@ -30,19 +27,15 @@
 	YCSoundPlayer *vibratePlayer;
 	AVAudioPlayer *ringplayer;
 	
-	
-	//////////////////////////////
-	//有区域到达
-	IARegion *lastRegion;
-	CLLocation *lastCurrentLocation;
-	
 	YClocationServicesUsableAlert *locationServicesUsableAlert;  //测定位服务用
 	
 	//要求评分的对话框
 	UIAlertView *confirmRateAlertView;
+    UIAlertView *viewAlarmAlertView;
+    
 
-	BOOL isResignActive;//是否曾经退到后台过
     NSUInteger indexForView;//查看的index
+    IAAlarmNotification *alarmNotification_;
 }
 
 @property (nonatomic,retain) IBOutlet UIWindow *window;
@@ -58,12 +51,8 @@
 @property (nonatomic,retain) AVAudioPlayer *ringplayer;
 
 
-@property (nonatomic,retain) IARegion *lastRegion;
-@property (nonatomic,retain) CLLocation *lastCurrentLocation;
-
 @property (nonatomic,retain,readonly) YClocationServicesUsableAlert *locationServicesUsableAlert;
 
-@property (nonatomic,retain,readonly) UIAlertView *confirmRateAlertView;
 
 
 @end

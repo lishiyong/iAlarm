@@ -15,19 +15,25 @@
 #define    kalarmInIAAlarmNotification              @"kalarmInIAAlarmNotification"
 #define    ktimeStampInIAAlarmNotification          @"ktimeStampInIAAlarmNotification"
 #define    kviewedInIAAlarmNotification             @"kviewedInIAAlarmNotification"
+#define    kfireTimeStampInIAAlarmNotification      @"kfireTimeStampInIAAlarmNotification"
 
 @implementation IAAlarmNotification
 
-@synthesize notificationId, alarm, timeStamp, viewed;
+@synthesize notificationId, alarm, createTimeStamp, viewed, fireTimeStamp;
 
 
 - (id)initWithAlarm:(IAAlarm*)theAlarm{
+    return [self initWithAlarm:theAlarm fireTimeStamp:[NSDate date]];
+}
+
+- (id)initWithAlarm:(IAAlarm*)theAlarm fireTimeStamp:(NSDate*)theFireTimeStamp{
     self = [super init];
     if (self) {
         notificationId = [[NSString stringWithFormat:@"%@-%@",theAlarm.alarmId,YCSerialCode()] copy];
         alarm = [theAlarm retain];
-        timeStamp = [[NSDate date] retain];
+        createTimeStamp = [[NSDate date] retain];
         viewed = NO;
+        fireTimeStamp = [theFireTimeStamp retain];
     }
     return self;
 }
@@ -35,7 +41,8 @@
 - (void)dealloc{
     [notificationId release];
     [alarm release];
-    [timeStamp release];
+    [createTimeStamp release];
+    [fireTimeStamp release];
     [super dealloc];
 }
 
@@ -45,8 +52,9 @@
     
     [encoder encodeObject:notificationId forKey:knotificationIdInIAAlarmNotification];
 	[encoder encodeObject:alarm forKey:kalarmInIAAlarmNotification];
-	[encoder encodeObject:timeStamp forKey:ktimeStampInIAAlarmNotification];
+	[encoder encodeObject:createTimeStamp forKey:ktimeStampInIAAlarmNotification];
 	[encoder encodeBool:viewed forKey:kviewedInIAAlarmNotification];
+    [encoder encodeObject:fireTimeStamp forKey:kfireTimeStampInIAAlarmNotification];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
@@ -55,8 +63,9 @@
     if (self) {	
         notificationId = [[decoder decodeObjectForKey:knotificationIdInIAAlarmNotification] retain];
 		alarm = [[decoder decodeObjectForKey:kalarmInIAAlarmNotification] retain];
-		timeStamp = [[decoder decodeObjectForKey:ktimeStampInIAAlarmNotification] retain];
+		createTimeStamp = [[decoder decodeObjectForKey:ktimeStampInIAAlarmNotification] retain];
 		viewed =[decoder decodeBoolForKey:kviewedInIAAlarmNotification];
+        fireTimeStamp = [[decoder decodeObjectForKey:kfireTimeStampInIAAlarmNotification] retain];
     }
     return self;
 }

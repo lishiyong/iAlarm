@@ -36,24 +36,28 @@ static IAAlarmNotificationCenter *center = nil;
 - (void)removeAllNotifications{
     NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kAlarmNotificationCenterFilename];
     
-    NSArray *allNotifications = [NSArray array]; //加入一个空的列表    
+    NSMutableArray *allNotifications = [NSMutableArray array]; //加入一个空的列表    
     [NSKeyedArchiver archiveRootObject:allNotifications toFile:filePathName];
 }
 
+- (void)removeFiredNotification{
+    [self updateNotifications:[self notificationsForFired:NO]];
+}
 
 - (void)updateNotifications:(NSArray*)notifications{
     NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kAlarmNotificationCenterFilename];
-    
+    notifications = (notifications != nil) ? notifications :[NSMutableArray array];
     [NSKeyedArchiver archiveRootObject:notifications toFile:filePathName];
 }
 
 - (NSArray*)allNotifications{
     NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kAlarmNotificationCenterFilename];  
     
-    NSArray *notifications  = (NSArray *)[NSKeyedUnarchiver unarchiveObjectWithFile:filePathName];
+    NSMutableArray *notifications  = (NSMutableArray *)[NSKeyedUnarchiver unarchiveObjectWithFile:filePathName];
     return notifications;
 }
 
+/*
 - (NSArray*)notificationsForViewed:(BOOL)viewed{
     
     NSMutableArray *allNotifications = (NSMutableArray*)[self allNotifications];
@@ -65,9 +69,34 @@ static IAAlarmNotificationCenter *center = nil;
     }
     
     return ([resultArray count] == 0) ? nil : resultArray;
+}
+ */
+
+- (NSArray*)notificationsForFired:(BOOL)fired{
+    NSDate *now = [NSDate date];
+    NSMutableArray *allNotifications = (NSMutableArray*)[self allNotifications];
+    NSMutableArray *resultArray = [NSMutableArray array];
+    for (IAAlarmNotification *anObj in allNotifications) {
+        NSComparisonResult cr = [anObj.fireTimeStamp compare:now];
+        BOOL add = (cr == NSOrderedDescending) ? !fired:fired;
+        if (add) 
+            [resultArray addObject:anObj];
+    }
     
+    return ([resultArray count] == 0) ? nil : resultArray;
 }
 
+- (IAAlarmNotification*)notificationOfId:(NSString*)noId{
+    
+    NSMutableArray *allNotifications = (NSMutableArray*)[self allNotifications];
+    for (IAAlarmNotification *anObj in allNotifications) {
+        if ([noId isEqualToString:anObj.notificationId] ) {
+            return anObj;
+        }
+    }
+    
+    return nil;
+}
 
 + (id)allocWithZone:(NSZone *)zone
 {

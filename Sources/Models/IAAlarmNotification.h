@@ -14,10 +14,12 @@
 
 @property(nonatomic, readonly) NSString *notificationId;
 @property(nonatomic, readonly) IAAlarm *alarm;
-@property(nonatomic, readonly) NSDate *timeStamp;
+@property(nonatomic, readonly) NSDate *createTimeStamp;
 @property(nonatomic, getter = isViewed) BOOL viewed;
+@property(nonatomic, readonly) NSDate *fireTimeStamp;;
 
-- (id)initWithAlarm:(IAAlarm*)theAlarm;
+- (id)initWithAlarm:(IAAlarm*)theAlarm ;
+- (id)initWithAlarm:(IAAlarm*)theAlarm fireTimeStamp:(NSDate*)fireTimeStamp;
 
 @end
 

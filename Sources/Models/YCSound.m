@@ -26,7 +26,8 @@
 	[encoder encodeObject:soundName forKey:ksoundName];
 	[encoder encodeObject:soundFileName forKey:ksoundFileName];
 	[encoder encodeInteger:sortId forKey:ksoundSortId];
-
+    [encoder encodeObject:soundFileURL forKey:ksoundFileURL];
+    [encoder encodeBool:customSound forKey:kcustomSound];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
@@ -35,6 +36,8 @@
 		soundName = [[decoder decodeObjectForKey:ksoundName] copy];
 		soundFileName = [[decoder decodeObjectForKey:ksoundFileName] copy];
 		sortId = [decoder decodeIntegerForKey:ksoundSortId];
+        soundFileURL = [[decoder decodeObjectForKey:ksoundFileURL] retain];
+        customSound = [decoder decodeBoolForKey:kcustomSound];
     }
     return self;
 }

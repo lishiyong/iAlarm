@@ -13,6 +13,8 @@
 #import "LocalizedString.h"
 #import "NSString-YC.h"
 #import "IAAlarm.h"
+#import "YCSound.h"
+#import "YCPositionType.h"
 #import "IAAlarmNotification.h"
 #import "UIColor+YC.h"
 #import <QuartzCore/QuartzCore.h>
@@ -250,11 +252,47 @@ cell使用后height竟然会加1。奇怪！
         return;
     }
     
-    if (actionSheet == actionSheet1) {
-        //延时1
-    }else if (actionSheet == actionSheet2) {
-        //延时2
+    if ( actionSheet == actionSheet1 || actionSheet == actionSheet2) {
+        
+        //发本地通知
+        IAAlarm *alarm = viewedAlarmNotification.alarm;
+        BOOL arrived = [alarm.positionType.positionTypeId isEqualToString:@"p002"];//是 “到达时候”提醒
+        NSString *promptTemple = arrived?kAlertFrmStringArrived:kAlertFrmStringLeaved;
+        NSString *alertBody = [[[NSString alloc] initWithFormat:promptTemple,alarm.alarmName,0.0] autorelease];
+        NSString *alarmNotes = [alarm.notes trim];
+        if (alarmNotes && alarmNotes.length > 0) {
+            alertBody = [NSString stringWithFormat:@"%@: %@",alertBody,alarmNotes];
+        }
+        
+        UIApplication *app = [UIApplication sharedApplication];
+        NSInteger badgeNumber = app.applicationIconBadgeNumber + 1; //角标数
+        UILocalNotification *notification = [[[UILocalNotification alloc] init] autorelease];
+        //notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:1];
+        notification.timeZone = [NSTimeZone defaultTimeZone];
+        notification.repeatInterval = 0;
+        notification.soundName = alarm.sound.soundFileName;
+        notification.alertBody = alertBody;
+        notification.applicationIconBadgeNumber = badgeNumber;
+        notification.userInfo = [NSDictionary dictionaryWithObject:viewedAlarmNotification.notificationId forKey:@"knotificationId"];
+        
+        NSTimeInterval secs = 0;
+        if (actionSheet == actionSheet1) {//延时1
+            secs = 60*10;//10分钟
+            
+        }else if (actionSheet == actionSheet2) {//延时2
+            secs = 60*30;//30分钟
+        }
+        NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:secs];
+        
+        //保存到文件
+        IAAlarmNotification *alarmNotification = [[[IAAlarmNotification alloc] initWithAlarm:alarm fireTimeStamp:fireDate] autorelease];
+        [[IAAlarmNotificationCenter defaultCenter] addNotification:alarmNotification];
+        
+        notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:secs];
+        [app scheduleLocalNotification:notification];
     }
+    
+    
     
 }
 
@@ -358,7 +396,7 @@ cell使用后height竟然会加1。奇怪！
     
     [timer invalidate];
     [timer release];
-    timer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(timerFireMethod:) userInfo:nil repeats:YES];
+    timer = [[NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(timerFireMethod:) userInfo:nil repeats:YES] retain];
         
     //其他数据
     [self.tableView reloadData];
@@ -391,7 +429,7 @@ cell使用后height竟然会加1。奇怪！
 }
 
 - (void)reloadTimeIntervalLabel{
-    NSString *s = YCTimeIntervalStringSinceNow(viewedAlarmNotification.timeStamp);
+    NSString *s = YCTimeIntervalStringSinceNow(viewedAlarmNotification.createTimeStamp);
     self.timeIntervalLabel.text = s;
     
     [self.timeIntervalLabel sizeToFit];//bounds调整到合适
@@ -571,7 +609,7 @@ cell使用后height竟然会加1。奇怪！
     }
     [[IAAlarmNotificationCenter defaultCenter] updateNotifications:allNotifications];
     */
-    [[IAAlarmNotificationCenter defaultCenter] removeAllNotifications];
+    //[[IAAlarmNotificationCenter defaultCenter] removeAllNotifications];
     
     [self registerNotifications];
 }

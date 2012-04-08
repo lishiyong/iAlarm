@@ -13,6 +13,7 @@
 #define    ksoundFileName  @"ksoundFileName"
 #define    ksoundFileURL   @"ksoundFileURL"
 #define    ksoundSortId    @"ksortId"
+#define    kcustomSound    @"kcustomSound"
 
 @interface YCSound : NSObject <NSCoding>{
 	NSString *soundId;         

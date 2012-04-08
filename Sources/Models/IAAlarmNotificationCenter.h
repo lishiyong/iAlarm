@@ -16,9 +16,12 @@
 - (void)addNotification:(IAAlarmNotification*)notification;
 - (void)removeAllNotifications;
 - (void)updateNotifications:(NSArray*)notifications;
+- (void)removeFiredNotification;
 
 
 - (NSArray*)allNotifications;
-- (NSArray*)notificationsForViewed:(BOOL)viewed;
+//- (NSArray*)notificationsForViewed:(BOOL)viewed;
+- (NSArray*)notificationsForFired:(BOOL)fired;
+- (IAAlarmNotification*)notificationOfId:(NSString*)noId;
 
 @end

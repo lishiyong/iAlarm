@@ -6,6 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "IAAlarmNotificationCenter.h"
 #import "UIColor+YC.h"
 #import "IAAlarmFindViewController.h"
 #import "IAAlarmNotification.h"
@@ -1070,30 +1071,31 @@
 
 -(IBAction)testAlarmButtonPressed:(id)sender{
     
-    BOOL arrived = [self.alarmTemp.positionType.positionTypeId isEqualToString:@"p002"];//是 “到达时候”提醒
+    //保存到文件
+    IAAlarmNotification *alarmNotification = [[[IAAlarmNotification alloc] initWithAlarm:self.alarmTemp] autorelease];
+    [[IAAlarmNotificationCenter defaultCenter] addNotification:alarmNotification];
     
+    //发本地通知
+    BOOL arrived = [self.alarmTemp.positionType.positionTypeId isEqualToString:@"p002"];//是 “到达时候”提醒
     NSString *promptTemple = arrived?kAlertFrmStringArrived:kAlertFrmStringLeaved;
     NSString *alertBody = [[[NSString alloc] initWithFormat:promptTemple,self.alarmTemp.alarmName,0.0] autorelease];
-    
-	[UIUtility simpleAlertBody:alertBody alertTitle:self.alarmTemp.alarmName cancelButtonTitle:kAlertBtnClose OKButtonTitle:kAlertBtnView delegate:self];
-    
-    ///////////////////////////////////
-    //声音、振动
-    if (self.ringplayer ==nil || !self.ringplayer.playing){
-        if (alarm.sound.soundFileURL){
-            self.ringplayer = [[[AVAudioPlayer alloc] initWithContentsOfURL:self.alarmTemp.sound.soundFileURL error:NULL] autorelease];
-            self.ringplayer.delegate = self;
-            self.ringplayer.numberOfLoops = 100;
-            [self.ringplayer performSelector:@selector(play) withObject:nil afterDelay:0.0];
-        }
+    NSString *alarmNotes = [self.alarmTemp.notes trim];
+    if (alarmNotes && alarmNotes.length > 0) {
+        alertBody = [NSString stringWithFormat:@"%@: %@",alertBody,alarmNotes];
     }
     
-    if (self.alarmTemp.vibrate) {
-        if (!self.vibratePlayer.playing)
-            [self.vibratePlayer performSelector:@selector(playRepeatNumber:) withInteger:2 afterDelay:0.0];
-            //[self.vibratePlayer playRepeatNumber:2]; //振动2次
-    }
-    ///////////////////////////////////
+    UIApplication *app = [UIApplication sharedApplication];
+    NSInteger badgeNumber = app.applicationIconBadgeNumber + 1; //角标数
+    UILocalNotification *notification = [[[UILocalNotification alloc] init] autorelease];
+    notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:1];
+    notification.timeZone = [NSTimeZone defaultTimeZone];
+    notification.repeatInterval = 0;
+    notification.soundName = self.alarmTemp.sound.soundFileName;
+    notification.alertBody = alertBody;
+    notification.applicationIconBadgeNumber = badgeNumber;
+    notification.userInfo = [NSDictionary dictionaryWithObject:alarmNotification.notificationId forKey:@"knotificationId"];
+    [app scheduleLocalNotification:notification];
+
 }
 
 #pragma mark -
@@ -1116,13 +1118,15 @@
 		NSNotification *aNotification = [NSNotification notificationWithName:IAAlarmDidViewNotification object:self userInfo:userInfoDic];
 		[notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
          */
-        
+        /*
         IAAlarmNotification *aNotification = [[[IAAlarmNotification alloc] initWithAlarm:self.alarmTemp] autorelease];
         NSArray *notifications = [NSArray arrayWithObject:aNotification];
         IAAlarmFindViewController *ctler = [[[IAAlarmFindViewController alloc] initWithNibName:@"IAAlarmFindViewController" bundle:nil alarmNotifitions:notifications] autorelease];
         UINavigationController *navCtler = [[[UINavigationController alloc] initWithRootViewController:ctler] autorelease];
         [self presentModalViewController:navCtler animated:YES];
+         */
         
+                
 	}else{
         //不查看。
     }
