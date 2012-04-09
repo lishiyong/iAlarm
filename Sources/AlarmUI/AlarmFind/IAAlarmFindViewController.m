@@ -111,7 +111,7 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
 #pragma mark - property
 
 @synthesize tableView;
-@synthesize mapViewCell, containerView, mapView, imageView, timeIntervalLabel;
+@synthesize mapViewCell, takeImageContainerView, containerView, mapView, imageView, timeIntervalLabel;
 @synthesize buttonCell, button1, button2, button3;
 @synthesize notesCell;
 
@@ -152,38 +152,25 @@ cell使用后height竟然会加1。奇怪！
  注意：IBOutlet类型，在view加载后在使用下面属性，才会有正确的frame。
  */
 
-- (UIColor*)clearCellBackupgroundColor{ 
-    //根据ios版本,为透明颜色的cell采用不同的背景色
-    NSString *systemVerionString = [[UIDevice currentDevice] systemVersion];
-    float systemVerion = [systemVerionString floatValue];
-    if (systemVerion - 5.0 >= 0.0) //5.0以上
-        return [UIColor clearColor];
-    else
-        return [UIColor groupTableViewBackgroundColor];
-    //5.0以下 cell背景设成透明后，显示背景后面竟然是黑的。没搞懂，到底是谁的颜色。
-}
-
 - (id)mapViewCell{
-    mapViewCell.backgroundColor = [self clearCellBackupgroundColor];
     mapViewCell.frame = CGRectMake(0, 0, 300, 195);
     return mapViewCell;
 }
 
 - (id)notesCell{
-    notesCell.backgroundColor = [self clearCellBackupgroundColor];
     notesCell.frame = CGRectMake(0, 0, 300, 0);
     return notesCell;
 }
 
 - (id)buttonCell{
-    buttonCell.backgroundColor = [self clearCellBackupgroundColor]; 
     buttonCell.frame = CGRectMake(0, 0, 300, 108);
     return buttonCell;
 }
  
 #pragma mark - Controll Event
 - (IBAction)tellFriendsButtonPressed:(id)sender{
-    [engine shareAppWithMessage:@"abc" image:[self takePhotoFromTheMapView]];
+    //[engine shareAppWithMessage:@"abc" image:[self takePhotoFromTheMapView]];
+    //[engine shareAppWithTitle:<#(NSString *)#> Message:<#(NSString *)#> image:<#(UIImage *)#>]
 }
 
 - (IBAction)delayAlarm1ButtonPressed:(id)sender{
@@ -314,8 +301,8 @@ cell使用后height竟然会加1。奇怪！
 #pragma mark - Utility
 
 - (UIImage*)takePhotoFromTheMapView{
-    UIGraphicsBeginImageContext(self.containerView.frame.size);
-    [self.containerView.layer renderInContext:UIGraphicsGetCurrentContext()]; 
+    UIGraphicsBeginImageContext(self.takeImageContainerView.frame.size);
+    [self.takeImageContainerView.layer renderInContext:UIGraphicsGetCurrentContext()]; 
     UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();     
     return viewImage;
@@ -601,15 +588,10 @@ cell使用后height竟然会加1。奇怪！
     //加载数据
     [self loadViewDataWithIndexOfNotifications:indexForView]; 
     
-    /*
-    //把所有的都改成已查看，为了方便。
-    NSArray *allNotifications = [IAAlarmNotificationCenter defaultCenter].allNotifications;
-    for (IAAlarmNotification *anObj in allNotifications) {
-        anObj.viewed = YES;
-    }
-    [[IAAlarmNotificationCenter defaultCenter] updateNotifications:allNotifications];
-    */
-    //[[IAAlarmNotificationCenter defaultCenter] removeAllNotifications];
+    //5.0以下 cell背景设成透明后，显示背景后面竟然是黑的。没搞懂，到底是谁的颜色。所以只好给加个背景view了。
+    self.tableView.backgroundView = [[[UIView alloc] initWithFrame:self.tableView.frame] autorelease];
+    self.tableView.backgroundView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    
     
     [self registerNotifications];
 }

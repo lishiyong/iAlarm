@@ -31,6 +31,7 @@
 @property(nonatomic,retain,readonly) UIBarButtonItem *upDownBarItem;
 
 @property (nonatomic,retain) IBOutlet UITableViewCell *mapViewCell;
+@property (nonatomic,retain) IBOutlet UIView *takeImageContainerView;
 @property (nonatomic,retain) IBOutlet UIView *containerView;
 @property (nonatomic,retain) IBOutlet MKMapView *mapView;
 @property (nonatomic,retain) IBOutlet UIImageView *imageView;

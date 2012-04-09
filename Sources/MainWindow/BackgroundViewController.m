@@ -233,7 +233,8 @@
 
 - (void)handle_listViewMapsViewSwitch:(id)notification{	
     
-		
+	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+	
     //////////////////////////
 	//视图转换
 	[UIView beginAnimations:@"View Switch" context:nil];
@@ -278,7 +279,7 @@
 	backgroundView.hidden = NO;//转换完成前，显示按钮背景
 	UIButton *button = [[self.switchBarButtonItem.customView subviews] objectAtIndex:1]; //一共2个，第2个是按钮
 	//转换完成前，事件解除绑定
-	[button removeTarget:self action:@selector(switchButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+	//[button removeTarget:self action:@selector(switchButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 	
 	
 	[UIView beginAnimations:@"switchButton Animation" context:nil];
@@ -752,10 +753,12 @@
 	UIView *backgroundView = [[self.switchBarButtonItem.customView subviews] objectAtIndex:0]; //一共2个，第1个是背景
 	backgroundView.hidden = YES; //转换完成，背景设成透明，否则影响按钮的边框
 	
-	
+	/*
 	//转换完成后，事件重新绑定
 	UIButton *button = (UIButton*)[[self.switchBarButtonItem.customView subviews] objectAtIndex:1]; //一共2个，第2个是按钮
 	[button addTarget:self action:@selector(switchButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+     */
+    [[UIApplication sharedApplication] endIgnoringInteractionEvents];
 }
 
 #pragma mark -

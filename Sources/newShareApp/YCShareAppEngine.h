@@ -13,14 +13,10 @@
 #import <Foundation/Foundation.h>
 #import <MessageUI/MessageUI.h>
 
-@class YCSoundPlayer;
-@class YCTwitterTweetViewController;
-@class YCFacebookFeedViewController;
-@protocol YCMessageComposeControllerDelegate;
-@protocol FBSessionDelegate;
-@class YCFacebookGlobalData;
-@protocol SA_OAuthTwitterEngineDelegate;
-@class SA_OAuthTwitterEngine;
+
+@protocol FBSessionDelegate, YCMessageComposeControllerDelegate;
+@class YCSoundPlayer,YCFacebookGlobalData, YCFacebookFeedViewController, YCTwitterTweetViewController;
+@class SA_OAuthTwitterEngine, SA_OAuthTwitterEngineDelegate;
 @interface YCShareAppEngine : NSObject <UIActionSheetDelegate,MFMailComposeViewControllerDelegate,MFMessageComposeViewControllerDelegate,SA_OAuthTwitterEngineDelegate,SA_OAuthTwitterControllerDelegate,FBSessionDelegate,FBRequestDelegate,YCMessageComposeControllerDelegate>{
     
     BOOL sendShardFlag; //发送共享的标识；用来区别“认证”和“发共享数据前的认证”
@@ -28,6 +24,7 @@
     
     //YCSoundPlayer *player;
     UIViewController *superViewController; //引用这个类的view控制器。 循环引用的变量，不能retain
+    NSString *sharedTitle;
     NSString *sharedMessage;
     UIImage *sharedImage;
     
@@ -55,6 +52,7 @@
 
 - (id)initWithSuperViewController:(id)viewController;
 - (void)shareApp; 
-- (void)shareAppWithMessage:(NSString*)message image:(UIImage*)image;
+- (void)shareAppWithTitle:(NSString*)title Message:(NSString*)message image:(UIImage*)image;
+//- (void)shareAppWithContent(YCShareContent*)content; 
 
 @end

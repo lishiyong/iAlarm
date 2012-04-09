@@ -21,12 +21,9 @@
 
 
 - (NSString *)libraryDirectory {
-    /*
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
     NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
     return basePath;
-     */
-    return [self documentsDirectory];
 }
 
 

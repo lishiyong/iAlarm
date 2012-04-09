@@ -140,7 +140,7 @@
 			[alarmTemp addObserver:self forKeyPath:@"alarmName" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"position" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"positionShort" options:0 context:nil];
-			[alarmTemp addObserver:self forKeyPath:@"notes" options:0 context:nil];
+			//[alarmTemp addObserver:self forKeyPath:@"notes" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"enabling" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"coordinate" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"vibrate" options:0 context:nil];
@@ -932,8 +932,10 @@
 	
 	if (CLLocationCoordinate2DIsValid(self.alarmTemp.coordinate)) { //有效坐标才允许保存
 		self.saveButtonItem.enabled = YES;
+        self.testAlarmButton.enabled = YES;
 	}else {
 		self.saveButtonItem.enabled = NO;
+        self.testAlarmButton.enabled = NO;
 	}
 
 }
@@ -1737,7 +1739,7 @@
 			[alarmTemp removeObserver:self forKeyPath:@"alarmName"];
 			[alarmTemp removeObserver:self forKeyPath:@"position"];
 			[alarmTemp removeObserver:self forKeyPath:@"positionShort"];
-			[alarmTemp removeObserver:self forKeyPath:@"notes"];
+			//[alarmTemp removeObserver:self forKeyPath:@"notes"];
 			[alarmTemp removeObserver:self forKeyPath:@"enabling"];
 			[alarmTemp removeObserver:self forKeyPath:@"coordinate"];
 			[alarmTemp removeObserver:self forKeyPath:@"vibrate"];

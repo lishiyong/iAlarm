@@ -36,6 +36,7 @@ static NSString* kFacebookAppId = @"146975985381829";
 - (void)sendEmail;
 - (void)sendMessages;
 - (void)alertInternetWithTitle:(NSString*)title andBody:(NSString*)body;
+- (void)shareAppPrivate;
 
   
 @property (nonatomic, retain, readonly) SA_OAuthTwitterEngine *twitterEngine;
@@ -129,7 +130,7 @@ static NSString* kFacebookAppId = @"146975985381829";
     
 }
 
-- (void)shareApp{
+- (void)shareAppPrivate{
     UIActionSheet *shareAppSheet = [[[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:KLabelCellTwitter,KLabelCellFacebook,nil] autorelease];
     
     if ([self canSendMail]) 
@@ -145,10 +146,18 @@ static NSString* kFacebookAppId = @"146975985381829";
     [shareAppSheet showInView:superViewController.view];
 }
 
-- (void)shareAppWithMessage:(NSString*)message image:(UIImage*)image{
+- (void)shareApp{
+    [sharedTitle release];sharedTitle = nil;
+    [sharedMessage release];sharedMessage = nil;
+    [sharedImage release];sharedImage = nil;
+    [self shareAppPrivate];
+}
+
+- (void)shareAppWithTitle:(NSString*)title Message:(NSString*)message image:(UIImage*)image{
+    sharedTitle = [title copy];
     sharedMessage = [message copy];
     sharedImage = [image retain];
-    [self shareApp];
+    [self shareAppPrivate];
 }
 
 
@@ -481,21 +490,23 @@ static NSString* kFacebookAppId = @"146975985381829";
 - (void)sendEmail{
 	if (![self canSendMail]) return;
 	
-
 	MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
 	picker.mailComposeDelegate = self;
 	
+    //是否使用默认的数据
     YCShareContent *shareContent = [YCShareContent mailShareContentWithMessage:sharedMessage image:sharedImage];
+    UIImage *emailImage = sharedImage ? sharedImage : shareContent.image1;
+    NSString *emailMessage = sharedMessage ? sharedMessage : shareContent.message;
     
 	// Attach an image to the email
-    NSData *myData = UIImageJPEGRepresentation(shareContent.image1, 1.0);
+    NSData *myData = UIImageJPEGRepresentation(emailImage, 1.0);
     [picker addAttachmentData:myData mimeType:@"image/jpg" fileName:@"a1"];
 	
-	
+	// 邮件标题
 	[picker setSubject:shareContent.title];
 	
 	// Fill out the email body text
-	NSString *emailBody = [NSString stringWithFormat:@"%@\n%@",shareContent.message,shareContent.link1];
+	NSString *emailBody = [NSString stringWithFormat:@"%@\n%@",emailMessage,shareContent.link1];
 	[picker setMessageBody:emailBody isHTML:NO];
 	
 	[superViewController presentModalViewController:picker animated:YES];
@@ -528,6 +539,9 @@ static NSString* kFacebookAppId = @"146975985381829";
 
 - (void)dealloc {
     [player release];
+    [sharedTitle release];
+    [sharedMessage release];
+    [sharedImage release];
     [twitterEngine release];
     [facebookEngine release];
     [twTweetViewController release];
