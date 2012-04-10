@@ -1224,9 +1224,7 @@
 
 - (void)viewDidLoad {
 
-    [super viewDidLoad];
-	[self registerNotifications];
-	
+    [super viewDidLoad];	
 	self.title = KViewTitleAlarmsListMaps;
 	self.maskLabel.text = KTextPromptWhenLoading;
 	self.mapView.delegate = self;
@@ -1271,7 +1269,8 @@
 	self.satelliteTypeButton  = [[self.toolbarFloatingView  buttons] objectAtIndex:1];
 	self.hybridTypeButton = [[self.toolbarFloatingView  buttons] objectAtIndex:2];
 	
-	 
+    [self registerNotifications];
+
 }
 
 //为了延时执行。否则有上个bar的痕迹

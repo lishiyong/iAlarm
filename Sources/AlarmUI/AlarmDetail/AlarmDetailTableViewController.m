@@ -1097,7 +1097,6 @@
     notification.applicationIconBadgeNumber = badgeNumber;
     notification.userInfo = [NSDictionary dictionaryWithObject:alarmNotification.notificationId forKey:@"knotificationId"];
     [app scheduleLocalNotification:notification];
-
 }
 
 #pragma mark -
@@ -1105,36 +1104,6 @@
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag{
 	[self.vibratePlayer stop];
 }
-
-#pragma mark -
-#pragma mark UIAlertViewDelegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    	
-	[self.ringplayer stop];
-	[self.vibratePlayer stop];
-	if (buttonIndex == 1) { //查看按钮
-        /*
-		NSDictionary *userInfoDic = [NSDictionary dictionaryWithObject:self.alarmTemp forKey:IAViewedAlarmKey];
-		NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-		NSNotification *aNotification = [NSNotification notificationWithName:IAAlarmDidViewNotification object:self userInfo:userInfoDic];
-		[notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
-         */
-        /*
-        IAAlarmNotification *aNotification = [[[IAAlarmNotification alloc] initWithAlarm:self.alarmTemp] autorelease];
-        NSArray *notifications = [NSArray arrayWithObject:aNotification];
-        IAAlarmFindViewController *ctler = [[[IAAlarmFindViewController alloc] initWithNibName:@"IAAlarmFindViewController" bundle:nil alarmNotifitions:notifications] autorelease];
-        UINavigationController *navCtler = [[[UINavigationController alloc] initWithRootViewController:ctler] autorelease];
-        [self presentModalViewController:navCtler animated:YES];
-         */
-        
-                
-	}else{
-        //不查看。
-    }
-}
-
-
 
 
 #pragma mark - 

@@ -113,7 +113,7 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
 @synthesize tableView;
 @synthesize mapViewCell, takeImageContainerView, containerView, mapView, imageView, timeIntervalLabel;
 @synthesize buttonCell, button1, button2, button3;
-@synthesize notesCell;
+@synthesize notesCell, notesLabel;
 
 - (id)doneButtonItem{
 	
@@ -158,7 +158,12 @@ cell使用后height竟然会加1。奇怪！
 }
 
 - (id)notesCell{
-    notesCell.frame = CGRectMake(0, 0, 300, 0);
+    //notesCell.frame = CGRectMake(0, 0, 300, 0);
+    //备注的高度会根据文本的多少自动调整
+    CGRect frame = notesCell.frame;
+    frame.origin = CGPointMake(0, 0);
+    frame.size.width = 300;
+    
     return notesCell;
 }
 
@@ -170,7 +175,7 @@ cell使用后height竟然会加1。奇怪！
 #pragma mark - Controll Event
 - (IBAction)tellFriendsButtonPressed:(id)sender{
     //[engine shareAppWithMessage:@"abc" image:[self takePhotoFromTheMapView]];
-    //[engine shareAppWithTitle:<#(NSString *)#> Message:<#(NSString *)#> image:<#(UIImage *)#>]
+    [engine shareAppWithTitle:@"" Message:@"" image:[self takePhotoFromTheMapView]];
 }
 
 - (IBAction)delayAlarm1ButtonPressed:(id)sender{
@@ -384,7 +389,18 @@ cell使用后height竟然会加1。奇怪！
     [timer invalidate];
     [timer release];
     timer = [[NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(timerFireMethod:) userInfo:nil repeats:YES] retain];
-        
+    
+    //备注
+    self.notesLabel.text = @"";
+    self.notesLabel.frame = CGRectMake(15, 0, 270, 21);
+    self.notesLabel.text = viewedAlarmNotification.alarm.notes;
+    [self.notesLabel sizeToFit];
+    //self.notesCell.bounds.size.width = self.notesLabel.bounds.size.width;
+    CGRect boundsOfnotesCell = self.notesCell.bounds;
+    boundsOfnotesCell.size.height = self.notesLabel.bounds.size.height < 21 ? 21 : self.notesLabel.bounds.size.height;
+    self.notesCell.bounds = boundsOfnotesCell;
+
+    
     //其他数据
     [self.tableView reloadData];
 
@@ -421,7 +437,7 @@ cell使用后height竟然会加1。奇怪！
     
     [self.timeIntervalLabel sizeToFit];//bounds调整到合适
     self.timeIntervalLabel.bounds = CGRectInset(self.timeIntervalLabel.bounds, -6, -2); //在字的周围留有空白
-    //position在父view的左下角向上8像素
+        //position在父view的左下角向上8像素
     CGSize superViewSize = self.timeIntervalLabel.superview.bounds.size;
     CGPoint thePosition = CGPointMake(superViewSize.width-8, superViewSize.height-8); 
     self.timeIntervalLabel.layer.position = thePosition;
@@ -525,7 +541,7 @@ cell使用后height竟然会加1。奇怪！
 	
     return nil;
 }
-
+/*
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section{
     if (section == 1) {
         NSString *s = [viewedAlarmNotification.alarm.notes trim];
@@ -535,6 +551,7 @@ cell使用后height竟然会加1。奇怪！
 	
     return nil;
 }
+ */
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     switch (indexPath.section) {
@@ -566,6 +583,10 @@ cell使用后height竟然会加1。奇怪！
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    //5.0以下 cell背景设成透明后，显示背景后面竟然是黑的。没搞懂，到底是谁的颜色。所以只好给加个背景view了。
+    self.tableView.backgroundView = [[[UIView alloc] initWithFrame:self.tableView.frame] autorelease];
+    self.tableView.backgroundView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    
     self.navigationItem.leftBarButtonItem = self.doneButtonItem;
     self.navigationItem.rightBarButtonItem = self.upDownBarItem;
     
@@ -585,15 +606,19 @@ cell使用后height竟然会加1。奇怪！
     //把position设置到左下角
     self.timeIntervalLabel.layer.anchorPoint = CGPointMake(1, 1);
     
+    //备注
+    self.notesLabel.textColor = [UIColor text1Color];
+    
+    
     //加载数据
     [self loadViewDataWithIndexOfNotifications:indexForView]; 
     
-    //5.0以下 cell背景设成透明后，显示背景后面竟然是黑的。没搞懂，到底是谁的颜色。所以只好给加个背景view了。
-    self.tableView.backgroundView = [[[UIView alloc] initWithFrame:self.tableView.frame] autorelease];
-    self.tableView.backgroundView.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    
     
     [self registerNotifications];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [timer invalidate]; [timer release]; timer = nil;
 }
 
 
@@ -664,7 +689,6 @@ cell使用后height竟然会加1。奇怪！
     self.notesCell = nil;
     [actionSheet1 release];actionSheet1 = nil;
     [actionSheet2 release];actionSheet2 = nil;
-    [timer invalidate]; [timer release]; timer = nil;
 }
 
 - (void)dealloc {
@@ -674,6 +698,7 @@ cell使用后height竟然会加1。奇怪！
     [upDownBarItem release];
     
     [mapViewCell release];
+    [takeImageContainerView release];
     [containerView release];
     [mapView release];
     [imageView release];
@@ -685,6 +710,7 @@ cell使用后height竟然会加1。奇怪！
     [button3 release];
     
     [notesCell release];
+    [notesLabel release];
     
     [alarmNotifitions release];
     [viewedAlarmNotification release];
@@ -693,7 +719,7 @@ cell使用后height竟然会加1。奇怪！
     [engine release];
     [actionSheet1 release];
     [actionSheet2 release];
-    [timer invalidate]; [timer release];
+    [timer release];
     [super dealloc];
 }
 

@@ -43,6 +43,7 @@
 @property (nonatomic,retain) IBOutlet UIButton *button3;
 
 @property (nonatomic,retain) IBOutlet UITableViewCell *notesCell;
+@property (nonatomic,retain) IBOutlet UILabel *notesLabel;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil alarmNotifitions:(NSArray *)theAlarmNotifitions;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil alarmNotifitions:(NSArray *)theAlarmNotifitions indexForView:(NSUInteger)theIndexForView;

@@ -196,6 +196,8 @@
 		9C6BEA4A1301B9E000AA110D /* BSKmlResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6BEA421301B9DF00AA110D /* BSKmlResult.m */; };
 		9C6BEA4B1301B9E000AA110D /* BSGoogleV2KmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6BEA451301B9E000AA110D /* BSGoogleV2KmlParser.m */; };
 		9C6BEA4C1301B9E000AA110D /* BSGoogleV3KmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6BEA471301B9E000AA110D /* BSGoogleV3KmlParser.m */; };
+		9C7E400915340998003370C9 /* YCCopyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7E400815340998003370C9 /* YCCopyLabel.m */; };
+		9C7E400A15340998003370C9 /* YCCopyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7E400815340998003370C9 /* YCCopyLabel.m */; };
 		9C85F38614FBA99F00B49FF4 /* IAAlarmFindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C85F38414FBA99F00B49FF4 /* IAAlarmFindViewController.m */; };
 		9C85F38714FBA99F00B49FF4 /* IAAlarmFindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C85F38414FBA99F00B49FF4 /* IAAlarmFindViewController.m */; };
 		9C85F38814FBA99F00B49FF4 /* IAAlarmFindViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C85F38514FBA99F00B49FF4 /* IAAlarmFindViewController.xib */; };
@@ -1155,6 +1157,8 @@
 		9C6BEA451301B9E000AA110D /* BSGoogleV2KmlParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSGoogleV2KmlParser.m; sourceTree = "<group>"; };
 		9C6BEA461301B9E000AA110D /* BSGoogleV3KmlParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSGoogleV3KmlParser.h; sourceTree = "<group>"; };
 		9C6BEA471301B9E000AA110D /* BSGoogleV3KmlParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSGoogleV3KmlParser.m; sourceTree = "<group>"; };
+		9C7E400715340998003370C9 /* YCCopyLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCCopyLabel.h; sourceTree = "<group>"; };
+		9C7E400815340998003370C9 /* YCCopyLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCCopyLabel.m; sourceTree = "<group>"; };
 		9C85F38314FBA99F00B49FF4 /* IAAlarmFindViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAAlarmFindViewController.h; sourceTree = "<group>"; };
 		9C85F38414FBA99F00B49FF4 /* IAAlarmFindViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAAlarmFindViewController.m; sourceTree = "<group>"; };
 		9C85F38514FBA99F00B49FF4 /* IAAlarmFindViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IAAlarmFindViewController.xib; sourceTree = "<group>"; };
@@ -1939,6 +1943,15 @@
 			path = Parsers;
 			sourceTree = "<group>";
 		};
+		9C7E400615340998003370C9 /* YCCopyLabel */ = {
+			isa = PBXGroup;
+			children = (
+				9C7E400715340998003370C9 /* YCCopyLabel.h */,
+				9C7E400815340998003370C9 /* YCCopyLabel.m */,
+			);
+			path = YCCopyLabel;
+			sourceTree = "<group>";
+		};
 		9C85F37E14FBA68C00B49FF4 /* AlarmFind */ = {
 			isa = PBXGroup;
 			children = (
@@ -2474,6 +2487,7 @@
 		9CA993BE130284D300298E5D /* YCControl */ = {
 			isa = PBXGroup;
 			children = (
+				9C7E400615340998003370C9 /* YCCopyLabel */,
 				9CE5955A14FFAE9100C0E28C /* YCTextView */,
 				9CCA0163133C1EA30002AB74 /* YCMaskView */,
 				9C93F24D132E007300986C44 /* YCAnimateRemoveFileView */,
@@ -4204,6 +4218,7 @@
 				9C0706DC152C036000AC4207 /* IAAlarmNotification.m in Sources */,
 				9C0706E0152C086900AC4207 /* IAAlarmNotificationCenter.m in Sources */,
 				9C0E30C4153066EE002DDAFD /* YCGFunctions.m in Sources */,
+				9C7E400915340998003370C9 /* YCCopyLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4359,6 +4374,7 @@
 				9C0706DD152C036000AC4207 /* IAAlarmNotification.m in Sources */,
 				9C0706E1152C086900AC4207 /* IAAlarmNotificationCenter.m in Sources */,
 				9C0E30C5153066EE002DDAFD /* YCGFunctions.m in Sources */,
+				9C7E400A15340998003370C9 /* YCCopyLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
