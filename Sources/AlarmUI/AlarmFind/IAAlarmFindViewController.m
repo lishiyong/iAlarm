@@ -619,6 +619,8 @@ cell使用后height竟然会加1。奇怪！
 
 - (void)viewWillDisappear:(BOOL)animated {
     [timer invalidate]; [timer release]; timer = nil;
+    [actionSheet1 dismissWithClickedButtonIndex:1 animated:NO];
+    [actionSheet2 dismissWithClickedButtonIndex:1 animated:NO];
 }
 
 

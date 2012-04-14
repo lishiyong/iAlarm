@@ -230,6 +230,9 @@
 		NSString *appversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
 		cell.detailTextLabel.text = appversion;
         cell.imageView.image = [UIImage imageNamed:@"version-Icon-Small.png"];
+        cell.imageView.layer.cornerRadius = 5;
+        cell.imageView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        cell.imageView.layer.borderWidth = 1;
 		self->versionCellDescription.tableViewCell = cell;
 		
 		self->versionCellDescription.didSelectCellSelector = NULL;

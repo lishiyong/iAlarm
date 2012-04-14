@@ -230,6 +230,7 @@
         [self->testAlarmButton setTitle:@"测试" forState:UIControlStateNormal & UIControlStateHighlighted];
         self->testAlarmButton.titleLabel.font            = [UIFont boldSystemFontOfSize: 19];
         self->testAlarmButton.titleLabel.lineBreakMode   = UILineBreakModeTailTruncation;
+        self->testAlarmButton.titleLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
         self->testAlarmButton.titleLabel.shadowOffset    = CGSizeMake (0.0, -1.0);
         
         [self->testAlarmButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
