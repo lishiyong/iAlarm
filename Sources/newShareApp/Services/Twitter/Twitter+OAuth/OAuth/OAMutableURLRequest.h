@@ -1,5 +1,5 @@
 //
-//  OAConsumer.h
+//  OAMutableURLRequest.h
 //  OAuthConsumer
 //
 //  Created by Jon Crosby on 10/19/07.
@@ -25,16 +25,41 @@
 
 
 #import <Foundation/Foundation.h>
+#import "OAConsumer.h"
+#import "OAToken.h"
+#import "OAHMAC_SHA1SignatureProvider.h"
+#import "OASignatureProviding.h"
+#import "NSMutableURLRequest+Parameters.h"
+#import "NSURL+Base.h"
 
 
-@interface OAConsumer : NSObject {
+@interface OAMutableURLRequest : NSMutableURLRequest {
 @protected
-	NSString *key;
-	NSString *secret;
+    OAConsumer *consumer;
+    OAToken *token;
+    NSString *realm;
+    NSString *signature;
+    id<OASignatureProviding> signatureProvider;
+    NSString *nonce;
+    NSString *timestamp;
 }
-@property(retain) NSString *key;
-@property(retain) NSString *secret;
+@property(readonly) NSString *signature;
+@property(readonly) NSString *nonce;
 
-- (id)initWithKey:(NSString *)aKey secret:(NSString *)aSecret;
+- (id)initWithURL:(NSURL *)aUrl
+		 consumer:(OAConsumer *)aConsumer
+			token:(OAToken *)aToken
+            realm:(NSString *)aRealm
+signatureProvider:(id<OASignatureProviding>)aProvider;
+
+- (id)initWithURL:(NSURL *)aUrl
+		 consumer:(OAConsumer *)aConsumer
+			token:(OAToken *)aToken
+            realm:(NSString *)aRealm
+signatureProvider:(id<OASignatureProviding>)aProvider
+            nonce:(NSString *)aNonce
+        timestamp:(NSString *)aTimestamp;
+
+- (void)prepare;
 
 @end

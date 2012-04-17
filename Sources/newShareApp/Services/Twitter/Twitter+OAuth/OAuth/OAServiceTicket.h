@@ -1,7 +1,8 @@
 //
-//  NSString+URLEncoding.h
+//  OAServiceTicket.h
+//  OAuthConsumer
 //
-//  Created by Jon Crosby on 10/19/07.
+//  Created by Jon Crosby on 11/5/07.
 //  Copyright 2007 Kaboomerang LLC. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,11 +25,22 @@
 
 
 #import <Foundation/Foundation.h>
+#import "OAMutableURLRequest.h"
 
 
-@interface NSString (OAURLEncodingAdditions)
+@interface OAServiceTicket : NSObject {
+@private
+    OAMutableURLRequest *request;
+    NSURLResponse *response;
+	NSData *data;
+    BOOL didSucceed;
+}
+@property(readonly) OAMutableURLRequest *request;
+@property(readonly) NSURLResponse *response;
+@property(readonly) NSData *data;
+@property(readonly) BOOL didSucceed;
+@property(readonly) NSString *body;
 
-- (NSString *)URLEncodedString;
-- (NSString *)URLDecodedString;
+- (id)initWithRequest:(OAMutableURLRequest *)aRequest response:(NSURLResponse *)aResponse data:(NSData *)aData didSucceed:(BOOL)success;
 
 @end

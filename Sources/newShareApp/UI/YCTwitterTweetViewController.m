@@ -125,7 +125,8 @@
 	self.navigationItem.titleView = self.navTitleView;
 	[self.progressView performSelector:@selector(setProgress:) withFloat:0.1 afterDelay:0.1];
 	
-	[twitterEngine sendUpdate:self.textView.text ];
+    //[twitterEngine sendUpdate:self.textView.text ];
+    [twitterEngine sendUpdate:self.textView.text image:[UIImage imageNamed:@"20_IAFlagGreen@2x.png"] ];
 	
 }
 
@@ -164,7 +165,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-		
+	
 	self.navigationItem.rightBarButtonItem = self.shareButtonItem;
 	self.navigationItem.leftBarButtonItem = self.cancelButtonItem;
 	
@@ -172,7 +173,7 @@
 	//NSString *s = [NSString stringWithFormat:@"%@\n%@",self.anShareData.twitterMessage,KLinkCustomAppStore];
 	NSString *s = [NSString stringWithFormat:@"%@\n%@",shareContent.message,KLinkCustomAppStoreFullVersion];//twitter上直接完全版
 	self.textView.text = s;
-	
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated{

@@ -1,7 +1,8 @@
 //
-//  NSMutableURLRequest+Parameters.h
+//  OAServiceTicket.m
+//  OAuthConsumer
 //
-//  Created by Jon Crosby on 10/19/07.
+//  Created by Jon Crosby on 11/5/07.
 //  Copyright 2007 Kaboomerang LLC. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,14 +23,37 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
-#import "OARequestParameter.h"
-#import "NSURL+Base.h"
+
+#import "OAServiceTicket.h"
 
 
-@interface NSMutableURLRequest (OAParameterAdditions)
+@implementation OAServiceTicket
+@synthesize request, response, data, didSucceed;
 
-- (NSArray *)parameters;
-- (void)setParameters:(NSArray *)parameters;
+- (id)initWithRequest:(OAMutableURLRequest *)aRequest response:(NSURLResponse *)aResponse data:(NSData *)aData didSucceed:(BOOL)success {
+    if ((self = [super init])) {
+		request = [aRequest retain];
+		response = [aResponse retain];
+		data = [aData retain];
+		didSucceed = success;
+	}
+    return self;
+}
+
+- (void)dealloc {
+	[request release];
+	[response release];
+	[data release];
+	[super dealloc];
+}
+
+- (NSString *)body
+{
+	if (!data) {
+		return nil;
+	}
+	
+	return [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+}
 
 @end

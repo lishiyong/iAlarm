@@ -1,6 +1,5 @@
 //
-//  OAToken.h
-//  OAuthConsumer
+//  NSMutableURLRequest+Parameters.h
 //
 //  Created by Jon Crosby on 10/19/07.
 //  Copyright 2007 Kaboomerang LLC. All rights reserved.
@@ -24,22 +23,15 @@
 //  THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
+#import "OARequestParameter.h"
+#import "NSURL+Base.h"
 
-@interface OAToken : NSObject {
-	NSString *pin;							//added for the Twitter OAuth implementation
-	
-@protected
-	NSString *key;
-	NSString *secret;
-}
-@property(retain) NSString *pin;			//added for the Twitter OAuth implementation
 
-@property(retain) NSString *key;
-@property(retain) NSString *secret;
+@interface NSMutableURLRequest (OAParameterAdditions)
 
-- (id)initWithKey:(NSString *)aKey secret:(NSString *)aSecret;
-- (id)initWithUserDefaultsUsingServiceProviderName:(NSString *)provider prefix:(NSString *)prefix;
-- (id)initWithHTTPResponseBody:(NSString *)body;
-- (int)storeInUserDefaultsWithServiceProviderName:(NSString *)provider prefix:(NSString *)prefix;
+@property(nonatomic, retain) NSArray *parameters;
+
+- (void)setHTTPBodyWithString:(NSString *)body;
+- (void)attachFileWithName:(NSString *)name filename:(NSString*)filename contentType:(NSString *)contentType data:(NSData*)data;
 
 @end

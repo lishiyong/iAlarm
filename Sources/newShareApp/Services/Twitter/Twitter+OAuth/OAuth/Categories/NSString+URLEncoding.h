@@ -1,6 +1,5 @@
 //
-//  OARequestParameter.h
-//  OAuthConsumer
+//  NSString+URLEncoding.h
 //
 //  Created by Jon Crosby on 10/19/07.
 //  Copyright 2007 Kaboomerang LLC. All rights reserved.
@@ -25,21 +24,12 @@
 
 
 #import <Foundation/Foundation.h>
-#import "NSString+URLEncoding.h"
 
 
-@interface OARequestParameter : NSObject {
-@protected
-    NSString *name;
-    NSString *value;
-}
-@property(retain) NSString *name;
-@property(retain) NSString *value;
+@interface NSString (OAURLEncodingAdditions)
 
-+ (id)requestParameterWithName:(NSString *)aName value:(NSString *)aValue;
-- (id)initWithName:(NSString *)aName value:(NSString *)aValue;
-- (NSString *)URLEncodedName;
-- (NSString *)URLEncodedValue;
-- (NSString *)URLEncodedNameValuePair;
-
+- (NSString *)encodedURLString;
+- (NSString *)encodedURLParameterString;
+- (NSString *)decodedURLString;
+- (NSString *)removeQuotes;
 @end

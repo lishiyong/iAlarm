@@ -1,8 +1,8 @@
 //
-//  OADataFetcher.h
+//  OAHMAC_SHA1SignatureProvider.m
 //  OAuthConsumer
 //
-//  Created by Jon Crosby on 11/5/07.
+//  Created by Jon Crosby on 10/19/07.
 //  Copyright 2007 Kaboomerang LLC. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,23 +23,36 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
-#import "OAMutableURLRequest.h"
-#import "OAServiceTicket.h"
 
+#import "OAHMAC_SHA1SignatureProvider.h"
 
-@interface OADataFetcher : NSObject {
-@private
-    OAMutableURLRequest *request;
-    NSURLResponse *response;
-    NSURLConnection *connection;
-    NSError *error;
-    NSData *responseData;
-    id delegate;
-    SEL didFinishSelector;
-    SEL didFailSelector;
+#include "hmac.h"
+#include "Base64Transcoder.h"
+
+@implementation OAHMAC_SHA1SignatureProvider
+
+- (NSString *)name {
+    return @"HMAC-SHA1";
 }
 
-- (void)fetchDataWithRequest:(OAMutableURLRequest *)aRequest delegate:(id)aDelegate didFinishSelector:(SEL)finishSelector didFailSelector:(SEL)failSelector;
+- (NSString *)signClearText:(NSString *)text withSecret:(NSString *)secret {
+    NSData *secretData = [[secret dataUsingEncoding:NSUTF8StringEncoding] retain];
+    NSData *clearTextData = [[text dataUsingEncoding:NSUTF8StringEncoding] retain];
+    unsigned char result[20];
+    hmac_sha1((unsigned char *)[clearTextData bytes], [clearTextData length], (unsigned char *)[secretData bytes], [secretData length], result);
+	[secretData release];
+	[clearTextData release];
+    
+    //Base64 Encoding
+    
+    char base64Result[32];
+    size_t theResultLength = 32;
+    Base64EncodeData(result, 20, base64Result, &theResultLength);
+    NSData *theData = [NSData dataWithBytes:base64Result length:theResultLength];
+    
+    NSString *base64EncodedResult = [[[NSString alloc] initWithData:theData encoding:NSUTF8StringEncoding] autorelease];
+    
+    return base64EncodedResult;
+}
 
 @end

@@ -1,8 +1,8 @@
 //
-//  OAServiceTicket.h
+//  OAConsumer.m
 //  OAuthConsumer
 //
-//  Created by Jon Crosby on 11/5/07.
+//  Created by Jon Crosby on 10/19/07.
 //  Copyright 2007 Kaboomerang LLC. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,21 +23,38 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-
-#import <Foundation/Foundation.h>
-#import "OAMutableURLRequest.h"
+#import "OAConsumer.h"
 
 
-@interface OAServiceTicket : NSObject {
-@private
-    OAMutableURLRequest *request;
-    NSURLResponse *response;
-    BOOL didSucceed;
+@implementation OAConsumer
+@synthesize key, secret;
+
+#pragma mark init
+
+- (id)initWithKey:(NSString *)aKey secret:(NSString *)aSecret {
+	if ((self = [super init])) {
+		self.key = aKey;
+		self.secret = aSecret;
+	}
+	return self;
 }
-@property(retain) OAMutableURLRequest *request;
-@property(retain) NSURLResponse *response;
-@property(assign) BOOL didSucceed;
 
-- (id)initWithRequest:(OAMutableURLRequest *)aRequest response:(NSURLResponse *)aResponse didSucceed:(BOOL)success;
+- (void)dealloc {
+	[key release];
+	[secret release];
+	[super dealloc];
+}
+
+- (BOOL)isEqual:(id)object {
+	if ([object isKindOfClass:[self class]]) {
+		return [self isEqualToConsumer:(OAConsumer*)object];
+	}
+	return NO;
+}
+
+- (BOOL)isEqualToConsumer:(OAConsumer *)aConsumer {
+	return ([self.key isEqualToString:aConsumer.key] &&
+			[self.secret isEqualToString:aConsumer.secret]);
+}
 
 @end

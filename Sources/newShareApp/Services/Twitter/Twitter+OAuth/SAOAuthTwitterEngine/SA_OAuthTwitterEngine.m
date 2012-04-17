@@ -168,6 +168,7 @@
 	
 	_accessToken.pin = pin;
 	_requestToken.pin = pin;
+    
 }
 
 //=============================================================================================================================
@@ -283,6 +284,7 @@
                          requestType:(MGTwitterRequestType)requestType 
                         responseType:(MGTwitterResponseType)responseType
 {
+
     NSString *fullPath = path;
 
 	// --------------------------------------------------------------------------------
@@ -335,11 +337,13 @@
 		if (body) {
 			finalBody = [finalBody stringByAppendingString:body];
 		}
+        /*
         if (_clientSourceToken) {
             finalBody = [finalBody stringByAppendingString:[NSString stringWithFormat:@"%@source=%@", 
                                                             (body) ? @"&" : @"?" , 
                                                             _clientSourceToken]];
         }
+         */
         
         if (finalBody) {
             [theRequest setHTTPBody:[finalBody dataUsingEncoding:NSUTF8StringEncoding]];
@@ -370,6 +374,138 @@
     return [connection identifier];
 }
 
+////////////////////////
+//lishiyong 2012-4-16 添加
+- (NSString *)_generateBoundaryString
+{
+    CFUUIDRef       uuid;
+    CFStringRef     uuidStr;
+    NSString *      result;
+    
+    uuid = CFUUIDCreate(NULL);
+    assert(uuid != NULL);
+    
+    uuidStr = CFUUIDCreateString(NULL, uuid);
+    assert(uuidStr != NULL);
+    
+    result = [NSString stringWithFormat:@"Boundary-%@", uuidStr];
+    
+    CFRelease(uuidStr);
+    CFRelease(uuid);
+    
+    return result;
+}
+
+//oauth http request 头和体
+/*
+ POST http://upload.twitter.com/1/statuses/update_with_media.json?application_id=com.yicheng.iAlarm HTTP/1.1
+ Host: upload.twitter.com
+ User-Agent: Tweeting/1.0 CFNetwork/548.0.3 Darwin/11.0.0
+ Content-Length: 364
+ Accept: 
+Content-Type: multipart/form-data; boundary=0xN0b0dy_lik3s_a_mim3__AKhSmhMrH
+Authorization: OAuth oauth_nonce="91AF93E5-AE96-4851-976C-0A23B006750D", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1334678744", oauth_consumer_key="WXZE9QillkIZpTANgLNT9g", oauth_token="342001418-qZ1Gu1Y22gCQpeA731osqlCOaEYBCf5XABLstKME", oauth_signature="9L18nV85OpNjGfqmRGiYrzkxTh0%3D", oauth_version="1.0"
+Accept-Language: zh-cn
+Accept-Encoding: gzip, deflate
+Cookie: guest_id=v1%3A133462436105286451; k=74.125.158.87.1334624361038989
+Connection: keep-alive
+Proxy-Connection: keep-alive
+
+--0xN0b0dy_lik3s_a_mim3__AKhSmhMrH
+Content-Disposition: form-data; name="status"
+
+just setting up my twttro dd ff #iOS5
+--0xN0b0dy_lik3s_a_mim3__AKhSmhMrH
+Content-Disposition: form-data; name="media[]"
+
+<imageData>
+--0xN0b0dy_lik3s_a_mim3__AKhSmhMrH--
+
+ */
+
+
+- (NSString *)_sendRequestWithStatus:(NSString *) status
+                               image:(UIImage*)image
+                         requestType:(MGTwitterRequestType)requestType 
+                        responseType:(MGTwitterResponseType)responseType
+{
+    
+    NSString *fullPath = @"https://upload.twitter.com/1/statuses/update_with_media.xml";
+    NSURL *finalURL = [NSURL URLWithString:fullPath];
+	
+	OAMutableURLRequest *theRequest = [[[OAMutableURLRequest alloc] initWithURL:finalURL
+																	   consumer:self.consumer 
+																		  token:_accessToken 
+																		  realm: nil
+															  signatureProvider:nil] autorelease];
+    [theRequest setHTTPMethod:@"POST"];
+    [theRequest setHTTPShouldHandleCookies:NO];
+    
+    NSStringEncoding stringEncoding = NSUTF8StringEncoding;
+    NSString *boundaryString = @"0xN0b0dy_lik3s_a_mim3__AKhSmhMrH";//[self _generateBoundaryString];
+    NSString *returnString = @"\r\n";
+    NSString *ggString = @"--";
+    
+    NSString *contentDisposition1 = @"Content-Disposition: form-data; name=\"status\"";
+    NSString *contentDisposition2 = @"Content-Disposition: form-data; name=\"media[]\"";
+    
+    NSString *statusFormString = status;
+    UIImage *mediaFormImage = image;
+    
+    
+    NSMutableData *bodyData = [NSMutableData dataWithLength:0];
+    
+    [bodyData appendData:[ggString dataUsingEncoding:stringEncoding]];                   /////////////
+    [bodyData appendData:[boundaryString dataUsingEncoding:stringEncoding]];             //--第一行分隔
+    
+    [bodyData appendData:[returnString dataUsingEncoding:stringEncoding]];               ////////////////
+    [bodyData appendData:[contentDisposition1 dataUsingEncoding:stringEncoding]];        //
+    [bodyData appendData:[returnString dataUsingEncoding:stringEncoding]];               //
+    [bodyData appendData:[returnString dataUsingEncoding:stringEncoding]];               //   status
+    [bodyData appendData:[statusFormString dataUsingEncoding:stringEncoding]];           //
+    [bodyData appendData:[returnString dataUsingEncoding:stringEncoding]];               ////////////////
+    
+    [bodyData appendData:[ggString dataUsingEncoding:stringEncoding]];                   ////////////
+    [bodyData appendData:[boundaryString dataUsingEncoding:stringEncoding]];             ////--分隔 
+    
+    [bodyData appendData:[returnString dataUsingEncoding:stringEncoding]];                ///////////////////
+    [bodyData appendData:[contentDisposition2 dataUsingEncoding:stringEncoding]];         //
+    [bodyData appendData:[returnString dataUsingEncoding:stringEncoding]];                //
+    [bodyData appendData:[returnString dataUsingEncoding:stringEncoding]];                //  media[]
+    [bodyData appendData:UIImagePNGRepresentation(mediaFormImage)];                       //
+    [bodyData appendData:[returnString dataUsingEncoding:stringEncoding]];                ////////////////////
+    
+    [bodyData appendData:[ggString dataUsingEncoding:stringEncoding]];                    /////////////
+    [bodyData appendData:[boundaryString dataUsingEncoding:stringEncoding]];              //--最后的分隔--
+    [bodyData appendData:[ggString dataUsingEncoding:stringEncoding]];                    /////////////
+    
+    [theRequest setHTTPBody:bodyData];
+     
+    [theRequest setValue:[NSString stringWithFormat:@"multipart/form-data; boundary=\"%@\"", boundaryString] forHTTPHeaderField:@"Content-Type"];
+    [theRequest setValue:[NSString stringWithFormat:@"%llu", bodyData.length] forHTTPHeaderField:@"Content-Length"];
+
+    
+	[theRequest prepare];
+    
+    
+    
+    MGTwitterHTTPURLConnection *connection;
+    connection = [[MGTwitterHTTPURLConnection alloc] initWithRequest:theRequest 
+                                                            delegate:self 
+                                                         requestType:requestType 
+                                                        responseType:responseType];
+    
+    if (!connection) {
+        return nil;
+    } else {
+        [_connections setObject:connection forKey:[connection identifier]];
+        [connection release];
+    }
+    
+    return [connection identifier];
+}
+//lishiyong 2012-4-16 添加
+////////////////////////
 
 - (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {

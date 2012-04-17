@@ -456,6 +456,7 @@
                          requestType:(MGTwitterRequestType)requestType 
                         responseType:(MGTwitterResponseType)responseType
 {
+    
     // Construct appropriate URL string.
     NSString *fullPath = path;
     if (params) {
@@ -1039,6 +1040,21 @@
                             requestType:MGTwitterUpdateSendRequest
                            responseType:MGTwitterStatus];
 }
+
+//lishiyong 2012-4-16 添加
+- (NSString *)_sendRequestWithStatus:(NSString *) status
+                               image:(UIImage*)image
+                         requestType:(MGTwitterRequestType)requestType 
+                        responseType:(MGTwitterResponseType)responseType
+{
+    return nil;//声明个接口，实现在子类
+}
+
+- (NSString *)sendUpdate:(NSString *)status image:(UIImage*)image{
+    status = (status)?status:@"";
+    return [self _sendRequestWithStatus:status image:image requestType:MGTwitterUpdateSendRequest responseType:MGTwitterStatus];
+}
+
 
 
 #pragma mark -

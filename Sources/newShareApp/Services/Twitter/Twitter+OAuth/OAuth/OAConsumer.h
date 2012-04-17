@@ -1,5 +1,5 @@
 //
-//  OAuthConsumer.h
+//  OAConsumer.h
 //  OAuthConsumer
 //
 //  Created by Jon Crosby on 10/19/07.
@@ -23,17 +23,20 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 #import <Foundation/Foundation.h>
-#import <OAuthConsumer/OAToken.h>
-#import <OAuthConsumer/OAConsumer.h>
-#import <OAuthConsumer/OAMutableURLRequest.h>
-#import <OAuthConsumer/NSString+URLEncoding.h>
-#import <OAuthConsumer/NSMutableURLRequest+Parameters.h>
-#import <OAuthConsumer/NSURL+Base.h>
-#import <OAuthConsumer/OASignatureProviding.h>
-#import <OAuthConsumer/OAHMAC_SHA1SignatureProvider.h>
-#import <OAuthConsumer/OAPlaintextSignatureProvider.h>
-#import <OAuthConsumer/OARequestParameter.h>
-#import <OAuthConsumer/OAServiceTicket.h>
-#import <OAuthConsumer/OADataFetcher.h>
-#import <OAuthConsumer/OAAsynchronousDataFetcher.h>
+
+
+@interface OAConsumer : NSObject {
+@protected
+	NSString *key;
+	NSString *secret;
+}
+@property(copy, readwrite) NSString *key;
+@property(copy, readwrite) NSString *secret;
+
+- (id)initWithKey:(const NSString *)aKey secret:(const NSString *)aSecret;
+
+- (BOOL)isEqualToConsumer:(OAConsumer *)aConsumer;
+
+@end
