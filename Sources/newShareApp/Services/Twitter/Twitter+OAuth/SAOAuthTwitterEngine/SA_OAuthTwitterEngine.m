@@ -41,7 +41,7 @@
 
 @synthesize pin = _pin, requestTokenURL = _requestTokenURL, accessTokenURL = _accessTokenURL, authorizeURL = _authorizeURL;
 @synthesize consumerSecret = _consumerSecret, consumerKey = _consumerKey;
-@synthesize authDelegate = _authDelegate;
+@synthesize authDelegate = _authDelegate ,webViewDelegate = _webViewDelegate;
 
 - (void) dealloc {
 	self.pin = nil;
@@ -131,6 +131,7 @@
 
 //This generates a URL request that can be passed to a UIWebView. It will open a page in which the user must enter their Twitter creds to validate
 - (NSURLRequest *) authorizeURLRequest {
+    if (!_requestToken) return  nil; //lishiyong 2012-4-17
 	if (!_requestToken.key && _requestToken.secret) return nil;	// we need a valid request token to generate the URL
 
 	OAMutableURLRequest			*request = [[[OAMutableURLRequest alloc] initWithURL: self.authorizeURL consumer: nil token: _requestToken realm: nil signatureProvider: nil] autorelease];	
@@ -153,13 +154,21 @@
 
 - (void) clearAccessToken {
 	if ([_authDelegate respondsToSelector: @selector(storeCachedTwitterOAuthData:forUsername:)]) [(id) _authDelegate storeCachedTwitterOAuthData: @"" forUsername: self.username];
-	[_accessToken release];
+	
+    [_accessToken release];
 	_accessToken = nil;
 	[_consumer release];
 	_consumer = nil;
 	self.pin = nil;
 	[_requestToken release];
 	_requestToken = nil;
+    
+    //lishiyong 2012-4-16
+    [_username release];
+    _username = nil;
+    [_password release];
+    _password = nil;
+  
 }
 
 - (void) setPin: (NSString *) pin {
@@ -191,6 +200,14 @@
 //
 - (void) outhTicketFailed: (OAServiceTicket *) ticket data: (NSData *) data {
 	if ([_authDelegate respondsToSelector: @selector(twitterOAuthConnectionFailedWithData:)]) [(id) _authDelegate twitterOAuthConnectionFailedWithData: data];
+    
+    //lishiyong 2012-4-19 添加
+    if ([self.webViewDelegate respondsToSelector:@selector(requestRequestTokenSucceeded:)]) {
+        [self.webViewDelegate requestRequestTokenSucceeded:NO];
+    }else if([self.webViewDelegate respondsToSelector:@selector(requestAccessTokenSucceeded:)]){
+        [self.webViewDelegate requestAccessTokenSucceeded:NO];
+    }
+
 }
 
 
@@ -201,7 +218,8 @@
 // the authentication URL
 //
 - (void) setRequestToken: (OAServiceTicket *) ticket withData: (NSData *) data {
-	if (!ticket.didSucceed || !data) return;
+    
+    if (!ticket.didSucceed || !data) return;
 	
 	NSString *dataString = [[[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding] autorelease];
 	if (!dataString) return;
@@ -210,6 +228,12 @@
 	_requestToken = [[OAToken alloc] initWithHTTPResponseBody:dataString];
 	
 	if (self.pin.length) _requestToken.pin = self.pin;
+    
+    //lishiyong 2012-4-19 添加
+    if ([self.webViewDelegate respondsToSelector:@selector(requestRequestTokenSucceeded:)]) {
+        [self.webViewDelegate requestRequestTokenSucceeded:YES];
+    }
+    
 }
 
 
@@ -235,6 +259,11 @@
 	
 	[_accessToken release];
 	_accessToken = [[OAToken alloc] initWithHTTPResponseBody:dataString];
+    
+    //lishiyong 2012-4-19 添加
+    if ([self.webViewDelegate respondsToSelector:@selector(requestAccessTokenSucceeded:)]) {
+        [self.webViewDelegate requestAccessTokenSucceeded:YES];
+    }
 }
 
 

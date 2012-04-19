@@ -11,8 +11,10 @@
 
 #import "NSObject-YC.h"
 #import <UIKit/UIKit.h>
+#import "SA_OAuthTwitterEngine.h"
 
 @class SA_OAuthTwitterEngine, SA_OAuthTwitterController;
+
 
 @protocol SA_OAuthTwitterControllerDelegate <YCObject>
 @optional
@@ -24,8 +26,8 @@
 
 @end
 
-
-@interface SA_OAuthTwitterController : UIViewController <UIWebViewDelegate> {
+@protocol WebViewOAuthTwitterEngineDelegate;
+@interface SA_OAuthTwitterController : UIViewController <UIWebViewDelegate,WebViewOAuthTwitterEngineDelegate> {
 
 	SA_OAuthTwitterEngine						*_engine;
 	UIWebView									*_webView;
@@ -38,6 +40,8 @@
 	UIInterfaceOrientation                      _orientation;
 	BOOL										_loading, _firstLoad;
 	UIToolbar									*_pinCopyPromptBar;
+    
+    UILabel	*oauthResultLabel;
 }
 
 

@@ -152,4 +152,13 @@
     return obj;
 }
 
++ (YCShareContent*)shareContentWithTitle:(NSString *)theTitle message:(NSString*)theMessage image:(UIImage *)theImage{
+    YCShareContent* obj = [[[YCShareContent alloc] init] autorelease];
+    obj.title = theTitle;
+    obj.message = theMessage;
+    obj.image1 = theImage;
+    
+    return obj;
+}
+
 @end

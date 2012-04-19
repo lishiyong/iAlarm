@@ -18,6 +18,14 @@
 - (void) twitterOAuthConnectionFailedWithData: (NSData *) data; 
 @end
 
+//lishiyong 2012-4-19 添加
+@protocol WebViewOAuthTwitterEngineDelegate <NSObject>
+@optional
+- (void)requestRequestTokenSucceeded: (BOOL)flag;
+- (void)requestAccessTokenSucceeded: (BOOL)flag;
+
+@end
+
 
 @class OAToken;
 @class OAConsumer;
@@ -37,6 +45,8 @@
 	OAToken		*_requestToken;
 	OAToken		*_accessToken; 
     id<SA_OAuthTwitterEngineDelegate> _authDelegate; //lishiyong 2012-3-18 添加
+    
+    id<WebViewOAuthTwitterEngineDelegate> _webViewDelegate;//lishiyong 2012-4-19 添加
 }
 
 @property (nonatomic, readwrite, retain) NSString *consumerSecret, *consumerKey;
@@ -44,6 +54,7 @@
 @property (nonatomic, readonly) BOOL OAuthSetup;
 
 @property (nonatomic, assign) id<SA_OAuthTwitterEngineDelegate> authDelegate; //lishiyong 2012-3-18 添加
+@property (nonatomic, assign) id<WebViewOAuthTwitterEngineDelegate> webViewDelegate; //lishiyong 2012-3-18 添加
 
 - (BOOL) isAuthorized;
 

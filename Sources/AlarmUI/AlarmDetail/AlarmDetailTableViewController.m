@@ -238,7 +238,7 @@
 
 
         UIImage *image = [UIImage imageNamed:@"UIPopoverButton.png"];
-        UIImage *newImage = [image stretchableImageWithLeftCapWidth:6 topCapHeight:6];
+        UIImage *newImage = [image stretchableImageWithLeftCapWidth:8 topCapHeight:8];
         [self->testAlarmButton setBackgroundImage:newImage forState:UIControlStateNormal];
         UIImage *imagePressed = [UIImage imageNamed:@"UIPopoverButtonPressed.png"];
         UIImage *newImagePressed = [imagePressed stretchableImageWithLeftCapWidth:6 topCapHeight:6];

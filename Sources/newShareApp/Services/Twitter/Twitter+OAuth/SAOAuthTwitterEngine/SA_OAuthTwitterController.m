@@ -67,6 +67,8 @@ static NSString* const kGGTwitterLoadingBackgroundImage = @"twitter_load.png";
 	
 	self.view = nil;
 	self.engine = nil;
+    
+    [oauthResultLabel release];
 	[super dealloc];
 }
 
@@ -91,7 +93,8 @@ static NSString* const kGGTwitterLoadingBackgroundImage = @"twitter_load.png";
 
 - (id) initWithEngine: (SA_OAuthTwitterEngine *) engine andOrientation:(UIInterfaceOrientation)theOrientation {
 	if (self = [super init]) {
-		self.engine = engine;
+		_engine = [engine retain];
+        _engine.webViewDelegate = self;        
 		
 		/*
 		if (!engine.OAuthSetup) [_engine requestRequestToken];
@@ -133,8 +136,8 @@ static NSString* const kGGTwitterLoadingBackgroundImage = @"twitter_load.png";
 	[_engine requestAccessToken];
 	
     
-	if ([_delegate respondsToSelector: @selector(OAuthTwitterController:authenticatedWithUsername:)]) 
-        [_delegate OAuthTwitterController: self authenticatedWithUsername: _engine.username];
+	
+    //等3秒，因为[_engine requestAccessToken] 的执行需要时间
     
     //lishiyong 2012-03-26 删除 
     //[self performSelector: @selector(dismissModalViewControllerAnimated:) withObject: (id) kCFBooleanTrue afterDelay: 1.0];
@@ -153,6 +156,48 @@ static NSString* const kGGTwitterLoadingBackgroundImage = @"twitter_load.png";
 }
 
 //=============================================================================================================================
+
+//lishiyong 2012-4-19 添加
+#pragma mark - WebViewOAuthTwitterEngineDelegate
+- (void)requestRequestTokenSucceeded: (BOOL)flag{
+    
+    if (flag) {
+        if (UIInterfaceOrientationIsLandscape( self.orientation ) )
+            _webView = [[UIWebView alloc] initWithFrame: CGRectMake(0, 32, 480, 288)];
+        else
+            _webView = [[UIWebView alloc] initWithFrame: CGRectMake(0, 44, 320, 416)];
+        
+        _webView.alpha = 0.0;
+        _webView.delegate = self;
+        _webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        if ([_webView respondsToSelector: @selector(setDetectsPhoneNumbers:)]) [(id) _webView setDetectsPhoneNumbers: NO];
+        if ([_webView respondsToSelector: @selector(setDataDetectorTypes:)]) [(id) _webView setDataDetectorTypes: 0];
+        
+        NSURLRequest			*request = _engine.authorizeURLRequest;
+        [_webView loadRequest: request];
+        
+        [self.view addSubview: _webView];
+        
+        [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(pasteboardChanged:) name: UIPasteboardChangedNotification object: nil];
+    }else{
+        oauthResultLabel.text = NSLocalizedString(@"Authorization failed!", nil);
+        [self performSelector: @selector(dismissModalViewControllerAnimated:) withObject: (id) kCFBooleanTrue afterDelay: 1.0];
+    }
+    
+}
+- (void)requestAccessTokenSucceeded: (BOOL)flag{
+    
+    if (flag) {
+        //认证的最后一步成功了
+        if ([_delegate respondsToSelector: @selector(OAuthTwitterController:authenticatedWithUsername:)]) 
+            [_delegate performSelector:@selector(OAuthTwitterController:authenticatedWithUsername:) withObject:self withObject:_engine.username afterDelay:0.0]; 
+    }else{
+        oauthResultLabel.text = NSLocalizedString(@"Authorization failed!", nil);
+        [self performSelector: @selector(dismissModalViewControllerAnimated:) withObject: (id) kCFBooleanTrue afterDelay: 1.0];
+    }
+}
+
+
 #pragma mark View Controller Stuff
 //lishiyong 2012-03-26 添加
 - (void)viewDidDisappear:(BOOL)animated{
@@ -162,10 +207,15 @@ static NSString* const kGGTwitterLoadingBackgroundImage = @"twitter_load.png";
     
 }
 
+
 - (void)viewDidAppear:(BOOL)animated{
-	if (!self.engine.OAuthSetup) [self.engine requestRequestToken];
+	if (!self.engine.OAuthSetup) 
+        [self.engine requestRequestToken];
+    else
+        [self requestRequestTokenSucceeded:YES];
+        
 	_firstLoad = YES;
-	
+	/* 放到 requestRequestTokenSucceeded:中了
 	if (UIInterfaceOrientationIsLandscape( self.orientation ) )
 		_webView = [[UIWebView alloc] initWithFrame: CGRectMake(0, 32, 480, 288)];
 	else
@@ -183,12 +233,17 @@ static NSString* const kGGTwitterLoadingBackgroundImage = @"twitter_load.png";
 	[self.view addSubview: _webView];
 	
 	[[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(pasteboardChanged:) name: UIPasteboardChangedNotification object: nil];
-	
+	*/
+    
+    [UIView beginAnimations: nil context: nil];
+	_blockerView.alpha = 1.0;
+	[UIView commitAnimations];
 }
  
 
 - (void)loadWebView{
-	if (!self.engine.OAuthSetup) [self.engine requestRequestToken];
+	if (!self.engine.OAuthSetup) 
+        [self.engine requestRequestToken];
 	_firstLoad = YES;
 	
 	if (UIInterfaceOrientationIsLandscape( self.orientation ) )
@@ -212,7 +267,10 @@ static NSString* const kGGTwitterLoadingBackgroundImage = @"twitter_load.png";
 - (void) loadView {
 	[super loadView];
 
-	_backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kGGTwitterLoadingBackgroundImage]];
+	//_backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kGGTwitterLoadingBackgroundImage]];
+    _backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    _backgroundView.backgroundColor = [UIColor blackColor];
+    
 	if ( UIInterfaceOrientationIsLandscape( self.orientation ) ) {
 		self.view = [[[UIView alloc] initWithFrame: CGRectMake(0, 0, 480, 288)] autorelease];	
 		_backgroundView.frame =  CGRectMake(0, 44, 480, 288);
@@ -240,13 +298,13 @@ static NSString* const kGGTwitterLoadingBackgroundImage = @"twitter_load.png";
 	_blockerView.clipsToBounds = YES;
 	if ([_blockerView.layer respondsToSelector: @selector(setCornerRadius:)]) [(id) _blockerView.layer setCornerRadius: 10];
 	
-	UILabel								*label = [[[UILabel alloc] initWithFrame: CGRectMake(0, 5, _blockerView.bounds.size.width, 15)] autorelease];
-	label.text = NSLocalizedString(@"Please Wait…", nil);
-	label.backgroundColor = [UIColor clearColor];
-	label.textColor = [UIColor whiteColor];
-	label.textAlignment = UITextAlignmentCenter;
-	label.font = [UIFont boldSystemFontOfSize: 15];
-	[_blockerView addSubview: label];
+	oauthResultLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 5, _blockerView.bounds.size.width, 15)] ;
+	oauthResultLabel.text = NSLocalizedString(@"Please Wait…", nil);
+	oauthResultLabel.backgroundColor = [UIColor clearColor];
+	oauthResultLabel.textColor = [UIColor whiteColor];
+	oauthResultLabel.textAlignment = UITextAlignmentCenter;
+	oauthResultLabel.font = [UIFont boldSystemFontOfSize: 15];
+	[_blockerView addSubview: oauthResultLabel];
 	
 	UIActivityIndicatorView				*spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleWhite] autorelease];
 	
@@ -406,9 +464,11 @@ Ugly. I apologize for its inelegance. Bleah.
 - (void) webViewDidStartLoad: (UIWebView *) webView {
 	//[_activityIndicator startAnimating];
 	_loading = YES;
+    /*
 	[UIView beginAnimations: nil context: nil];
 	_blockerView.alpha = 1.0;
 	[UIView commitAnimations];
+     */
 }
 
 

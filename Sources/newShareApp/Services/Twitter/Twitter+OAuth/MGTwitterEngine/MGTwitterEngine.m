@@ -1359,11 +1359,20 @@
 
 - (NSString *)endUserSession
 {
+    
+    
     NSString *path = @"account/end_session"; // deliberately no format specified
     
-    return [self _sendRequestWithMethod:nil path:path queryParameters:nil body:nil 
+    NSString *s = [self _sendRequestWithMethod:nil path:path queryParameters:nil body:nil 
                             requestType:MGTwitterAccountRequest 
                            responseType:MGTwitterGeneric];
+    //lishiyong 2012-4-16
+    [_username release];
+    _username = nil;
+    [_password release];
+    _password = nil;
+    
+    return s;
 }
 
 

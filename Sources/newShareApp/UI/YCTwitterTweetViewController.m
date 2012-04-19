@@ -126,7 +126,7 @@
 	[self.progressView performSelector:@selector(setProgress:) withFloat:0.1 afterDelay:0.1];
 	
     //[twitterEngine sendUpdate:self.textView.text ];
-    [twitterEngine sendUpdate:self.textView.text image:[UIImage imageNamed:@"20_IAFlagGreen@2x.png"] ];
+    [twitterEngine sendUpdate:self.textView.text image:shareContent.image1];
 	
 }
 
@@ -170,9 +170,8 @@
 	self.navigationItem.leftBarButtonItem = self.cancelButtonItem;
 	
 	//共享的消息
-	//NSString *s = [NSString stringWithFormat:@"%@\n%@",self.anShareData.twitterMessage,KLinkCustomAppStore];
-	NSString *s = [NSString stringWithFormat:@"%@\n%@",shareContent.message,KLinkCustomAppStoreFullVersion];//twitter上直接完全版
-	self.textView.text = s;
+	//NSString *s = [NSString stringWithFormat:@"%@\n%@",shareContent.message,KLinkCustomAppStoreFullVersion];//twitter上直接完全版
+	self.textView.text = shareContent.message;
     
 }
 

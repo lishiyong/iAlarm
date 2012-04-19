@@ -99,6 +99,7 @@ static NSString* kFacebookAppId = @"146975985381829";
     [self.twitterEngine clearAccessToken];
     [self.twitterEngine clearsCookies];
     [self.twitterEngine closeAllConnections];
+    //[self.twitterEngine endUserSession];
     
     //发送认证改变通知
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -146,21 +147,10 @@ static NSString* kFacebookAppId = @"146975985381829";
     [shareAppSheet showInView:superViewController.view];
 }
 
-- (void)shareApp{
-    [sharedTitle release];sharedTitle = nil;
-    [sharedMessage release];sharedMessage = nil;
-    [sharedImage release];sharedImage = nil;
+- (void)shareAppWithContent:(YCShareContent*)theShareContent{
+    shareContent = [theShareContent retain];
     [self shareAppPrivate];
 }
-
-- (void)shareAppWithTitle:(NSString*)title Message:(NSString*)message image:(UIImage*)image{
-    sharedTitle = [title copy];
-    sharedMessage = [message copy];
-    sharedImage = [image retain];
-    [self shareAppPrivate];
-}
-
-
 
 - (id)twitterEngine{
 	if (twitterEngine == nil) {
@@ -185,7 +175,7 @@ static NSString* kFacebookAppId = @"146975985381829";
 - (id)twTweetViewController{
 	if (twTweetViewController == nil) {
         
-        twTweetViewController = [[YCTwitterTweetViewController alloc] initWithNibName:@"YCTwitterFeedViewController" bundle:nil engine:self.twitterEngine messageDelegate:self shareData:[YCShareContent twitterShareContentWithMessage:sharedMessage image:sharedImage]];
+        twTweetViewController = [[YCTwitterTweetViewController alloc] initWithNibName:@"YCTwitterFeedViewController" bundle:nil engine:self.twitterEngine messageDelegate:self shareData:shareContent];
         
 	}
 	return twTweetViewController;
@@ -200,7 +190,7 @@ static NSString* kFacebookAppId = @"146975985381829";
 
 - (id)fbFeedViewController{
 	if (fbFeedViewController == nil) {
-		fbFeedViewController = [[YCFacebookFeedViewController alloc] initWithNibName:@"YCFacebookFeedViewController" bundle:nil engine:self.facebookEngine messageDelegate:self shareData:[YCShareContent facebookShareContentWithMessage:sharedMessage image:sharedImage]];
+		fbFeedViewController = [[YCFacebookFeedViewController alloc] initWithNibName:@"YCFacebookFeedViewController" bundle:nil engine:self.facebookEngine messageDelegate:self shareData:shareContent];
 	}
 	return fbFeedViewController;
 }
@@ -294,12 +284,12 @@ static NSString* kFacebookAppId = @"146975985381829";
     
 }
 
-- (void) OAuthTwitterControllerViewDidDisappear: (SA_OAuthTwitterController *) controller didFinishWithResult: (BOOL)result{
+
+- (void)OAuthTwitterControllerViewDidDisappear: (SA_OAuthTwitterController *) controller didFinishWithResult: (BOOL)result{
     if (sendShardFlag) {
         sendShardFlag = NO;
         if (result) //弹出twitter发信息
             [superViewController presentModalViewController:self.twTweetNavController  animated:YES];
-        
     }
 }
 
@@ -494,19 +484,17 @@ static NSString* kFacebookAppId = @"146975985381829";
 	picker.mailComposeDelegate = self;
 	
     //是否使用默认的数据
-    YCShareContent *shareContent = [YCShareContent mailShareContentWithMessage:sharedMessage image:sharedImage];
-    UIImage *emailImage = sharedImage ? sharedImage : shareContent.image1;
-    NSString *emailMessage = sharedMessage ? sharedMessage : shareContent.message;
+    NSString *emailMessage =shareContent.message;
     
 	// Attach an image to the email
-    NSData *myData = UIImageJPEGRepresentation(emailImage, 1.0);
+    NSData *myData = UIImageJPEGRepresentation(shareContent.image1, 1.0);
     [picker addAttachmentData:myData mimeType:@"image/jpg" fileName:@"a1"];
 	
 	// 邮件标题
 	[picker setSubject:shareContent.title];
 	
 	// Fill out the email body text
-	NSString *emailBody = [NSString stringWithFormat:@"%@\n%@",emailMessage,shareContent.link1];
+	NSString *emailBody = emailMessage;
 	[picker setMessageBody:emailBody isHTML:NO];
 	
 	[superViewController presentModalViewController:picker animated:YES];
@@ -519,9 +507,7 @@ static NSString* kFacebookAppId = @"146975985381829";
 	MFMessageComposeViewController*picker = [[MFMessageComposeViewController alloc] init];
 	picker.messageComposeDelegate= self;
     
-    YCShareContent *shareContent = [YCShareContent messageShareContentWithMessage:sharedMessage];
-	NSString *s = [NSString stringWithFormat:@"%@\n%@",shareContent.message,shareContent.link1];
-    picker.body = s; 
+    picker.body = shareContent.message; 
 	[superViewController presentModalViewController:picker animated:YES];
     [picker release];
 	
@@ -539,15 +525,13 @@ static NSString* kFacebookAppId = @"146975985381829";
 
 - (void)dealloc {
     [player release];
-    [sharedTitle release];
-    [sharedMessage release];
-    [sharedImage release];
     [twitterEngine release];
     [facebookEngine release];
     [twTweetViewController release];
 	[twTweetNavController release];
 	[fbFeedViewController release];
     [fbFeedNavController release];
+    [shareContent release];
     
     //释放掉全局的FBData
 	[YCFacebookGlobalData globalData].resultMe = nil;

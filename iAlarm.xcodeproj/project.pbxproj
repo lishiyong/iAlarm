@@ -997,6 +997,10 @@
 		9CE8970813000275008FBD45 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CE8970713000275008FBD45 /* AudioToolbox.framework */; };
 		9CE8972C130003DF008FBD45 /* iAlarm.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8972B130003DF008FBD45 /* iAlarm.xcdatamodeld */; };
 		9CE8973A13000454008FBD45 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8973813000454008FBD45 /* main.m */; };
+		9CEF84C915406D0300A68B2E /* YCGrayButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CEF84C815406D0300A68B2E /* YCGrayButton.png */; };
+		9CEF84CA15406D0300A68B2E /* YCGrayButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CEF84C815406D0300A68B2E /* YCGrayButton.png */; };
+		9CEF84CC15406D1000A68B2E /* YCGrayButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CEF84CB15406D1000A68B2E /* YCGrayButton@2x.png */; };
+		9CEF84CD15406D1000A68B2E /* YCGrayButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CEF84CB15406D1000A68B2E /* YCGrayButton@2x.png */; };
 		9CF50EF81499801800C814AB /* TrackingDotYellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF50EF61499801800C814AB /* TrackingDotYellow.png */; };
 		9CF50EF91499801800C814AB /* TrackingDotYellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF50EF61499801800C814AB /* TrackingDotYellow.png */; };
 		9CF50EFA1499801800C814AB /* TrackingDotYellow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF50EF71499801800C814AB /* TrackingDotYellow@2x.png */; };
@@ -1719,6 +1723,8 @@
 		9CE8970713000275008FBD45 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		9CE8972A130003DF008FBD45 /* iAlarm_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iAlarm_Prefix.pch; sourceTree = "<group>"; };
 		9CE8973813000454008FBD45 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9CEF84C815406D0300A68B2E /* YCGrayButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCGrayButton.png; sourceTree = "<group>"; };
+		9CEF84CB15406D1000A68B2E /* YCGrayButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCGrayButton@2x.png"; sourceTree = "<group>"; };
 		9CF50EF61499801800C814AB /* TrackingDotYellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TrackingDotYellow.png; sourceTree = "<group>"; };
 		9CF50EF71499801800C814AB /* TrackingDotYellow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TrackingDotYellow@2x.png"; sourceTree = "<group>"; };
 		9CF50EFC14999D8B00C814AB /* IAGlassMask@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAGlassMask@2x.png"; sourceTree = "<group>"; };
@@ -2069,6 +2075,8 @@
 		9C85F37E14FBA68C00B49FF4 /* AlarmFind */ = {
 			isa = PBXGroup;
 			children = (
+				9CEF84C815406D0300A68B2E /* YCGrayButton.png */,
+				9CEF84CB15406D1000A68B2E /* YCGrayButton@2x.png */,
 				9C070709152C18F400AC4207 /* UIButtonBarArrowDownSmall.png */,
 				9C070703152C18E300AC4207 /* UIButtonBarArrowUpSmall.png */,
 				9C0706FD152C189E00AC4207 /* UIButtonBarArrowDownSmall@2x.png */,
@@ -3809,6 +3817,8 @@
 				9C07070C152C18F400AC4207 /* UIButtonBarArrowDownSmall.png in Resources */,
 				9C1446B9153C79090071EFF2 /* OATestServer.rb in Resources */,
 				9C1446BF153C79090071EFF2 /* README in Resources */,
+				9CEF84C915406D0300A68B2E /* YCGrayButton.png in Resources */,
+				9CEF84CC15406D1000A68B2E /* YCGrayButton@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4140,6 +4150,8 @@
 				9C07070D152C18F400AC4207 /* UIButtonBarArrowDownSmall.png in Resources */,
 				9C1446BA153C79090071EFF2 /* OATestServer.rb in Resources */,
 				9C1446C0153C79090071EFF2 /* README in Resources */,
+				9CEF84CA15406D0300A68B2E /* YCGrayButton.png in Resources */,
+				9CEF84CD15406D1000A68B2E /* YCGrayButton@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

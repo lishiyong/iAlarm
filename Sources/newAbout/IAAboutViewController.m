@@ -463,7 +463,7 @@
 }
 
 - (void)didSelectShareAppCell:(id)sender{
-	[self.shareAppEngine shareApp];
+	//[self.shareAppEngine shareApp];
 }
 
 - (void)followOnTwitterByAfterIOS5ForUserName:(NSString*)userName{

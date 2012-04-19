@@ -33,7 +33,7 @@
 	UIAlertView *confirmRateAlertView;
     UIAlertView *viewAlarmAlertView;
     
-
+    
     NSUInteger indexForView;//查看的index
     BOOL animatedView;
     IAAlarmNotification *alarmNotification_;

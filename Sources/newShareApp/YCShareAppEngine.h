@@ -15,7 +15,7 @@
 
 
 @protocol FBSessionDelegate, YCMessageComposeControllerDelegate;
-@class YCSoundPlayer,YCFacebookGlobalData, YCFacebookFeedViewController, YCTwitterTweetViewController;
+@class YCSoundPlayer,YCFacebookGlobalData, YCFacebookFeedViewController, YCTwitterTweetViewController, YCShareContent;
 @class SA_OAuthTwitterEngine, SA_OAuthTwitterEngineDelegate;
 @interface YCShareAppEngine : NSObject <UIActionSheetDelegate,MFMailComposeViewControllerDelegate,MFMessageComposeViewControllerDelegate,SA_OAuthTwitterEngineDelegate,SA_OAuthTwitterControllerDelegate,FBSessionDelegate,FBRequestDelegate,YCMessageComposeControllerDelegate>{
     
@@ -24,9 +24,6 @@
     
     //YCSoundPlayer *player;
     UIViewController *superViewController; //引用这个类的view控制器。 循环引用的变量，不能retain
-    NSString *sharedTitle;
-    NSString *sharedMessage;
-    UIImage *sharedImage;
     
     SA_OAuthTwitterEngine *twitterEngine;
     Facebook *facebookEngine;
@@ -34,6 +31,7 @@
 	UINavigationController *twTweetNavController;
 	YCFacebookFeedViewController *fbFeedViewController;
 	UINavigationController *fbFeedNavController;
+    YCShareContent *shareContent;
      
     
 }
@@ -51,8 +49,6 @@
 
 
 - (id)initWithSuperViewController:(id)viewController;
-- (void)shareApp; 
-- (void)shareAppWithTitle:(NSString*)title Message:(NSString*)message image:(UIImage*)image;
-//- (void)shareAppWithContent(YCShareContent*)content; 
+- (void)shareAppWithContent:(YCShareContent*)theShareContent; 
 
 @end

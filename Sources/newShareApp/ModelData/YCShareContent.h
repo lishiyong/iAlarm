@@ -21,12 +21,7 @@
     NSString *link2;
 
 }
-/*
-+ (YCShareContent*)facebookShareContent;
-+ (YCShareContent*)twitterShareContent;
-+ (YCShareContent*)mailShareContent;
-+ (YCShareContent*)messageShareContent;
- */
+
 
 + (YCShareContent*)facebookShareContentWithMessage:(NSString*)theMessage image:(UIImage*)theImage;
 + (YCShareContent*)twitterShareContentWithMessage:(NSString*)theMessage image:(UIImage*)theImage;
@@ -43,5 +38,7 @@
 @property(nonatomic, copy) NSString *link2;
 
 
+
++ (YCShareContent*)shareContentWithTitle:(NSString *)theTitle message:(NSString*)theMessage image:(UIImage *)theImage;
 
 @end

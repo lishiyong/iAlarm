@@ -280,7 +280,7 @@
 									   shareContent.imageLinkFB,@"picture",
 									   nil];
          */
-        
+        /*
         publishParam = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                         shareContent.message, @"message",
                         shareContent.link1, @"link",   //链接
@@ -288,7 +288,12 @@
                         shareContent.link2,@"caption", 
                         shareContent.imageLink1,@"picture",
                         nil];
+         */
         
+        publishParam = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                        shareContent.message, @"message",
+                        shareContent.image1,@"picture",
+                        nil];
 		
 		[publishParam retain];
 	}
@@ -316,9 +321,9 @@
 		
 		YCFacebookPeople *anPeople = [[[YCFacebookGlobalData globalData].checkedPeoples allValues] objectAtIndex:publishI];
 		NSString *s = anPeople.identifier;
-		NSString *ss = [NSString stringWithFormat:@"%@/feed",s];
+		NSString *ss = [NSString stringWithFormat:@"%@/photos",s];
 		if (anPeople == [YCFacebookGlobalData globalData].me) 
-			ss = @"me/feed";
+			ss = @"me/photos";
 			
 		//发布到涂鸦墙
 		[facebookEngine requestWithGraphPath:ss
