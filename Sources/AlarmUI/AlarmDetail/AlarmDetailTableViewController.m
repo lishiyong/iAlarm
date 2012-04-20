@@ -1074,17 +1074,34 @@
 
 -(IBAction)testAlarmButtonPressed:(id)sender{
     
+    IAAlarm *alarmForNotif = self.alarmTemp;
+
     //保存到文件
-    IAAlarmNotification *alarmNotification = [[[IAAlarmNotification alloc] initWithAlarm:self.alarmTemp] autorelease];
+    IAAlarmNotification *alarmNotification = [[[IAAlarmNotification alloc] initWithAlarm:alarmForNotif] autorelease];
     [[IAAlarmNotificationCenter defaultCenter] addNotification:alarmNotification];
     
     //发本地通知
-    BOOL arrived = [self.alarmTemp.positionType.positionTypeId isEqualToString:@"p002"];//是 “到达时候”提醒
+    BOOL arrived = [alarmForNotif.positionType.positionTypeId isEqualToString:@"p002"];//是 “到达时候”提醒
     NSString *promptTemple = arrived?kAlertFrmStringArrived:kAlertFrmStringLeaved;
-    NSString *alertBody = [[[NSString alloc] initWithFormat:promptTemple,self.alarmTemp.alarmName,0.0] autorelease];
-    NSString *alarmNotes = [self.alarmTemp.notes trim];
-    if (alarmNotes && alarmNotes.length > 0) {
-        alertBody = [NSString stringWithFormat:@"%@: %@",alertBody,alarmNotes];
+    
+    NSString *alertTitle = [[[NSString alloc] initWithFormat:promptTemple,alarmForNotif.alarmName,0.0] autorelease];
+    NSString *alarmMessage = [alarmForNotif.notes trim];
+
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObject:alarmNotification.notificationId forKey:@"knotificationId"];
+    [userInfo setObject:alertTitle forKey:@"kTitleStringKey"];
+    if (alarmMessage) 
+        [userInfo setObject:alarmMessage forKey:@"kMessageStringKey"];
+    
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 4.2) {// iOS 4.2 带个闹钟的图标
+        NSString *iconString = @"\ue325";//这是铃铛🔔
+        alertTitle =  [NSString stringWithFormat:@"%@%@",iconString,alertTitle]; 
+        [userInfo setObject:iconString forKey:@"kIconStringKey"];
+    }
+    
+    
+    NSString *notificationBody = alertTitle;
+    if (alarmMessage && alarmMessage.length > 0) {
+        notificationBody = [NSString stringWithFormat:@"%@: %@",alertTitle,alarmMessage];
     }
     
     UIApplication *app = [UIApplication sharedApplication];
@@ -1093,10 +1110,10 @@
     notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:1];
     notification.timeZone = [NSTimeZone defaultTimeZone];
     notification.repeatInterval = 0;
-    notification.soundName = self.alarmTemp.sound.soundFileName;
-    notification.alertBody = alertBody;
+    notification.soundName = alarmForNotif.sound.soundFileName;
+    notification.alertBody = notificationBody;
     notification.applicationIconBadgeNumber = badgeNumber;
-    notification.userInfo = [NSDictionary dictionaryWithObject:alarmNotification.notificationId forKey:@"knotificationId"];
+    notification.userInfo = userInfo;
     [app scheduleLocalNotification:notification];
 }
 

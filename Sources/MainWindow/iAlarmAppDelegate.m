@@ -115,7 +115,15 @@
         if (!viewAlarmAlertView) {
             viewAlarmAlertView = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:kAlertBtnClose otherButtonTitles:kAlertBtnView, nil];
         }
-        viewAlarmAlertView.message = notification.alertBody;
+        NSString *iconString = [notification.userInfo objectForKey:@"kIconStringKey"];
+        NSString *titleString = [notification.userInfo objectForKey:@"kTitleStringKey"];
+        NSString *messageString = [notification.userInfo objectForKey:@"kMessageStringKey"];
+        if (iconString) {
+            titleString = [NSString stringWithFormat:@"%@ %@",iconString,titleString];
+        }
+        
+        viewAlarmAlertView.message = messageString;
+        viewAlarmAlertView.title = titleString;
         [viewAlarmAlertView show];
         
         ///////////////////////////////////
@@ -319,46 +327,66 @@
 	[notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
 
 	
-	IAAlarm *alarm = region.alarm;
 	
-	
+	/*
 	NSString *alertBody = nil;
 	
 	CLLocationCoordinate2D curCoordinate = currentLocation.coordinate;
 	if (CLLocationCoordinate2DIsValid(curCoordinate)) {
 		
 		CLLocation *curLocation = [[CLLocation alloc] initWithLatitude:curCoordinate.latitude longitude:curCoordinate.longitude];
-		CLLocation *regLocation = [[CLLocation alloc] initWithLatitude:alarm.coordinate.latitude longitude:alarm.coordinate.longitude];
+		CLLocation *regLocation = [[CLLocation alloc] initWithLatitude:alarmForNotif.coordinate.latitude longitude:alarmForNotif.coordinate.longitude];
 		CLLocationDistance distance = [curLocation distanceFromLocation:regLocation];	
 		NSString *promptTemple = arrived?kAlertFrmStringArrived:kAlertFrmStringLeaved;
-		alertBody = [[[NSString alloc] initWithFormat:promptTemple,alarm.alarmName,distance] autorelease];
+		alertBody = [[[NSString alloc] initWithFormat:promptTemple,alarmForNotif.alarmName,distance] autorelease];
 		
 		//修改 2011-09-05
 		[curLocation release];
 		[regLocation release];
 		
 	}
+     */
 
     
+    IAAlarm *alarmForNotif = region.alarm;
+    
     //保存到文件
-    IAAlarmNotification *anAlarmNotification = [[[IAAlarmNotification alloc] initWithAlarm:alarm] autorelease];
-    [[IAAlarmNotificationCenter defaultCenter] addNotification:anAlarmNotification];
+    IAAlarmNotification *alarmNotification = [[[IAAlarmNotification alloc] initWithAlarm:alarmForNotif] autorelease];
+    [[IAAlarmNotificationCenter defaultCenter] addNotification:alarmNotification];
     
     //发本地通知
+    NSString *promptTemple = arrived?kAlertFrmStringArrived:kAlertFrmStringLeaved;
+    
+    NSString *alertTitle = [[[NSString alloc] initWithFormat:promptTemple,alarmForNotif.alarmName,0.0] autorelease];
+    NSString *alarmMessage = [alarmForNotif.notes trim];
+    
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObject:alarmNotification.notificationId forKey:@"knotificationId"];
+    [userInfo setObject:alertTitle forKey:@"kTitleStringKey"];
+    if (alarmMessage) 
+        [userInfo setObject:alarmMessage forKey:@"kMessageStringKey"];
+    
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 4.2) {// iOS 4.2 带个闹钟的图标
+        NSString *iconString = @"\ue325";//这是铃铛 
+        alertTitle =  [NSString stringWithFormat:@"%@%@",iconString,alertTitle]; 
+        [userInfo setObject:iconString forKey:@"kIconStringKey"];
+    }
+    
+    
+    NSString *notificationBody = alertTitle;
+    if (alarmMessage && alarmMessage.length > 0) {
+        notificationBody = [NSString stringWithFormat:@"%@: %@",alertTitle,alarmMessage];
+    }
+    
     UIApplication *app = [UIApplication sharedApplication];
     NSInteger badgeNumber = app.applicationIconBadgeNumber + 1; //角标数
-    NSString *alarmNotes = [alarm.notes trim];
-    if (alarmNotes && alarmNotes.length > 0) {
-        alertBody = [NSString stringWithFormat:@"%@: %@",alertBody,alarmNotes];
-    }
     UILocalNotification *notification = [[[UILocalNotification alloc] init] autorelease];
     notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:1];
     notification.timeZone = [NSTimeZone defaultTimeZone];
     notification.repeatInterval = 0;
-    notification.soundName = alarm.sound.soundFileName;
-    notification.alertBody = alertBody;
+    notification.soundName = alarmForNotif.sound.soundFileName;
+    notification.alertBody = notificationBody;
     notification.applicationIconBadgeNumber = badgeNumber;
-    notification.userInfo = [NSDictionary dictionaryWithObject:anAlarmNotification.notificationId forKey:@"knotificationId"];
+    notification.userInfo = userInfo;
     [app scheduleLocalNotification:notification];
 
 }

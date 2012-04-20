@@ -9,11 +9,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/Models/IAAlarmNotificationCenter.h"
-         timestampString = "355588289.251645"
+         timestampString = "356621262.42938"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "13"
-         endingLineNumber = "13"
+         startingLineNumber = "15"
+         endingLineNumber = "15"
          landmarkName = "@interface IAAlarmNotificationCenter"
          landmarkType = "2">
       </FileBreakpoint>

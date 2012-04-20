@@ -11,19 +11,28 @@
 #import "IAAlarmNotification.h"
 
 
-#define    knotificationIdInIAAlarmNotification     @"knotificationIdInIAAlarmNotification"
-#define    kalarmInIAAlarmNotification              @"kalarmInIAAlarmNotification"
-#define    ktimeStampInIAAlarmNotification          @"ktimeStampInIAAlarmNotification"
-#define    kviewedInIAAlarmNotification             @"kviewedInIAAlarmNotification"
-#define    kfireTimeStampInIAAlarmNotification      @"kfireTimeStampInIAAlarmNotification"
+#define    knotificationIdInIAAlarmNotification              @"knotificationIdInIAAlarmNotification"
+#define    kalarmInIAAlarmNotification                       @"kalarmInIAAlarmNotification"
+#define    ktimeStampInIAAlarmNotification                   @"ktimeStampInIAAlarmNotification"
+#define    kviewedInIAAlarmNotification                      @"kviewedInIAAlarmNotification"
+#define    kfireTimeStampInIAAlarmNotification               @"kfireTimeStampInIAAlarmNotification"
+#define    ksoureAlarmNotificationInIAAlarmNotification      @"ksoureAlarmNotificationInIAAlarmNotification"
 
 @implementation IAAlarmNotification
 
-@synthesize notificationId, alarm, createTimeStamp, viewed, fireTimeStamp;
+@synthesize notificationId, alarm, createTimeStamp, viewed, fireTimeStamp, soureAlarmNotification;
 
 
 - (id)initWithAlarm:(IAAlarm*)theAlarm{
     return [self initWithAlarm:theAlarm fireTimeStamp:[NSDate date]];
+}
+
+- (id)initWithSoureAlarmNotification:(IAAlarmNotification*)theSoureAlarmNotification fireTimeStamp:(NSDate*)theFireTimeStamp{
+    self = [self initWithAlarm:theSoureAlarmNotification.alarm fireTimeStamp:theFireTimeStamp];
+    if (self) {
+        soureAlarmNotification = [theSoureAlarmNotification retain];
+    }
+    return self;
 }
 
 - (id)initWithAlarm:(IAAlarm*)theAlarm fireTimeStamp:(NSDate*)theFireTimeStamp{
@@ -38,11 +47,15 @@
     return self;
 }
 
+
+
 - (void)dealloc{
     [notificationId release];
     [alarm release];
     [createTimeStamp release];
     [fireTimeStamp release];
+    [soureAlarmNotification release];
+    
     [super dealloc];
 }
 
@@ -55,6 +68,7 @@
 	[encoder encodeObject:createTimeStamp forKey:ktimeStampInIAAlarmNotification];
 	[encoder encodeBool:viewed forKey:kviewedInIAAlarmNotification];
     [encoder encodeObject:fireTimeStamp forKey:kfireTimeStampInIAAlarmNotification];
+    [encoder encodeObject:soureAlarmNotification forKey:ksoureAlarmNotificationInIAAlarmNotification];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
@@ -66,6 +80,7 @@
 		createTimeStamp = [[decoder decodeObjectForKey:ktimeStampInIAAlarmNotification] retain];
 		viewed =[decoder decodeBoolForKey:kviewedInIAAlarmNotification];
         fireTimeStamp = [[decoder decodeObjectForKey:kfireTimeStampInIAAlarmNotification] retain];
+        soureAlarmNotification = [[decoder decodeObjectForKey:ksoureAlarmNotificationInIAAlarmNotification] retain];
     }
     return self;
 }

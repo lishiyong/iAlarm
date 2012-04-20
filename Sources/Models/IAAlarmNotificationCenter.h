@@ -9,7 +9,9 @@
 #import <Foundation/Foundation.h>
 
 @class IAAlarmNotification;
-@interface IAAlarmNotificationCenter : NSObject
+@interface IAAlarmNotificationCenter : NSObject{
+    NSMutableArray *allNotifications;
+}
 
 + (IAAlarmNotificationCenter*)defaultCenter;
 

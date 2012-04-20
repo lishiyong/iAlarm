@@ -71,6 +71,18 @@
 		9C070707152C18E400AC4207 /* UIButtonBarArrowUpSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C070703152C18E300AC4207 /* UIButtonBarArrowUpSmall.png */; };
 		9C07070C152C18F400AC4207 /* UIButtonBarArrowDownSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C070709152C18F400AC4207 /* UIButtonBarArrowDownSmall.png */; };
 		9C07070D152C18F400AC4207 /* UIButtonBarArrowDownSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C070709152C18F400AC4207 /* UIButtonBarArrowDownSmall.png */; };
+		9C0B129E154187FF00729060 /* YCRing.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0B129A154187FE00729060 /* YCRing.png */; };
+		9C0B129F154187FF00729060 /* YCRing.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0B129A154187FE00729060 /* YCRing.png */; };
+		9C0B12A0154187FF00729060 /* YCRing@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0B129B154187FE00729060 /* YCRing@2x.png */; };
+		9C0B12A1154187FF00729060 /* YCRing@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0B129B154187FE00729060 /* YCRing@2x.png */; };
+		9C0B12A2154187FF00729060 /* YCRingClear.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0B129C154187FE00729060 /* YCRingClear.png */; };
+		9C0B12A3154187FF00729060 /* YCRingClear.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0B129C154187FE00729060 /* YCRingClear.png */; };
+		9C0B12A4154187FF00729060 /* YCRingClear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0B129D154187FF00729060 /* YCRingClear@2x.png */; };
+		9C0B12A5154187FF00729060 /* YCRingClear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0B129D154187FF00729060 /* YCRingClear@2x.png */; };
+		9C0B12A8154192EA00729060 /* YCWatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0B12A6154192E900729060 /* YCWatch.png */; };
+		9C0B12A9154192EA00729060 /* YCWatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0B12A6154192E900729060 /* YCWatch.png */; };
+		9C0B12AA154192EA00729060 /* YCWatch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0B12A7154192EA00729060 /* YCWatch@2x.png */; };
+		9C0B12AB154192EA00729060 /* YCWatch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0B12A7154192EA00729060 /* YCWatch@2x.png */; };
 		9C0BBC8E1529CD3D002509F3 /* UIPopoverButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0BBC8A1529CD3D002509F3 /* UIPopoverButton@2x.png */; };
 		9C0BBC8F1529CD3D002509F3 /* UIPopoverButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0BBC8A1529CD3D002509F3 /* UIPopoverButton@2x.png */; };
 		9C0BBC901529CD3D002509F3 /* UIPopoverButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0BBC8B1529CD3D002509F3 /* UIPopoverButton.png */; };
@@ -1100,6 +1112,12 @@
 		9C0706FD152C189E00AC4207 /* UIButtonBarArrowDownSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIButtonBarArrowDownSmall@2x.png"; sourceTree = "<group>"; };
 		9C070703152C18E300AC4207 /* UIButtonBarArrowUpSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIButtonBarArrowUpSmall.png; sourceTree = "<group>"; };
 		9C070709152C18F400AC4207 /* UIButtonBarArrowDownSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIButtonBarArrowDownSmall.png; sourceTree = "<group>"; };
+		9C0B129A154187FE00729060 /* YCRing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCRing.png; sourceTree = "<group>"; };
+		9C0B129B154187FE00729060 /* YCRing@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCRing@2x.png"; sourceTree = "<group>"; };
+		9C0B129C154187FE00729060 /* YCRingClear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCRingClear.png; sourceTree = "<group>"; };
+		9C0B129D154187FF00729060 /* YCRingClear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCRingClear@2x.png"; sourceTree = "<group>"; };
+		9C0B12A6154192E900729060 /* YCWatch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCWatch.png; sourceTree = "<group>"; };
+		9C0B12A7154192EA00729060 /* YCWatch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCWatch@2x.png"; sourceTree = "<group>"; };
 		9C0BBC8A1529CD3D002509F3 /* UIPopoverButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIPopoverButton@2x.png"; sourceTree = "<group>"; };
 		9C0BBC8B1529CD3D002509F3 /* UIPopoverButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIPopoverButton.png; sourceTree = "<group>"; };
 		9C0BBC8C1529CD3D002509F3 /* UIPopoverButtonPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIPopoverButtonPressed@2x.png"; sourceTree = "<group>"; };
@@ -2075,6 +2093,12 @@
 		9C85F37E14FBA68C00B49FF4 /* AlarmFind */ = {
 			isa = PBXGroup;
 			children = (
+				9C0B12A6154192E900729060 /* YCWatch.png */,
+				9C0B12A7154192EA00729060 /* YCWatch@2x.png */,
+				9C0B129A154187FE00729060 /* YCRing.png */,
+				9C0B129B154187FE00729060 /* YCRing@2x.png */,
+				9C0B129C154187FE00729060 /* YCRingClear.png */,
+				9C0B129D154187FF00729060 /* YCRingClear@2x.png */,
 				9CEF84C815406D0300A68B2E /* YCGrayButton.png */,
 				9CEF84CB15406D1000A68B2E /* YCGrayButton@2x.png */,
 				9C070709152C18F400AC4207 /* UIButtonBarArrowDownSmall.png */,
@@ -3819,6 +3843,12 @@
 				9C1446BF153C79090071EFF2 /* README in Resources */,
 				9CEF84C915406D0300A68B2E /* YCGrayButton.png in Resources */,
 				9CEF84CC15406D1000A68B2E /* YCGrayButton@2x.png in Resources */,
+				9C0B129E154187FF00729060 /* YCRing.png in Resources */,
+				9C0B12A0154187FF00729060 /* YCRing@2x.png in Resources */,
+				9C0B12A2154187FF00729060 /* YCRingClear.png in Resources */,
+				9C0B12A4154187FF00729060 /* YCRingClear@2x.png in Resources */,
+				9C0B12A8154192EA00729060 /* YCWatch.png in Resources */,
+				9C0B12AA154192EA00729060 /* YCWatch@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4152,6 +4182,12 @@
 				9C1446C0153C79090071EFF2 /* README in Resources */,
 				9CEF84CA15406D0300A68B2E /* YCGrayButton.png in Resources */,
 				9CEF84CD15406D1000A68B2E /* YCGrayButton@2x.png in Resources */,
+				9C0B129F154187FF00729060 /* YCRing.png in Resources */,
+				9C0B12A1154187FF00729060 /* YCRing@2x.png in Resources */,
+				9C0B12A3154187FF00729060 /* YCRingClear.png in Resources */,
+				9C0B12A5154187FF00729060 /* YCRingClear@2x.png in Resources */,
+				9C0B12A9154192EA00729060 /* YCWatch.png in Resources */,
+				9C0B12AB154192EA00729060 /* YCWatch@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

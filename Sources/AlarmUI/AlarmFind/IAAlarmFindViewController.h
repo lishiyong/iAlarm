@@ -36,6 +36,7 @@
 @property (nonatomic,retain) IBOutlet MKMapView *mapView;
 @property (nonatomic,retain) IBOutlet UIImageView *imageView;
 @property (nonatomic,retain) IBOutlet UILabel *timeIntervalLabel;
+@property (nonatomic,retain) IBOutlet UIImageView *watchImageView;
 
 @property (nonatomic,retain) IBOutlet UITableViewCell *buttonCell;
 @property (nonatomic,retain) IBOutlet UIButton *button1;

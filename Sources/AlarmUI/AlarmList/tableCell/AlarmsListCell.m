@@ -130,7 +130,7 @@
 }
 
 - (void)setDetecting:(BOOL)theDetecting{
-    
+    /*
     if (disabled) {
         self.detectingImageView.image = [UIImage imageNamed:@"TrackingDotGrey.png"]; //灰色的圆点
         detecting = theDetecting;
@@ -149,6 +149,13 @@
     
     
     detecting = theDetecting;
+     */
+    detecting = theDetecting;
+    if (disabled) {
+        self.detectingImageView.image = [UIImage imageNamed:@"YCRing.png"];
+    }else{
+        self.detectingImageView.image = [UIImage imageNamed:@"YCRing.png"];
+    }
 }
 
 - (BOOL)isDetecting{
@@ -156,6 +163,7 @@
 }
 
 - (void)setDisabled:(BOOL)theDisabled{
+    /*
     disabled = theDisabled;
     if (disabled) {
         detecting = NO; //停止雷达扫描
@@ -169,6 +177,19 @@
         self.alarmNameLabel.textColor = [UIColor darkGrayColor];
     }else{
         //self.detectingImageView.image = [UIImage imageNamed:@"TrackingDot.png"];
+        self.enablingStringLabel.text = KDicOn; 
+        self.enablingStringLabel.alpha = 1.0;
+        self.positionLabel.alpha = 1.0;
+        self.alarmNameLabel.textColor = [UIColor blackColor];
+    }
+     */
+    disabled = theDisabled;
+    if (disabled) {
+        self.enablingStringLabel.text = KDicOff; //文字:关闭
+        self.enablingStringLabel.alpha = 0.8;
+        self.positionLabel.alpha = 0.8;
+        self.alarmNameLabel.textColor = [UIColor darkGrayColor];
+    }else{
         self.enablingStringLabel.text = KDicOn; 
         self.enablingStringLabel.alpha = 1.0;
         self.positionLabel.alpha = 1.0;

@@ -90,6 +90,7 @@
 								<string key="NSFrame">{{207, 0}, {75, 93}}</string>
 								<reference key="NSSuperview" ref="1068893902"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -113,7 +114,7 @@
 							<object class="IBUILabel" id="859007277">
 								<reference key="NSNextResponder" ref="1068893902"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{25, 52}, {208, 21}}</string>
+								<string key="NSFrame">{{12, 52}, {208, 21}}</string>
 								<reference key="NSSuperview" ref="1068893902"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="706695183"/>
@@ -218,7 +219,7 @@
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<object class="IBUIImageView" id="580984173">
 										<reference key="NSNextResponder" ref="275258540"/>
-										<int key="NSvFlags">292</int>
+										<int key="NSvFlags">-2147483356</int>
 										<string key="NSFrame">{{11, 59}, {9, 9}}</string>
 										<reference key="NSSuperview" ref="275258540"/>
 										<reference key="NSWindow"/>
@@ -493,6 +494,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>alarm</string>
 							<string>alarmNameLabel</string>
 							<string>alarmRadiusStringLabel</string>
 							<string>alarmRadiusTypeImageView</string>
@@ -505,6 +507,7 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>IAAlarm</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UIImageView</string>
@@ -520,6 +523,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>alarm</string>
 							<string>alarmNameLabel</string>
 							<string>alarmRadiusStringLabel</string>
 							<string>alarmRadiusTypeImageView</string>
@@ -532,6 +536,10 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">alarm</string>
+								<string key="candidateClassName">IAAlarm</string>
+							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">alarmNameLabel</string>
 								<string key="candidateClassName">UILabel</string>
@@ -573,6 +581,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/AlarmsListCell.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">IAAlarm</string>
+					<string key="superclassName">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/IAAlarm.h</string>
 					</object>
 				</object>
 			</object>

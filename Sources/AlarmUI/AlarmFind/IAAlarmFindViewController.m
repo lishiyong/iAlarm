@@ -112,7 +112,7 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
 #pragma mark - property
 
 @synthesize tableView;
-@synthesize mapViewCell, takeImageContainerView, containerView, mapView, imageView, timeIntervalLabel;
+@synthesize mapViewCell, takeImageContainerView, containerView, mapView, imageView, timeIntervalLabel, watchImageView;
 @synthesize buttonCell, button1, button2, button3;
 @synthesize notesCell, notesLabel;
 
@@ -183,7 +183,7 @@ cell使用后height竟然会加1。奇怪！
 
 - (IBAction)delayAlarm1ButtonPressed:(id)sender{
     if (!actionSheet1) {
-        actionSheet1 = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:kAlertBtnCancel  destructiveButtonTitle:@"过10分钟再提醒" otherButtonTitles:nil];
+        actionSheet1 = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:kAlertBtnCancel  destructiveButtonTitle:@"过5分钟再提醒" otherButtonTitles:nil];
     }
     [actionSheet1 showInView:self.view];
 }
@@ -249,41 +249,56 @@ cell使用后height竟然会加1。奇怪！
     
     if ( actionSheet == actionSheet1 || actionSheet == actionSheet2) {
         
-        //发本地通知
-        IAAlarm *alarm = viewedAlarmNotification.alarm;
-        BOOL arrived = [alarm.positionType.positionTypeId isEqualToString:@"p002"];//是 “到达时候”提醒
-        NSString *promptTemple = arrived?kAlertFrmStringArrived:kAlertFrmStringLeaved;
-        NSString *alertBody = [[[NSString alloc] initWithFormat:promptTemple,alarm.alarmName,0.0] autorelease];
-        NSString *alarmNotes = [alarm.notes trim];
-        if (alarmNotes && alarmNotes.length > 0) {
-            alertBody = [NSString stringWithFormat:@"%@: %@",alertBody,alarmNotes];
-        }
         
-        UIApplication *app = [UIApplication sharedApplication];
-        NSInteger badgeNumber = app.applicationIconBadgeNumber + 1; //角标数
-        UILocalNotification *notification = [[[UILocalNotification alloc] init] autorelease];
-        //notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:1];
-        notification.timeZone = [NSTimeZone defaultTimeZone];
-        notification.repeatInterval = 0;
-        notification.soundName = alarm.sound.soundFileName;
-        notification.alertBody = alertBody;
-        notification.applicationIconBadgeNumber = badgeNumber;
-        notification.userInfo = [NSDictionary dictionaryWithObject:viewedAlarmNotification.notificationId forKey:@"knotificationId"];
+        IAAlarm *alarmForNotif = viewedAlarmNotification.alarm;
         
+        //保存到文件
         NSTimeInterval secs = 0;
         if (actionSheet == actionSheet1) {//延时1
-            secs = 60*10;//10分钟
+            secs = 60*5;//5分钟
             
         }else if (actionSheet == actionSheet2) {//延时2
             secs = 60*30;//30分钟
         }
         NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:secs];
-        
-        //保存到文件
-        IAAlarmNotification *alarmNotification = [[[IAAlarmNotification alloc] initWithAlarm:alarm fireTimeStamp:fireDate] autorelease];
+
+        IAAlarmNotification *alarmNotification = [[[IAAlarmNotification alloc] initWithSoureAlarmNotification:viewedAlarmNotification  fireTimeStamp:fireDate] autorelease];
         [[IAAlarmNotificationCenter defaultCenter] addNotification:alarmNotification];
         
+        //发本地通知
+        BOOL arrived = [alarmForNotif.positionType.positionTypeId isEqualToString:@"p002"];//是 “到达时候”提醒
+        NSString *promptTemple = arrived?kAlertFrmStringArrived:kAlertFrmStringLeaved;
+        
+        NSString *alertTitle = [[[NSString alloc] initWithFormat:promptTemple,alarmForNotif.alarmName,0.0] autorelease];
+        NSString *alarmMessage = [alarmForNotif.notes trim];
+        
+        NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObject:alarmNotification.notificationId forKey:@"knotificationId"];
+        [userInfo setObject:alertTitle forKey:@"kTitleStringKey"];
+        if (alarmMessage) 
+            [userInfo setObject:alarmMessage forKey:@"kMessageStringKey"];
+        
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 4.2) {// iOS 4.2 带个闹钟的图标
+            NSString *iconString = @"\ue026";//这是钟表🕒
+            alertTitle =  [NSString stringWithFormat:@"%@%@",iconString,alertTitle]; 
+            [userInfo setObject:iconString forKey:@"kIconStringKey"];
+        }
+        
+        
+        NSString *notificationBody = alertTitle;
+        if (alarmMessage && alarmMessage.length > 0) {
+            notificationBody = [NSString stringWithFormat:@"%@: %@",alertTitle,alarmMessage];
+        }
+        
+        UIApplication *app = [UIApplication sharedApplication];
+        NSInteger badgeNumber = app.applicationIconBadgeNumber + 1; //角标数
+        UILocalNotification *notification = [[[UILocalNotification alloc] init] autorelease];
         notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:secs];
+        notification.timeZone = [NSTimeZone defaultTimeZone];
+        notification.repeatInterval = 0;
+        notification.soundName = alarmForNotif.sound.soundFileName;
+        notification.alertBody = notificationBody;
+        notification.applicationIconBadgeNumber = badgeNumber;
+        notification.userInfo = userInfo;
         [app scheduleLocalNotification:notification];
     }
     
@@ -435,6 +450,9 @@ cell使用后height竟然会加1。奇怪！
 }
 
 - (void)reloadTimeIntervalLabel{
+    
+    [UIView beginAnimations: nil context: nil];
+     
     NSString *s = YCTimeIntervalStringSinceNow(viewedAlarmNotification.createTimeStamp);
     self.timeIntervalLabel.text = s;
     
@@ -444,6 +462,15 @@ cell使用后height竟然会加1。奇怪！
     CGSize superViewSize = self.timeIntervalLabel.superview.bounds.size;
     CGPoint thePosition = CGPointMake(superViewSize.width-8, superViewSize.height-8); 
     self.timeIntervalLabel.layer.position = thePosition;
+    
+    [UIView commitAnimations];
+    
+    //watchImageView在label x像素
+    CGFloat timeIntervalLabelH = self.timeIntervalLabel.bounds.size.height; 
+    self.watchImageView.layer.position = CGPointMake(thePosition.x, thePosition.y - timeIntervalLabelH - 3); 
+    
+    self.watchImageView.hidden =  (viewedAlarmNotification.soureAlarmNotification) ? NO : YES; //延时提醒，不显示时钟
+
 }
 
 #pragma mark - MapView delegate
@@ -461,8 +488,16 @@ cell使用后height竟然会加1。奇怪！
         IAAlarm *alarm = viewedAlarmNotification.alarm;
         NSString *imageName = alarm.alarmRadiusType.alarmRadiusTypeImageName;
         imageName = [NSString stringWithFormat:@"20_%@",imageName]; //使用20像素的图标
-        UIImageView *sfIconView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)] autorelease];
-        sfIconView.image = [UIImage imageNamed:imageName];
+        //UIImageView *sfIconView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)] autorelease];
+        //sfIconView.image = [UIImage imageNamed:imageName];
+        UIImageView *sfIconView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 24, 24)] autorelease];
+        UIImage *ringImage = [UIImage imageNamed:@"YCRing.png"];
+        UIImage *ringImageClear = [UIImage imageNamed:@"YCRingClear.png"];
+        
+        sfIconView.image = ringImage;
+        sfIconView.animationImages = [NSArray arrayWithObjects:ringImage,ringImageClear, nil];
+        sfIconView.animationDuration = 1.75;
+        //[sfIconView startAnimating];
         
         
         pinView = [[[MKPinAnnotationView alloc]
@@ -500,7 +535,9 @@ cell使用后height竟然会加1。奇怪！
 	for (id oneObj in views) {
 		id anAnnotation = ((MKAnnotationView*)oneObj).annotation;
 		if ([anAnnotation isKindOfClass:[MapPointAnnotation class]]) {
-            [self.mapView selectAnnotation:anAnnotation animated:NO];
+            [self.mapView selectAnnotation:anAnnotation animated:NO];//选中
+            [(UIImageView*)((MKAnnotationView*)oneObj).leftCalloutAccessoryView performSelector:@selector(startAnimating) withObject:nil afterDelay:0.5]; //x秒后开始闪烁
+            
 		}
 	}
 }
@@ -587,8 +624,10 @@ cell使用后height竟然会加1。奇怪！
 {
     [super viewDidLoad];
     //5.0以下 cell背景设成透明后，显示背景后面竟然是黑的。没搞懂，到底是谁的颜色。所以只好给加个背景view了。
+    
     self.tableView.backgroundView = [[[UIView alloc] initWithFrame:self.tableView.frame] autorelease];
     self.tableView.backgroundView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+     
     
     self.navigationItem.leftBarButtonItem = self.doneButtonItem;
     self.navigationItem.rightBarButtonItem = self.upDownBarItem;
@@ -608,36 +647,37 @@ cell使用后height竟然会加1。奇怪！
     
     //把position设置到左下角
     self.timeIntervalLabel.layer.anchorPoint = CGPointMake(1, 1);
+    self.watchImageView.layer.anchorPoint = CGPointMake(1, 1);
     
     //备注
     self.notesLabel.textColor = [UIColor text1Color];
     
     //按钮    
     UIImage *image = [UIImage imageNamed:@"YCGrayButton.png"];
-    UIImage *newImage = [image stretchableImageWithLeftCapWidth:8 topCapHeight:8];
+    UIImage *newImage = [image stretchableImageWithLeftCapWidth:10 topCapHeight:0];
     
     //UIColor *buttonTitleColor = [UIColor colorWithRed:97.0/255.0 green:109.0/255.0 blue:112.0/255.0 alpha:1.0];//camera+按钮配的这个颜色
     UIColor *buttonTitleColor = [UIColor blackColor];
+    
     
     [self.button1 setBackgroundImage:newImage forState:UIControlStateNormal];
     self.button1.backgroundColor = [UIColor clearColor];
     [self.button1 setTitle:@"告诉朋友" forState:UIControlStateNormal];
     [self.button1 setTitleColor:buttonTitleColor forState:UIControlStateNormal];
-    [self.button1 setTitleColor:buttonTitleColor forState:UIControlStateHighlighted];
+    //[self.button1 setTitleColor:buttonTitleColor forState:UIControlStateHighlighted];
     
     [self.button2 setBackgroundImage:newImage forState:UIControlStateNormal];
     self.button2.backgroundColor = [UIColor clearColor];
-    [self.button2 setTitle:@"过10分钟再提醒" forState:UIControlStateNormal];
+    [self.button2 setTitle:@"过5分钟再提醒" forState:UIControlStateNormal];
     [self.button2 setTitleColor:buttonTitleColor forState:UIControlStateNormal];
-    [self.button2 setTitleColor:buttonTitleColor forState:UIControlStateHighlighted];
+    //[self.button2 setTitleColor:buttonTitleColor forState:UIControlStateHighlighted];
     
     [self.button3 setBackgroundImage:newImage forState:UIControlStateNormal];
     self.button3.backgroundColor = [UIColor clearColor];
     [self.button3 setTitle:@"过30分钟再提醒" forState:UIControlStateNormal];
     [self.button3 setTitleColor:buttonTitleColor forState:UIControlStateNormal];
-    [self.button2 setTitleColor:buttonTitleColor forState:UIControlStateHighlighted];
+    //[self.button3 setTitleColor:buttonTitleColor forState:UIControlStateHighlighted];
      
-    
     
     //加载数据
     [self loadViewDataWithIndexOfNotifications:indexForView]; 
@@ -711,6 +751,7 @@ cell使用后height竟然会加1。奇怪！
     self.mapView = nil;
     self.imageView = nil;
     self.timeIntervalLabel = nil;
+    self.watchImageView = nil;
     
     self.buttonCell = nil;
     self.button1 = nil;
@@ -734,6 +775,7 @@ cell使用后height竟然会加1。奇怪！
     [mapView release];
     [imageView release];
     [timeIntervalLabel release];
+    [watchImageView release];
     
     [buttonCell release];
     [button1 release];

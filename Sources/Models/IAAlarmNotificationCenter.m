@@ -14,30 +14,19 @@
 
 @implementation IAAlarmNotificationCenter
 
-static IAAlarmNotificationCenter *center = nil;
-+ (IAAlarmNotificationCenter*)defaultCenter{
-    if (center == nil) {
-        center = [[super allocWithZone:NULL] init];
-    }
-    return center;
+- (void)saveToFile{
+    NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kAlarmNotificationCenterFilename];
+    [NSKeyedArchiver archiveRootObject:allNotifications toFile:filePathName];
 }
 
-- (void)addNotification:(IAAlarmNotification*)notification{
-    NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kAlarmNotificationCenterFilename];
-    
-    NSMutableArray *allNotifications = (NSMutableArray*)[self allNotifications];
-    if (!allNotifications) 
-        allNotifications = [NSMutableArray array];
+- (void)addNotification:(IAAlarmNotification*)notification{    
     [allNotifications insertObject:notification atIndex:0];
-    
-    [NSKeyedArchiver archiveRootObject:allNotifications toFile:filePathName];
+    [self saveToFile];
 }
 
 - (void)removeAllNotifications{
-    NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kAlarmNotificationCenterFilename];
-    
-    NSMutableArray *allNotifications = [NSMutableArray array]; //加入一个空的列表    
-    [NSKeyedArchiver archiveRootObject:allNotifications toFile:filePathName];
+    [allNotifications removeAllObjects]; //加入一个空的列表    
+    [self saveToFile];
 }
 
 - (void)removeFiredNotification{
@@ -45,16 +34,15 @@ static IAAlarmNotificationCenter *center = nil;
 }
 
 - (void)updateNotifications:(NSArray*)notifications{
-    NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kAlarmNotificationCenterFilename];
-    notifications = (notifications != nil) ? notifications :[NSMutableArray array];
-    [NSKeyedArchiver archiveRootObject:notifications toFile:filePathName];
+    [allNotifications removeAllObjects];
+    if (notifications && [notifications count] > 0) 
+        [allNotifications addObjectsFromArray:notifications];
+        
+    [self saveToFile];
 }
 
 - (NSArray*)allNotifications{
-    NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kAlarmNotificationCenterFilename];  
-    
-    NSMutableArray *notifications  = (NSMutableArray *)[NSKeyedUnarchiver unarchiveObjectWithFile:filePathName];
-    return notifications;
+    return allNotifications;
 }
 
 /*
@@ -74,7 +62,6 @@ static IAAlarmNotificationCenter *center = nil;
 
 - (NSArray*)notificationsForFired:(BOOL)fired{
     NSDate *now = [NSDate date];
-    NSMutableArray *allNotifications = (NSMutableArray*)[self allNotifications];
     NSMutableArray *resultArray = [NSMutableArray array];
     for (IAAlarmNotification *anObj in allNotifications) {
         NSComparisonResult cr = [anObj.fireTimeStamp compare:now];
@@ -88,7 +75,6 @@ static IAAlarmNotificationCenter *center = nil;
 
 - (IAAlarmNotification*)notificationOfId:(NSString*)noId{
     
-    NSMutableArray *allNotifications = (NSMutableArray*)[self allNotifications];
     for (IAAlarmNotification *anObj in allNotifications) {
         if ([noId isEqualToString:anObj.notificationId] ) {
             return anObj;
@@ -96,6 +82,25 @@ static IAAlarmNotificationCenter *center = nil;
     }
     
     return nil;
+}
+
+static IAAlarmNotificationCenter *center = nil;
++ (IAAlarmNotificationCenter*)defaultCenter{
+    if (center == nil) {
+        center = [[super allocWithZone:NULL] init];
+    }
+    return center;
+}
+
+- (id)init{
+    self = [super init];
+    if (self) {
+        NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kAlarmNotificationCenterFilename];  
+        allNotifications  = [(NSMutableArray *)[NSKeyedUnarchiver unarchiveObjectWithFile:filePathName] retain];
+        if (!allNotifications) 
+            allNotifications = [[NSMutableArray array] retain];
+    }
+    return self;
 }
 
 + (id)allocWithZone:(NSZone *)zone

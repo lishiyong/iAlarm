@@ -16,10 +16,12 @@
 @property(nonatomic, readonly) IAAlarm *alarm;
 @property(nonatomic, readonly) NSDate *createTimeStamp;
 @property(nonatomic, getter = isViewed) BOOL viewed;
-@property(nonatomic, readonly) NSDate *fireTimeStamp;;
+@property(nonatomic, readonly) NSDate *fireTimeStamp;
+@property(nonatomic, readonly) IAAlarmNotification *soureAlarmNotification;
 
 - (id)initWithAlarm:(IAAlarm*)theAlarm ;
 - (id)initWithAlarm:(IAAlarm*)theAlarm fireTimeStamp:(NSDate*)fireTimeStamp;
+- (id)initWithSoureAlarmNotification:(IAAlarmNotification*)theSoureAlarmNotification fireTimeStamp:(NSDate*)theFireTimeStamp;
 
 @end
 
