@@ -11,52 +11,20 @@
 
 @class IAAlarm;
 @interface AlarmsListCell : UITableViewCell {
-	
-    IAAlarm *alarm;
-    
-    BOOL disabled;
-    
-    IBOutlet UILabel *positionLabel;
-    IBOutlet UILabel *alarmNameLabel;
-    IBOutlet UILabel *enablingStringLabel;
-	IBOutlet UILabel *alarmRadiusStringLabel;
-	IBOutlet UIImageView *alarmRadiusTypeImageView;
-	IBOutlet UIView *topShadowView;
-	IBOutlet UIView *bottomShadowView;
-    
-    BOOL detecting;
-    IBOutlet UIView *containerView;
-    IBOutlet UIImageView *detectingImageView;
-    CALayer *scale;
-    NSDate *lastUpdateDistanceTimestamp; //最后更新距离时间
+	CLLocationDistance distanceFromCurrentLocation;
 }
 
-@property(nonatomic,retain) IBOutlet IAAlarm *alarm;
+@property(nonatomic,retain) IAAlarm *alarm;
+@property(nonatomic,getter = isEnabled) BOOL enabled;
 
-@property(nonatomic,retain) IBOutlet UILabel *positionLabel;
-@property(nonatomic,retain) IBOutlet UILabel *alarmNameLabel;
-@property(nonatomic,retain) IBOutlet UILabel *enablingStringLabel;
-@property(nonatomic,retain) IBOutlet UILabel *alarmRadiusStringLabel;
-@property(nonatomic,retain) IBOutlet UIImageView *alarmRadiusTypeImageView;
+@property(nonatomic,retain) IBOutlet UILabel *alarmTitleLabel;
+@property(nonatomic,retain) IBOutlet UILabel *alarmDetailLabel;
+@property(nonatomic,retain) IBOutlet UILabel *isEnabledLabel;
+@property(nonatomic,retain) IBOutlet UIImageView *flagImageView;
 @property(nonatomic,retain) IBOutlet UIView *topShadowView;
 @property(nonatomic,retain) IBOutlet UIView *bottomShadowView;
 
-@property(nonatomic,retain) IBOutlet UIView *containerView;
-@property(nonatomic,retain) IBOutlet UIImageView *detectingImageView;
-@property(nonatomic, retain, readonly) CALayer *scale;
-@property(nonatomic, retain) NSDate *lastUpdateDistanceTimestamp;
-
-
-//雷达扫描
-- (void)setDetecting:(BOOL)detecting;
-- (BOOL)isDetecting;
-
-- (void)setDisabled:(BOOL)disabled;
-- (void)refresh:(CLLocation*)currentLocation; //更新界面上的内容
-
-
-+(id)viewWithXib;
-
-- (void)registerNotifications;
++ (id)viewWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle;
+- (void)setDistanceWithCurrentLocation:(CLLocation*)curLocation;
 
 @end

@@ -85,7 +85,7 @@
      [alarmNotification_ release];
      alarmNotification_ = nil;
 
-    NSString *notificationId = [[notification.userInfo allValues] objectAtIndex:0];
+    NSString *notificationId = [notification.userInfo objectForKey:@"knotificationId"];
     if (notificationId) {
         NSArray *array = [[IAAlarmNotificationCenter defaultCenter] notificationsForFired:YES];
         for (IAAlarmNotification *anObj in array) {

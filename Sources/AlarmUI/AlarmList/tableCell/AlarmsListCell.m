@@ -5,6 +5,7 @@
 //  Created by li shiyong on 11-1-9.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 
+#import "UIColor+YC.h"
 #import "IARegionsCenter.h"
 #import "IANotifications.h"
 #import "IAAlarm.h"
@@ -14,245 +15,101 @@
 
 @implementation AlarmsListCell
 
-@synthesize alarm;
-@synthesize positionLabel;
-@synthesize alarmNameLabel;
-@synthesize enablingStringLabel;
-@synthesize alarmRadiusStringLabel;
-@synthesize alarmRadiusTypeImageView;
-@synthesize topShadowView;
-@synthesize bottomShadowView;
-@synthesize containerView;
-@synthesize detectingImageView;
-@synthesize lastUpdateDistanceTimestamp;
+@synthesize alarm, enabled;
+@synthesize alarmTitleLabel, alarmDetailLabel, isEnabledLabel, flagImageView, topShadowView, bottomShadowView;
 
-+(id)viewWithXib 
-{
-	NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"AlarmsListCell" owner:self options:nil];
-	AlarmsListCell *cell =nil;
-	for (id oneObject in nib){
-		if ([oneObject isKindOfClass:[AlarmsListCell class]]){
-			cell = (AlarmsListCell *)oneObject;
-		}
-	}
-	
-	NSString *backgroundImagePath = [[NSBundle mainBundle] pathForResource:@"iAlarmList_row" ofType:@"png"];
-	
-    UIImage *backgroundImage = [[UIImage imageWithContentsOfFile:backgroundImagePath] stretchableImageWithLeftCapWidth:0.0 topCapHeight:1.0];
-	cell.backgroundView = [[[UIImageView alloc] initWithImage:backgroundImage] autorelease];
-	cell.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	cell.backgroundView.frame = cell.bounds;
-    
-    [cell registerNotifications];
-	
-	return cell; 
-}
-
-- (id)scale{
-	if (scale == nil) {
-		scale =[[ CALayer layer] retain] ;
-		UIImage *image1 = [UIImage imageNamed:@"TrackingDotHaloSmall.png"];
-		scale.contents = (id)image1.CGImage;
-		scale.frame=CGRectMake (0.0,0.0,50.0,50.0);
-	}
-    
-	return scale;
-}
-
-
-
-
-- (void)startScaleAnimation{
-    CALayer *rootLayer=self.containerView.layer; 
-	self.scale.position= self.detectingImageView.center;
-	if (self.scale.superlayer == nil) {
-        [rootLayer addSublayer :self.scale];
-    }
-    
-    
-    //先把动画都删除了
-	[self.scale removeAllAnimations];
-    
-    [CATransaction begin];
-    
-    //聚焦框动画
-	CABasicAnimation *scaleAnimation=[ CABasicAnimation animationWithKeyPath: @"transform.scale" ];  
-	scaleAnimation.delegate = self;
-	scaleAnimation.timingFunction= [ CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseOut];  
-    scaleAnimation.fromValue= [NSNumber numberWithFloat:0.1];
-	scaleAnimation.toValue= [NSNumber numberWithFloat:1.0];   
-	scaleAnimation.duration=1.5 ;  
-	scaleAnimation.fillMode=kCAFillModeForwards;  
-	scaleAnimation.removedOnCompletion=YES;
-    scaleAnimation.cumulative = YES;
-	[self.scale addAnimation :scaleAnimation forKey :@"scale" ];
-    
-    [CATransaction commit];
-    
-}
-
-- (void)removeAllAnimations{
-    [self.scale removeAllAnimations];
-    CALayer *rootLayer=self.containerView.layer;
-    [rootLayer removeAllAnimations];
-}
-
-- (void)animationDidStart:(CAAnimation *)theAnimation{
-    CALayer *rootLayer=self.containerView.layer;
-    [rootLayer removeAllAnimations];
-    
-    [CATransaction begin];
-    
-    //淡入淡出动画
-    CATransition *fadeAnimation = [CATransition animation];  
-    [fadeAnimation setDuration:1.0]; //比scale动画快
-    fadeAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]; 
-    [fadeAnimation setType:kCATransitionFade];
-    [fadeAnimation setFillMode:kCAFillModeForwards];
-    [fadeAnimation setRemovedOnCompletion:YES];
-    self.scale.hidden = YES;
-    [rootLayer addAnimation:fadeAnimation forKey:@"fade"];
-    
-    [CATransaction commit];
-    
-}
-
-
-
-- (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag{
-	self.scale.hidden = NO;
-    [self.scale removeFromSuperlayer];
-    if (flag == YES) { //反复显示动画
-        if (detecting) 
-            [self performSelector:@selector(startScaleAnimation) withObject:nil afterDelay:1.0];//动画的时间间隔 //[self startScaleAnimation];
-    }else
-        detecting = NO; //停止雷达扫描
-}
-
-- (void)setDetecting:(BOOL)theDetecting{
-    /*
-    if (disabled) {
-        self.detectingImageView.image = [UIImage imageNamed:@"TrackingDotGrey.png"]; //灰色的圆点
-        detecting = theDetecting;
-        [self removeAllAnimations];
-        return;
-    }
-    
-    if (theDetecting == NO){
-        self.detectingImageView.image = [UIImage imageNamed:@"TrackingDotYellow.png"];
-        [self removeAllAnimations];
+- (void)setEnabled:(BOOL)theEnabled{
+    enabled = theEnabled;
+    if (enabled) {
+        self.isEnabledLabel.text = KDicOn; 
+        self.isEnabledLabel.alpha = 1.0;
+        self.alarmDetailLabel.alpha = 1.0;
+        self.alarmTitleLabel.textColor = [UIColor blackColor];
+        self.alarmDetailLabel.textColor = [UIColor darkGrayColor];
     }else{
-        self.detectingImageView.image = [UIImage imageNamed:@"TrackingDot.png"];
-        if (self.isDetecting == NO) //避免重复开启
-            [self startScaleAnimation];
-    }
-    
-    
-    detecting = theDetecting;
-     */
-    detecting = theDetecting;
-    if (disabled) {
-        self.detectingImageView.image = [UIImage imageNamed:@"YCRing.png"];
-    }else{
-        self.detectingImageView.image = [UIImage imageNamed:@"YCRing.png"];
+        self.flagImageView.image = [UIImage imageNamed:@"IAFlagGray.png"];//灰色的旗帜
+        self.isEnabledLabel.text = KDicOff; //文字:关闭
+        self.isEnabledLabel.alpha = 0.8;
+        self.alarmDetailLabel.alpha = 0.8;
+        self.alarmTitleLabel.textColor = [UIColor darkGrayColor];
+        self.alarmDetailLabel.textColor = [UIColor darkGrayColor];
     }
 }
 
-- (BOOL)isDetecting{
-    return detecting;
-}
-
-- (void)setDisabled:(BOOL)theDisabled{
-    /*
-    disabled = theDisabled;
-    if (disabled) {
-        detecting = NO; //停止雷达扫描
-        [self removeAllAnimations];
-        
-        self.alarmRadiusTypeImageView.image = [UIImage imageNamed:@"IAFlagGray.png"];//灰色的旗帜
-        self.detectingImageView.image = [UIImage imageNamed:@"TrackingDotGrey.png"]; //灰色的圆点
-        self.enablingStringLabel.text = KDicOff; //文字:关闭
-        self.enablingStringLabel.alpha = 0.8;
-        self.positionLabel.alpha = 0.8;
-        self.alarmNameLabel.textColor = [UIColor darkGrayColor];
-    }else{
-        //self.detectingImageView.image = [UIImage imageNamed:@"TrackingDot.png"];
-        self.enablingStringLabel.text = KDicOn; 
-        self.enablingStringLabel.alpha = 1.0;
-        self.positionLabel.alpha = 1.0;
-        self.alarmNameLabel.textColor = [UIColor blackColor];
-    }
-     */
-    disabled = theDisabled;
-    if (disabled) {
-        self.enablingStringLabel.text = KDicOff; //文字:关闭
-        self.enablingStringLabel.alpha = 0.8;
-        self.positionLabel.alpha = 0.8;
-        self.alarmNameLabel.textColor = [UIColor darkGrayColor];
-    }else{
-        self.enablingStringLabel.text = KDicOn; 
-        self.enablingStringLabel.alpha = 1.0;
-        self.positionLabel.alpha = 1.0;
-        self.alarmNameLabel.textColor = [UIColor blackColor];
-    }
-}
-
-//显示距离当前位置XX公里
-- (NSString*)distanceStringFromDestionationToCurrentLocation:(CLLocation*)location{
-	//设置距离文本
-    NSString * s = nil;
-    CLLocation *aLocation = [[[CLLocation alloc] initWithLatitude:self.alarm.coordinate.latitude longitude:self.alarm.coordinate.longitude] autorelease];
-    CLLocationDistance distance = [location distanceFromLocation:aLocation];
+- (void)setAlarm:(IAAlarm *)theAlarm{
+    [theAlarm retain];
+    [alarm release];
+    alarm = theAlarm;
     
-    if (distance > 100.0) 
-        s = [NSString stringWithFormat:KTextPromptDistanceCurrentLocation,[location distanceFromLocation:aLocation]/1000.0];
-    else
-        s = KTextPromptCurrentLocation;
-	
-	return s;
-}
-
-//更新界面上的内容
-- (void)refresh:(CLLocation*)currentLocation{
-    BOOL isEnabling = alarm.enabling;
-    
-    self.alarmNameLabel.text = self.alarm.alarmName;
-    if (isEnabling) {
+    alarmTitleLabel.text = self.alarm.alarmName;
+    self.enabled = alarm.enabling;
+    if (self.enabled) {
         NSString *imageName = self.alarm.alarmRadiusType.alarmRadiusTypeImageName;
-        self.alarmRadiusTypeImageView.image = [UIImage imageNamed:imageName];
+        self.flagImageView.image = [UIImage imageNamed:imageName];
     }
-    [self setDisabled:!isEnabling];
-    
+}
+
+- (void)setDistanceWithCurrentLocation:(CLLocation*)curLocation{ 
     //最后位置过久，不用
-    NSTimeInterval ti = [currentLocation.timestamp timeIntervalSinceNow];
-    if (ti < -120) currentLocation = nil; //120秒内的数据可用
+    NSTimeInterval ti = [curLocation.timestamp timeIntervalSinceNow];
+    if (ti < -120) curLocation = nil; //120秒内的数据可用
     
-    if (currentLocation) {
-        self.positionLabel.text = [self distanceStringFromDestionationToCurrentLocation:currentLocation];
-        self.lastUpdateDistanceTimestamp = [NSDate date]; //更新时间戳
+    
+    if (curLocation && alarm) {
+        
+        CLLocation *aLocation = [[[CLLocation alloc] initWithLatitude:alarm.coordinate.latitude longitude:alarm.coordinate.longitude] autorelease];
+        CLLocationDistance distance = [curLocation distanceFromLocation:aLocation];
+        
+        NSString *s = nil;
+        if (distance > 100.0) 
+            s = [NSString stringWithFormat:KTextPromptDistanceCurrentLocation,[curLocation distanceFromLocation:aLocation]/1000.0];
+        else
+            s = KTextPromptCurrentLocation;
+        
+        //未设置过 或 与上次的距离超过100米
+        if (distanceFromCurrentLocation < 0.0 || fabs(distanceFromCurrentLocation - distance) > 100.0) {
+            distanceFromCurrentLocation = distance;
+
+            if (![self.alarmDetailLabel.text isEqualToString:s]) {
+                
+                //转换动画
+                self.userInteractionEnabled = NO;
+                [UIView transitionWithView:self.alarmDetailLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^()
+                 {
+                     self.alarmDetailLabel.text = s;
+                 } completion:^(BOOL finished)
+                 {
+                     self.userInteractionEnabled = YES;
+                 }];
+                
+            }
+            
+        }
+        
     }else{
-        self.positionLabel.text = self.alarm.positionShort;
+        if (![self.alarmDetailLabel.text isEqualToString:self.alarm.positionShort]) {
+            
+            //转换动画
+            self.userInteractionEnabled = NO;
+            [UIView transitionWithView:self.alarmDetailLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^()
+             {
+                 self.alarmDetailLabel.text = self.alarm.positionShort;
+             } completion:^(BOOL finished)
+             {
+                 self.userInteractionEnabled = YES;
+             }];
+
+        }
+        
     }
     
-    //雷达扫描
-    BOOL isDetecting = [[IARegionsCenter regionCenterSingleInstance] isDetectingWithAlarm:alarm];
-	[self setDetecting:isDetecting];
-
+    
 }
 
-- (void) handle_standardLocationDidFinish: (NSNotification*) notification{
-    //间隔10秒以上才更新
-    if (self.lastUpdateDistanceTimestamp == nil || [self.lastUpdateDistanceTimestamp timeIntervalSinceNow] < -10) {
-        CLLocation *location = [[notification userInfo] objectForKey:IAStandardLocationKey];
-        [self refresh:location];
-    }
+- (void) handleStandardLocationDidFinish: (NSNotification*) notification{
+    CLLocation *location = [[notification userInfo] objectForKey:IAStandardLocationKey];
+    [self setDistanceWithCurrentLocation:location];    
 }
-
-- (void) handle_applicationWillEnterForeground: (id) notification{
-    //为了雷达扫描
-    self.lastUpdateDistanceTimestamp = nil;
-}
-
 
 - (void)registerNotifications{
 	
@@ -260,41 +117,60 @@
 	
 	//有新的定位数据产生
 	[notificationCenter addObserver: self
-						   selector: @selector (handle_standardLocationDidFinish:)
+						   selector: @selector (handleStandardLocationDidFinish:)
 							   name: IAStandardLocationDidFinishNotification
 							 object: nil];
-    
-    [notificationCenter addObserver: self
-						   selector: @selector (handle_applicationWillEnterForeground:)
-							   name: UIApplicationWillEnterForegroundNotification
-							 object: nil];
-    
-    
 }
 
 - (void)unRegisterNotifications{
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	[notificationCenter removeObserver:self	name: IAStandardLocationDidFinishNotification object: nil];
-    [notificationCenter removeObserver:self	name: UIApplicationWillEnterForegroundNotification object: nil];
+}
+
+
+#pragma mark - Init and Memery
+
+- (id)initWithCoder:(NSCoder *)aDecoder{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        distanceFromCurrentLocation = -1;//未设置过的标识
+        [self registerNotifications]; 
+    }
+    return self;
+}
+
++ (id)viewWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle{
+    nibName = nibName ? nibName : @"AlarmsListCell";
+    nibBundle = nibBundle ? nibBundle : [NSBundle mainBundle];
+    
+    NSArray *nib = [nibBundle loadNibNamed:nibName owner:self options:nil];
+	AlarmsListCell *cell =nil;
+	for (id oneObject in nib){
+		if ([oneObject isKindOfClass:[AlarmsListCell class]]){
+			cell = (AlarmsListCell *)oneObject;
+		}
+	}
+	
+	NSString *backgroundImagePath = [nibBundle pathForResource:@"iAlarmList_row" ofType:@"png"];
+    UIImage *backgroundImage = [[UIImage imageWithContentsOfFile:backgroundImagePath] stretchableImageWithLeftCapWidth:0.0 topCapHeight:1.0];
+	cell.backgroundView = [[[UIImageView alloc] initWithImage:backgroundImage] autorelease];
+	cell.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	cell.backgroundView.frame = cell.bounds;
+    
+	return cell; 
 }
 
 
 - (void)dealloc {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [self unRegisterNotifications];
 	[alarm release];
-    [positionLabel release];
-    [alarmNameLabel release];
-    [enablingStringLabel release];
-	[alarmRadiusStringLabel release];
-	[alarmRadiusTypeImageView release];
-	[topShadowView release];
+    
+    [alarmTitleLabel release];
+    [alarmDetailLabel release];
+    [isEnabledLabel release];
+    [flagImageView release];
+    [topShadowView release];
 	[bottomShadowView release];
-    [containerView release];
-    [detectingImageView release];
-    [scale release];
-    [lastUpdateDistanceTimestamp release];
-	
     [super dealloc];
 }
 

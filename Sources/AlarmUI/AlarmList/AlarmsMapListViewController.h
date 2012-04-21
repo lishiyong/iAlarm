@@ -75,8 +75,6 @@
 
 	
 	NSTimer	*refreshPinLoopTimer;//刷新pin的refreshPinLoopTimer
-
-    NSDate *lastUpdateDistanceTimestamp; //最后更新距离时间
 	
 }
 
@@ -124,8 +122,6 @@
 //@property(nonatomic, readonly)  CALayer *focusPoint;
 //@property(nonatomic, readonly)  MKPolygon *foucusOverlay;
 //@property(nonatomic, readonly)  YCOverlayImage* foucusOverlay;
-
-@property(nonatomic, retain) NSDate *lastUpdateDistanceTimestamp;
 
 
 //private

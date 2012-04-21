@@ -41,12 +41,45 @@
 //取得用户当前位置的超时时间
 #define kTimeSpanForUserLocation     30.0
 
+@interface YCAnnotation (iAlarmMap) 
+- (void)setDistanceWithCurrentLocation:(CLLocation*)curLocation;
+@end
+
+@implementation YCAnnotation (iAlarmMap)
+
+- (void)setDistanceWithCurrentLocation:(CLLocation*)curLocation{ 
+    //最后位置过久，不用
+    NSTimeInterval ti = [curLocation.timestamp timeIntervalSinceNow];
+    if (ti < -120) curLocation = nil; //120秒内的数据可用
+    
+    if (curLocation && CLLocationCoordinate2DIsValid(self.coordinate)) {
+        
+        CLLocation *aLocation = [[[CLLocation alloc] initWithLatitude:self.coordinate.latitude longitude:self.coordinate.longitude] autorelease];
+        CLLocationDistance distance = [curLocation distanceFromLocation:aLocation];
+        
+        NSString *s = nil;
+        if (distance > 100.0) 
+            s = [NSString stringWithFormat:KTextPromptDistanceCurrentLocation,[curLocation distanceFromLocation:aLocation]/1000.0];
+        else
+            s = KTextPromptCurrentLocation;
+        
+        //未设置过 或 与上次的距离超过100米
+        if (self.distanceFromCurrentLocation < 0.0 || fabs(self.distanceFromCurrentLocation - distance) > 100.0) {
+            self.distanceFromCurrentLocation = distance;
+            self.subtitle = s;
+        }
+        
+    }else{
+        self.subtitle = nil;
+    }
+}
+
+@end
+
 @implementation AlarmsMapListViewController
 
 #pragma mark -
 #pragma mark property
-
-@synthesize lastUpdateDistanceTimestamp;
 
 @synthesize locationServicesUsableAlert;
 
@@ -132,28 +165,6 @@
 		
 	}
      
-}
-
-
-//显示距离当前位置XX公里
-- (void)setDistanceInAnnotation:(YCAnnotation*)annotation withCurrentLocation:(CLLocation*)location{
-    
-    if (location == nil || ![location isKindOfClass:[CLLocation class]]) {
-        annotation.subtitle = nil;
-        return;
-    }
-
-    CLLocation *aLocation = [[[CLLocation alloc] initWithLatitude:annotation.coordinate.latitude longitude:annotation.coordinate.longitude] autorelease];
-	CLLocationDistance distance = [location distanceFromLocation:aLocation];
-    
-    NSString *s = nil;
-    if (distance > 100.0) 
-        s = [NSString stringWithFormat:KTextPromptDistanceCurrentLocation,[location distanceFromLocation:aLocation]/1000.0];
-    else
-        s = KTextPromptCurrentLocation;
-    
-    annotation.subtitle = s;
-
 }
 
 -(void)alertInternet{
@@ -872,19 +883,9 @@
     //还没加载
 	if (![self isViewLoaded]) return;
     
-    //间隔20秒以上才更新
-    if (!(self.lastUpdateDistanceTimestamp == nil || [self.lastUpdateDistanceTimestamp timeIntervalSinceNow] < -20)) 
-        return;
-    self.lastUpdateDistanceTimestamp = [NSDate date]; //更新时间戳
-
-    
     CLLocation *location = [[notification userInfo] objectForKey:IAStandardLocationKey];
     for (YCAnnotation *oneObj in self.mapAnnotations ) {
-        if (location)
-            [self setDistanceInAnnotation:oneObj withCurrentLocation:location];
-        else
-            oneObj.subtitle = nil;
-		
+        [oneObj setDistanceWithCurrentLocation:location];
     }
     
 }
@@ -1990,7 +1991,7 @@
             //显示距离当前位置XX公里
             annoation.subtitle = nil;
             if ([YCSystemStatus deviceStatusSingleInstance].lastLocation) {
-                [self setDistanceInAnnotation:annoation withCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];
+                [(YCAnnotation*)annoation setDistanceWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];
             }
 		}
 		
@@ -2171,7 +2172,7 @@
 				
 				//显示距离当前位置XX公里
 				if ([YCSystemStatus deviceStatusSingleInstance].lastLocation) {
-					[self setDistanceInAnnotation:annotation withCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];
+                    [(YCAnnotation*)annotation setDistanceWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];
 					//为了有动画效果
 					NSString *subtitleTemp = annotation.subtitle;
 					annotation.subtitle = nil;
@@ -2332,8 +2333,6 @@
 	[refreshPinLoopTimer invalidate];
 	[refreshPinLoopTimer release];
 	refreshPinLoopTimer = nil;
-
-    [lastUpdateDistanceTimestamp release];
 	
     [super dealloc];
 }

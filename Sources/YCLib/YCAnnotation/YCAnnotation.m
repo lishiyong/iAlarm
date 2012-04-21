@@ -8,28 +8,17 @@
 
 #import "YCAnnotation.h"
 
-
 @implementation YCAnnotation
 
-@synthesize coordinate;
-@synthesize subtitle;
-@synthesize title;
-@synthesize annotationType;
-@synthesize placemarkForReverse;
-@synthesize placeForSearch;
-@synthesize identifier;
-@synthesize changedBySearch;
+@synthesize coordinate, subtitle, title, distanceFromCurrentLocation;
+@synthesize identifier, placemarkForReverse, placeForSearch, annotationType, changedBySearch;
 
-/*
-- (id)init{
-	return [self initWithCoordinate:CLLocationCoordinate2DMake(0, 0) addressDictionary:nil];
-}
- */
 
 - (id)initWithCoordinate:(CLLocationCoordinate2D)theCoordinate addressDictionary:(NSDictionary *)theAddressDictionary identifier:(NSString*)theIdentifier{
 	self = [super initWithCoordinate:theCoordinate addressDictionary:theAddressDictionary];
     if (self) {
 		identifier = [theIdentifier retain];
+        distanceFromCurrentLocation = -1;//未设置过的标识
 	}
 	return self;
 }
@@ -41,8 +30,6 @@
 - (id)initWithCoordinate:(CLLocationCoordinate2D)theCoordinate addressDictionary:(NSDictionary *)theAddressDictionary{
 	return [self initWithCoordinate:theCoordinate addressDictionary:theAddressDictionary identifier:nil];
 }
-
-
 
 - (void)dealloc 
 {

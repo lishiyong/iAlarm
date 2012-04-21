@@ -450,27 +450,28 @@ cell使用后height竟然会加1。奇怪！
 }
 
 - (void)reloadTimeIntervalLabel{
+    //转换动画 timeIntervalLabel的宽度调整
+    [UIView transitionWithView:self.timeIntervalLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^()
+     {
+         NSString *s = YCTimeIntervalStringSinceNow(viewedAlarmNotification.createTimeStamp);
+         self.timeIntervalLabel.text = s;
+         
+         [self.timeIntervalLabel sizeToFit];//bounds调整到合适
+         self.timeIntervalLabel.bounds = CGRectInset(self.timeIntervalLabel.bounds, -6, -2); //在字的周围留有空白
+         //position在父view的左下角向上8像素
+         CGSize superViewSize = self.timeIntervalLabel.superview.bounds.size;
+         CGPoint thePosition = CGPointMake(superViewSize.width-8, superViewSize.height-8); //timeIntervalLabel调整后的Position
+         self.timeIntervalLabel.layer.position = thePosition;
+         
+     } completion:NULL];
     
-    [UIView beginAnimations: nil context: nil];
-     
-    NSString *s = YCTimeIntervalStringSinceNow(viewedAlarmNotification.createTimeStamp);
-    self.timeIntervalLabel.text = s;
-    
-    [self.timeIntervalLabel sizeToFit];//bounds调整到合适
-    self.timeIntervalLabel.bounds = CGRectInset(self.timeIntervalLabel.bounds, -6, -2); //在字的周围留有空白
-        //position在父view的左下角向上8像素
-    CGSize superViewSize = self.timeIntervalLabel.superview.bounds.size;
-    CGPoint thePosition = CGPointMake(superViewSize.width-8, superViewSize.height-8); 
-    self.timeIntervalLabel.layer.position = thePosition;
-    
-    [UIView commitAnimations];
-    
-    //watchImageView在label x像素
-    CGFloat timeIntervalLabelH = self.timeIntervalLabel.bounds.size.height; 
-    self.watchImageView.layer.position = CGPointMake(thePosition.x, thePosition.y - timeIntervalLabelH - 3); 
-    
-    self.watchImageView.hidden =  (viewedAlarmNotification.soureAlarmNotification) ? NO : YES; //延时提醒，不显示时钟
-
+    self.watchImageView.hidden =  (viewedAlarmNotification.soureAlarmNotification) ? NO : YES; //延时提醒，显示时钟
+    if (!watchImageView.hidden) {
+        CGPoint labelPosition = self.timeIntervalLabel.layer.position; //timeIntervalLabel的Position
+        //watchImageView在label x像素
+        CGFloat timeIntervalLabelH = self.timeIntervalLabel.bounds.size.height; 
+        self.watchImageView.layer.position = CGPointMake(labelPosition.x, labelPosition.y - timeIntervalLabelH - 3); 
+    }
 }
 
 #pragma mark - MapView delegate

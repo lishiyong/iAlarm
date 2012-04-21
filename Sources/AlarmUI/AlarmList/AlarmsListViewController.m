@@ -330,7 +330,7 @@
 	
 	AlarmsListCell *cell = (AlarmsListCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	if (cell == nil) {
-		cell = [AlarmsListCell viewWithXib];
+		cell = [AlarmsListCell viewWithNibName:nil bundle:nil];
 		cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;//展示按钮
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;  //被选择后，无变化
 	}
@@ -338,7 +338,7 @@
 	NSArray *alarms = [IAAlarm alarmArray];
 	IAAlarm *alarm =[alarms objectAtIndex:indexPath.row];
     cell.alarm = alarm;
-    [cell refresh:[YCSystemStatus deviceStatusSingleInstance].lastLocation]; //使用最后存储的位置
+    [cell setDistanceWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation]; //使用最后存储的位置
     
 	
 	if (indexPath.row != [IAAlarm alarmArray].count -1) { //最后的cell有bottomShadow
@@ -353,9 +353,6 @@
 		cell.topShadowView.hidden = NO;
 	}
 	
-    //雷达扫描
-    //BOOL isDetecting = [[IARegionsCenter regionCenterSingleInstance] isDetectingWithAlarm:alarm];
-	//[cell setDetecting:isDetecting];
     
 	return cell;
 	

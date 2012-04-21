@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
 
-
 enum {
     YCMapAnnotationTypeStandard = 0,        //已经定位的普通类型
 	YCMapAnnotationTypeStandardEnabledDrag, //已经定位的普通类型，但可以拖动
@@ -21,39 +20,19 @@ enum {
 typedef NSUInteger YCMapAnnotationType;
 
 
-
 @class BSKmlResult;
-@interface YCAnnotation : MKPlacemark {
-	//BOOL isCurrent; //当前
-	
-	CLLocationCoordinate2D coordinate;
-	//NSString *subtitle;
-	//NSString *title;
-	
-	YCMapAnnotationType annotationType;
-	
-	MKPlacemark *placemarkForReverse;  
-	BSKmlResult *placeForSearch;
-	
-	NSString *identifier;    //标志号
-	
-	BOOL changedBySearch;    //coordinate,subtitle等是通过查询改变的
-	
-	
-	
-}
-@property (nonatomic, readwrite,assign) CLLocationCoordinate2D coordinate;
-@property (nonatomic,retain) NSString *subtitle;
-@property (nonatomic,retain) NSString *title;
+@interface YCAnnotation : MKPlacemark 
 
-@property (nonatomic) YCMapAnnotationType annotationType;
-
-@property (nonatomic,retain) MKPlacemark *placemarkForReverse;
-@property (nonatomic,retain) BSKmlResult *placeForSearch;
+@property (nonatomic) CLLocationCoordinate2D coordinate;
+@property (nonatomic,copy) NSString *title;
+@property (nonatomic,copy) NSString *subtitle;
+@property (nonatomic) CLLocationDistance distanceFromCurrentLocation;
 
 @property (nonatomic,retain,readonly) NSString *identifier;
-
-@property (nonatomic,assign) BOOL changedBySearch;
+@property (nonatomic,retain) MKPlacemark *placemarkForReverse;
+@property (nonatomic,retain) BSKmlResult *placeForSearch;
+@property (nonatomic) YCMapAnnotationType annotationType;
+@property (nonatomic,assign) BOOL changedBySearch; //coordinate,subtitle等是通过查询改变的
 
 
 - (id)initWithIdentifier:(NSString*)theIdentifier;
