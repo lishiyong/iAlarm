@@ -6,40 +6,30 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCMapPointAnnotation.h"
 #import "YCAnnotation.h"
 
 @implementation YCAnnotation
-
-@synthesize coordinate, subtitle, title, distanceFromCurrentLocation;
 @synthesize identifier, placemarkForReverse, placeForSearch, annotationType, changedBySearch;
 
-
-- (id)initWithCoordinate:(CLLocationCoordinate2D)theCoordinate addressDictionary:(NSDictionary *)theAddressDictionary identifier:(NSString*)theIdentifier{
-	self = [super initWithCoordinate:theCoordinate addressDictionary:theAddressDictionary];
-    if (self) {
-		identifier = [theIdentifier retain];
-        distanceFromCurrentLocation = -1;//未设置过的标识
-	}
-	return self;
+- (id)initWithIdentifier:(NSString*)theIdentifier{
+    return [self initWithCoordinate:kCLLocationCoordinate2DInvalid identifier:theIdentifier];
 }
 
-- (id)initWithIdentifier:(NSString*)theIdentifier{
-	return [self initWithCoordinate:CLLocationCoordinate2DMake(0, 0) addressDictionary:nil identifier:theIdentifier];
-} 
-
-- (id)initWithCoordinate:(CLLocationCoordinate2D)theCoordinate addressDictionary:(NSDictionary *)theAddressDictionary{
-	return [self initWithCoordinate:theCoordinate addressDictionary:theAddressDictionary identifier:nil];
+- (id)initWithCoordinate:(CLLocationCoordinate2D)theCoordinate identifier:(NSString*)theIdentifier{
+    self = [super initWithCoordinate:theCoordinate title:nil subTitle:nil addressDictionary:nil];
+    if (self) {
+        identifier = [theIdentifier copy];
+    }
+    return self;
 }
 
 - (void)dealloc 
 {
-	[title release];
-	[subtitle release];
+	[identifier release];
 	[placemarkForReverse release];
 	[placeForSearch release];
-	[identifier release];
 	[super dealloc];
-	
 }
 
 @end

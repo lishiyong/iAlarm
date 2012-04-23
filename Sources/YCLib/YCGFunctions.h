@@ -10,3 +10,11 @@
 
 //产生一个唯一的序列号
 NSString* YCSerialCode();
+
+/**
+    The anFloat and anotherFloat are exactly equal to each other, NSOrderedSame
+    The anFloat is greater than anotherFloat, NSOrderedDescending
+    The anFloat is less than anotherFloat, NSOrderedAscending.
+ */
+NSComparisonResult compareFloat(CGFloat anFloat, CGFloat anotherFloat);
+

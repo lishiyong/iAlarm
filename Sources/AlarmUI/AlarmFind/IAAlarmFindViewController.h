@@ -9,7 +9,7 @@
 #import <MapKit/MapKit.h>
 #import <UIKit/UIKit.h>
 
-@class IAAlarmNotification, MapPointAnnotation, YCShareAppEngine;
+@class IAAlarmNotification, YCMapPointAnnotation, YCShareAppEngine;
 @interface IAAlarmFindViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, UIActionSheetDelegate>{
     
     UIBarButtonItem *doneButtonItem;
@@ -18,7 +18,7 @@
     NSArray *alarmNotifitions;
     NSUInteger indexForView;
     IAAlarmNotification *viewedAlarmNotification;
-    MapPointAnnotation *pointAnnotation;
+    YCMapPointAnnotation *pointAnnotation;
     MKCircle *circleOverlay;
     YCShareAppEngine *engine;
     UIActionSheet *actionSheet1;

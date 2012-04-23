@@ -40,7 +40,7 @@
 
 
 @synthesize window;
-@synthesize navigationController;
+@synthesize viewController;
 
 @synthesize soundPlayer;
 @synthesize ringplayer;
@@ -69,8 +69,8 @@
         IAAlarmFindViewController *ctler = [[[IAAlarmFindViewController alloc] initWithNibName:@"IAAlarmFindViewController" bundle:nil alarmNotifitions:notifications indexForView:indexForView] autorelease];
         UINavigationController *navCtler = [[[UINavigationController alloc] initWithRootViewController:ctler] autorelease];
         
-        UIViewController *currentController = self.navigationController.modalViewController;
-        currentController = currentController ? currentController : self.navigationController; 
+        UIViewController *currentController = self.viewController.modalViewController;
+        currentController = currentController ? currentController : self.viewController; 
         [currentController presentModalViewController:navCtler animated:animated]; //程序在启动中:NO。从后台进入:YES
         
         [[IAAlarmNotificationCenter defaultCenter] removeFiredNotification];
@@ -168,8 +168,7 @@
 	[YCSystemStatus deviceStatusSingleInstance]; //一定要有这个初始化
 
 	
-    //self.window.rootViewController = self.viewController;
-	self.window.rootViewController = self.navigationController;
+	self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];	
 	
     [[IARegionsCenter regionCenterSingleInstance] regions];  //一定要有这个初始化
@@ -280,8 +279,7 @@
 }
 
 - (void)dealloc {
-    //[viewController release];
-	[navigationController release];
+    [viewController release];
     [window release];
     [super dealloc];
 }

@@ -1013,6 +1013,10 @@
 		9CEF84CA15406D0300A68B2E /* YCGrayButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CEF84C815406D0300A68B2E /* YCGrayButton.png */; };
 		9CEF84CC15406D1000A68B2E /* YCGrayButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CEF84CB15406D1000A68B2E /* YCGrayButton@2x.png */; };
 		9CEF84CD15406D1000A68B2E /* YCGrayButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CEF84CB15406D1000A68B2E /* YCGrayButton@2x.png */; };
+		9CF0C93C1543B47600052CFE /* YCMapPointAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF0C93B1543B47600052CFE /* YCMapPointAnnotation.m */; };
+		9CF0C93D1543B47600052CFE /* YCMapPointAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF0C93B1543B47600052CFE /* YCMapPointAnnotation.m */; };
+		9CF0C9401543BDC600052CFE /* YCMapPointAnnotation+AlarmUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF0C93F1543BDC500052CFE /* YCMapPointAnnotation+AlarmUI.m */; };
+		9CF0C9411543BDC600052CFE /* YCMapPointAnnotation+AlarmUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF0C93F1543BDC500052CFE /* YCMapPointAnnotation+AlarmUI.m */; };
 		9CF50EF81499801800C814AB /* TrackingDotYellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF50EF61499801800C814AB /* TrackingDotYellow.png */; };
 		9CF50EF91499801800C814AB /* TrackingDotYellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF50EF61499801800C814AB /* TrackingDotYellow.png */; };
 		9CF50EFA1499801800C814AB /* TrackingDotYellow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF50EF71499801800C814AB /* TrackingDotYellow@2x.png */; };
@@ -1743,6 +1747,10 @@
 		9CE8973813000454008FBD45 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9CEF84C815406D0300A68B2E /* YCGrayButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCGrayButton.png; sourceTree = "<group>"; };
 		9CEF84CB15406D1000A68B2E /* YCGrayButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCGrayButton@2x.png"; sourceTree = "<group>"; };
+		9CF0C93A1543B47600052CFE /* YCMapPointAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCMapPointAnnotation.h; sourceTree = "<group>"; };
+		9CF0C93B1543B47600052CFE /* YCMapPointAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCMapPointAnnotation.m; sourceTree = "<group>"; };
+		9CF0C93E1543BDC500052CFE /* YCMapPointAnnotation+AlarmUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "YCMapPointAnnotation+AlarmUI.h"; sourceTree = "<group>"; };
+		9CF0C93F1543BDC500052CFE /* YCMapPointAnnotation+AlarmUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "YCMapPointAnnotation+AlarmUI.m"; sourceTree = "<group>"; };
 		9CF50EF61499801800C814AB /* TrackingDotYellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TrackingDotYellow.png; sourceTree = "<group>"; };
 		9CF50EF71499801800C814AB /* TrackingDotYellow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TrackingDotYellow@2x.png"; sourceTree = "<group>"; };
 		9CF50EFC14999D8B00C814AB /* IAGlassMask@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAGlassMask@2x.png"; sourceTree = "<group>"; };
@@ -2685,6 +2693,8 @@
 		9CC51D201307A69400A3CF54 /* YCAnnotation */ = {
 			isa = PBXGroup;
 			children = (
+				9CF0C93A1543B47600052CFE /* YCMapPointAnnotation.h */,
+				9CF0C93B1543B47600052CFE /* YCMapPointAnnotation.m */,
 				9CC51D211307A69400A3CF54 /* YCAnnotation.h */,
 				9CC51D221307A69400A3CF54 /* YCAnnotation.m */,
 				9CC51D231307A69400A3CF54 /* YCPinAnnotationView.h */,
@@ -3242,6 +3252,8 @@
 				9CE894A412FFFFD2008FBD45 /* AlarmDetail */,
 				9CE894A912FFFFD2008FBD45 /* AlarmItemModify */,
 				9CE894BB12FFFFD2008FBD45 /* AlarmList */,
+				9CF0C93E1543BDC500052CFE /* YCMapPointAnnotation+AlarmUI.h */,
+				9CF0C93F1543BDC500052CFE /* YCMapPointAnnotation+AlarmUI.m */,
 			);
 			path = AlarmUI;
 			sourceTree = "<group>";
@@ -3297,8 +3309,8 @@
 				9CE195531306444B007A9FCF /* AlarmListNotifications.h */,
 				9CE195541306444B007A9FCF /* AlarmListNotifications.m */,
 				9CC224B01300594D00245DAC /* AlarmsMapListViewController.h */,
-				9CC224AE1300591C00245DAC /* AlarmsMapListViewController.xib */,
 				9CC224B11300594D00245DAC /* AlarmsMapListViewController.m */,
+				9CC224AE1300591C00245DAC /* AlarmsMapListViewController.xib */,
 				9CE894BC12FFFFD2008FBD45 /* AlarmsListViewController.h */,
 				9CE894BD12FFFFD2008FBD45 /* AlarmsListViewController.m */,
 				9CE894BE12FFFFD2008FBD45 /* AlarmsListViewController.xib */,
@@ -4364,6 +4376,8 @@
 				9C1446B7153C79090071EFF2 /* OAServiceTicket.m in Sources */,
 				9C1446BB153C79090071EFF2 /* OAToken.m in Sources */,
 				9C1446BD153C79090071EFF2 /* OATokenManager.m in Sources */,
+				9CF0C93C1543B47600052CFE /* YCMapPointAnnotation.m in Sources */,
+				9CF0C9401543BDC600052CFE /* YCMapPointAnnotation+AlarmUI.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4537,6 +4551,8 @@
 				9C1446B8153C79090071EFF2 /* OAServiceTicket.m in Sources */,
 				9C1446BC153C79090071EFF2 /* OAToken.m in Sources */,
 				9C1446BE153C79090071EFF2 /* OATokenManager.m in Sources */,
+				9CF0C93D1543B47600052CFE /* YCMapPointAnnotation.m in Sources */,
+				9CF0C9411543BDC600052CFE /* YCMapPointAnnotation+AlarmUI.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

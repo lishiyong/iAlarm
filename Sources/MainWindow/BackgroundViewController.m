@@ -6,6 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCSearchBarNotification.h"
 #import "IAAboutViewController.h"
 #import "IAAlarmFindViewController.h"
 #import "NSObject-YC.h"
@@ -29,6 +30,7 @@
 @synthesize listViewController;
 @synthesize mapsViewController;
 @synthesize curViewController;
+@synthesize navBar;
 @synthesize searchBar;
 @synthesize searchController;
 @synthesize toolbar;
@@ -311,7 +313,7 @@
 	}else {
 		self.title = KViewTitleAlarmsListMaps;
 	}
-	
+
 }
 
 - (void)handle_editIAlarmButtonPressed:(NSNotification*)notification{
@@ -357,8 +359,8 @@
     [notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
 	
 	//动画结束，允许
-	self.navigationItem.leftBarButtonItem.enabled = YES;
-	self.navigationItem.rightBarButtonItem.enabled = YES;
+	self.navBar.topItem.leftBarButtonItem.enabled = YES;
+	self.navBar.topItem.rightBarButtonItem.enabled = YES;
 	[self.view setUserInteractionEnabled:YES];
 }
 
@@ -381,8 +383,8 @@
 		//为定位动画留出时间
 		[self performSelector:@selector(showAddAlarmView:) withObject:alarm afterDelay:1.5];
 		//动画期间，不允许
-		self.navigationItem.leftBarButtonItem.enabled = NO;
-		self.navigationItem.rightBarButtonItem.enabled = NO;
+		self.navBar.topItem.leftBarButtonItem.enabled = NO;
+		self.navBar.topItem.rightBarButtonItem.enabled = NO;
 		[self.view setUserInteractionEnabled:NO];
 	}else {
 		[self performSelector:@selector(showAddAlarmView:) withObject:alarm afterDelay:0.0];
@@ -401,20 +403,20 @@
 	NSNumber *isEditingObj = [[notification userInfo] objectForKey:IAEditStatusKey];
 	//改变按钮
 	if ([isEditingObj boolValue])
-		self.navigationItem.leftBarButtonItem = self.doneButtonItem;
+		self.navBar.topItem.leftBarButtonItem = self.doneButtonItem;
 	else
-		self.navigationItem.leftBarButtonItem = self.editButtonItem;
+		self.navBar.topItem.leftBarButtonItem = self.editButtonItem;
 }
 
 //闹钟列表发生变化
 - (void)handle_alarmsDataListDidChange:(id)notification {
 	NSUInteger alarmsCount = [IAAlarm alarmArray].count;
 	if (alarmsCount == 0) {//空列表不显示编辑按钮
-		//self.navigationItem.leftBarButtonItem = nil;
-		[self.navigationItem performSelector:@selector(setLeftBarButtonItem:) withObject:nil afterDelay:0.25]; //按钮消失在列表空之后
+		//self.navBar.topItem.leftBarButtonItem = nil;
+		[self.navBar.topItem performSelector:@selector(setLeftBarButtonItem:) withObject:nil afterDelay:0.25]; //按钮消失在列表空之后
 	}else {
-		if (self.navigationItem.leftBarButtonItem == nil) {
-			self.navigationItem.leftBarButtonItem = self.editButtonItem;
+		if (self.navBar.topItem.leftBarButtonItem == nil) {
+			self.navBar.topItem.leftBarButtonItem = self.editButtonItem;
 		}
 	}
 
@@ -444,8 +446,8 @@
 	
 	NSNumber *isMaskObj = [[notification userInfo] objectForKey:IAAlarmMapsMaskingKey];
 	if ([isMaskObj boolValue]) {//发生了覆盖
-		self.navigationItem.leftBarButtonItem = nil;
-		self.navigationItem.rightBarButtonItem = nil;
+		self.navBar.topItem.leftBarButtonItem = nil;
+		self.navBar.topItem.rightBarButtonItem = nil;
 		self.searchBar.hidden = YES;
 		
 		//map在当前显示做处理toolbar
@@ -462,13 +464,13 @@
 			[self.toolbar setItems:[self listViewToolbarItems] animated:YES]; 
 		
 		
-		self.navigationItem.rightBarButtonItem = self.addButtonItem;
+		self.navBar.topItem.rightBarButtonItem = self.addButtonItem;
 		self.searchBar.hidden = NO;
 		
 		NSUInteger alarmsCount = [IAAlarm alarmArray].count;		//空列表不显示编辑按钮
 		if (alarmsCount > 0) {
 			if (alarmsCount > 0 && [YCSystemStatus deviceStatusSingleInstance].isAlarmListEditing) {//原来是编辑状态，恢复成编辑状态
-				self.navigationItem.leftBarButtonItem = self.doneButtonItem;
+				self.self.navBar.topItem.leftBarButtonItem = self.doneButtonItem;
 				
 				//改变编辑状态
 				BOOL isEditing = YES;
@@ -484,10 +486,10 @@
 																			userInfo:nil];
 				[notificationCenter performSelector:@selector(postNotification:) withObject:bNotification afterDelay:0.0];
 			}else {
-				self.navigationItem.leftBarButtonItem = self.editButtonItem;
+				self.navBar.topItem.leftBarButtonItem = self.editButtonItem;
 			}
 		}else {
-			self.navigationItem.leftBarButtonItem = nil;
+			self.navBar.topItem.leftBarButtonItem = nil;
 		}
 
 		
@@ -573,6 +575,47 @@
 	
 }
 
+- (void)handleHideBar:(NSNotification*)notification{
+    BOOL doHide = NO;
+    CFBooleanRef doHideCF = (CFBooleanRef)[notification.userInfo objectForKey:IADoHideBarKey];
+    if (doHideCF) 
+        doHide = CFBooleanGetValue(doHideCF);
+    else
+        doHide = !self.navBar.hidden;
+    
+    if (doHide == self.navBar.hidden) {
+        return; //状况相等
+    }
+
+    [self.navigationController setToolbarHidden:doHide animated:NO]; //topbar和bottombar只能有一个动画
+    [self.toolbar setItems:[self mapsViewToolbarItems] animated:NO];
+    [self.navigationController setNavigationBarHidden:doHide animated:YES];
+    
+}
+
+
+- (void)handleSearchBarDidBecomeFirstResponder:(NSNotification*)notification{
+	if ([notification.userInfo objectForKey:YCSearchBarKey] == self.searchBar) {
+        //隐藏bar
+        NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+        NSNotification *aNotification = [NSNotification notificationWithName:IADoHideBarNotification 
+                                                                      object:self
+                                                                    userInfo:[NSDictionary dictionaryWithObject:(id)kCFBooleanTrue forKey:IADoHideBarKey]];
+        [notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
+    }
+}
+
+- (void)handleSearchBarDidResignFirstResponder:(NSNotification*)notification{
+	
+	if ([notification.userInfo objectForKey:YCSearchBarKey] == self.searchBar) {
+        //显示bar
+        NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+        NSNotification *aNotification = [NSNotification notificationWithName:IADoHideBarNotification 
+                                                                      object:self
+                                                                    userInfo:[NSDictionary dictionaryWithObject:(id)kCFBooleanFalse forKey:IADoHideBarKey]];
+        [notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
+    }
+}
 
 
 
@@ -621,8 +664,14 @@
 						   selector: @selector (handle_controlStatusShouldChange:)
 							   name: IAControlStatusShouldChangeNotification
 							 object: nil];
+    [notificationCenter addObserver: self
+						   selector: @selector (handleHideBar:)
+							   name: IADoHideBarNotification
+							 object: nil];
 	
 }
+
+
 
 - (void)unRegisterNotifications{
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -636,8 +685,7 @@
 	[notificationCenter removeObserver:self	name: IAAlarmMapsMaskingDidChangeNotification object: nil];
 	[notificationCenter removeObserver:self	name: IAAlarmDidViewNotification object: nil];
 	[notificationCenter removeObserver:self	name: IAControlStatusShouldChangeNotification object: nil];
-
-	
+    [notificationCenter removeObserver:self	name: IADoHideBarNotification object: nil];
 }
 
 #pragma mark -
@@ -726,7 +774,7 @@
     }
 	
 	//改变编辑状态
-	BOOL isEditing = (self.navigationItem.leftBarButtonItem == self.editButtonItem) ? YES : NO;
+	BOOL isEditing = (self.navBar.topItem.leftBarButtonItem == self.editButtonItem) ? YES : NO;
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	NSNotification *aNotification = [NSNotification notificationWithName:IAAlarmListEditStateDidChangeNotification 
                                                                   object:self
@@ -769,6 +817,9 @@
     [super viewDidLoad];
 	[self registerNotifications];
 	
+    self.navBar =self.navigationController.navigationBar;
+    [self.navigationController setToolbarHidden:NO animated:NO];
+    self.toolbar = self.navigationController.toolbar;
 
 	//view没有加载，先加载
 	[self.mapsViewController view];
@@ -782,9 +833,9 @@
 	
 	//Nav的标题
 	if ([self.curViewController isKindOfClass:[AlarmsListViewController class]]) {
-		self.title = KViewTitleAlarmsList;
+		self.navBar.topItem.title = KViewTitleAlarmsList;
 	}else {
-		self.title = KViewTitleAlarmsListMaps;
+		self.navBar.topItem.title = KViewTitleAlarmsListMaps;
 	}
 	
 	//searchBar
@@ -795,7 +846,38 @@
 												 searchDisplayController:self.searchDisplayController];
 	self.searchController.originalSearchBarHidden = NO;//不自动隐藏
 
+    
+    //debug
+    //[self debug];
+   
 }
+
+#pragma mark - debug
+- (void)debug{
+    [self.searchBar performSelector:@selector(setHidden:) withObject:(id)kCFBooleanTrue afterDelay:1.0];
+    
+    /*
+    self.searchBar.alpha = 0.5;
+    self.toolbar.alpha = 0.1;
+    self.navBar.alpha = 0.1;
+    self.mapsViewController.view.alpha = 0.5;
+    self.mapsViewController.mapView.alpha = 0.2;
+     */
+    
+    ((UIWindow*)[[UIApplication sharedApplication].windows objectAtIndex:0]).backgroundColor = [UIColor yellowColor];
+    
+    self.view.layer.backgroundColor = [UIColor greenColor].CGColor;
+    self.view.layer.cornerRadius = 10;
+    
+    self.animationBackgroundView.layer.backgroundColor = [UIColor blueColor].CGColor;
+    self.animationBackgroundView.layer.cornerRadius = 20;
+    
+    self.mapsViewController.view.layer.backgroundColor = [UIColor redColor].CGColor;
+    self.mapsViewController.view.layer.cornerRadius = 30;
+    
+    self.mapsViewController.mapView.layer.cornerRadius = 40;
+}
+
 
 #pragma mark -
 #pragma mark Utility - ForwardGeocoder
@@ -1031,6 +1113,7 @@
 	
 	self.listViewController = nil;
 	self.mapsViewController = nil;
+    self.navBar = nil;
 	self.searchBar = nil;
 	self.toolbar = nil;
 	self.animationBackgroundView = nil;
@@ -1047,6 +1130,7 @@
 	[doneButtonItem release];
 	[addButtonItem release];
 	
+    [navBar release];
 	[searchBar release];
 	[forwardGeocoder release];
 	[searchController release];

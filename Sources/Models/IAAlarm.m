@@ -72,7 +72,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 		position = nil;
 		positionShort = nil;
 		usedCoordinateAddress = YES;
-		coordinate = CLLocationCoordinate2DMake(-10000.0,-10000.0);
+		coordinate = kCLLocationCoordinate2DInvalid;
 		locationAccuracy = 101.1;
 		
 		enabling = YES; 

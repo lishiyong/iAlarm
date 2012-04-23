@@ -40,6 +40,13 @@
 {
 	if (self.canResignFirstResponder) 
 	{
+        NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+        NSNotification *aNotif = [NSNotification 
+                                  notificationWithName:YCSearchBarDidResignFirstResponderNotification
+                                  object:self
+                                  userInfo:[NSDictionary dictionaryWithObject:self forKey:YCSearchBarKey] ];
+        [notificationCenter postNotification:aNotif];
+        
 		[self setSearchWaiting:NO]; //搜索状态-等待指示
 		[self.delegate searchBarCancelButtonClicked:self];  //取消搜索
 		[self.searchBarTextField resignFirstResponder];
@@ -51,9 +58,15 @@
 
 //覆盖super
 - (BOOL)becomeFirstResponder{
-	if (self.hidden) { //如果被被隐藏
+	//if (self.hidden) 
+    { //如果被被隐藏
 		NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-		[notificationCenter postNotificationName:YCSearchBarDidBecomeFirstResponderNotification object:self];
+        NSNotification *aNotif = [NSNotification 
+                                  notificationWithName:YCSearchBarDidBecomeFirstResponderNotification
+                                  object:self
+                                  userInfo:[NSDictionary dictionaryWithObject:self forKey:YCSearchBarKey] ];
+        [notificationCenter postNotification:aNotif];
+        
 	}
 	return [super becomeFirstResponder];
 }

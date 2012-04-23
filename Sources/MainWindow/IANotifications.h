@@ -91,3 +91,8 @@ extern NSString *IAControlStatusKey;
 extern NSString *IARegionTypeDidChangeNotification;
 //被改变的区域闹钟的key
 extern NSString *IAChangedRegionKey;
+
+//隐藏或显示bar的通知
+extern NSString *IADoHideBarNotification;
+//BOOL参数，YES:隐藏，NO：显示
+extern NSString *IADoHideBarKey;

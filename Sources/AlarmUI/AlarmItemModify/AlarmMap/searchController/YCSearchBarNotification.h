@@ -9,5 +9,7 @@
 
 //#define kSearchBarBecomeFirstResponderNotification           @"kSearchBarBecomeFirstResponderNotification"
 
-//搜索bar已经变成第一响应者
+//搜索bar已经变成/失去第一响应者
 extern NSString *YCSearchBarDidBecomeFirstResponderNotification;
+extern NSString *YCSearchBarDidResignFirstResponderNotification;
+extern NSString *YCSearchBarKey;

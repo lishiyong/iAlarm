@@ -25,6 +25,6 @@
 @property(nonatomic,retain) IBOutlet UIView *bottomShadowView;
 
 + (id)viewWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle;
-- (void)setDistanceWithCurrentLocation:(CLLocation*)curLocation;
+- (void)setDistanceWithCurrentLocation:(CLLocation*)curLocation animated:(BOOL)animated;
 
 @end

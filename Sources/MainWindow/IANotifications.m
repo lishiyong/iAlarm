@@ -93,6 +93,10 @@ NSString *IARegionTypeDidChangeNotification = @"IARegionTypeDidChangeNotificatio
 //被改变的区域闹钟的key
 NSString *IAChangedRegionKey = @"IAChangedRegionKey";
 
+//隐藏或显示bar的通知
+NSString *IADoHideBarNotification = @"IADoHideBarNotification";
+//BOOL参数，YES:隐藏，NO：显示
+NSString *IADoHideBarKey = @"IADoHideBarKey";
 
 
 

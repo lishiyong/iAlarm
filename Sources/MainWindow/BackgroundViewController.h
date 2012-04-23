@@ -54,9 +54,11 @@
 @property (nonatomic, retain, readonly) UIBarButtonItem *doneButtonItem;
 @property (nonatomic, retain, readonly) UIBarButtonItem *addButtonItem;
 
+@property (nonatomic, retain) IBOutlet UINavigationBar *navBar;
 @property (nonatomic, retain) IBOutlet YCSearchBar *searchBar;
 @property (nonatomic, retain,readonly) BSForwardGeocoder *forwardGeocoder;
 @property (nonatomic, retain) YCSearchController *searchController;
+
 
 @property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, retain, readonly) UIBarButtonItem *infoBarButtonItem;

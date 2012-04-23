@@ -5,7 +5,7 @@
 //  Created by li shiyong on 12-2-27.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
-
+#import "YCMapPointAnnotation+AlarmUI.h"
 #import "YCShareContent.h"
 #import "YCShareAppEngine.h"
 #import "IAAlarmNotificationCenter.h"
@@ -56,50 +56,11 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
     return returnString;
 }
 
-@interface MapPointAnnotation : NSObject<MKAnnotation> {
-    NSString *title;
-    NSString *subtitle;
-    CLLocationCoordinate2D coordinate;
-}
-
-@property (nonatomic,readonly) CLLocationCoordinate2D coordinate;
-@property (nonatomic,copy) NSString *title;
-@property (nonatomic,copy) NSString *subtitle;
-@property (nonatomic) CLLocationDistance distanceFromCurrentLocation;
-
--(id) initWithCoordinate:(CLLocationCoordinate2D) coord title:(NSString *) theTitle subTitle:(NSString *) theSubTitle;
-
-@end
-
-
-@implementation MapPointAnnotation
-@synthesize coordinate, title, subtitle, distanceFromCurrentLocation;
-
--(id) initWithCoordinate:(CLLocationCoordinate2D) coord title:(NSString *) theTitle subTitle:(NSString *) theSubTitle{
-    self = [super init];
-    if (self) {
-        coordinate = coord;
-        title = [theTitle copy];
-        subtitle = [theSubTitle copy];
-        distanceFromCurrentLocation = -1.0; //小于0，表示未初始化
-    }
-    return self;
-}
-
-- (void)dealloc{
-    [title release];
-    [subtitle release];
-    [super dealloc];
-}
-
-@end
-
 
 @interface IAAlarmFindViewController(private)
 
 - (UIImage*)takePhotoFromTheMapView;
 - (void)loadViewDataWithIndexOfNotifications:(NSInteger)index;
-- (void)setDistanceWithCurrentLocation:(CLLocation*)location;//显示距离当前位置XX公里
 - (void)reloadTimeIntervalLabel;
 - (void)registerNotifications;
 - (void)unRegisterNotifications;
@@ -374,9 +335,9 @@ cell使用后height竟然会加1。奇怪！
     CLLocationDistance radius = alarm.radius;
     
     //大头针
-    pointAnnotation = [[MapPointAnnotation alloc] initWithCoordinate:alarm.coordinate title:alarm.alarmName subTitle:nil];    
+    pointAnnotation = [[YCMapPointAnnotation alloc] initWithCoordinate:alarm.coordinate title:alarm.alarmName subTitle:nil];    
     [self.mapView addAnnotation:pointAnnotation];
-    [self setDistanceWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];//距离
+    [pointAnnotation setDistanceWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];//距离
     
     //地图的显示region
     
@@ -422,31 +383,6 @@ cell使用后height竟然会加1。奇怪！
     //其他数据
     [self.tableView reloadData];
 
-}
-
-- (void)setDistanceWithCurrentLocation:(CLLocation*)location{
-    
-    if (pointAnnotation == nil || location == nil || ![location isKindOfClass:[CLLocation class]]) {
-        pointAnnotation.subtitle = nil;
-        pointAnnotation.distanceFromCurrentLocation = 0.0;
-        return;
-    }
-    
-    CLLocation *aLocation = [[[CLLocation alloc] initWithLatitude:pointAnnotation.coordinate.latitude longitude:pointAnnotation.coordinate.longitude] autorelease];
-	CLLocationDistance distance = [location distanceFromLocation:aLocation];
-    
-    NSString *s = nil;
-    if (distance > 100.0) 
-        s = [NSString stringWithFormat:KTextPromptDistanceCurrentLocation,[location distanceFromLocation:aLocation]/1000.0];
-    else
-        s = KTextPromptCurrentLocation;
-    
-    //未设置过 或 与上次的距离超过100米
-    if (pointAnnotation.distanceFromCurrentLocation < 0.0 || fabs(pointAnnotation.distanceFromCurrentLocation - distance) > 100.0) {
-        pointAnnotation.distanceFromCurrentLocation = distance;
-        pointAnnotation.subtitle = s;
-    }
-    
 }
 
 - (void)reloadTimeIntervalLabel{
@@ -535,7 +471,7 @@ cell使用后height竟然会加1。奇怪！
 - (void)mapView:(MKMapView *)theMapView didAddAnnotationViews:(NSArray *)views{
 	for (id oneObj in views) {
 		id anAnnotation = ((MKAnnotationView*)oneObj).annotation;
-		if ([anAnnotation isKindOfClass:[MapPointAnnotation class]]) {
+		if ([anAnnotation isKindOfClass:[YCMapPointAnnotation class]]) {
             [self.mapView selectAnnotation:anAnnotation animated:NO];//选中
             [(UIImageView*)((MKAnnotationView*)oneObj).leftCalloutAccessoryView performSelector:@selector(startAnimating) withObject:nil afterDelay:0.5]; //x秒后开始闪烁
             
@@ -700,7 +636,7 @@ cell使用后height竟然会加1。奇怪！
     //还没加载
 	if (![self isViewLoaded]) return;
     CLLocation *location = [[notification userInfo] objectForKey:IAStandardLocationKey];
-	[self setDistanceWithCurrentLocation:location];
+    [pointAnnotation setDistanceWithCurrentLocation:location];
     
 }
 

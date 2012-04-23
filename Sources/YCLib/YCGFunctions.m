@@ -15,3 +15,15 @@ NSString* YCSerialCode(){
 	
 	return ss;
 }
+
+
+NSComparisonResult compareFloat(CGFloat anFloat, CGFloat anotherFloat){
+    if (fabs(anFloat - anotherFloat) < 1.0e-5) {
+        return NSOrderedSame;
+    }else if(anFloat >anotherFloat){
+        return NSOrderedDescending;
+    }else{
+        return NSOrderedAscending;
+    }
+}
+

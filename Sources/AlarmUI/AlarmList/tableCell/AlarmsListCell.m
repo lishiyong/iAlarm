@@ -49,7 +49,7 @@
     }
 }
 
-- (void)setDistanceWithCurrentLocation:(CLLocation*)curLocation{ 
+- (void)setDistanceWithCurrentLocation:(CLLocation*)curLocation animated:(BOOL)animated;{ 
     //最后位置过久，不用
     NSTimeInterval ti = [curLocation.timestamp timeIntervalSinceNow];
     if (ti < -120) curLocation = nil; //120秒内的数据可用
@@ -73,14 +73,19 @@
             if (![self.alarmDetailLabel.text isEqualToString:s]) {
                 
                 //转换动画
-                self.userInteractionEnabled = NO;
-                [UIView transitionWithView:self.alarmDetailLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^()
-                 {
-                     self.alarmDetailLabel.text = s;
-                 } completion:^(BOOL finished)
-                 {
-                     self.userInteractionEnabled = YES;
-                 }];
+                if (animated) {
+                    self.userInteractionEnabled = NO;
+                    [UIView transitionWithView:self.alarmDetailLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^()
+                     {
+                         self.alarmDetailLabel.text = s;
+                     } completion:^(BOOL finished)
+                     {
+                         self.userInteractionEnabled = YES;
+                     }]; 
+                }else{
+                    self.alarmDetailLabel.text = s;
+                }
+                
                 
             }
             
@@ -90,41 +95,24 @@
         if (![self.alarmDetailLabel.text isEqualToString:self.alarm.positionShort]) {
             
             //转换动画
-            self.userInteractionEnabled = NO;
-            [UIView transitionWithView:self.alarmDetailLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^()
-             {
-                 self.alarmDetailLabel.text = self.alarm.positionShort;
-             } completion:^(BOOL finished)
-             {
-                 self.userInteractionEnabled = YES;
-             }];
+            if (animated) {
+                self.userInteractionEnabled = NO;
+                [UIView transitionWithView:self.alarmDetailLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^()
+                 {
+                     self.alarmDetailLabel.text = self.alarm.positionShort;
+                 } completion:^(BOOL finished)
+                 {
+                     self.userInteractionEnabled = YES;
+                 }];
+            }else{
+               self.alarmDetailLabel.text = self.alarm.positionShort; 
+            }
 
         }
         
     }
     
     
-}
-
-- (void) handleStandardLocationDidFinish: (NSNotification*) notification{
-    CLLocation *location = [[notification userInfo] objectForKey:IAStandardLocationKey];
-    [self setDistanceWithCurrentLocation:location];    
-}
-
-- (void)registerNotifications{
-	
-	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-	
-	//有新的定位数据产生
-	[notificationCenter addObserver: self
-						   selector: @selector (handleStandardLocationDidFinish:)
-							   name: IAStandardLocationDidFinishNotification
-							 object: nil];
-}
-
-- (void)unRegisterNotifications{
-	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-	[notificationCenter removeObserver:self	name: IAStandardLocationDidFinishNotification object: nil];
 }
 
 
@@ -134,7 +122,6 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
         distanceFromCurrentLocation = -1;//未设置过的标识
-        [self registerNotifications]; 
     }
     return self;
 }
@@ -162,7 +149,6 @@
 
 
 - (void)dealloc {
-    [self unRegisterNotifications];
 	[alarm release];
     
     [alarmTitleLabel release];

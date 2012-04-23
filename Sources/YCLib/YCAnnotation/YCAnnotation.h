@@ -5,7 +5,7 @@
 //  Created by li shiyong on 10-10-28.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
-
+#import "YCMapPointAnnotation.h"
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
 
@@ -20,15 +20,10 @@ enum {
 typedef NSUInteger YCMapAnnotationType;
 
 
-@class BSKmlResult;
-@interface YCAnnotation : MKPlacemark 
+@class YCMapPointAnnotation, BSKmlResult;
+@interface YCAnnotation : YCMapPointAnnotation 
 
-@property (nonatomic) CLLocationCoordinate2D coordinate;
-@property (nonatomic,copy) NSString *title;
-@property (nonatomic,copy) NSString *subtitle;
-@property (nonatomic) CLLocationDistance distanceFromCurrentLocation;
-
-@property (nonatomic,retain,readonly) NSString *identifier;
+@property (nonatomic,readonly) NSString *identifier;
 @property (nonatomic,retain) MKPlacemark *placemarkForReverse;
 @property (nonatomic,retain) BSKmlResult *placeForSearch;
 @property (nonatomic) YCMapAnnotationType annotationType;
@@ -36,8 +31,6 @@ typedef NSUInteger YCMapAnnotationType;
 
 
 - (id)initWithIdentifier:(NSString*)theIdentifier;
-//指定初始化
-- (id)initWithCoordinate:(CLLocationCoordinate2D)theCoordinate addressDictionary:(NSDictionary *)theAddressDictionary identifier:(NSString*)theIdentifier;
-
+- (id)initWithCoordinate:(CLLocationCoordinate2D)theCoordinate identifier:(NSString*)theIdentifier;
 
 @end

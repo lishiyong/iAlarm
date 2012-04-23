@@ -13,30 +13,22 @@
 
 @interface AlarmsListViewController : UIViewController <UITableViewDelegate,UITableViewDataSource> {
 	
-
 	AlarmDetailTableViewController *detailController;
     UINavigationController *detailNavigationController;
 	
+    IBOutlet UITableView *alarmListTableView;
 	IBOutlet UILabel *backgroundTextLabel;  //无闹钟时候的背景文字
-	BOOL isApparing;   //本视图正在显示
-	
 	IBOutlet UIView *backgroundView;
-	IBOutlet UITableView *alarmListTableView;
-	
-	NSDate *lastUpdateDistanceTimestamp; //最后更新距离时间
+    
+    BOOL isApparing;   //本视图正在显示
 }
 
 
 @property (nonatomic, retain, readonly) AlarmDetailTableViewController *detailController;
 @property (nonatomic, retain, readonly) UINavigationController *detailNavigationController;
 
-@property (nonatomic, retain) IBOutlet UILabel *backgroundTextLabel;
-
-@property (nonatomic, retain) IBOutlet UIView *backgroundView;
 @property (nonatomic, retain) IBOutlet UITableView *alarmListTableView;
-
-@property(nonatomic, retain) NSDate *lastUpdateDistanceTimestamp;
-
-
+@property (nonatomic, retain) IBOutlet UILabel *backgroundTextLabel;
+@property (nonatomic, retain) IBOutlet UIView *backgroundView;
 
 @end

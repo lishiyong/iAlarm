@@ -9,4 +9,6 @@
 
 //搜索bar已经变成第一响应者
 NSString *YCSearchBarDidBecomeFirstResponderNotification = @"YCSearchBarDidBecomeFirstResponderNotification";
+NSString *YCSearchBarDidResignFirstResponderNotification = @"YCSearchBarDidResignFirstResponderNotification";
+NSString *YCSearchBarKey = @"YCSearchBarKey";;
 

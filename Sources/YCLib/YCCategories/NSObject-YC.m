@@ -52,5 +52,15 @@
 	[invocaton performSelector:@selector(invoke) withObject:nil afterDelay:delay];
 }
 
+- (void)performSelector:(SEL)aSelector withInteger:(NSInteger)anInteger withInteger:(NSInteger)anotherInteger afterDelay:(NSTimeInterval)delay{
+    NSMethodSignature *signature = [self methodSignatureForSelector:aSelector];
+	NSInvocation *invocaton = [NSInvocation invocationWithMethodSignature:signature];
+	[invocaton setTarget:self];
+	[invocaton setSelector:aSelector];
+	[invocaton setArgument:&anInteger atIndex:2];
+	[invocaton setArgument:&anInteger atIndex:3]; 
+	[invocaton performSelector:@selector(invoke) withObject:nil afterDelay:delay];
+}
+
 
 @end
