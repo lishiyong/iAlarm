@@ -68,8 +68,8 @@
     ////////////////////////////////////
     //为了区别UIMapView固有的UITapGestureRecognizer
     UITapGestureRecognizer *tapMapViewGesture;
-    UITapGestureRecognizer *tapCalloutViewGesture; //点地图的标签
-    
+    UITapGestureRecognizer *tapCalloutViewGesture;          //为了点地图的标签，而不取消选中
+    UILongPressGestureRecognizer *longPressGesture;
 	
 }
 

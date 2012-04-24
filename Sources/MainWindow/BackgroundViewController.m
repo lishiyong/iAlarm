@@ -575,6 +575,13 @@
 	
 }
 
+- (void)setViewsBounds{ //做这个函数为了延时调用
+    self.animationBackgroundView.frame = CGRectMake(0,0, 320, 372);
+    self.mapsViewController.view.frame  = CGRectMake(0,0, 320, 372);
+    self.mapsViewController.mapView.frame = CGRectMake(0, 44, 320, 328);
+ 
+}
+
 - (void)handleHideBar:(NSNotification*)notification{
     BOOL doHide = NO;
     CFBooleanRef doHideCF = (CFBooleanRef)[notification.userInfo objectForKey:IADoHideBarKey];
@@ -587,10 +594,22 @@
         return; //状况相等
     }
 
-    [self.navigationController setToolbarHidden:doHide animated:NO]; //topbar和bottombar只能有一个动画
+    
+    
+    [self.navigationController setToolbarHidden:doHide animated:doHide]; //收缩时候，topbar和bottombar只能有一个动画
     [self.toolbar setItems:[self mapsViewToolbarItems] animated:NO];
     [self.navigationController setNavigationBarHidden:doHide animated:YES];
     
+
+    /*
+    if (doHide) {
+        self.animationBackgroundView.frame = CGRectMake(0,0, 320, 460);
+        self.mapsViewController.view.frame  = CGRectMake(0,0, 320, 460);
+        self.mapsViewController.mapView.frame = CGRectMake(0,44, 320, 416);
+    }else{
+        [self performSelector:@selector(setViewsBounds) withObject:nil afterDelay:UINavigationControllerHideShowBarDuration];
+    }
+     */
 }
 
 
@@ -848,13 +867,13 @@
 
     
     //debug
-    //[self debug];
+    [self debug];
    
 }
 
 #pragma mark - debug
 - (void)debug{
-    [self.searchBar performSelector:@selector(setHidden:) withObject:(id)kCFBooleanTrue afterDelay:1.0];
+    //[self.searchBar performSelector:@selector(setHidden:) withObject:(id)kCFBooleanTrue afterDelay:1.0];
     
     /*
     self.searchBar.alpha = 0.5;

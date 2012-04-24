@@ -6,6 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import "iAlarmAppDelegate.h"
 #import "YCMapPointAnnotation+AlarmUI.h"
 #import "YCOverlayImageView.h"
 #import "YCOverlayImage.h"
@@ -219,7 +220,7 @@
 	pinView.pinColor = MKPinAnnotationColorRed;
 	
 	//长按pin
-	UILongPressGestureRecognizer *longPressGesture = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(pinLongPressed:)] autorelease];
+    longPressGesture = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(pinLongPressed:)] autorelease];
     longPressGesture.minimumPressDuration = 0.5; //多长时间算长按
 	longPressGesture.allowableMovement = 30.0;
 	longPressGesture.delegate = self;
@@ -458,11 +459,10 @@
 	NSUInteger count = [IAAlarm alarmArray].count;
 	if (count == 0) {//行数>0,才可以编辑
 		self.pinsEditing = NO;
-		self.navigationItem.leftBarButtonItem = nil; //编辑按钮 
+		self.navigationItem.leftBarButtonItem = nil; //编辑按钮
 	}else {
 		self.pinsEditing = theEditing;
 	}
-	
 }
 
 //对象参数版本，延时调用
@@ -1070,7 +1070,8 @@
 	//mask view
 	[self.maskView addSubview:self.maskActivityIndicator];
 	self.maskView.hidden = NO;
-		
+	
+	
     //找到UIMapView自带的双点识别器
     UITapGestureRecognizer *doubleTapGesture = nil;
     for (UITapGestureRecognizer *anObj in self.mapView.gestureRecognizers) {
@@ -1079,7 +1080,6 @@
             break;
         }
     }
-	
 	//单点地图
     tapMapViewGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mapViewTap:)];
 	tapMapViewGesture.delegate = self;
@@ -1092,7 +1092,7 @@
 	[self.mapView addGestureRecognizer:tapCalloutViewGesture];
 	
 	//长按地图
-	UILongPressGestureRecognizer *longPressGesture = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(mapViewLongPressed:)] autorelease];
+    longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(mapViewLongPressed:)];
     longPressGesture.minimumPressDuration = 1.0; //多长时间算长按
 	longPressGesture.allowableMovement = 30.0;
 	[self.mapView addGestureRecognizer:longPressGesture];
@@ -1285,26 +1285,52 @@
  */
 
 -(void)mapViewTap:(UITapGestureRecognizer *)sender{
-	if (sender.state == UIGestureRecognizerStateEnded) {
-        if ( sender.numberOfTouches >1) 
-            return;
+	if (tapCalloutViewGesture == sender) {
+        return;
+    }
+    
+    if (sender.state == UIGestureRecognizerStateEnded) {
         
-        if (tapCalloutViewGesture == sender) {
-            return;
+        BOOL selectedPinIsVisible = NO; //选中的pin在屏幕中
+        if (self.mapView.selectedAnnotations.count > 0){
+            
+            id selected = [self.mapView.selectedAnnotations objectAtIndex:0];
+            if ([self.mapView visibleForAnnotation:selected]) 
+                selectedPinIsVisible = YES;
+            else
+                selectedPinIsVisible = NO;
+            
+        }else{
+            selectedPinIsVisible = NO;
         }
+
         
 		//不显示工具条
 		if (!self.toolbarFloatingView.hidden){
+            
 			[self mapTypeButtonPressed:nil];
+            
+        }else if(pinsEditing && selectedPinIsVisible){//pin在编辑状态，
+            
+            //[self setUIEditing:NO]; //收到通知，会做响应的设置
+            NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+            NSNotification *aNotification = [NSNotification notificationWithName:IAAlarmListEditStateDidChangeNotification 
+                                                                          object:self
+                                                                        userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:IAEditStatusKey]];
+            [notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
+            
         }else {//隐藏bar
+            
             NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
             NSNotification *aNotification = [NSNotification notificationWithName:IADoHideBarNotification 
                                                                           object:self
                                                                         userInfo:nil];
             [notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
+            
         }
         
 	}
+    
 }
 
 -(void)pinTap:(UITapGestureRecognizer *)sender{
@@ -1325,7 +1351,7 @@
 - (void)pinLongPressed:(UILongPressGestureRecognizer *)sender{
 	
 	YCPinAnnotationView *annotationView = (YCPinAnnotationView*)sender.view;
-	if(![annotationView isKindOfClass:[YCPinAnnotationView class]]) return;
+	if(![annotationView isKindOfClass:[YCPinAnnotationView class]]) return; //按的不是pin
 	
 	
 
@@ -1428,20 +1454,31 @@
 #pragma mark -
 #pragma mark Utility - UIGestureRecognizerDelegate
 
-/*
+
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
 
-    
+    /*
 	if ([otherGestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]] || [gestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]]) {
 		return YES;
 	}
      
 	
 	return NO;
+     */
+    BOOL isLongPressPin = [gestureRecognizer.view isKindOfClass:[YCPinAnnotationView class]] || [otherGestureRecognizer.view isKindOfClass:[YCPinAnnotationView class]];
+    
+    if (isLongPressPin && gestureRecognizer != tapMapViewGesture && otherGestureRecognizer != tapMapViewGesture) 
+    {
+		return YES;
+	}
+    
+	
+	return NO;
+
 
 }
- */
+ 
 
 /*
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer{
@@ -1497,18 +1534,18 @@
     }
     
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    /*
-    if (touch.tapCount >1) { //自定义的只处理点击一次的
-        if (gestureRecognizer == tapMapViewGesture) 
-            return NO;
-    }
-     */
-    
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+   /*
     if ([gestureRecognizer.view isKindOfClass:[YCPinAnnotationView class]]) { //点了一个pin，固有的响应
         if (gestureRecognizer == tapMapViewGesture) 
             return NO;
         else if([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])//UIMapView固有的
+            return YES;
+	}
+    */
+    if ([gestureRecognizer.view isKindOfClass:[YCPinAnnotationView class]]) { //点了一个pin，固有的响应
+        if (gestureRecognizer == tapMapViewGesture) 
+            return NO;
+        else //UIMapView固有的
             return YES;
 	}
     
@@ -1522,32 +1559,86 @@
     }
     
     ////////////////////////////////////////////////////////////////////////////////////////////////
+    /*
+    BOOL isNavigationBarHidden = [(UINavigationController*)[(iAlarmAppDelegate*)[UIApplication sharedApplication].delegate viewController] isNavigationBarHidden];
+    //注意: 依赖iAlarmAppDelegate 的viewController的类型
     
-    //没有pin选中或选中的pin不在屏幕内
-    BOOL noSelOrNoPin = NO;
+    BOOL selectedPinIsVisible = NO; //选中的pin在屏幕中
     if (self.mapView.selectedAnnotations.count > 0){
+        
         id selected = [self.mapView.selectedAnnotations objectAtIndex:0];
         if ([self.mapView visibleForAnnotation:selected]) 
-            noSelOrNoPin = NO;
+            selectedPinIsVisible = YES;
         else
-            noSelOrNoPin = YES;
+            selectedPinIsVisible = NO;
         
     }else{
-        noSelOrNoPin = YES;
+        selectedPinIsVisible = NO;
+    }
+    
+    if (selectedPinIsVisible) {//屏幕有选中的pin
+        
+        if (pinsEditing && isNavigationBarHidden) {//pin处于编辑状态 且 bar隐藏了
+            if (gestureRecognizer == tapMapViewGesture) 
+                return YES;
+            else if([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])//UIMapView固有的
+                return NO;
+        }else{
+            if (gestureRecognizer == tapMapViewGesture) 
+                return NO;
+            else if([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])//UIMapView固有的
+                return YES;
+        }
+        
+    }else{
+        
+        if (gestureRecognizer == tapMapViewGesture) 
+            return YES;
+        else if([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])//UIMapView固有的
+            return NO; 
+        
+    }
+     */
+    
+    BOOL isNavigationBarHidden = [(UINavigationController*)[(iAlarmAppDelegate*)[UIApplication sharedApplication].delegate viewController] isNavigationBarHidden];
+    //注意: 依赖iAlarmAppDelegate 的viewController的类型
+    
+    BOOL selectedPinIsVisible = NO; //选中的pin在屏幕中
+    if (self.mapView.selectedAnnotations.count > 0){
+        
+        id selected = [self.mapView.selectedAnnotations objectAtIndex:0];
+        if ([self.mapView visibleForAnnotation:selected]) 
+            selectedPinIsVisible = YES;
+        else
+            selectedPinIsVisible = NO;
+        
+    }else{
+        selectedPinIsVisible = NO;
     }
     
     
-    if (noSelOrNoPin){ //屏幕没有选中的pin，响应自定义的
+    if (isNavigationBarHidden) { //bar隐藏,什么情况交给自定义的处理
         if (gestureRecognizer == tapMapViewGesture) 
             return YES;
         else if([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])//UIMapView固有的
             return NO;
+    }else{
+        if (selectedPinIsVisible) {//屏幕有选中的pin,交个固有的
+
+            if (gestureRecognizer == tapMapViewGesture) 
+                return NO;
+            else if([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])//UIMapView固有的
+                return YES;
+
+        }else{
+            
+            if (gestureRecognizer == tapMapViewGesture) 
+                return YES;
+            else if([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])//UIMapView固有的
+                return NO; 
+            
+        }
         
-    }else{ //屏幕有选中的pin，响应固有的
-        if (gestureRecognizer == tapMapViewGesture) 
-            return NO;
-        else if([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])//UIMapView固有的
-            return YES;
     }
     
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2187,7 +2278,7 @@
     
     [tapMapViewGesture release]; tapMapViewGesture = nil;
     [tapCalloutViewGesture release]; tapCalloutViewGesture = nil;
-
+    [longPressGesture release]; longPressGesture = nil;
 
 }
 
@@ -2224,7 +2315,8 @@
     
     [tapMapViewGesture release];
     [tapCalloutViewGesture release];
-	
+	[longPressGesture release];
+    
     [super dealloc];
 }
 
