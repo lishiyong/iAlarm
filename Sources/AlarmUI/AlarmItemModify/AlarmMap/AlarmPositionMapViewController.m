@@ -218,30 +218,34 @@
 		self.navigationItem.titleView = nil;
 }
 
-
 -(void)alertInternet{
 	//检查网络
 	BOOL connectedToInternet = [[YCSystemStatus deviceStatusSingleInstance] connectedToInternet];
 	if (!connectedToInternet) {
-		if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0) {
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0) {
             // iOS 5 code
-            if (self->toNetworkURL_AlertView == nil) {
-                self->toNetworkURL_AlertView = [[UIAlertView alloc] initWithTitle:kAlertNeedInternetTitleAccessMaps
-                                                                          message:kAlertNeedInternetBodyAccessMaps 
-                                                                         delegate:self
-                                                                cancelButtonTitle:kAlertBtnSettings
-                                                                otherButtonTitles:kAlertBtnCancel,nil];
-
-            }
-                        
+            if (!checkNetAlert) 
+                checkNetAlert = [[UIAlertView alloc] initWithTitle:kAlertNeedInternetTitleAccessMaps
+                                                           message:kAlertNeedInternetBodyAccessMaps 
+                                                          delegate:self
+                                                 cancelButtonTitle:kAlertBtnSettings
+                                                 otherButtonTitles:kAlertBtnCancel,nil];
             
-            [self->toNetworkURL_AlertView show];
-            //[alert release];
-        }
-        else {
+            
+            
+            
+        } else {
             // iOS 4.x code
-            [UIUtility simpleAlertBody:kAlertNeedInternetBodyAccessMaps alertTitle:kAlertNeedInternetTitleAccessMaps cancelButtonTitle:kAlertBtnOK delegate:nil];
+            if (!checkNetAlert) 
+                checkNetAlert = [[UIAlertView alloc] initWithTitle:kAlertNeedInternetTitleAccessMaps
+                                                           message:kAlertNeedInternetBodyAccessMaps 
+                                                          delegate:nil
+                                                 cancelButtonTitle:kAlertBtnCancel
+                                                 otherButtonTitles:nil];
         }
+        
+        [checkNetAlert show];
+        
 	}
 }
 
@@ -493,6 +497,12 @@
     
 }
 
+- (void) handle_applicationWillResignActive:(id)notification{	
+    //关闭未关闭的对话框
+    [checkNetAlert dismissWithClickedButtonIndex:searchResultsAlert.cancelButtonIndex animated:NO];
+    [searchResultsAlert dismissWithClickedButtonIndex:searchResultsAlert.cancelButtonIndex animated:NO];
+    [searchAlert dismissWithClickedButtonIndex:searchAlert.cancelButtonIndex animated:NO];
+}
 
 - (void)registerNotifications 
 {
@@ -509,6 +519,11 @@
 							   selector: @selector (handle_standardLocationDidFinish:)
 								   name: IAStandardLocationDidFinishNotification
 								 object: nil];
+        
+        [notificationCenter addObserver: self
+                               selector: @selector (handle_applicationWillResignActive:)
+                                   name: UIApplicationWillResignActiveNotification
+                                 object: nil];
 		
 		
 		[self.alarm addObserver:self forKeyPath:@"radius" options:0 context:nil];
@@ -528,7 +543,7 @@
 		NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 		[notificationCenter removeObserver:self	name: UIApplicationDidEnterBackgroundNotification object: nil];
 		[notificationCenter removeObserver:self	name: IAStandardLocationDidFinishNotification object: nil];
-
+        [notificationCenter removeObserver:self	name: UIApplicationWillResignActiveNotification object: nil];
 
 		//[self.annotationAlarmEditing removeObserver:self forKeyPath:@"coordinate"];
 		[self.alarm removeObserver:self forKeyPath:@"radius"];
@@ -1710,76 +1725,88 @@
 			[self.curlbackgroundView startHideSearchBarAfterTimeInterval:kTimeIntervalForSearchBarHide];  //可以隐藏searchbar了
 
 		}else if (searchResultsCount > 1){
-			/*
-			self->searchResultsAlert = [[[YCAlertTableView alloc] 
-											   initWithTitle:kAlertTitleSearchResults delegate:nil tableViewDelegate:self tableViewDataSource:self cancelButtonTitle:kAlertBtnCancel] 
-											   autorelease];*/
 			
 			NSMutableArray *places = [NSMutableArray arrayWithCapacity:self.forwardGeocoder.results.count];
 			for(id oneObject in self.forwardGeocoder.results)
 				[places addObject:((BSKmlResult *)oneObject).address];
 			
-			YCAlertTableView *searchResultsAlert = [[[YCAlertTableView alloc] 
-										 initWithTitle:kAlertSearchTitleResults delegate:self tableCellContents:places cancelButtonTitle:kAlertBtnCancel] 
-										autorelease];
+			if (searchResultsAlert) {
+                [searchResultsAlert release];
+                searchResultsAlert = nil;
+            }
+			searchResultsAlert = [[YCAlertTableView alloc] 
+                                  initWithTitle:kAlertSearchTitleResults delegate:self tableCellContents:places cancelButtonTitle:kAlertBtnCancel];
 			[searchResultsAlert show];
 			
 			
 		}else { //==0
-			[UIUtility simpleAlertBody:kAlertSearchBodyTryAgain 
-							alertTitle:kAlertSearchTitleNoResults 
-					 cancelButtonTitle:kAlertBtnCancel
-						 OKButtonTitle:kAlertBtnRetry 
-							  delegate:self];
+			if (searchAlert) {
+                [searchAlert release];
+                searchAlert = nil;
+            }
+            searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleNoResults
+                                                     message:kAlertSearchBodyTryAgain 
+                                                    delegate:self
+                                           cancelButtonTitle:kAlertBtnCancel
+                                           otherButtonTitles:kAlertBtnRetry,nil];
+            [searchAlert show];
 		}
 
 
 		
 	}else {
 		
+		if (searchAlert) {
+            [searchAlert release];
+            searchAlert = nil;
+        }
+        
 		switch (self.forwardGeocoder.status) {
 			case G_GEO_BAD_KEY:
-				[UIUtility simpleAlertBody:kAlertSearchBodyTryAgain 
-								alertTitle:kAlertSearchTitleDefaultError
-						 cancelButtonTitle:kAlertBtnCancel
-						     OKButtonTitle:kAlertBtnRetry
-								  delegate:self];
+                searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleDefaultError
+                                                         message:kAlertSearchBodyTryAgain 
+                                                        delegate:self
+                                               cancelButtonTitle:kAlertBtnCancel
+                                               otherButtonTitles:kAlertBtnRetry,nil];
 				break;
 				
 			case G_GEO_UNKNOWN_ADDRESS:
-				[UIUtility simpleAlertBody:kAlertSearchBodyTryAgain 
-								alertTitle:kAlertSearchTitleNoResults 
-						 cancelButtonTitle:kAlertBtnCancel
-						     OKButtonTitle:kAlertBtnRetry 
-								  delegate:self];
+                searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleNoResults
+                                                         message:kAlertSearchBodyTryAgain 
+                                                        delegate:self
+                                               cancelButtonTitle:kAlertBtnCancel
+                                               otherButtonTitles:kAlertBtnRetry,nil];
 				
 				break;
 				
 			case G_GEO_TOO_MANY_QUERIES:
-				[UIUtility simpleAlertBody:kAlertSearchBodyTryTomorrow 
-								alertTitle:kAlertSearchTitleTooManyQueries 
-						 cancelButtonTitle:kAlertBtnOK 
-								  delegate:nil];  //只用1个按钮，而且不用retry
+                searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleTooManyQueries
+                                                         message:kAlertSearchBodyTryTomorrow 
+                                                        delegate:self
+                                               cancelButtonTitle:kAlertBtnOK
+                                               otherButtonTitles:nil];//只用1个按钮，而且不用retry
+                
 				break;
 				
 			case G_GEO_SERVER_ERROR:
-				[UIUtility simpleAlertBody:kAlertSearchBodyTryAgain 
-								alertTitle:kAlertSearchTitleDefaultError 
-						 cancelButtonTitle:kAlertBtnCancel
-						     OKButtonTitle:kAlertBtnRetry
-								  delegate:self];
+                searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleDefaultError
+                                                         message:kAlertSearchBodyTryAgain 
+                                                        delegate:self
+                                               cancelButtonTitle:kAlertBtnCancel
+                                               otherButtonTitles:kAlertBtnRetry,nil];
 				break;
 				
 				
 			default:
-				[UIUtility simpleAlertBody:kAlertSearchBodyTryAgain 
-								alertTitle:kAlertSearchTitleDefaultError 
-						 cancelButtonTitle:kAlertBtnCancel
-						     OKButtonTitle:kAlertBtnRetry
-								  delegate:self];
+                searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleDefaultError
+                                                         message:kAlertSearchBodyTryAgain 
+                                                        delegate:self
+                                               cancelButtonTitle:kAlertBtnCancel
+                                               otherButtonTitles:kAlertBtnRetry,nil];
 				break;
 		}
-		
+        
+        [searchAlert show];		
 	}
 	
 }
@@ -1797,27 +1824,6 @@
 -(void)forwardGeocoderError:(NSString *)errorMessage
 {
 	[self performSelector:@selector(endForwardGeocoder) withObject:nil afterDelay:0.1];  //数据更新后，等待x秒
-}
- 
-
-
-#pragma mark -
-#pragma mark UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    if (alertView != self->toNetworkURL_AlertView) {
-        if(buttonIndex == 1)  
-            [self.searchController setActive:YES animated:YES];   //search状态
-    }
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (alertView == self->toNetworkURL_AlertView) {
-        if (buttonIndex == 0) {
-            NSString *str = @"prefs:root=General&path=Network"; //打开设置中的网络
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
-        }
-    }
 }
 
 #pragma mark -
@@ -1849,20 +1855,27 @@
 }
 
 
-#pragma mark -
-#pragma mark YCAlertTableViewDelegete methods
-- (void)alertTableView:(YCAlertTableView *)alertTableView didSelectRow:(NSInteger)row{
-	BSKmlResult *place = [self.forwardGeocoder.results objectAtIndex:row];
-	[self resetAnnotationWithPlace:place];
-
-}
+#pragma mark - UIAlertViewDelegate YCAlertTableViewDelegete
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
 	[self.curlbackgroundView startHideSearchBarAfterTimeInterval:kTimeIntervalForSearchBarHide];  //可以隐藏searchbar了
 }
 
+- (void)alertTableView:(YCAlertTableView *)alertTableView didSelectRow:(NSInteger)row{
+	if (searchResultsAlert == alertTableView) {
+        BSKmlResult *place = [self.forwardGeocoder.results objectAtIndex:row];
+        [self resetAnnotationWithPlace:place];
+    }
+}
 
-
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (alertView == searchAlert && [[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:kAlertBtnRetry]) {
+        [self.searchController setActive:YES animated:YES];   //search状态
+    }else if (alertView == checkNetAlert && [[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:kAlertBtnSettings]) {
+        NSString *str = @"prefs:root=General&path=Network"; //打开设置中的网络
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+    }
+}
 
 #pragma mark - 
 #pragma mark - init and create 
@@ -1976,10 +1989,12 @@
 	[mapsTypeButton release];                
 	[satelliteTypeButton release];                   
 	[hybridTypeButton release];
-    
-    [toNetworkURL_AlertView release];
-    
+        
     [lastUpdateDistanceTimestamp release];
+    
+    [checkNetAlert release];
+    [searchResultsAlert release];
+    [searchAlert release];
  
 	[super dealloc];
 }

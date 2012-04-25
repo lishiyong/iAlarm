@@ -62,34 +62,50 @@
 
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0) {
             // iOS 5 code
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kAlertNeedLocationServicesTitle
-                                                            message:kAlertNeedLocationServicesBody 
-                                                           delegate:self
-                                                  cancelButtonTitle:kAlertBtnSettings
-                                                  otherButtonTitles:kAlertBtnCancel,nil];
-                                                  
+            if (!alert) 
+                alert = [[UIAlertView alloc] initWithTitle:kAlertNeedLocationServicesTitle
+                                                   message:kAlertNeedLocationServicesBody 
+                                                  delegate:self
+                                         cancelButtonTitle:kAlertBtnSettings
+                                         otherButtonTitles:kAlertBtnCancel,nil];
             
-            [alert show];
-            [alert release];
-        }
-        else {
+           
+
+        }else {
             // iOS 4.x code
             [UIUtility simpleAlertBody:kAlertNeedLocationServicesBody alertTitle:kAlertNeedLocationServicesTitle cancelButtonTitle:kAlertBtnOK delegate:nil];
+            
+            if (!alert) 
+                alert = [[UIAlertView alloc] initWithTitle:kAlertNeedLocationServicesTitle
+                                                   message:kAlertNeedLocationServicesBody 
+                                                  delegate:nil
+                                         cancelButtonTitle:kAlertBtnOK
+                                         otherButtonTitles:nil];
+                                         
+            
         }
+        
+        [alert show];
+
         
 	}
 }
 
+- (void)cancelAlertWithAnimated:(BOOL)animated{
+    NSInteger cancelButtonIndex = alert.cancelButtonIndex;
+    [alert dismissWithClickedButtonIndex:cancelButtonIndex animated:animated];
+}
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (buttonIndex == 0) {
+    if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:kAlertBtnSettings]) {
         NSString *str = @"prefs:root=LOCATION_SERVICES"; //打开设置中的定位
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
     }
-    
 }
 
 - (void)dealloc {
 	[locationManager release];
+    [alert release];
     [super dealloc];
 }
 

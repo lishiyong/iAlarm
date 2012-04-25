@@ -32,7 +32,9 @@
 	IBOutlet YCSearchBar *searchBar;
 	BSForwardGeocoder *forwardGeocoder;
 	YCSearchController *searchController;
-	
+    YCAlertTableView *searchResultsAlert;
+    UIAlertView *searchAlert;
+    
 	UIToolbar *toolbar;
 	UIBarButtonItem *infoBarButtonItem;
 	UIBarButtonItem *switchBarButtonItem;

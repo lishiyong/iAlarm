@@ -945,12 +945,10 @@
 
 }
 
-/*
-- (void) handle_applicationWillResignActive:(id)notification{	
-	//恢复navbar 标题
-	self.navigationItem.titleView = nil;
+- (void)handle_applicationWillResignActive:(id)notification{	
+    //关闭未关闭的对话框
+    [locationServicesUsableAlert cancelAlertWithAnimated:NO];
 }
-*/
 
 - (void) registerNotifications {
 	/*
@@ -989,12 +987,12 @@
 							 selector: @selector (handle_standardLocationDidFinish:)
 							 name: IAStandardLocationDidFinishNotification
 							 object: nil];
-	/*
+	
 	[notificationCenter addObserver: self
 						   selector: @selector (handle_applicationWillResignActive:)
 							   name: UIApplicationWillResignActiveNotification
 							 object: nil];
-	 */
+	 
 	
 	
 }
@@ -1026,7 +1024,7 @@
     
 	[notificationCenter removeObserver:self	name: UIApplicationDidEnterBackgroundNotification object: nil];
 	[notificationCenter removeObserver:self	name: IAStandardLocationDidFinishNotification object: nil];
-	//[notificationCenter removeObserver:self	name: UIApplicationWillResignActiveNotification object: nil];
+	[notificationCenter removeObserver:self	name: UIApplicationWillResignActiveNotification object: nil];
 }
 
 
@@ -1685,8 +1683,6 @@
 - (void)dealloc {
 	
 	[self freeResouceRecreated];
-
-	
 	//取消所有定时执行的函数
 	[reverseGeocoder cancel];
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];

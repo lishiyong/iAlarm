@@ -92,6 +92,7 @@
         }
         
     }else{
+        distanceFromCurrentLocation = -1;
         if (![self.alarmDetailLabel.text isEqualToString:self.alarm.positionShort]) {
             
             //转换动画

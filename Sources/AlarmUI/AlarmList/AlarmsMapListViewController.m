@@ -110,22 +110,28 @@
 	if (!connectedToInternet) {
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0) {
             // iOS 5 code
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kAlertNeedInternetTitleAccessMaps
-                                                            message:kAlertNeedInternetBodyAccessMaps 
-                                                           delegate:self
-                                                  cancelButtonTitle:kAlertBtnSettings
-                                                  otherButtonTitles:kAlertBtnCancel,nil];
+            if (!checkNetAlert) 
+                checkNetAlert = [[UIAlertView alloc] initWithTitle:kAlertNeedInternetTitleAccessMaps
+                                                           message:kAlertNeedInternetBodyAccessMaps 
+                                                          delegate:self
+                                                 cancelButtonTitle:kAlertBtnSettings
+                                                 otherButtonTitles:kAlertBtnCancel,nil];
             
             
-            [alert show];
-            [alert release];
-        }
-        else {
+            
+            
+        } else {
             // iOS 4.x code
-            [UIUtility simpleAlertBody:kAlertNeedInternetBodyAccessMaps alertTitle:kAlertNeedInternetTitleAccessMaps cancelButtonTitle:kAlertBtnOK delegate:nil];
+            if (!checkNetAlert) 
+                checkNetAlert = [[UIAlertView alloc] initWithTitle:kAlertNeedInternetTitleAccessMaps
+                                                           message:kAlertNeedInternetBodyAccessMaps 
+                                                          delegate:nil
+                                                 cancelButtonTitle:kAlertBtnCancel
+                                                 otherButtonTitles:nil];
         }
         
-		
+        [checkNetAlert show];
+
 	}
 }
 
@@ -743,6 +749,9 @@
 	[refreshPinLoopTimer invalidate];
 	[refreshPinLoopTimer release];
 	refreshPinLoopTimer = nil;
+    
+    //关闭未关闭的对话框
+    [checkNetAlert dismissWithClickedButtonIndex:checkNetAlert.cancelButtonIndex animated:NO];
 }
 
 - (void) handle_applicationDidBecomeActive:(id)notification{	
@@ -1190,6 +1199,11 @@
 		[self setUIEditing:[YCSystemStatus deviceStatusSingleInstance].isAlarmListEditing];
 	}
 	
+    //刷新距离
+    CLLocation *location = [YCSystemStatus deviceStatusSingleInstance].lastLocation;
+    for (YCAnnotation *oneObj in self.mapAnnotations ) {
+        [oneObj setDistanceWithCurrentLocation:location];
+    }
 	
 
 	isFirstShow = NO;
@@ -1425,11 +1439,10 @@
 #pragma mark -
 #pragma mark UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (buttonIndex == 0) {
+    if (alertView == checkNetAlert && [[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:kAlertBtnSettings]) {
         NSString *str = @"prefs:root=General&path=Network"; //打开设置中的网络
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
     }
-    
 }
 
 #pragma mark -
@@ -2316,6 +2329,8 @@
     [tapMapViewGesture release];
     [tapCalloutViewGesture release];
 	[longPressGesture release];
+    
+    [checkNetAlert release];
     
     [super dealloc];
 }

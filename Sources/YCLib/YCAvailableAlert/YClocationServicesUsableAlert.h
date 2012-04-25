@@ -12,7 +12,7 @@
 
 @interface YClocationServicesUsableAlert : NSObject <CLLocationManagerDelegate> {
 	CLLocationManager *locationManager;                     //4.2版本前检测定位服务用
-	
+	UIAlertView *alert;
 	BOOL isAlreadyAlert;  //是否已经提示过了
 }
 
@@ -20,5 +20,7 @@
 
 //检测定位服务状态。如果不可用或未授权，弹出对话框
 - (void)locationServicesUsable;
+//关闭对话框，而不采取任何动作
+- (void)cancelAlertWithAnimated:(BOOL)animated; 
 
 @end

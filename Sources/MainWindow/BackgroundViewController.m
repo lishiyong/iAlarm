@@ -593,50 +593,26 @@
     if (doHide == self.navBar.hidden) {
         return; //状况相等
     }
-
-    
     
     [self.navigationController setToolbarHidden:doHide animated:doHide]; //收缩时候，topbar和bottombar只能有一个动画
     [self.toolbar setItems:[self mapsViewToolbarItems] animated:NO];
     [self.navigationController setNavigationBarHidden:doHide animated:YES];
     
-
     /*
     if (doHide) {
         self.animationBackgroundView.frame = CGRectMake(0,0, 320, 460);
-        self.mapsViewController.view.frame  = CGRectMake(0,0, 320, 460);
-        self.mapsViewController.mapView.frame = CGRectMake(0,44, 320, 416);
     }else{
         [self performSelector:@selector(setViewsBounds) withObject:nil afterDelay:UINavigationControllerHideShowBarDuration];
     }
      */
+    
 }
 
-
-- (void)handleSearchBarDidBecomeFirstResponder:(NSNotification*)notification{
-	if ([notification.userInfo objectForKey:YCSearchBarKey] == self.searchBar) {
-        //隐藏bar
-        NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-        NSNotification *aNotification = [NSNotification notificationWithName:IADoHideBarNotification 
-                                                                      object:self
-                                                                    userInfo:[NSDictionary dictionaryWithObject:(id)kCFBooleanTrue forKey:IADoHideBarKey]];
-        [notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
-    }
+- (void)handle_applicationWillResignActive:(id)notification{	
+    //关闭未关闭的对话框
+    [searchResultsAlert dismissWithClickedButtonIndex:searchResultsAlert.cancelButtonIndex animated:NO];
+    [searchAlert dismissWithClickedButtonIndex:searchAlert.cancelButtonIndex animated:NO];
 }
-
-- (void)handleSearchBarDidResignFirstResponder:(NSNotification*)notification{
-	
-	if ([notification.userInfo objectForKey:YCSearchBarKey] == self.searchBar) {
-        //显示bar
-        NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-        NSNotification *aNotification = [NSNotification notificationWithName:IADoHideBarNotification 
-                                                                      object:self
-                                                                    userInfo:[NSDictionary dictionaryWithObject:(id)kCFBooleanFalse forKey:IADoHideBarKey]];
-        [notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
-    }
-}
-
-
 
 - (void)registerNotifications {
 	
@@ -687,6 +663,10 @@
 						   selector: @selector (handleHideBar:)
 							   name: IADoHideBarNotification
 							 object: nil];
+    [notificationCenter addObserver: self
+						   selector: @selector (handle_applicationWillResignActive:)
+							   name: UIApplicationWillResignActiveNotification
+							 object: nil];
 	
 }
 
@@ -705,6 +685,7 @@
 	[notificationCenter removeObserver:self	name: IAAlarmDidViewNotification object: nil];
 	[notificationCenter removeObserver:self	name: IAControlStatusShouldChangeNotification object: nil];
     [notificationCenter removeObserver:self	name: IADoHideBarNotification object: nil];
+    [notificationCenter removeObserver:self	name: UIApplicationWillResignActiveNotification object: nil];
 }
 
 #pragma mark -
@@ -867,7 +848,7 @@
 
     
     //debug
-    [self debug];
+    //[self debug];
    
 }
 
@@ -985,75 +966,89 @@
 			//[self.curlbackgroundView startHideSearchBarAfterTimeInterval:kTimeIntervalForSearchBarHide];  //可以隐藏searchbar了
 			
 		}else if (searchResultsCount > 1){
-			/*
-			 self->searchResultsAlert = [[[YCAlertTableView alloc] 
-			 initWithTitle:kAlertTitleSearchResults delegate:nil tableViewDelegate:self tableViewDataSource:self cancelButtonTitle:kAlertBtnCancel] 
-			 autorelease];*/
 			
 			NSMutableArray *places = [NSMutableArray arrayWithCapacity:self.forwardGeocoder.results.count];
 			for(id oneObject in self.forwardGeocoder.results)
 				[places addObject:((BSKmlResult *)oneObject).address];
 			
-			YCAlertTableView *searchResultsAlert = [[[YCAlertTableView alloc] 
-													 initWithTitle:kAlertSearchTitleResults delegate:self tableCellContents:places cancelButtonTitle:kAlertBtnCancel] 
-													autorelease];
+            if (searchResultsAlert) {
+                [searchResultsAlert release];
+                searchResultsAlert = nil;
+            }
+			searchResultsAlert = [[YCAlertTableView alloc] 
+													 initWithTitle:kAlertSearchTitleResults delegate:self tableCellContents:places cancelButtonTitle:kAlertBtnCancel];
 			[searchResultsAlert show];
 			
 			
 		}else { //==0
-			[UIUtility simpleAlertBody:kAlertSearchBodyTryAgain 
-							alertTitle:kAlertSearchTitleNoResults 
-					 cancelButtonTitle:kAlertBtnCancel
-						 OKButtonTitle:kAlertBtnRetry 
-							  delegate:self];
+            if (searchAlert) {
+                [searchAlert release];
+                searchAlert = nil;
+            }
+            searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleNoResults
+                                                     message:kAlertSearchBodyTryAgain 
+                                                    delegate:self
+                                           cancelButtonTitle:kAlertBtnCancel
+                                           otherButtonTitles:kAlertBtnRetry,nil];
+            [searchAlert show];
+            
 		}
 		
 		
 		
 	}else {
 		
+        if (searchAlert) {
+            [searchAlert release];
+            searchAlert = nil;
+        }
+        
 		switch (self.forwardGeocoder.status) {
 			case G_GEO_BAD_KEY:
-				[UIUtility simpleAlertBody:kAlertSearchBodyTryAgain 
-								alertTitle:kAlertSearchTitleDefaultError
-						 cancelButtonTitle:kAlertBtnCancel
-						     OKButtonTitle:kAlertBtnRetry
-								  delegate:self];
+                searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleDefaultError
+                                                         message:kAlertSearchBodyTryAgain 
+                                                        delegate:self
+                                               cancelButtonTitle:kAlertBtnCancel
+                                               otherButtonTitles:kAlertBtnRetry,nil];
 				break;
 				
 			case G_GEO_UNKNOWN_ADDRESS:
-				[UIUtility simpleAlertBody:kAlertSearchBodyTryAgain 
-								alertTitle:kAlertSearchTitleNoResults 
-						 cancelButtonTitle:kAlertBtnCancel
-						     OKButtonTitle:kAlertBtnRetry 
-								  delegate:self];
+                searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleNoResults
+                                                         message:kAlertSearchBodyTryAgain 
+                                                        delegate:self
+                                               cancelButtonTitle:kAlertBtnCancel
+                                               otherButtonTitles:kAlertBtnRetry,nil];
 				
 				break;
 				
 			case G_GEO_TOO_MANY_QUERIES:
-				[UIUtility simpleAlertBody:kAlertSearchBodyTryTomorrow 
-								alertTitle:kAlertSearchTitleTooManyQueries 
-						 cancelButtonTitle:kAlertBtnOK 
-								  delegate:nil];  //只用1个按钮，而且不用retry
+                searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleTooManyQueries
+                                                         message:kAlertSearchBodyTryTomorrow 
+                                                        delegate:self
+                                               cancelButtonTitle:kAlertBtnOK
+                                               otherButtonTitles:nil];//只用1个按钮，而且不用retry
+                
 				break;
 				
 			case G_GEO_SERVER_ERROR:
-				[UIUtility simpleAlertBody:kAlertSearchBodyTryAgain 
-								alertTitle:kAlertSearchTitleDefaultError 
-						 cancelButtonTitle:kAlertBtnCancel
-						     OKButtonTitle:kAlertBtnRetry
-								  delegate:self];
+                searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleDefaultError
+                                                         message:kAlertSearchBodyTryAgain 
+                                                        delegate:self
+                                               cancelButtonTitle:kAlertBtnCancel
+                                               otherButtonTitles:kAlertBtnRetry,nil];
 				break;
 				
 				
 			default:
-				[UIUtility simpleAlertBody:kAlertSearchBodyTryAgain 
-								alertTitle:kAlertSearchTitleDefaultError 
-						 cancelButtonTitle:kAlertBtnCancel
-						     OKButtonTitle:kAlertBtnRetry
-								  delegate:self];
+                searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleDefaultError
+                                                         message:kAlertSearchBodyTryAgain 
+                                                        delegate:self
+                                               cancelButtonTitle:kAlertBtnCancel
+                                               otherButtonTitles:kAlertBtnRetry,nil];
 				break;
 		}
+        
+        [searchAlert show];
 		
 	}
 	
@@ -1100,27 +1095,22 @@
 	 
 }
 
+#pragma mark - UIAlertViewDelegate YCAlertTableViewDelegete
 
-#pragma mark -
-#pragma mark YCAlertTableViewDelegete methods
 - (void)alertTableView:(YCAlertTableView *)alertTableView didSelectRow:(NSInteger)row{
-	BSKmlResult *place = [self.forwardGeocoder.results objectAtIndex:row];
-	[self resetAnnotationWithPlace:place];
+	if (searchResultsAlert == alertTableView) {
+        BSKmlResult *place = [self.forwardGeocoder.results objectAtIndex:row];
+        [self resetAnnotationWithPlace:place];
+    }
 }
 
-/*
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
-	[self.curlbackgroundView startHideSearchBarAfterTimeInterval:kTimeIntervalForSearchBarHide];  //可以隐藏searchbar了
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (alertView == searchAlert && [[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:kAlertBtnRetry]) {
+        [self.searchController setActive:YES animated:YES];   //search状态
+    }
 }
- */
 
-#pragma mark -
-#pragma mark UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-	if(buttonIndex == 1)  
-		[self.searchController setActive:YES animated:YES];   //search状态
-}
+#pragma mark - Memery Manager
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -1153,6 +1143,8 @@
 	[searchBar release];
 	[forwardGeocoder release];
 	[searchController release];
+    [searchResultsAlert release];
+    [searchAlert release];
 	
 	[toolbar release];
 	[infoBarButtonItem release];

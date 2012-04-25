@@ -200,6 +200,12 @@
 	
 	//刷新编辑状态
 	[self setUIEditing:[YCSystemStatus deviceStatusSingleInstance].isAlarmListEditing];
+    
+    //刷新距离
+    CLLocation *location = [YCSystemStatus deviceStatusSingleInstance].lastLocation;
+    for (AlarmsListCell *aCell in self.alarmListTableView.visibleCells) {
+        [aCell setDistanceWithCurrentLocation:location animated:NO];
+    }
 	
 }
  

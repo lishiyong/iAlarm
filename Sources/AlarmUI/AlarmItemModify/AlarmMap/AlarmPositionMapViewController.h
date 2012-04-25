@@ -78,9 +78,13 @@
 	IBOutlet UIButton *satelliteTypeButton;                   
 	IBOutlet UIButton *hybridTypeButton;
 	
-	UIAlertView *toNetworkURL_AlertView; //为了与别UIAlertView的区分
     
     NSDate *lastUpdateDistanceTimestamp; //最后更新距离时间
+    ////////////////////////////////////
+    //
+    UIAlertView *checkNetAlert;
+    YCAlertTableView *searchResultsAlert;
+    UIAlertView *searchAlert;
 
 
 }

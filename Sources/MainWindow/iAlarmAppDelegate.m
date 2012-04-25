@@ -213,10 +213,14 @@
 	[self.ringplayer stop];
 	[self.vibratePlayer stop];
     
+    //
     application.applicationIconBadgeNumber = 0;
     [[IAAlarmNotificationCenter defaultCenter] removeFiredNotification];
-    [viewAlarmAlertView dismissWithClickedButtonIndex:0 animated:NO];
-    [confirmRateAlertView dismissWithClickedButtonIndex:0 animated:NO];
+    
+    //关闭未关闭的对话框
+    [viewAlarmAlertView dismissWithClickedButtonIndex:viewAlarmAlertView.cancelButtonIndex animated:NO];
+    [confirmRateAlertView dismissWithClickedButtonIndex:confirmRateAlertView.cancelButtonIndex animated:NO];
+    [self.locationServicesUsableAlert cancelAlertWithAnimated:NO];
     
     //第四种情况：程序直接进入。在这里设置需要的参数
     indexForView = 0;
@@ -225,8 +229,7 @@
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-	//检测定位服务状态。如果不可用或未授权，弹出对话框
-	[self.locationServicesUsableAlert performSelector:@selector(locationServicesUsable) withObject:nil afterDelay:1.0];
+	
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -253,7 +256,10 @@
 		[confirmRateAlertView performSelector:@selector(show) withObject:nil afterDelay:4.0];
 	}
     
-    //
+    //检测定位服务状态。如果不可用或未授权，弹出对话框
+	[self.locationServicesUsableAlert performSelector:@selector(locationServicesUsable) withObject:nil afterDelay:1.0];
+    
+    //打开查看视图
     [self viewNotificationedAlarm:animatedView];
         
 }

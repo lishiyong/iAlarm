@@ -34,6 +34,7 @@
         }
         
     }else{
+        self.distanceFromCurrentLocation = -1;
         self.subtitle = nil;
     }
 }

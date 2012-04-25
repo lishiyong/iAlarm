@@ -70,6 +70,9 @@
     UITapGestureRecognizer *tapMapViewGesture;
     UITapGestureRecognizer *tapCalloutViewGesture;          //为了点地图的标签，而不取消选中
     UILongPressGestureRecognizer *longPressGesture;
+    ////////////////////////////////////
+    //
+    UIAlertView *checkNetAlert;
 	
 }
 
