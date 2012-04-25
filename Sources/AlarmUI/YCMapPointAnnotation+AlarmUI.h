@@ -10,6 +10,6 @@
 
 @interface YCMapPointAnnotation (AlarmUI)
 
-- (void)setDistanceWithCurrentLocation:(CLLocation*)curLocation;
+- (void)setDistanceSubtitleWithCurrentLocation:(CLLocation*)curLocation;
 
 @end

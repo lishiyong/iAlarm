@@ -6,6 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "CLLocation+AlarmUI.h"
 #import "IAAlarmNotificationCenter.h"
 #import "UIColor+YC.h"
 #import "IAAlarmFindViewController.h"
@@ -775,17 +776,8 @@
 
 //显示距离当前位置XX公里
 - (NSString*)distanceStringFromDestionationToCurrentLocation:(CLLocation*)location{
-	//设置距离文本
-    NSString * s = nil;
     CLLocation *aLocation = [[[CLLocation alloc] initWithLatitude:self.alarmTemp.coordinate.latitude longitude:self.alarmTemp.coordinate.longitude] autorelease];
-    CLLocationDistance distance = [location distanceFromLocation:aLocation];
-    
-    if (distance > 100.0) 
-        s = [NSString stringWithFormat:KTextPromptDistanceCurrentLocation,[location distanceFromLocation:aLocation]/1000.0];
-    else
-        s = KTextPromptCurrentLocation;
-	
-	return s;
+	return [aLocation distanceStringFromCurrentLocation:location];
 }
 
 //等待结束，显示距离当前位置XX公里
@@ -795,15 +787,9 @@
     self.footerView.distanceLabel.hidden = NO;
     
     //设置距离文本
-    NSString * s = nil;
-    CLLocation *aLocation = [[[CLLocation alloc] initWithLatitude:self.alarmTemp.coordinate.latitude longitude:self.alarmTemp.coordinate.longitude] autorelease];
-    CLLocationDistance distance = [location distanceFromLocation:aLocation];
     
-    if (distance > 100.0) 
-        s = [NSString stringWithFormat:KTextPromptDistanceCurrentLocation,[location distanceFromLocation:aLocation]/1000.0];
-    else
-        s = KTextPromptItIsCurrentLocation;
-    self.footerView.distanceLabel.text = s;
+    CLLocation *aLocation = [[[CLLocation alloc] initWithLatitude:self.alarmTemp.coordinate.latitude longitude:self.alarmTemp.coordinate.longitude] autorelease];
+    self.footerView.distanceLabel.text = [aLocation distanceStringFromCurrentLocation:location];
     
     //下面的提示文体向下推
     self.footerView.promptLabel.frame = CGRectMake(19.0,32.0,284.0,170.0);

@@ -201,9 +201,8 @@
     }
     animatedView = NO;
     
-    
     [application performSelector:@selector(setApplicationIconBadgeNumber:) withInteger:0 afterDelay:0.1];//为评分判断留时间
-    
+        
     return YES;
 }
 

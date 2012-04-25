@@ -577,9 +577,8 @@
 
 - (void)setViewsBounds{ //做这个函数为了延时调用
     self.animationBackgroundView.frame = CGRectMake(0,0, 320, 372);
-    self.mapsViewController.view.frame  = CGRectMake(0,0, 320, 372);
-    self.mapsViewController.mapView.frame = CGRectMake(0, 44, 320, 328);
- 
+    //self.mapsViewController.view.frame  = CGRectMake(0,0, 320, 372);
+    //self.mapsViewController.mapView.frame = CGRectMake(0, 44, 320, 328);
 }
 
 - (void)handleHideBar:(NSNotification*)notification{
@@ -594,16 +593,33 @@
         return; //状况相等
     }
     
-    [self.navigationController setToolbarHidden:doHide animated:doHide]; //收缩时候，topbar和bottombar只能有一个动画
+    self.animationBackgroundView.autoresizingMask &= ~UIViewAutoresizingFlexibleHeight; //去掉高的自适应
+    
+    [self.navigationController setToolbarHidden:doHide animated:YES]; //收缩时候，topbar和bottombar只能有一个动画
     [self.toolbar setItems:[self mapsViewToolbarItems] animated:NO];
     [self.navigationController setNavigationBarHidden:doHide animated:YES];
-    
-    /*
+     
     if (doHide) {
         self.animationBackgroundView.frame = CGRectMake(0,0, 320, 460);
+        //self.mapsViewController.view.frame = CGRectMake(0,0, 320, 460);
+        //self.mapsViewController.mapView.frame = CGRectMake(0, 44, 320, 416);
     }else{
         [self performSelector:@selector(setViewsBounds) withObject:nil afterDelay:UINavigationControllerHideShowBarDuration];
     }
+    
+    self.animationBackgroundView.autoresizingMask |= UIViewAutoresizingFlexibleHeight;//加高的自适应
+    
+    /*
+     CGFloat fromValue = doHide ? 372 : 460;
+     CGFloat toValue = doHide ? 460 : 372;
+     //if (doHide)  self.mapsViewController.mapView.layer.anchorPoint = {0.5,}
+     [CATransaction begin];
+     CABasicAnimation *mapScaleAm = [CABasicAnimation animationWithKeyPath:@"bounds.size.height"];
+     mapScaleAm.duration = 3.2;
+     mapScaleAm.fromValue = [NSNumber numberWithFloat:fromValue];
+     mapScaleAm.toValue = [NSNumber numberWithFloat:toValue];
+     [self.mapsViewController.view.layer addAnimation:mapScaleAm forKey:@"YCmapScale"];
+     [CATransaction commit];
      */
     
 }
@@ -846,23 +862,27 @@
 												 searchDisplayController:self.searchDisplayController];
 	self.searchController.originalSearchBarHidden = NO;//不自动隐藏
 
-    
     //debug
     //[self debug];
    
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    //加高的自适应。如果父视图有这个值，新加入的子视图的高度会有问题。why，没搞明白。
+    self.animationBackgroundView.autoresizingMask |= UIViewAutoresizingFlexibleHeight;
 }
 
 #pragma mark - debug
 - (void)debug{
     //[self.searchBar performSelector:@selector(setHidden:) withObject:(id)kCFBooleanTrue afterDelay:1.0];
     
-    /*
+    
     self.searchBar.alpha = 0.5;
-    self.toolbar.alpha = 0.1;
-    self.navBar.alpha = 0.1;
-    self.mapsViewController.view.alpha = 0.5;
-    self.mapsViewController.mapView.alpha = 0.2;
-     */
+    self.toolbar.alpha = 0.5;
+    self.navBar.alpha = 0.5;
+    //self.mapsViewController.view.alpha = 0.5;
+    //self.mapsViewController.mapView.alpha = 0.2;
+     
     
     ((UIWindow*)[[UIApplication sharedApplication].windows objectAtIndex:0]).backgroundColor = [UIColor yellowColor];
     

@@ -6,6 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import "UIApplication-YC.h"
 #import "iAlarmAppDelegate.h"
 #import "YCMapPointAnnotation+AlarmUI.h"
 #import "YCOverlayImageView.h"
@@ -734,7 +735,7 @@
     
     CLLocation *location = [[notification userInfo] objectForKey:IAStandardLocationKey];
     for (YCAnnotation *oneObj in self.mapAnnotations ) {
-        [oneObj setDistanceWithCurrentLocation:location];
+        [oneObj setDistanceSubtitleWithCurrentLocation:location];
     }
     
 }
@@ -1200,9 +1201,15 @@
 	}
 	
     //刷新距离
+    //刷新距离
     CLLocation *location = [YCSystemStatus deviceStatusSingleInstance].lastLocation;
+    if ([UIApplication sharedApplication].applicationDidFinishLaunchineTimeElapsing  < 5.0) {//小于x秒，刚启动，第一次显示view
+        //第一次刷新距离，判断一下数据的时间戳，防止是很久前缓存的。
+        NSTimeInterval ti = [location.timestamp timeIntervalSinceNow];
+        if (ti < -120) location = nil; //120秒内的数据可用。最后位置过久，不用.
+    }
     for (YCAnnotation *oneObj in self.mapAnnotations ) {
-        [oneObj setDistanceWithCurrentLocation:location];
+        [oneObj setDistanceSubtitleWithCurrentLocation:location];
     }
 	
 
@@ -1963,6 +1970,7 @@
     if (userLocation.location == nil) //ios5.0 没有取得用户位置的时候也回调这个方法
         return;
     
+    userLocation.subtitle = nil; //位置已经更新，地址需要用新的
 	[self performSelector:@selector(endUpdateUserLocation) withObject:nil afterDelay:0.0];
 	
 	//设置“回到当前位置按钮”的可用状态。
@@ -2020,7 +2028,7 @@
             //显示距离当前位置XX公里
             annoation.subtitle = nil;
             if ([YCSystemStatus deviceStatusSingleInstance].lastLocation) {
-                [(YCAnnotation*)annoation setDistanceWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];
+                [(YCAnnotation*)annoation setDistanceSubtitleWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];
             }
 		}
 		
@@ -2128,7 +2136,15 @@
 	 
 
 }
- 
+
+- (void)mapViewWillStartLoadingMap:(MKMapView *)mapView{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+}
+
+- (void)mapViewDidFinishLoadingMap:(MKMapView *)mapView{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO; 
+}
+
 - (void)mapViewDidFailLoadingMap:(MKMapView *)mapView withError:(NSError *)error{
 
 	if (!isAlreadyAlertForInternet && [self.view superview]!=nil) { //没警告过 而且 view在显示
@@ -2136,6 +2152,7 @@
 		[self performSelector:@selector(alertInternet) withObject:nil afterDelay:0.25];
 		isAlreadyAlertForInternet = YES;
 	}
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 
@@ -2201,7 +2218,7 @@
 				
 				//显示距离当前位置XX公里
 				if ([YCSystemStatus deviceStatusSingleInstance].lastLocation) {
-                    [(YCAnnotation*)annotation setDistanceWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];
+                    [(YCAnnotation*)annotation setDistanceSubtitleWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];
 					//为了有动画效果
 					NSString *subtitleTemp = annotation.subtitle;
 					annotation.subtitle = nil;

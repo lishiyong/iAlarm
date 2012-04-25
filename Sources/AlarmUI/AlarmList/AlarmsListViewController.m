@@ -8,6 +8,7 @@
 //#import "iAlarmAppDelegate.h"
 //#import "UIApplication-YC.h"
 
+#import "UIApplication-YC.h"
 #import "IARegionsCenter.h"
 #import "YCSystemStatus.h"
 #import "UIViewController-YC.h"
@@ -101,7 +102,7 @@
     
 	CLLocation *location = [[notification userInfo] objectForKey:IAStandardLocationKey];
     for (AlarmsListCell *aCell in self.alarmListTableView.visibleCells) {
-        [aCell setDistanceWithCurrentLocation:location animated:YES];
+        [aCell setDistanceLabelWithCurrentLocation:location animated:YES];
     }
     
 }
@@ -190,7 +191,7 @@
 	//空list的 y背景文字
 	self.backgroundTextLabel.hidden = (count > 0); //背景文字
 	self.backgroundTextLabel.text = KTextPromptNoiAlarms;
-	
+    
 }
 
 
@@ -203,10 +204,15 @@
     
     //刷新距离
     CLLocation *location = [YCSystemStatus deviceStatusSingleInstance].lastLocation;
-    for (AlarmsListCell *aCell in self.alarmListTableView.visibleCells) {
-        [aCell setDistanceWithCurrentLocation:location animated:NO];
+    if ([UIApplication sharedApplication].applicationDidFinishLaunchineTimeElapsing  < 5.0) {//小于x秒，刚启动，第一次显示view
+        //第一次刷新距离，判断一下数据的时间戳，防止是很久前缓存的。
+        NSTimeInterval ti = [location.timestamp timeIntervalSinceNow];
+        if (ti < -120) location = nil; //120秒内的数据可用。最后位置过久，不用.
     }
-	
+    for (AlarmsListCell *aCell in self.alarmListTableView.visibleCells) {
+        [aCell setDistanceLabelWithCurrentLocation:location animated:NO];
+    }
+    
 }
  
 
@@ -260,7 +266,7 @@
 	NSArray *alarms = [IAAlarm alarmArray];
 	IAAlarm *alarm =[alarms objectAtIndex:indexPath.row];
     cell.alarm = alarm;
-    [cell setDistanceWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation animated:NO]; //使用最后存储的位置
+    [cell setDistanceLabelWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation animated:NO]; //使用最后存储的位置
     
 	
 	if (indexPath.row != [IAAlarm alarmArray].count -1) { //最后的cell有bottomShadow

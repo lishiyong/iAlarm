@@ -5,6 +5,7 @@
 //  Created by li shiyong on 10-10-28.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
+#import "CLLocation+AlarmUI.h"
 #import "YCPinAnnotationView.h"
 #import "UINavigationItem-YC.h"
 #import "UIViewController-YC.h"
@@ -188,31 +189,13 @@
 #pragma mark - 
 #pragma mark - Utility
 
-
-//显示距离当前位置XX公里
-- (NSString*)distanceWithCurrentLocation:(CLLocation*)location{
-	
-    
-    //设置距离文本
-    NSString * s = nil;
-    CLLocation *aLocation = [[[CLLocation alloc] initWithLatitude:self.annotationAlarmEditing.coordinate.latitude longitude:self.annotationAlarmEditing.coordinate.longitude] autorelease];
-    CLLocationDistance distance = [location distanceFromLocation:aLocation];
-    
-    if (distance > 100.0) 
-        s = [NSString stringWithFormat:KTextPromptDistanceCurrentLocation,[location distanceFromLocation:aLocation]/1000.0];
-    else
-        s = KTextPromptCurrentLocation;
-    
-	return s;
-	
-}
-
 //设置title为显示当前位置的距离
 - (void)setDistanceLabel{
 
-	CLLocation *location = [YCSystemStatus deviceStatusSingleInstance].lastLocation;
-	if (location) {
-		NSString *distance = [self distanceWithCurrentLocation:location];
+	CLLocation *curLocation = [YCSystemStatus deviceStatusSingleInstance].lastLocation;
+	if (curLocation) {
+        CLLocation *aLocation = [[[CLLocation alloc] initWithLatitude:self.annotationAlarmEditing.coordinate.latitude longitude:self.annotationAlarmEditing.coordinate.longitude] autorelease];
+		NSString *distance = [aLocation distanceStringFromCurrentLocation:curLocation];
 		[self.navigationItem setTitleView:[self detailTitleViewWithContent:distance] animated:YES];
 	}else
 		self.navigationItem.titleView = nil;
@@ -1121,6 +1104,7 @@
 	else 
 		delay = 3.0;//除了第一次显示外。多延时，免得影响其他
 
+    userLocation.subtitle = nil; //位置已经更新，地址需要用新的
 	[self performSelector:@selector(endUpdateUserLocation) withObject:nil afterDelay:delay]; 
 }
 
@@ -1456,9 +1440,17 @@
 	}
 	
 }
- 
-- (void)mapViewDidFailLoadingMap:(MKMapView *)mapView withError:(NSError *)error{
 
+- (void)mapViewWillStartLoadingMap:(MKMapView *)mapView{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+}
+
+- (void)mapViewDidFinishLoadingMap:(MKMapView *)mapView{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO; 
+}
+
+- (void)mapViewDidFailLoadingMap:(MKMapView *)mapView withError:(NSError *)error{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 #pragma mark -

@@ -17,7 +17,7 @@
 
 
 @property(nonatomic,readonly) NSDate *applicationDidFinishLaunchingTime;                       //程序启动的时间
-@property(nonatomic,readonly) NSTimeInterval applicationDidFinishLaunchineTimeElapsing;       //程序启动后度过的世纪
+@property(nonatomic,readonly) NSTimeInterval applicationDidFinishLaunchineTimeElapsing;       //程序启动后度过的时间
 
 
 

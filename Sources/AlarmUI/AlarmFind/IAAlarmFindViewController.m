@@ -337,7 +337,7 @@ cell使用后height竟然会加1。奇怪！
     //大头针
     pointAnnotation = [[YCMapPointAnnotation alloc] initWithCoordinate:alarm.coordinate title:alarm.alarmName subTitle:nil];    
     [self.mapView addAnnotation:pointAnnotation];
-    [pointAnnotation setDistanceWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];//距离
+    [pointAnnotation setDistanceSubtitleWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];//距离
     
     //地图的显示region
     
@@ -479,6 +479,17 @@ cell使用后height竟然会加1。奇怪！
 	}
 }
 
+- (void)mapViewWillStartLoadingMap:(MKMapView *)mapView{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+}
+
+- (void)mapViewDidFinishLoadingMap:(MKMapView *)mapView{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO; 
+}
+
+- (void)mapViewDidFailLoadingMap:(MKMapView *)mapView withError:(NSError *)error{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+}
 
 #pragma mark - Table view data source & delegate
 
@@ -636,7 +647,7 @@ cell使用后height竟然会加1。奇怪！
     //还没加载
 	if (![self isViewLoaded]) return;
     CLLocation *location = [[notification userInfo] objectForKey:IAStandardLocationKey];
-    [pointAnnotation setDistanceWithCurrentLocation:location];
+    [pointAnnotation setDistanceSubtitleWithCurrentLocation:location];
     
 }
 

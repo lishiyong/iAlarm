@@ -5,6 +5,7 @@
 //  Created by li shiyong on 11-1-9.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 
+#import "CLLocation+AlarmUI.h"
 #import "UIColor+YC.h"
 #import "IARegionsCenter.h"
 #import "IANotifications.h"
@@ -49,41 +50,39 @@
     }
 }
 
-- (void)setDistanceWithCurrentLocation:(CLLocation*)curLocation animated:(BOOL)animated;{ 
+- (void)setDistanceLabelWithCurrentLocation:(CLLocation*)curLocation animated:(BOOL)animated;{ 
     //最后位置过久，不用
-    NSTimeInterval ti = [curLocation.timestamp timeIntervalSinceNow];
-    if (ti < -120) curLocation = nil; //120秒内的数据可用
+    //NSTimeInterval ti = [curLocation.timestamp timeIntervalSinceNow];
+    //if (ti < -120) curLocation = nil; //120秒内的数据可用
     
     
     if (curLocation && alarm) {
         
         CLLocation *aLocation = [[[CLLocation alloc] initWithLatitude:alarm.coordinate.latitude longitude:alarm.coordinate.longitude] autorelease];
-        CLLocationDistance distance = [curLocation distanceFromLocation:aLocation];
         
-        NSString *s = nil;
-        if (distance > 100.0) 
-            s = [NSString stringWithFormat:KTextPromptDistanceCurrentLocation,[curLocation distanceFromLocation:aLocation]/1000.0];
-        else
-            s = KTextPromptCurrentLocation;
+        CLLocationDistance distance = [curLocation distanceFromLocation:aLocation];
+        NSString *distanceString = [aLocation distanceStringFromCurrentLocation:curLocation];
         
         //未设置过 或 与上次的距离超过100米
-        if (distanceFromCurrentLocation < 0.0 || fabs(distanceFromCurrentLocation - distance) > 100.0) {
+        //if (distanceFromCurrentLocation < 0.0 || fabs(distanceFromCurrentLocation - distance) > 100.0) 
+        {
             distanceFromCurrentLocation = distance;
 
-            if (![self.alarmDetailLabel.text isEqualToString:s]) {
+            if (![self.alarmDetailLabel.text isEqualToString:distanceString]) {
                 
                 //转换动画
                 if (animated) {
                     self.userInteractionEnabled = NO;
                     [UIView transitionWithView:self.alarmDetailLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^()
                      {
-                         self.alarmDetailLabel.text = s;
+                         self.alarmDetailLabel.text = distanceString;
                      } completion:^(BOOL finished)
                      {
                          self.userInteractionEnabled = YES;
                      }]; 
+                    
                 }else{
-                    self.alarmDetailLabel.text = s;
+                    self.alarmDetailLabel.text = distanceString;
                 }
                 
                 

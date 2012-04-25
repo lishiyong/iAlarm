@@ -9,7 +9,7 @@
 #import "YCMapPointAnnotation.h"
 
 @implementation YCMapPointAnnotation
-@synthesize coordinate, title, subtitle, distanceFromCurrentLocation;
+@synthesize coordinate, title, subtitle;
 
 -(id) initWithCoordinate:(CLLocationCoordinate2D) coord title:(NSString *) theTitle subTitle:(NSString *) theSubTitle{
     return [self initWithCoordinate:coord title:theTitle subTitle:theSubTitle addressDictionary:nil];
