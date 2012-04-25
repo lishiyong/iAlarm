@@ -22,14 +22,17 @@
 
 @synthesize statusCode, results;
 
-- (BOOL)parseXMLFileAtURL:(NSURL *)URL parseError:(NSError **)error ignoreAddressComponents:(BOOL)ignore
+- (BOOL)parseXMLData:(NSData *)data parseError:(NSError **)error ignoreAddressComponents:(BOOL)ignore
 {
 	BOOL successfull = TRUE;
 	
 	ignoreAddressComponents = ignore;
 	
+    // Load the data trough NSData, NSXMLParser leaks when loading data
+    NSData *xmlData = [[NSData alloc] initWithData:data];
+    
 	// Create XML parser
-    NSXMLParser *parser = [[NSXMLParser alloc] initWithContentsOfURL:URL];
+    NSXMLParser *parser = [[NSXMLParser alloc] initWithData:xmlData];
     
 	// Set self as the delegate of the parser so that it will receive the parser delegate methods callbacks.
     [parser setDelegate:self];
@@ -49,79 +52,10 @@
     }
     
     [parser release];
+    [xmlData release];
 	
 	return successfull;
 }
-
-
-
-
-//////////////////////
-/*
-- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName 
-  namespaceURI:(NSString *)namespaceURI 
- qualifiedName:(NSString *)qName
-{ 
-	if (qName) {
-        elementName = qName;
-    }
-	
-	// If we reach the end of a placemark element we add it to our array
-	if([elementName isEqualToString:@"Placemark"])
-	{
-		if(currentPlacemark != nil)
-		{
-			[placemarkArray addObject:currentPlacemark];
-			[currentPlacemark release];
-			currentPlacemark = nil;
-		}
-	}
-	
-	// If contentsOfCurrentProperty is nil we're not interested in the
-	// collected data 
-	if(contentsOfCurrentProperty == nil)
-		return;
-	
-	NSString* elementValue = [[NSString alloc] initWithString:contentsOfCurrentProperty];
-	
-	if ([elementName isEqualToString:@"name"]) {
-		self.name = elementValue;
-	}
-	else if ([elementName isEqualToString:@"code"]) {
-		statusCode = [elementValue intValue];
-    }
-	if ([elementName isEqualToString:@"address"]) {
-		currentPlacemark.address = elementValue;
-	}
-	if ([elementName isEqualToString:@"CountryNameCode"]) {
-		currentPlacemark.countryNameCode = elementValue;
-	}
-	if ([elementName isEqualToString:@"CountryName"]) {
-		currentPlacemark.countryName = elementValue;
-	}
-	if ([elementName isEqualToString:@"SubAdministrativeAreaName"]) {
-		currentPlacemark.subAdministrativeAreaName = elementValue;
-	}
-	if ([elementName isEqualToString:@"LocalityName"]) {
-		currentPlacemark.localityName = elementValue;
-	}
-	if ([elementName isEqualToString:@"coordinates"]) {
-		// Coordinates are stored in a comma separated string.
-		NSArray *chunks = [elementValue componentsSeparatedByString: @","];
-		currentPlacemark.longitude = [[chunks objectAtIndex:0] floatValue];
-		currentPlacemark.latitude = [[chunks objectAtIndex:1] floatValue];
-	}
-	
-	
-	[elementValue release];
-	contentsOfCurrentProperty = nil;
-}
-*/
-/////////////////////
-
-
-
-
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName 
   namespaceURI:(NSString *)namespaceURI 
@@ -149,7 +83,7 @@
 		isBounds = NO;
 		isSouthWest = NO;
 	}
-	else if(ignoreAddressComponents == NO && [elementName isEqualToString:@"address_component"])
+	else if(ignoreAddressComponents == FALSE && [elementName isEqualToString:@"address_component"])
 	{
 		// Set up an array to hold address components 
 		if(addressComponents == nil)
@@ -195,7 +129,7 @@
 			[contentsOfCurrentProperty setString:@""];
 		}
 	}
-	else 
+	else if (contentsOfCurrentProperty != nil)
 	{
 		// If we're not interested in the element we set the variable used 
 		// to collect information to nil.
@@ -255,8 +189,6 @@
 	
 	NSString* elementValue = [[NSString alloc] initWithString:contentsOfCurrentProperty];
 	
-
-	
 	if ([elementName isEqualToString:@"status"]) {
 		if([elementValue isEqualToString:@"OK"])
 		{
@@ -289,7 +221,6 @@
 	else if ([elementName isEqualToString:@"type"]) {
 		[typesArray addObject:elementValue];
     }
-	//else if ([elementName isEqualToString:@"formattedAddress"]) {
 	else if ([elementName isEqualToString:@"formatted_address"]) {
 		currentResult.address = elementValue;
 		
@@ -358,21 +289,9 @@
     }
 }
 
-
-
 -(void)dealloc
 {
-	
-	if(contentsOfCurrentProperty != nil) {
-		[contentsOfCurrentProperty release];
-	}
-	
-	if(results != nil)
-	{
-		[results release];
-	}
-	
-	
+    [results release];
 	[super dealloc];
 }
 

@@ -34,6 +34,7 @@
 	YCSearchController *searchController;
     YCAlertTableView *searchResultsAlert;
     UIAlertView *searchAlert;
+    NSArray *searchResults;
     
 	UIToolbar *toolbar;
 	UIBarButtonItem *infoBarButtonItem;

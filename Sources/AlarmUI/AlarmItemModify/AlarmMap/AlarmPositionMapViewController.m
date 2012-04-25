@@ -117,6 +117,8 @@
 -(id)forwardGeocoder{
 	if (forwardGeocoder == nil) {
 		forwardGeocoder = [[BSForwardGeocoder alloc] initWithDelegate:self];
+        forwardGeocoder.timeoutInterval = 20.0;
+        //forwardGeocoder.useHTTP = YES;
 	}
 	return forwardGeocoder;
 }
@@ -485,6 +487,8 @@
     [checkNetAlert dismissWithClickedButtonIndex:searchResultsAlert.cancelButtonIndex animated:NO];
     [searchResultsAlert dismissWithClickedButtonIndex:searchResultsAlert.cancelButtonIndex animated:NO];
     [searchAlert dismissWithClickedButtonIndex:searchAlert.cancelButtonIndex animated:NO];
+    [self.searchController setActive:NO animated:NO];
+    [self.forwardGeocoder cancel];
 }
 
 - (void)registerNotifications 
@@ -1581,36 +1585,7 @@
 
 }
 
-
-#pragma mark -
-#pragma mark Utility - ForwardGeocoder
-
-#define kTimeOutForForwardGeocoder    20.0
--(void)beginForwardGeocoderWithSearchString:(NSString *)searchString{
-	
-	//[forwardGeocoder cancel] 会把delegate置空
-	self.forwardGeocoder.delegate = self;
-	
-	//先赋空相关数据
-	self.forwardGeocoder.status = G_GEO_SERVER_ERROR; 
-	self.forwardGeocoder.results = nil;
-	
-	// 开始搜
-	//[self.forwardGeocoder findLocation:searchString];
-    // 开始搜    
-    MKMapRect rect;
-    CLLocation *curLocation = self.mapView.userLocation.location;
-    if (curLocation) { //使用当前位置的附近 作为查询优先
-        MKMapPoint curPoint = MKMapPointForCoordinate(curLocation.coordinate);
-        rect = MKMapRectMake(curPoint.x, curPoint.y, 6000, 6000); //取当前位置的x公里的范围
-    }else{ //当前地图可视范围 作为查询优先
-        rect = self.mapView.visibleMapRect;
-    }
-    
-    [self.forwardGeocoder findLocation:searchString andMapRect:rect];
-    
-	[self performSelector:@selector(endForwardGeocoder) withObject:nil afterDelay:kTimeOutForForwardGeocoder];
-}
+#pragma mark - BSForwardGeocoderDelegate & Utility
 
 -(void)resetAnnotationWithPlace:(BSKmlResult*)place{
 	
@@ -1680,172 +1655,167 @@
 	[self.mapView performSelector:@selector(addAnnotation:) withObject:annotationTemp afterDelay:delay+0.1];
 	
 
-
-	
 }
 
--(void)endForwardGeocoder{
-	
-	///////////////////////////////////
-	//已经被释放了
-	if (![self isKindOfClass:[AlarmPositionMapViewController class]])
-		return;
-	if (![self.forwardGeocoder respondsToSelector:@selector(cancel)])
-		return;
-	///////////////////////////////////
-	
-	//如果超时了，还没结束，结束它
-	[self.forwardGeocoder cancel]; 
-	//取消掉另一个调用
-	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(endForwardGeocoder) object:nil];
-	
-	//结束搜索状态
-	[self.searchController setActive:NO animated:YES];   //处理search状态
-	
-	if(self.forwardGeocoder.status == G_GEO_SUCCESS)
-	{
-		//加到最近查询list中
-		[self.searchController addListContentWithString:self.forwardGeocoder.searchQuery];
-		
-		
-		NSInteger searchResultsCount = self.forwardGeocoder.results.count;
-		
-		if (searchResultsCount == 1) {
-			BSKmlResult *place = [self.forwardGeocoder.results objectAtIndex:0];
-			[self resetAnnotationWithPlace:place];
+- (void)forwardGeocoderConnectionDidFail:(BSForwardGeocoder *)geocoder withErrorMessage:(NSString *)errorMessage
+{
+    if (searchAlert) {
+        [searchAlert release];
+        searchAlert = nil;
+    }
+    
+    searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleDefaultError
+                                             message:kAlertSearchBodyTryAgain 
+                                            delegate:self
+                                   cancelButtonTitle:kAlertBtnCancel
+                                   otherButtonTitles:kAlertBtnRetry,nil];
+    [searchAlert show];
+    
+    [self.searchController setActive:NO animated:YES];   //search取消
+}
 
-			[self.curlbackgroundView startHideSearchBarAfterTimeInterval:kTimeIntervalForSearchBarHide];  //可以隐藏searchbar了
 
-		}else if (searchResultsCount > 1){
-			
-			NSMutableArray *places = [NSMutableArray arrayWithCapacity:self.forwardGeocoder.results.count];
-			for(id oneObject in self.forwardGeocoder.results)
-				[places addObject:((BSKmlResult *)oneObject).address];
-			
-			if (searchResultsAlert) {
-                [searchResultsAlert release];
-                searchResultsAlert = nil;
-            }
-			searchResultsAlert = [[YCAlertTableView alloc] 
-                                  initWithTitle:kAlertSearchTitleResults delegate:self tableCellContents:places cancelButtonTitle:kAlertBtnCancel];
-			[searchResultsAlert show];
-			
-			
-		}else { //==0
-			if (searchAlert) {
-                [searchAlert release];
-                searchAlert = nil;
-            }
+- (void)forwardGeocodingDidSucceed:(BSForwardGeocoder *)geocoder withResults:(NSArray *)results
+{
+    //加到最近查询list中
+    [self.searchController addListContentWithString:geocoder.searchQuery];
+    //保存查询结果，以后还要用
+    [searchResults release]; searchResults = nil;
+    searchResults = [results retain];
+    
+    NSInteger searchResultsCount = results.count;
+    if (searchResultsCount == 1) {
+        
+        BSKmlResult *place = [results objectAtIndex:0];
+        [self resetAnnotationWithPlace:place];
+        
+    }else if (searchResultsCount > 1){
+        
+        NSMutableArray *places = [NSMutableArray arrayWithCapacity:results.count];
+        for(id oneObject in results)
+            [places addObject:((BSKmlResult *)oneObject).address];
+        
+        if (searchResultsAlert) {
+            [searchResultsAlert release];
+            searchResultsAlert = nil;
+        }
+        searchResultsAlert = [[YCAlertTableView alloc] 
+                              initWithTitle:kAlertSearchTitleResults delegate:self tableCellContents:places cancelButtonTitle:kAlertBtnCancel];
+        [searchResultsAlert show];
+        
+        
+    }else { //==0
+        if (searchAlert) {
+            [searchAlert release];
+            searchAlert = nil;
+        }
+        searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleNoResults
+                                                 message:kAlertSearchBodyTryAgain 
+                                                delegate:self
+                                       cancelButtonTitle:kAlertBtnCancel
+                                       otherButtonTitles:kAlertBtnRetry,nil];
+        [searchAlert show];
+        
+    }
+    
+    [self.searchController setActive:NO animated:YES];   //search取消
+}
+
+- (void)forwardGeocodingDidFail:(BSForwardGeocoder *)geocoder withErrorCode:(int)errorCode andErrorMessage:(NSString *)errorMessage
+{
+    if (searchAlert) {
+        [searchAlert release];
+        searchAlert = nil;
+    }
+    
+    switch (errorCode) {
+        case G_GEO_BAD_KEY:
+            searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleDefaultError
+                                                     message:kAlertSearchBodyTryAgain 
+                                                    delegate:self
+                                           cancelButtonTitle:kAlertBtnCancel
+                                           otherButtonTitles:kAlertBtnRetry,nil];
+            break;
+            
+        case G_GEO_UNKNOWN_ADDRESS:
             searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleNoResults
                                                      message:kAlertSearchBodyTryAgain 
                                                     delegate:self
                                            cancelButtonTitle:kAlertBtnCancel
                                            otherButtonTitles:kAlertBtnRetry,nil];
-            [searchAlert show];
-		}
-
-
-		
-	}else {
-		
-		if (searchAlert) {
-            [searchAlert release];
-            searchAlert = nil;
-        }
-        
-		switch (self.forwardGeocoder.status) {
-			case G_GEO_BAD_KEY:
-                searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleDefaultError
-                                                         message:kAlertSearchBodyTryAgain 
-                                                        delegate:self
-                                               cancelButtonTitle:kAlertBtnCancel
-                                               otherButtonTitles:kAlertBtnRetry,nil];
-				break;
-				
-			case G_GEO_UNKNOWN_ADDRESS:
-                searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleNoResults
-                                                         message:kAlertSearchBodyTryAgain 
-                                                        delegate:self
-                                               cancelButtonTitle:kAlertBtnCancel
-                                               otherButtonTitles:kAlertBtnRetry,nil];
-				
-				break;
-				
-			case G_GEO_TOO_MANY_QUERIES:
-                searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleTooManyQueries
-                                                         message:kAlertSearchBodyTryTomorrow 
-                                                        delegate:self
-                                               cancelButtonTitle:kAlertBtnOK
-                                               otherButtonTitles:nil];//只用1个按钮，而且不用retry
-                
-				break;
-				
-			case G_GEO_SERVER_ERROR:
-                searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleDefaultError
-                                                         message:kAlertSearchBodyTryAgain 
-                                                        delegate:self
-                                               cancelButtonTitle:kAlertBtnCancel
-                                               otherButtonTitles:kAlertBtnRetry,nil];
-				break;
-				
-				
-			default:
-                searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleDefaultError
-                                                         message:kAlertSearchBodyTryAgain 
-                                                        delegate:self
-                                               cancelButtonTitle:kAlertBtnCancel
-                                               otherButtonTitles:kAlertBtnRetry,nil];
-				break;
-		}
-        
-        [searchAlert show];		
-	}
-	
+            
+            break;
+            
+        case G_GEO_TOO_MANY_QUERIES:
+            searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleTooManyQueries
+                                                     message:kAlertSearchBodyTryTomorrow 
+                                                    delegate:self
+                                           cancelButtonTitle:kAlertBtnOK
+                                           otherButtonTitles:nil];//只用1个按钮，而且不用retry
+            
+            break;
+            
+        case G_GEO_SERVER_ERROR:
+            searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleDefaultError
+                                                     message:kAlertSearchBodyTryAgain 
+                                                    delegate:self
+                                           cancelButtonTitle:kAlertBtnCancel
+                                           otherButtonTitles:kAlertBtnRetry,nil];
+            break;
+            
+            
+        default:
+            searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleDefaultError
+                                                     message:kAlertSearchBodyTryAgain 
+                                                    delegate:self
+                                           cancelButtonTitle:kAlertBtnCancel
+                                           otherButtonTitles:kAlertBtnRetry,nil];
+            break;
+    }
+    
+    [searchAlert show];
+    
+    [self.searchController setActive:NO animated:YES];   //search取消
 }
 
-#pragma mark -
-#pragma mark BSForwardGeocoderDelegate
-
-
--(void)forwardGeocoderFoundLocation
-{
-	[self performSelector:@selector(endForwardGeocoder) withObject:nil afterDelay:0.1];  //数据更新后，等待x秒
-}
-
-
--(void)forwardGeocoderError:(NSString *)errorMessage
-{
-	[self performSelector:@selector(endForwardGeocoder) withObject:nil afterDelay:0.1];  //数据更新后，等待x秒
-}
 
 #pragma mark -
 #pragma mark YCSearchControllerDelegete methods
 
 - (NSArray*)searchController:(YCSearchController *)controller searchString:(NSString *)searchString
 {
-	//结束其他的搜索
-	[self.forwardGeocoder cancel]; 
-	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(endForwardGeocoder) object:nil];
+	// 开始搜    
+    MKMapRect bounds;
+    CLLocation *curLocation = self.mapView.userLocation.location;
+    if (curLocation) { //使用当前位置的附近 作为查询优先
+        MKMapPoint curPoint = MKMapPointForCoordinate(curLocation.coordinate);
+        bounds = MKMapRectMake(curPoint.x, curPoint.y, 6000, 6000); //取当前位置的x公里的范围
+    }else{ //当前地图可视范围 作为查询优先
+        bounds = self.mapView.visibleMapRect;
+    }
+    
+    NSString *regionBiasing = nil;//@"cn";
 	
-	[self beginForwardGeocoderWithSearchString:searchString];
-	
-	[self.curlbackgroundView stopHideSearchBar]; //停止隐藏，直到查询出结果
-	
+    [self.forwardGeocoder forwardGeocodeWithQuery:searchString regionBiasing:regionBiasing viewportBiasing:bounds success:^(NSArray *results) {
+        
+        [self forwardGeocodingDidSucceed:self.forwardGeocoder withResults:results];
+        
+    } failure:^(int status, NSString *errorMessage) {
+        if (status == G_GEO_NETWORK_ERROR) {
+            [self forwardGeocoderConnectionDidFail:self.forwardGeocoder withErrorMessage:errorMessage];
+        }
+        else {
+            [self forwardGeocodingDidFail:self.forwardGeocoder withErrorCode:status andErrorMessage:errorMessage];
+        }
+    }];
+    
 	return nil;
 }
 
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
-	
-	//self->isSearching = NO;
-	
-	//取消了，还没结束，结束它
-	[self.forwardGeocoder cancel]; 
-	//取消掉另一个调用
-	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(endForwardGeocoder) object:nil];
-
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{		 
+    //取消了，还没结束，结束它
+    [self.forwardGeocoder cancel]; 
 }
-
 
 #pragma mark - UIAlertViewDelegate YCAlertTableViewDelegete
 
@@ -1855,14 +1825,18 @@
 
 - (void)alertTableView:(YCAlertTableView *)alertTableView didSelectRow:(NSInteger)row{
 	if (searchResultsAlert == alertTableView) {
-        BSKmlResult *place = [self.forwardGeocoder.results objectAtIndex:row];
+        BSKmlResult *place = [searchResults objectAtIndex:row];
         [self resetAnnotationWithPlace:place];
     }
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (alertView == searchAlert && [[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:kAlertBtnRetry]) {
-        [self.searchController setActive:YES animated:YES];   //search状态
+    if (alertView == searchAlert) {
+        if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:kAlertBtnRetry]) {
+            [self.searchController setActive:YES animated:YES];   //search状态
+        }else if(alertView.cancelButtonIndex == buttonIndex){
+            [self.searchController setActive:NO animated:YES];   //search取消
+        }
     }else if (alertView == checkNetAlert && [[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:kAlertBtnSettings]) {
         NSString *str = @"prefs:root=General&path=Network"; //打开设置中的网络
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
@@ -1956,6 +1930,7 @@
 	
 	[forwardGeocoder release];
 	[searchController release];
+    [searchResults release];
 	
 	[mapView release];            
 	[maskView release];                           

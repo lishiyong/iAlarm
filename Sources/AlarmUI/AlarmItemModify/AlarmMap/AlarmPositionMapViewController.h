@@ -39,6 +39,8 @@
 	
 	BSForwardGeocoder *forwardGeocoder;
 	YCSearchController *searchController;
+    NSArray *searchResults;
+
 	
 	IBOutlet MKMapView* mapView;            
 	IBOutlet UIControl *maskView;                           //覆盖View
@@ -144,12 +146,8 @@
 ////关掉覆盖视图
 -(void)animateCloseMaskView;
 
-
 -(void)beginReverseWithAnnotation:(id<MKAnnotation>)annotation;
 -(void)endReverseWithAnnotation:(id<MKAnnotation>)annotation;
-
--(void)beginForwardGeocoderWithSearchString:(NSString *)searchString;
--(void)endForwardGeocoder;
 
 -(void)endUpdateUserLocation;
 

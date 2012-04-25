@@ -243,11 +243,14 @@
 		9C5AF2AE134F38FB00547BB0 /* Marimba.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C5AF2A9134F38FB00547BB0 /* Marimba.caf */; };
 		9C5AF2AF134F38FB00547BB0 /* Trill.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C5AF2AA134F38FB00547BB0 /* Trill.caf */; };
 		9C5AF2B0134F38FB00547BB0 /* Xylophone.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C5AF2AB134F38FB00547BB0 /* Xylophone.caf */; };
-		9C6BEA481301B9E000AA110D /* BSAddressComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6BEA3E1301B9DF00AA110D /* BSAddressComponent.m */; };
-		9C6BEA491301B9E000AA110D /* BSForwardGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6BEA401301B9DF00AA110D /* BSForwardGeocoder.m */; };
-		9C6BEA4A1301B9E000AA110D /* BSKmlResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6BEA421301B9DF00AA110D /* BSKmlResult.m */; };
-		9C6BEA4B1301B9E000AA110D /* BSGoogleV2KmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6BEA451301B9E000AA110D /* BSGoogleV2KmlParser.m */; };
-		9C6BEA4C1301B9E000AA110D /* BSGoogleV3KmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6BEA471301B9E000AA110D /* BSGoogleV3KmlParser.m */; };
+		9C66F3F615486CA400577C4F /* BSAddressComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C66F3EF15486CA400577C4F /* BSAddressComponent.m */; };
+		9C66F3F715486CA400577C4F /* BSAddressComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C66F3EF15486CA400577C4F /* BSAddressComponent.m */; };
+		9C66F3F815486CA400577C4F /* BSForwardGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C66F3F115486CA400577C4F /* BSForwardGeocoder.m */; };
+		9C66F3F915486CA400577C4F /* BSForwardGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C66F3F115486CA400577C4F /* BSForwardGeocoder.m */; };
+		9C66F3FA15486CA400577C4F /* BSGoogleV3KmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C66F3F315486CA400577C4F /* BSGoogleV3KmlParser.m */; };
+		9C66F3FB15486CA400577C4F /* BSGoogleV3KmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C66F3F315486CA400577C4F /* BSGoogleV3KmlParser.m */; };
+		9C66F3FC15486CA400577C4F /* BSKmlResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C66F3F515486CA400577C4F /* BSKmlResult.m */; };
+		9C66F3FD15486CA400577C4F /* BSKmlResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C66F3F515486CA400577C4F /* BSKmlResult.m */; };
 		9C7E400915340998003370C9 /* YCCopyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7E400815340998003370C9 /* YCCopyLabel.m */; };
 		9C7E400A15340998003370C9 /* YCCopyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7E400815340998003370C9 /* YCCopyLabel.m */; };
 		9C85F38614FBA99F00B49FF4 /* IAAlarmFindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C85F38414FBA99F00B49FF4 /* IAAlarmFindViewController.m */; };
@@ -507,11 +510,6 @@
 		9C8AB28E13B0C92100120AD5 /* iAlarm.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8972B130003DF008FBD45 /* iAlarm.xcdatamodeld */; };
 		9C8AB28F13B0C92100120AD5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8973813000454008FBD45 /* main.m */; };
 		9C8AB29013B0C92100120AD5 /* AlarmsMapListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC224B11300594D00245DAC /* AlarmsMapListViewController.m */; };
-		9C8AB29113B0C92100120AD5 /* BSAddressComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6BEA3E1301B9DF00AA110D /* BSAddressComponent.m */; };
-		9C8AB29213B0C92100120AD5 /* BSForwardGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6BEA401301B9DF00AA110D /* BSForwardGeocoder.m */; };
-		9C8AB29313B0C92100120AD5 /* BSKmlResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6BEA421301B9DF00AA110D /* BSKmlResult.m */; };
-		9C8AB29413B0C92100120AD5 /* BSGoogleV2KmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6BEA451301B9E000AA110D /* BSGoogleV2KmlParser.m */; };
-		9C8AB29513B0C92100120AD5 /* BSGoogleV3KmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6BEA471301B9E000AA110D /* BSGoogleV3KmlParser.m */; };
 		9C8AB29613B0C92100120AD5 /* AlarmPositionMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA992F413025ADC00298E5D /* AlarmPositionMapViewController.m */; };
 		9C8AB29713B0C92100120AD5 /* MapBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA9930013025ADC00298E5D /* MapBookmark.m */; };
 		9C8AB29813B0C92100120AD5 /* MapBookmarksListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA9930213025ADC00298E5D /* MapBookmarksListController.m */; };
@@ -1247,16 +1245,14 @@
 		9C5AF2A9134F38FB00547BB0 /* Marimba.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Marimba.caf; sourceTree = "<group>"; };
 		9C5AF2AA134F38FB00547BB0 /* Trill.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Trill.caf; sourceTree = "<group>"; };
 		9C5AF2AB134F38FB00547BB0 /* Xylophone.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Xylophone.caf; sourceTree = "<group>"; };
-		9C6BEA3D1301B9DF00AA110D /* BSAddressComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSAddressComponent.h; sourceTree = "<group>"; };
-		9C6BEA3E1301B9DF00AA110D /* BSAddressComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSAddressComponent.m; sourceTree = "<group>"; };
-		9C6BEA3F1301B9DF00AA110D /* BSForwardGeocoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSForwardGeocoder.h; sourceTree = "<group>"; };
-		9C6BEA401301B9DF00AA110D /* BSForwardGeocoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSForwardGeocoder.m; sourceTree = "<group>"; };
-		9C6BEA411301B9DF00AA110D /* BSKmlResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSKmlResult.h; sourceTree = "<group>"; };
-		9C6BEA421301B9DF00AA110D /* BSKmlResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSKmlResult.m; sourceTree = "<group>"; };
-		9C6BEA441301B9E000AA110D /* BSGoogleV2KmlParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSGoogleV2KmlParser.h; sourceTree = "<group>"; };
-		9C6BEA451301B9E000AA110D /* BSGoogleV2KmlParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSGoogleV2KmlParser.m; sourceTree = "<group>"; };
-		9C6BEA461301B9E000AA110D /* BSGoogleV3KmlParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSGoogleV3KmlParser.h; sourceTree = "<group>"; };
-		9C6BEA471301B9E000AA110D /* BSGoogleV3KmlParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSGoogleV3KmlParser.m; sourceTree = "<group>"; };
+		9C66F3EE15486CA400577C4F /* BSAddressComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSAddressComponent.h; sourceTree = "<group>"; };
+		9C66F3EF15486CA400577C4F /* BSAddressComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSAddressComponent.m; sourceTree = "<group>"; };
+		9C66F3F015486CA400577C4F /* BSForwardGeocoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSForwardGeocoder.h; sourceTree = "<group>"; };
+		9C66F3F115486CA400577C4F /* BSForwardGeocoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSForwardGeocoder.m; sourceTree = "<group>"; };
+		9C66F3F215486CA400577C4F /* BSGoogleV3KmlParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSGoogleV3KmlParser.h; sourceTree = "<group>"; };
+		9C66F3F315486CA400577C4F /* BSGoogleV3KmlParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSGoogleV3KmlParser.m; sourceTree = "<group>"; };
+		9C66F3F415486CA400577C4F /* BSKmlResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSKmlResult.h; sourceTree = "<group>"; };
+		9C66F3F515486CA400577C4F /* BSKmlResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSKmlResult.m; sourceTree = "<group>"; };
 		9C7E400715340998003370C9 /* YCCopyLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCCopyLabel.h; sourceTree = "<group>"; };
 		9C7E400815340998003370C9 /* YCCopyLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCCopyLabel.m; sourceTree = "<group>"; };
 		9C85F38314FBA99F00B49FF4 /* IAAlarmFindViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAAlarmFindViewController.h; sourceTree = "<group>"; };
@@ -2068,29 +2064,19 @@
 			path = Ring;
 			sourceTree = "<group>";
 		};
-		9C6BEA3C1301B9DF00AA110D /* ForwardGeocoding */ = {
+		9C66F3ED15486CA400577C4F /* Forward Geocoder */ = {
 			isa = PBXGroup;
 			children = (
-				9C6BEA3D1301B9DF00AA110D /* BSAddressComponent.h */,
-				9C6BEA3E1301B9DF00AA110D /* BSAddressComponent.m */,
-				9C6BEA3F1301B9DF00AA110D /* BSForwardGeocoder.h */,
-				9C6BEA401301B9DF00AA110D /* BSForwardGeocoder.m */,
-				9C6BEA411301B9DF00AA110D /* BSKmlResult.h */,
-				9C6BEA421301B9DF00AA110D /* BSKmlResult.m */,
-				9C6BEA431301B9E000AA110D /* Parsers */,
+				9C66F3EE15486CA400577C4F /* BSAddressComponent.h */,
+				9C66F3EF15486CA400577C4F /* BSAddressComponent.m */,
+				9C66F3F015486CA400577C4F /* BSForwardGeocoder.h */,
+				9C66F3F115486CA400577C4F /* BSForwardGeocoder.m */,
+				9C66F3F215486CA400577C4F /* BSGoogleV3KmlParser.h */,
+				9C66F3F315486CA400577C4F /* BSGoogleV3KmlParser.m */,
+				9C66F3F415486CA400577C4F /* BSKmlResult.h */,
+				9C66F3F515486CA400577C4F /* BSKmlResult.m */,
 			);
-			path = ForwardGeocoding;
-			sourceTree = "<group>";
-		};
-		9C6BEA431301B9E000AA110D /* Parsers */ = {
-			isa = PBXGroup;
-			children = (
-				9C6BEA441301B9E000AA110D /* BSGoogleV2KmlParser.h */,
-				9C6BEA451301B9E000AA110D /* BSGoogleV2KmlParser.m */,
-				9C6BEA461301B9E000AA110D /* BSGoogleV3KmlParser.h */,
-				9C6BEA471301B9E000AA110D /* BSGoogleV3KmlParser.m */,
-			);
-			path = Parsers;
+			path = "Forward Geocoder";
 			sourceTree = "<group>";
 		};
 		9C7E400615340998003370C9 /* YCCopyLabel */ = {
@@ -3230,13 +3216,13 @@
 		9CE894A212FFFFD2008FBD45 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				9C66F3ED15486CA400577C4F /* Forward Geocoder */,
 				9CA484191519AD6900B9C8D6 /* newShareApp */,
 				9C23012A150DB15D005E5E08 /* newAbout */,
 				9CE2D261138376FB006FD30C /* Global */,
 				9C3D7FCD1339BDBE00A9C4D6 /* InAppPurchase */,
 				9CCEABB113386C73001457A6 /* Localized */,
 				9CE894A312FFFFD2008FBD45 /* AlarmUI */,
-				9C6BEA3C1301B9DF00AA110D /* ForwardGeocoding */,
 				9CE894FE12FFFFD2008FBD45 /* Location */,
 				9CE8950D12FFFFD2008FBD45 /* MainWindow */,
 				9CE8951512FFFFD2008FBD45 /* Models */,
@@ -4248,11 +4234,6 @@
 				9CE8972C130003DF008FBD45 /* iAlarm.xcdatamodeld in Sources */,
 				9CE8973A13000454008FBD45 /* main.m in Sources */,
 				9CC224B21300594D00245DAC /* AlarmsMapListViewController.m in Sources */,
-				9C6BEA481301B9E000AA110D /* BSAddressComponent.m in Sources */,
-				9C6BEA491301B9E000AA110D /* BSForwardGeocoder.m in Sources */,
-				9C6BEA4A1301B9E000AA110D /* BSKmlResult.m in Sources */,
-				9C6BEA4B1301B9E000AA110D /* BSGoogleV2KmlParser.m in Sources */,
-				9C6BEA4C1301B9E000AA110D /* BSGoogleV3KmlParser.m in Sources */,
 				9CA9931813025ADC00298E5D /* AlarmPositionMapViewController.m in Sources */,
 				9CA9931D13025ADC00298E5D /* MapBookmark.m in Sources */,
 				9CA9931E13025ADC00298E5D /* MapBookmarksListController.m in Sources */,
@@ -4385,6 +4366,10 @@
 				9CF0C93C1543B47600052CFE /* YCMapPointAnnotation.m in Sources */,
 				9CF0C9401543BDC600052CFE /* YCMapPointAnnotation+AlarmUI.m in Sources */,
 				9CDEF89C1547BA4600838461 /* CLLocation+AlarmUI.m in Sources */,
+				9C66F3F615486CA400577C4F /* BSAddressComponent.m in Sources */,
+				9C66F3F815486CA400577C4F /* BSForwardGeocoder.m in Sources */,
+				9C66F3FA15486CA400577C4F /* BSGoogleV3KmlParser.m in Sources */,
+				9C66F3FC15486CA400577C4F /* BSKmlResult.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4424,11 +4409,6 @@
 				9C8AB28E13B0C92100120AD5 /* iAlarm.xcdatamodeld in Sources */,
 				9C8AB28F13B0C92100120AD5 /* main.m in Sources */,
 				9C8AB29013B0C92100120AD5 /* AlarmsMapListViewController.m in Sources */,
-				9C8AB29113B0C92100120AD5 /* BSAddressComponent.m in Sources */,
-				9C8AB29213B0C92100120AD5 /* BSForwardGeocoder.m in Sources */,
-				9C8AB29313B0C92100120AD5 /* BSKmlResult.m in Sources */,
-				9C8AB29413B0C92100120AD5 /* BSGoogleV2KmlParser.m in Sources */,
-				9C8AB29513B0C92100120AD5 /* BSGoogleV3KmlParser.m in Sources */,
 				9C8AB29613B0C92100120AD5 /* AlarmPositionMapViewController.m in Sources */,
 				9C8AB29713B0C92100120AD5 /* MapBookmark.m in Sources */,
 				9C8AB29813B0C92100120AD5 /* MapBookmarksListController.m in Sources */,
@@ -4561,6 +4541,10 @@
 				9CF0C93D1543B47600052CFE /* YCMapPointAnnotation.m in Sources */,
 				9CF0C9411543BDC600052CFE /* YCMapPointAnnotation+AlarmUI.m in Sources */,
 				9CDEF89D1547BA4600838461 /* CLLocation+AlarmUI.m in Sources */,
+				9C66F3F715486CA400577C4F /* BSAddressComponent.m in Sources */,
+				9C66F3F915486CA400577C4F /* BSForwardGeocoder.m in Sources */,
+				9C66F3FB15486CA400577C4F /* BSGoogleV3KmlParser.m in Sources */,
+				9C66F3FD15486CA400577C4F /* BSKmlResult.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

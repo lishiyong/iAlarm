@@ -13,7 +13,7 @@
 #import "BSAddressComponent.h"
 #import "BSForwardGeocoder.h"
 
-@interface BSGoogleV3KmlParser : NSObject <NSXMLParserDelegate>{
+@interface BSGoogleV3KmlParser : NSObject<NSXMLParserDelegate> {
 	NSMutableString *contentsOfCurrentProperty;
 	int statusCode;
 	NSMutableArray *results;
@@ -31,7 +31,7 @@
 @property (nonatomic, readonly) int statusCode;
 @property (nonatomic, readonly) NSMutableArray *results;
 
-- (BOOL)parseXMLFileAtURL:(NSURL *)URL 
+- (BOOL)parseXMLData:(NSData *)URL 
 			   parseError:(NSError **)error 
 			   ignoreAddressComponents:(BOOL)ignore;
 
