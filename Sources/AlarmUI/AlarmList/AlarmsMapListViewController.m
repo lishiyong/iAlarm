@@ -227,20 +227,11 @@
 	pinView.pinColor = MKPinAnnotationColorRed;
 	
 	//长按pin
-    longPressGesture = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(pinLongPressed:)] autorelease];
-    longPressGesture.minimumPressDuration = 0.5; //多长时间算长按
-	longPressGesture.allowableMovement = 30.0;
-	longPressGesture.delegate = self;
-	[pinView addGestureRecognizer:longPressGesture];
-	
-	/*
-	//单点pin,为了GrayPin被单点不变成其他颜色
-	UITapGestureRecognizer *tapMapViewGesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pinTap:)] autorelease];
-	tapMapViewGesture.delegate = self;
-	[pinView addGestureRecognizer:tapMapViewGesture];
-     */
-	 
-	
+    UILongPressGestureRecognizer *pinLongPressGesture = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(pinLongPressed:)] autorelease];
+    pinLongPressGesture.minimumPressDuration = 0.5; //多长时间算长按
+	pinLongPressGesture.allowableMovement = 30.0;
+	pinLongPressGesture.delegate = self;
+	[pinView addGestureRecognizer:pinLongPressGesture];
 	
 	
 	[self.mapAnnotationViews setObject:pinView forKey:alarm.alarmId];  //加入到列表
@@ -1108,7 +1099,6 @@
 	[self.mapView addGestureRecognizer:longPressGesture];
 	 
 	 
-	
 	//显示大头针
 	[self addMapAnnotations];
 	
@@ -1553,16 +1543,9 @@
         return NO; //除了测试UICalloutView，tapCalloutViewGesture这个就没用了
     }
     
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-   /*
-    if ([gestureRecognizer.view isKindOfClass:[YCPinAnnotationView class]]) { //点了一个pin，固有的响应
-        if (gestureRecognizer == tapMapViewGesture) 
-            return NO;
-        else if([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])//UIMapView固有的
-            return YES;
-	}
-    */
-    if ([gestureRecognizer.view isKindOfClass:[YCPinAnnotationView class]]) { //点了一个pin，固有的响应
+    UIView *tapView = gestureRecognizer.view;
+    if ([tapView isKindOfClass:[YCPinAnnotationView class]] 
+        || [tapView isKindOfClass:[MKUserLocation class]]) { //点了一个pin或当前位置蓝点，固有的响应
         if (gestureRecognizer == tapMapViewGesture) 
             return NO;
         else //UIMapView固有的
@@ -1578,47 +1561,6 @@
             return NO;
     }
     
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    /*
-    BOOL isNavigationBarHidden = [(UINavigationController*)[(iAlarmAppDelegate*)[UIApplication sharedApplication].delegate viewController] isNavigationBarHidden];
-    //注意: 依赖iAlarmAppDelegate 的viewController的类型
-    
-    BOOL selectedPinIsVisible = NO; //选中的pin在屏幕中
-    if (self.mapView.selectedAnnotations.count > 0){
-        
-        id selected = [self.mapView.selectedAnnotations objectAtIndex:0];
-        if ([self.mapView visibleForAnnotation:selected]) 
-            selectedPinIsVisible = YES;
-        else
-            selectedPinIsVisible = NO;
-        
-    }else{
-        selectedPinIsVisible = NO;
-    }
-    
-    if (selectedPinIsVisible) {//屏幕有选中的pin
-        
-        if (pinsEditing && isNavigationBarHidden) {//pin处于编辑状态 且 bar隐藏了
-            if (gestureRecognizer == tapMapViewGesture) 
-                return YES;
-            else if([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])//UIMapView固有的
-                return NO;
-        }else{
-            if (gestureRecognizer == tapMapViewGesture) 
-                return NO;
-            else if([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])//UIMapView固有的
-                return YES;
-        }
-        
-    }else{
-        
-        if (gestureRecognizer == tapMapViewGesture) 
-            return YES;
-        else if([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])//UIMapView固有的
-            return NO; 
-        
-    }
-     */
     
     BOOL isNavigationBarHidden = [(UINavigationController*)[(iAlarmAppDelegate*)[UIApplication sharedApplication].delegate viewController] isNavigationBarHidden];
     //注意: 依赖iAlarmAppDelegate 的viewController的类型

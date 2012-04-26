@@ -17,5 +17,19 @@
          landmarkName = "@interface IAAlarmNotificationCenter"
          landmarkType = "2">
       </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/AlarmUI/AlarmList/AlarmsMapListViewController.m"
+         timestampString = "357107067.869595"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "1299"
+         endingLineNumber = "1299"
+         landmarkName = "-mapViewTap:"
+         landmarkType = "5">
+      </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>
