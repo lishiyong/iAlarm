@@ -1497,7 +1497,7 @@
  */
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch{
-    
+    /*
     ////////////////////////////////////////////////////////////////////////////////////////////////
     
     //点的范围是否在UICalloutView内
@@ -1606,7 +1606,130 @@
     ////////////////////////////////////////////////////////////////////////////////////////////////
     
     return YES;
+     
+    */
     
+    //点的范围是否在UICalloutView内
+    BOOL touchInCalloutView = NO;
+    id<MKAnnotation> selectedAnnotation = nil;
+    MKAnnotationView *selectedView = nil;
+    if (self.mapView.selectedAnnotations.count >0) {
+        selectedAnnotation = [self.mapView.selectedAnnotations objectAtIndex:0];
+        selectedView = [self.mapView viewForAnnotation:selectedAnnotation];
+    }
+    
+    if ([selectedView isKindOfClass:[MKPinAnnotationView class]]) {
+        
+        UIView *calloutView = nil;
+        NSArray *subArray =[selectedView subviews];
+        for (UIView *subView in subArray) {
+            NSString *className = NSStringFromClass([subView class]) ;
+            if ([className isEqualToString:@"UICalloutView"]){
+                calloutView = subView;
+                break;
+            }
+        }
+        
+        if (calloutView) {
+            CGRect calloutViewFrame = [self.view convertRect:calloutView.frame fromView:selectedView];
+            CGPoint touchPoint = [touch locationInView:self.view]; 
+            touchInCalloutView = CGRectContainsPoint(calloutViewFrame,touchPoint);
+        }
+        
+    }
+    
+    
+    BOOL isNavigationBarHidden = [(UINavigationController*)[(iAlarmAppDelegate*)[UIApplication sharedApplication].delegate viewController] isNavigationBarHidden];
+    //注意: 依赖iAlarmAppDelegate 的viewController的类型
+    
+    BOOL selectedPinIsVisible = NO; //选中的pin在屏幕中
+    if (self.mapView.selectedAnnotations.count > 0){
+        
+        id selected = [self.mapView.selectedAnnotations objectAtIndex:0];
+        if ([self.mapView visibleForAnnotation:selected]) 
+            selectedPinIsVisible = YES;
+        else
+            selectedPinIsVisible = NO;
+        
+    }else{
+        selectedPinIsVisible = NO;
+    }
+    
+    //UIView *tappedView = gestureRecognizer.view; //被点的view
+    
+    
+    
+    if (gestureRecognizer == tapCalloutViewGesture) {
+        
+        //CalloutView点的范围内
+        if (touchInCalloutView)
+            return YES;
+            
+        return NO; //除了测试UICalloutView，tapCalloutViewGesture这个就没用了
+        
+    }else if(gestureRecognizer == tapMapViewGesture){ //自定义的tapGesture
+        
+        //CalloutView点的范围内
+        if (touchInCalloutView)
+            return NO;
+        
+        //有浮动菜单
+        if (!self.toolbarFloatingView.hidden)
+            return YES;
+        
+        //点了一个pin或当前位置蓝点
+        //if ([tappedView isKindOfClass:[YCPinAnnotationView class]] || [tappedView isKindOfClass:[MKUserLocation class]]) 
+        //    return NO;
+        
+        //bar未隐藏 
+        if (!isNavigationBarHidden  ) {
+            if (selectedPinIsVisible) //屏幕有选中的pin
+                return NO;
+            return YES;
+        }
+            
+        //bar隐藏,什么情况交给自定义的处理
+        if (isNavigationBarHidden) 
+            return YES;
+        
+        return NO;
+        
+    }else if([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]]){//UIMapView固有的
+        
+        //CalloutView点的范围内
+        if (touchInCalloutView)
+            return NO;
+        
+        //有浮动菜单
+        if (!self.toolbarFloatingView.hidden)
+            return NO;
+        
+        //点了一个pin或当前位置蓝点
+        //if ([tappedView isKindOfClass:[YCPinAnnotationView class]] || [tappedView isKindOfClass:[MKUserLocation class]]) 
+        //    return YES;
+        
+        //bar未隐藏 
+        if (!isNavigationBarHidden  ) {
+            if (selectedPinIsVisible) //屏幕有选中的pin
+                return YES;
+            return NO;
+        }
+        
+        //bar隐藏,什么情况交给自定义的处理
+        if (isNavigationBarHidden) 
+            return NO;
+            
+        return NO;
+             
+    }else{
+        
+        //CalloutView点的范围内
+        if (touchInCalloutView)
+            return NO;
+        
+        return YES;
+    }
+            
 }
 
 

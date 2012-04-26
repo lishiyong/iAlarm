@@ -1795,18 +1795,22 @@
     }
     
     NSString *regionBiasing = nil;//@"cn";
-	
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     [self.forwardGeocoder forwardGeocodeWithQuery:searchString regionBiasing:regionBiasing viewportBiasing:bounds success:^(NSArray *results) {
         
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         [self forwardGeocodingDidSucceed:self.forwardGeocoder withResults:results];
         
     } failure:^(int status, NSString *errorMessage) {
+        
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         if (status == G_GEO_NETWORK_ERROR) {
             [self forwardGeocoderConnectionDidFail:self.forwardGeocoder withErrorMessage:errorMessage];
         }
         else {
             [self forwardGeocodingDidFail:self.forwardGeocoder withErrorCode:status andErrorMessage:errorMessage];
         }
+        
     }];
     
 	return nil;
@@ -1815,6 +1819,7 @@
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{		 
     //取消了，还没结束，结束它
     [self.forwardGeocoder cancel]; 
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 #pragma mark - UIAlertViewDelegate YCAlertTableViewDelegete

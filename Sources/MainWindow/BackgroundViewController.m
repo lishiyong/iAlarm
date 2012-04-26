@@ -583,6 +583,47 @@
     //self.mapsViewController.mapView.frame = CGRectMake(0, 44, 320, 328);
 }
 
+- (void)takeMaskViewWithBarDoHide:(BOOL)doHide{
+
+    UIGraphicsBeginImageContextWithOptions(self.mapsViewController.mapView.frame.size,YES,0.0);
+    [self.mapsViewController.mapView.layer renderInContext:UIGraphicsGetCurrentContext()]; 
+    UIImage *myImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();       
+    
+    
+    CGRect containerViewFrame = [self.navigationController.view convertRect:self.mapsViewController.mapView.bounds fromView:self.mapsViewController.mapView];
+    CGRect imageFrame = CGRectMake(0, 0, containerViewFrame.size.width, containerViewFrame.size.height);
+
+    if (!doHide) //为searchbar让出44
+        containerViewFrame = CGRectOffset(containerViewFrame, 0, 44);
+    
+    //地图的截图放到容器view上
+    UIView *containerView = [[[UIView alloc] initWithFrame:containerViewFrame] autorelease];
+    containerView.backgroundColor = [UIColor clearColor];
+    containerView.clipsToBounds = YES;
+    
+    if (!doHide) //为searchbar让出44
+        imageFrame = CGRectOffset(imageFrame, 0, -44);
+    
+    UIImageView *imageView = [[[UIImageView alloc] initWithImage:myImage] autorelease];
+    imageView.frame = imageFrame;
+
+    [containerView addSubview:imageView];
+    
+    [self.navigationController.view insertSubview:containerView aboveSubview:self.view];
+    [containerView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:UINavigationControllerHideShowBarDuration + 0.05];
+    
+    
+}
+
+- (void)aa:(UIView*)maskview{
+    [UIView transitionWithView:self.view
+                      duration:0.1
+                       options:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionCurveEaseOut
+                    animations:^{ maskview.alpha = 0; }
+                    completion:^(BOOL finished){ [maskview removeFromSuperview]; }];
+}
+
 - (void)handleHideBar:(NSNotification*)notification{
     BOOL doHide = NO;
     CFBooleanRef doHideCF = (CFBooleanRef)[notification.userInfo objectForKey:IADoHideBarKey];
@@ -594,8 +635,11 @@
     if (doHide == self.navBar.hidden) {
         return; //状况相等
     }
+   
+    [self takeMaskViewWithBarDoHide:doHide];
     
     self.animationBackgroundView.autoresizingMask &= ~UIViewAutoresizingFlexibleHeight; //去掉高的自适应
+
     
     [self.navigationController setToolbarHidden:doHide animated:YES]; //收缩时候，topbar和bottombar只能有一个动画
     [self.toolbar setItems:[self mapsViewToolbarItems] animated:NO];
@@ -610,20 +654,7 @@
     }
     
     self.animationBackgroundView.autoresizingMask |= UIViewAutoresizingFlexibleHeight;//加高的自适应
-    
-    /*
-     CGFloat fromValue = doHide ? 372 : 460;
-     CGFloat toValue = doHide ? 460 : 372;
-     //if (doHide)  self.mapsViewController.mapView.layer.anchorPoint = {0.5,}
-     [CATransaction begin];
-     CABasicAnimation *mapScaleAm = [CABasicAnimation animationWithKeyPath:@"bounds.size.height"];
-     mapScaleAm.duration = 3.2;
-     mapScaleAm.fromValue = [NSNumber numberWithFloat:fromValue];
-     mapScaleAm.toValue = [NSNumber numberWithFloat:toValue];
-     [self.mapsViewController.view.layer addAnimation:mapScaleAm forKey:@"YCmapScale"];
-     [CATransaction commit];
-     */
-    
+
 }
 
 - (void)handle_applicationWillResignActive:(id)notification{	
@@ -1081,17 +1112,22 @@
     
     NSString *regionBiasing = nil;//@"cn";
 	
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     [self.forwardGeocoder forwardGeocodeWithQuery:searchString regionBiasing:regionBiasing viewportBiasing:bounds success:^(NSArray *results) {
         
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         [self forwardGeocodingDidSucceed:self.forwardGeocoder withResults:results];
         
     } failure:^(int status, NSString *errorMessage) {
+        
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         if (status == G_GEO_NETWORK_ERROR) {
             [self forwardGeocoderConnectionDidFail:self.forwardGeocoder withErrorMessage:errorMessage];
         }
         else {
             [self forwardGeocodingDidFail:self.forwardGeocoder withErrorCode:status andErrorMessage:errorMessage];
         }
+        
     }];
 		
 	return nil;
@@ -1100,7 +1136,8 @@
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{		 
 	 //取消了，还没结束，结束它
-	 [self.forwardGeocoder cancel]; 
+    [self.forwardGeocoder cancel]; 
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 #pragma mark - UIAlertViewDelegate YCAlertTableViewDelegete
