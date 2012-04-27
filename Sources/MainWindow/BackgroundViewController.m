@@ -237,7 +237,6 @@
 
 - (void)handle_listViewMapsViewSwitch:(id)notification{	
     
-	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 	
     //////////////////////////
 	//视图转换
@@ -577,12 +576,6 @@
 	
 }
 
-- (void)setViewsBounds{ //做这个函数为了延时调用
-    self.animationBackgroundView.frame = CGRectMake(0,0, 320, 372);
-    //self.mapsViewController.view.frame  = CGRectMake(0,0, 320, 372);
-    //self.mapsViewController.mapView.frame = CGRectMake(0, 44, 320, 328);
-}
-
 - (void)takeMaskViewWithBarDoHide:(BOOL)doHide{
 
     UIGraphicsBeginImageContextWithOptions(self.mapsViewController.mapView.frame.size,YES,0.0);
@@ -613,18 +606,14 @@
     [self.navigationController.view insertSubview:containerView aboveSubview:self.view];
     [containerView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:UINavigationControllerHideShowBarDuration + 0.05];
     
-    
-}
-
-- (void)aa:(UIView*)maskview{
-    [UIView transitionWithView:self.view
-                      duration:0.1
-                       options:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionCurveEaseOut
-                    animations:^{ maskview.alpha = 0; }
-                    completion:^(BOOL finished){ [maskview removeFromSuperview]; }];
 }
 
 - (void)handleHideBar:(NSNotification*)notification{
+    
+    //[[UIApplication sharedApplication] beginIgnoringInteractionEvents];//TODO 不好用为什么？
+
+    [[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:UINavigationControllerHideShowBarDuration+0.1];  
+
     BOOL doHide = NO;
     CFBooleanRef doHideCF = (CFBooleanRef)[notification.userInfo objectForKey:IADoHideBarKey];
     if (doHideCF) 
@@ -636,24 +625,12 @@
         return; //状况相等
     }
    
+    //截图遮挡，避免屏幕跳动
     [self takeMaskViewWithBarDoHide:doHide];
-    
-    self.animationBackgroundView.autoresizingMask &= ~UIViewAutoresizingFlexibleHeight; //去掉高的自适应
 
-    
-    [self.navigationController setToolbarHidden:doHide animated:YES]; //收缩时候，topbar和bottombar只能有一个动画
+    [self.navigationController setToolbarHidden:doHide animated:YES]; 
     [self.toolbar setItems:[self mapsViewToolbarItems] animated:NO];
     [self.navigationController setNavigationBarHidden:doHide animated:YES];
-     
-    if (doHide) {
-        self.animationBackgroundView.frame = CGRectMake(0,0, 320, 460);
-        //self.mapsViewController.view.frame = CGRectMake(0,0, 320, 460);
-        //self.mapsViewController.mapView.frame = CGRectMake(0, 44, 320, 416);
-    }else{
-        [self performSelector:@selector(setViewsBounds) withObject:nil afterDelay:UINavigationControllerHideShowBarDuration];
-    }
-    
-    self.animationBackgroundView.autoresizingMask |= UIViewAutoresizingFlexibleHeight;//加高的自适应
 
 }
 
@@ -789,6 +766,8 @@
 }
 
 - (void)switchButtonPressed:(id)sender{
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	NSNotification *aNotification = [NSNotification notificationWithName:IAListViewMapsViewSwitchNotification object:self userInfo:nil];
 	[notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];	

@@ -767,7 +767,8 @@
 - (void)focusToPoint:(CGPoint)focusWhere{
 		
 	//动画期间不允许拖动地图，不允许其他事件
-	[self setUserInteractionEnabled:NO];
+	//[self setUserInteractionEnabled:NO];
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 
 	//加上聚焦点
 	[NSObject cancelPreviousPerformRequestsWithTarget:self.mapView selector:@selector(removeOverlay:) object:foucusOverlay];
@@ -1051,7 +1052,8 @@
 		[self.mapView performSelector:@selector(removeOverlay:) withObject:foucusOverlay afterDelay:1.25];
 
 	//详细页面出现后，再允许拖动地图、允许其他事件
-	[self performSelector:@selector(setUserInteractionEnabled:) withInteger:YES afterDelay:1.25];
+	//[self performSelector:@selector(setUserInteractionEnabled:) withInteger:YES afterDelay:1.25];
+    [[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:1.25];
 
 }
 
@@ -1331,7 +1333,8 @@
             [notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
             
         }else {//隐藏bar
-            
+            [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+
             NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
             NSNotification *aNotification = [NSNotification notificationWithName:IADoHideBarNotification 
                                                                           object:self

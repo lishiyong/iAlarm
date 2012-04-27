@@ -23,11 +23,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/AlarmUI/AlarmList/AlarmsMapListViewController.m"
-         timestampString = "357107067.869595"
+         timestampString = "357227643.537043"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1299"
-         endingLineNumber = "1299"
+         startingLineNumber = "1301"
+         endingLineNumber = "1301"
          landmarkName = "-mapViewTap:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -37,11 +37,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/AlarmUI/AlarmList/AlarmsMapListViewController.m"
-         timestampString = "357110521.550483"
+         timestampString = "357227643.537043"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1709"
-         endingLineNumber = "1709"
+         startingLineNumber = "1712"
+         endingLineNumber = "1712"
          landmarkName = "-gestureRecognizer:shouldReceiveTouch:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -51,11 +51,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/AlarmUI/AlarmList/AlarmsMapListViewController.m"
-         timestampString = "357110581.046067"
+         timestampString = "357227643.537043"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1700"
-         endingLineNumber = "1700"
+         startingLineNumber = "1703"
+         endingLineNumber = "1703"
          landmarkName = "-gestureRecognizer:shouldReceiveTouch:"
          landmarkType = "5">
       </FileBreakpoint>
