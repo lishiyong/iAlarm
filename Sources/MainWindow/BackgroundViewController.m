@@ -40,7 +40,7 @@
 	if (forwardGeocoder == nil) {
 		forwardGeocoder = [[BSForwardGeocoder alloc] initWithDelegate:self];
         forwardGeocoder.timeoutInterval = 20.0;
-        //forwardGeocoder.useHTTP = YES;
+        forwardGeocoder.useHTTP = YES;
 	}
 	return forwardGeocoder;
 }
@@ -1070,7 +1070,7 @@
         bounds = self.mapsViewController.mapView.visibleMapRect;
     }
     
-    NSString *regionBiasing = nil;//@"cn";
+    NSString *regionBiasing = @"cn";
 	
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     [self.forwardGeocoder forwardGeocodeWithQuery:searchString regionBiasing:regionBiasing viewportBiasing:bounds success:^(NSArray *results) {

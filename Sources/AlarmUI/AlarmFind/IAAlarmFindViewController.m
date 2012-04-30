@@ -289,6 +289,7 @@ cell使用后height竟然会加1。奇怪！
         [[YCAlarmStatusBar shareStatusBar] setAlarmIconHidden:NO animated:NO];    
         [[YCAlarmStatusBar shareStatusBar] increaseAlarmCount];
         [clockAlarmImageView removeFromSuperview];
+        [clockAlarmImageView release];clockAlarmImageView = nil;
     }
     
     [[UIApplication sharedApplication] endIgnoringInteractionEvents];
@@ -377,7 +378,6 @@ cell使用后height竟然会加1。奇怪！
     
     //时间间隔
     [self reloadTimeIntervalLabel];
-    
     [timer invalidate];
     [timer release];
     timer = [[NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(timerFireMethod:) userInfo:nil repeats:YES] retain];
@@ -427,7 +427,7 @@ cell使用后height竟然会加1。奇怪！
     
     if (!clockAlarmImageView) {
         clockAlarmImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"YCClockAlarm.png"]];
-        clockAlarmImageView.frame = CGRectMake(-100, -100, 32, 32);
+        clockAlarmImageView.frame = CGRectMake(-100, -100, 32, 32); //放到不可视区域，动画完成后删除
         clockAlarmImageView.contentMode = UIViewContentModeCenter;  //下面的要转换的图片不长宽不一致
     }
     [self.view.window addSubview:clockAlarmImageView];
@@ -444,10 +444,8 @@ cell使用后height竟然会加1。奇怪！
         CGPathAddCurveToPoint(thePath,NULL,250.0,320.0, 300,160, moveEndPoint.x,moveEndPoint.y);//优美的弧线
     }
     
-    
-    
     [CATransaction begin];
-    [CATransaction setAnimationDuration:1.5];
+    [CATransaction setAnimationDuration:2.0];
     
     CAKeyframeAnimation * moveAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
     moveAnimation.delegate = self;
@@ -455,7 +453,7 @@ cell使用后height竟然会加1。奇怪！
     moveAnimation.timingFunction = [CAMediaTimingFunction functionWithControlPoints:0.1f :0.1f :0.1f :1.0f];//前快，后慢;
     [clockAlarmImageView.layer addAnimation:moveAnimation forKey:@"MoveWatch"];
     
-    CABasicAnimation *scaleAnimation=[CABasicAnimation animationWithKeyPath: @"transform.scale" ];
+    CABasicAnimation *scaleAnimation=[CABasicAnimation animationWithKeyPath: @"transform.scale"];
 	scaleAnimation.timingFunction= [CAMediaTimingFunction functionWithControlPoints:0.7f :0.1f :0.8f :1.0f];//前极慢，后极快  
 	scaleAnimation.fromValue= [NSNumber numberWithFloat:1.0];
 	scaleAnimation.toValue= [NSNumber numberWithFloat:0.32];   
@@ -689,19 +687,21 @@ cell使用后height竟然会加1。奇怪！
     //[self.button3 setTitleColor:buttonTitleColor forState:UIControlStateHighlighted];
      
     
-    //加载数据
-    [self loadViewDataWithIndexOfNotifications:indexForView]; 
-    
-    
     [self registerNotifications];
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    //加载数据
+    [self loadViewDataWithIndexOfNotifications:indexForView]; 
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
     [timer invalidate]; [timer release]; timer = nil;
     [actionSheet1 dismissWithClickedButtonIndex:1 animated:NO];
     [actionSheet2 dismissWithClickedButtonIndex:1 animated:NO];
 }
-
 
 #pragma mark - Notification
 
@@ -802,7 +802,6 @@ cell使用后height竟然会加1。奇怪！
     [engine release];
     [actionSheet1 release];
     [actionSheet2 release];
-    [timer release];
     [clockAlarmImageView release];
     [super dealloc];
 }

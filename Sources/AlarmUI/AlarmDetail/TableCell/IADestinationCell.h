@@ -19,8 +19,7 @@
 	UIActivityIndicatorView *distanceActivityIndicatorView;
     
     UIImageView *moveArrowImageView;
-    NSTimer *moveArrowTimer;
-		
+    BOOL moving;
 }
 
 @property (nonatomic, retain) IBOutlet UIImageView *pinImageView;
@@ -32,8 +31,6 @@
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *distanceActivityIndicatorView;
 
 @property (nonatomic, retain) IBOutlet UIImageView *moveArrowImageView;
-@property (nonatomic, retain) NSTimer *moveArrowTimer;
-
 
 
 - (void)setWaiting:(BOOL)waiting andWaitText:(NSString*)waitText;

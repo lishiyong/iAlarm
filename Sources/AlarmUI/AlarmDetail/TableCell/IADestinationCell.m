@@ -22,7 +22,6 @@
 @synthesize distanceActivityIndicatorView;
 
 @synthesize moveArrowImageView;
-@synthesize moveArrowTimer;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(id)object
@@ -57,8 +56,6 @@
 	
 }
 
-
-
 +(id)viewWithXib 
 {
 	NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"IADestinationCell" owner:self options:nil];
@@ -83,8 +80,6 @@
 	
 	return cell; 
 }
-
-
 
 - (void)setUserInteractionEnabled:(BOOL)enabled{
 	[super setUserInteractionEnabled:enabled];
@@ -161,25 +156,22 @@
 - (void)startMoveArrowAnimating{
     [self.moveArrowImageView stopAnimating];
     [self.moveArrowImageView startAnimating];
-}
-- (void)setMoveArrow:(BOOL)moving{
-    
-    if (self.moveArrowTimer) {
-        [self.moveArrowTimer invalidate];
-        //[moveArrowTimer release];
-        self.moveArrowTimer = nil;
+    if (moving) {
+        [self performSelector:@selector(startMoveArrowAnimating) withObject:nil afterDelay:4.0];
     }
-     
+}
+
+- (void)setMoveArrow:(BOOL)theMoving{
+    moving = theMoving; 
     if (moving) {
         [self performSelector:@selector(startMoveArrowAnimating) withObject:nil afterDelay:2.0];
-        self.moveArrowTimer = [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(startMoveArrowAnimating) userInfo:nil repeats:YES];
+    }else{
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(startMoveArrowAnimating) object:nil];
     }
-    
 }
 
-
-
 - (void)dealloc {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
 	[self.titleLabel removeObserver:self forKeyPath:@"text"];
 
 	[pinImageView release];
@@ -190,9 +182,7 @@
 	[distanceLabel release];
 	[distanceActivityIndicatorView release];
     
-    [moveArrowImageView release];
-    [moveArrowTimer release];
-	
+    [moveArrowImageView release];	
     [super dealloc];
 }
 

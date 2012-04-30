@@ -738,22 +738,19 @@
 	//self.mapView.showsUserLocation = NO;
 	
 	//不再刷新pin
-	[refreshPinLoopTimer invalidate];
-	[refreshPinLoopTimer release];
-	refreshPinLoopTimer = nil;
-    
+	[refreshPinLoopTimer invalidate];[refreshPinLoopTimer release];refreshPinLoopTimer = nil;
+	
     //关闭未关闭的对话框
     [checkNetAlert dismissWithClickedButtonIndex:checkNetAlert.cancelButtonIndex animated:NO];
 }
 
 - (void) handle_applicationDidBecomeActive:(id)notification{	
-	
 	//刷新pin
-    if (!refreshPinLoopTimer) {
-        NSTimeInterval ti = 0.75;
-        refreshPinLoopTimer = [[NSTimer scheduledTimerWithTimeInterval:ti target:self selector:@selector(refreshPinView) userInfo:nil repeats:YES] retain];
-    }
-	
+    NSTimeInterval ti = 0.75;
+    [refreshPinLoopTimer invalidate];
+    [refreshPinLoopTimer release];
+    refreshPinLoopTimer = [[NSTimer scheduledTimerWithTimeInterval:ti target:self selector:@selector(refreshPinView) userInfo:nil repeats:YES] retain];
+    
 }
 
 
@@ -1036,9 +1033,6 @@
 	[notificationCenter removeObserver:self	name: IAFocusButtonPressedNotification object: nil];
 	[notificationCenter removeObserver:self	name: IAMapTypeButtonPressedNotification object: nil];
 
-	
-	
-	
 	[self.maskView removeObserver:self forKeyPath:@"hidden"];
 
 }
@@ -1122,12 +1116,6 @@
 	self.mapsTypeButton = [[self.toolbarFloatingView buttons] objectAtIndex:0];
 	self.satelliteTypeButton  = [[self.toolbarFloatingView  buttons] objectAtIndex:1];
 	self.hybridTypeButton = [[self.toolbarFloatingView  buttons] objectAtIndex:2];
-    
-    //刷新pin
-    if (!refreshPinLoopTimer) {
-        NSTimeInterval ti = 0.75;
-        refreshPinLoopTimer = [[NSTimer scheduledTimerWithTimeInterval:ti target:self selector:@selector(refreshPinView) userInfo:nil repeats:YES] retain];
-    }
 	
     [self registerNotifications];
 
@@ -1204,7 +1192,12 @@
         [oneObj setDistanceSubtitleWithCurrentLocation:location];
     }
 	
-
+    //刷新pin
+    NSTimeInterval ti = 0.75;
+    [refreshPinLoopTimer invalidate];
+    [refreshPinLoopTimer release];
+    refreshPinLoopTimer = [[NSTimer scheduledTimerWithTimeInterval:ti target:self selector:@selector(refreshPinView) userInfo:nil repeats:YES] retain];
+    
 	isFirstShow = NO;
 	
 }
@@ -1230,7 +1223,10 @@
 	//不显示工具条
 	if (!self.toolbarFloatingView.hidden)
 		self.toolbarFloatingView.hidden = YES;
-	
+    
+    //不再刷新pin
+	[refreshPinLoopTimer invalidate];[refreshPinLoopTimer release];refreshPinLoopTimer = nil;
+
 }
 
 
@@ -2353,10 +2349,6 @@
     [super viewDidUnload];
 	[self unRegisterNotifications];
     
-	[refreshPinLoopTimer invalidate];
-	[refreshPinLoopTimer release];
-	refreshPinLoopTimer = nil;
-    
     self.locationServicesUsableAlert = nil;
     self.mapView = nil; 
     self.maskView = nil;
@@ -2406,9 +2398,7 @@
 	[foucusOverlay release];
 	
 	[animateRemoveFileView release];    
-	
-	[refreshPinLoopTimer release];
-    
+	    
     [tapMapViewGesture release];
     [tapCalloutViewGesture release];
 	[longPressGesture release];
