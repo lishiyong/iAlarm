@@ -221,7 +221,7 @@ AAgACAAIAAEAAQABAAE</bytes>
 												<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 												<object class="NSCustomResource" key="IBUIImage">
 													<string key="NSClassName">NSImage</string>
-													<string key="NSResourceName">YCWatch.png</string>
+													<string key="NSResourceName">YCClockAlarm.png</string>
 												</object>
 											</object>
 										</array>
@@ -927,7 +927,7 @@ AAgACAAIAAEAAQABAAE</bytes>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="IAGlassMask.png">{320, 200}</string>
-			<string key="YCWatch.png">{32, 32}</string>
+			<string key="YCClockAlarm.png">{32, 32}</string>
 			<string key="horizontal_etched_line.png">{1, 2}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">933</string>

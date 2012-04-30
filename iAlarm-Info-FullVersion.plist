@@ -64,5 +64,9 @@
 		<string>location-services</string>
 		<string>gps</string>
 	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
 </dict>
 </plist>

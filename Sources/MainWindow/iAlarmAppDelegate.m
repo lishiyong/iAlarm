@@ -166,8 +166,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {  
 	
 	[YCSystemStatus deviceStatusSingleInstance]; //一定要有这个初始化
-
-	
+    
+    self.window.backgroundColor = [UIColor clearColor]; //为了自定义状态栏
 	self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];	
 	
@@ -182,7 +182,6 @@
 	//检测定位服务状态。如果不可用或未授权，弹出对话框
 	//[self.locationServicesUsableAlert performSelector:@selector(locationServicesUsable) withObject:nil afterDelay:2.0];
 	[self performSelector:@selector(testLocationServices) withObject:nil afterDelay:3.0];
-	
 	
 	
 	//不停止其他程序的音乐播放

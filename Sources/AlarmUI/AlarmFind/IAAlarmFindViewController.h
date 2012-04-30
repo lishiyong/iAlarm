@@ -6,6 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
 #import <MapKit/MapKit.h>
 #import <UIKit/UIKit.h>
 
@@ -24,7 +25,7 @@
     UIActionSheet *actionSheet1;
     UIActionSheet *actionSheet2;
     NSTimer *timer;
-    
+    UIImageView *clockAlarmImageView;
 }
 @property (nonatomic,retain) IBOutlet UITableView *tableView;
 @property(nonatomic,retain,readonly) UIBarButtonItem *doneButtonItem;

@@ -237,7 +237,12 @@
 
 - (void)handle_listViewMapsViewSwitch:(id)notification{	
     
-	
+    if (self.navigationController.isNavigationBarHidden) {//隐藏bar 于 listview 只能做一个
+        return;
+    }
+    
+	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+    
     //////////////////////////
 	//视图转换
 	[UIView beginAnimations:@"View Switch" context:nil];
@@ -519,31 +524,6 @@
 
 
 - (void)handle_alarmDidView:(NSNotification*)notification{
-	
-	/*
-	//弹出Model View
-	[self dismissModalViewControllerAnimated:YES];
-	
-	//切换到map视图
-	if (self.curViewController != self.mapsViewController) {
-		NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-		NSNotification *aNotification = [NSNotification notificationWithName:IAListViewMapsViewSwitchNotification object:self userInfo:nil];
-		[notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];	
-	}
-	
-	
-	//再地图上找到它
-	NSTimeInterval delay = 1.2;
-	if ([self.mapsViewController isViewLoaded]) {
-		delay = 0.0;
-	}
-	IAAlarm *theAlarm = [[notification userInfo] objectForKey:IAViewedAlarmKey];
-	[self.mapsViewController performSelector:@selector(findAlarm:) withObject:theAlarm afterDelay:delay]; //为第一次打开，延后
-	*/
-
-    //[self dismissModalViewControllerAnimated:YES];
-    
-    //IAAlarm *theAlarm = [[notification userInfo] objectForKey:IAViewedAlarmKey];
     
     IAAlarmFindViewController *ctler = [[[IAAlarmFindViewController alloc] initWithNibName:@"IAAlarmFindViewController" bundle:nil] autorelease];
     UINavigationController *navCtler = [[[UINavigationController alloc] initWithRootViewController:ctler] autorelease];
@@ -610,9 +590,12 @@
 
 - (void)handleHideBar:(NSNotification*)notification{
     
-    //[[UIApplication sharedApplication] beginIgnoringInteractionEvents];//TODO 不好用为什么？
-
-    [[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:UINavigationControllerHideShowBarDuration+0.1];  
+    if (self.curViewController == listViewController) {//隐藏bar 于 listview 只能做一个
+        return;
+    }
+    
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+    [[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:UINavigationControllerHideShowBarDuration+0.05];  
 
     BOOL doHide = NO;
     CFBooleanRef doHideCF = (CFBooleanRef)[notification.userInfo objectForKey:IADoHideBarKey];
@@ -631,7 +614,7 @@
     [self.navigationController setToolbarHidden:doHide animated:YES]; 
     [self.toolbar setItems:[self mapsViewToolbarItems] animated:NO];
     [self.navigationController setNavigationBarHidden:doHide animated:YES];
-
+    
 }
 
 - (void)handle_applicationWillResignActive:(id)notification{	
@@ -766,8 +749,6 @@
 }
 
 - (void)switchButtonPressed:(id)sender{
-    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	NSNotification *aNotification = [NSNotification notificationWithName:IAListViewMapsViewSwitchNotification object:self userInfo:nil];
 	[notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];	

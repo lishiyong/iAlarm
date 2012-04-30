@@ -79,10 +79,6 @@
 		9C0B12A3154187FF00729060 /* YCRingClear.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0B129C154187FE00729060 /* YCRingClear.png */; };
 		9C0B12A4154187FF00729060 /* YCRingClear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0B129D154187FF00729060 /* YCRingClear@2x.png */; };
 		9C0B12A5154187FF00729060 /* YCRingClear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0B129D154187FF00729060 /* YCRingClear@2x.png */; };
-		9C0B12A8154192EA00729060 /* YCWatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0B12A6154192E900729060 /* YCWatch.png */; };
-		9C0B12A9154192EA00729060 /* YCWatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0B12A6154192E900729060 /* YCWatch.png */; };
-		9C0B12AA154192EA00729060 /* YCWatch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0B12A7154192EA00729060 /* YCWatch@2x.png */; };
-		9C0B12AB154192EA00729060 /* YCWatch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0B12A7154192EA00729060 /* YCWatch@2x.png */; };
 		9C0BBC8E1529CD3D002509F3 /* UIPopoverButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0BBC8A1529CD3D002509F3 /* UIPopoverButton@2x.png */; };
 		9C0BBC8F1529CD3D002509F3 /* UIPopoverButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0BBC8A1529CD3D002509F3 /* UIPopoverButton@2x.png */; };
 		9C0BBC901529CD3D002509F3 /* UIPopoverButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0BBC8B1529CD3D002509F3 /* UIPopoverButton.png */; };
@@ -243,6 +239,14 @@
 		9C5AF2AE134F38FB00547BB0 /* Marimba.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C5AF2A9134F38FB00547BB0 /* Marimba.caf */; };
 		9C5AF2AF134F38FB00547BB0 /* Trill.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C5AF2AA134F38FB00547BB0 /* Trill.caf */; };
 		9C5AF2B0134F38FB00547BB0 /* Xylophone.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C5AF2AB134F38FB00547BB0 /* Xylophone.caf */; };
+		9C5B1DB3154E56A2009235DB /* YCClockAlarm.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5B1DB1154E56A1009235DB /* YCClockAlarm.png */; };
+		9C5B1DB4154E56A2009235DB /* YCClockAlarm.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5B1DB1154E56A1009235DB /* YCClockAlarm.png */; };
+		9C5B1DB5154E56A2009235DB /* YCClockAlarm@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5B1DB2154E56A1009235DB /* YCClockAlarm@2x.png */; };
+		9C5B1DB6154E56A2009235DB /* YCClockAlarm@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5B1DB2154E56A1009235DB /* YCClockAlarm@2x.png */; };
+		9C5B1DB9154E582D009235DB /* YCClockAlarm20.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5B1DB7154E582D009235DB /* YCClockAlarm20.png */; };
+		9C5B1DBA154E582D009235DB /* YCClockAlarm20.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5B1DB7154E582D009235DB /* YCClockAlarm20.png */; };
+		9C5B1DBB154E582D009235DB /* YCClockAlarm20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5B1DB8154E582D009235DB /* YCClockAlarm20@2x.png */; };
+		9C5B1DBC154E582D009235DB /* YCClockAlarm20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5B1DB8154E582D009235DB /* YCClockAlarm20@2x.png */; };
 		9C66F3F615486CA400577C4F /* BSAddressComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C66F3EF15486CA400577C4F /* BSAddressComponent.m */; };
 		9C66F3F715486CA400577C4F /* BSAddressComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C66F3EF15486CA400577C4F /* BSAddressComponent.m */; };
 		9C66F3F815486CA400577C4F /* BSForwardGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C66F3F115486CA400577C4F /* BSForwardGeocoder.m */; };
@@ -1009,6 +1013,16 @@
 		9CE8970813000275008FBD45 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CE8970713000275008FBD45 /* AudioToolbox.framework */; };
 		9CE8972C130003DF008FBD45 /* iAlarm.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8972B130003DF008FBD45 /* iAlarm.xcdatamodeld */; };
 		9CE8973A13000454008FBD45 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8973813000454008FBD45 /* main.m */; };
+		9CECE500154E4066001628BD /* YCAlarmStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CECE4F9154E4066001628BD /* YCAlarmStatusBar.m */; };
+		9CECE501154E4066001628BD /* YCAlarmStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CECE4F9154E4066001628BD /* YCAlarmStatusBar.m */; };
+		9CECE506154E4066001628BD /* YCSilver_Alarm.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CECE4FC154E4066001628BD /* YCSilver_Alarm.png */; };
+		9CECE507154E4066001628BD /* YCSilver_Alarm.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CECE4FC154E4066001628BD /* YCSilver_Alarm.png */; };
+		9CECE508154E4066001628BD /* YCSilver_Alarm@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CECE4FD154E4066001628BD /* YCSilver_Alarm@2x.png */; };
+		9CECE509154E4066001628BD /* YCSilver_Alarm@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CECE4FD154E4066001628BD /* YCSilver_Alarm@2x.png */; };
+		9CECE50A154E4066001628BD /* YCSilver_Base.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CECE4FE154E4066001628BD /* YCSilver_Base.png */; };
+		9CECE50B154E4066001628BD /* YCSilver_Base.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CECE4FE154E4066001628BD /* YCSilver_Base.png */; };
+		9CECE50C154E4066001628BD /* YCSilver_Base@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CECE4FF154E4066001628BD /* YCSilver_Base@2x.png */; };
+		9CECE50D154E4066001628BD /* YCSilver_Base@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CECE4FF154E4066001628BD /* YCSilver_Base@2x.png */; };
 		9CEF84C915406D0300A68B2E /* YCGrayButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CEF84C815406D0300A68B2E /* YCGrayButton.png */; };
 		9CEF84CA15406D0300A68B2E /* YCGrayButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CEF84C815406D0300A68B2E /* YCGrayButton.png */; };
 		9CEF84CC15406D1000A68B2E /* YCGrayButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CEF84CB15406D1000A68B2E /* YCGrayButton@2x.png */; };
@@ -1120,8 +1134,6 @@
 		9C0B129B154187FE00729060 /* YCRing@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCRing@2x.png"; sourceTree = "<group>"; };
 		9C0B129C154187FE00729060 /* YCRingClear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCRingClear.png; sourceTree = "<group>"; };
 		9C0B129D154187FF00729060 /* YCRingClear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCRingClear@2x.png"; sourceTree = "<group>"; };
-		9C0B12A6154192E900729060 /* YCWatch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCWatch.png; sourceTree = "<group>"; };
-		9C0B12A7154192EA00729060 /* YCWatch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCWatch@2x.png"; sourceTree = "<group>"; };
 		9C0BBC8A1529CD3D002509F3 /* UIPopoverButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIPopoverButton@2x.png"; sourceTree = "<group>"; };
 		9C0BBC8B1529CD3D002509F3 /* UIPopoverButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIPopoverButton.png; sourceTree = "<group>"; };
 		9C0BBC8C1529CD3D002509F3 /* UIPopoverButtonPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIPopoverButtonPressed@2x.png"; sourceTree = "<group>"; };
@@ -1245,6 +1257,10 @@
 		9C5AF2A9134F38FB00547BB0 /* Marimba.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Marimba.caf; sourceTree = "<group>"; };
 		9C5AF2AA134F38FB00547BB0 /* Trill.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Trill.caf; sourceTree = "<group>"; };
 		9C5AF2AB134F38FB00547BB0 /* Xylophone.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Xylophone.caf; sourceTree = "<group>"; };
+		9C5B1DB1154E56A1009235DB /* YCClockAlarm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCClockAlarm.png; sourceTree = "<group>"; };
+		9C5B1DB2154E56A1009235DB /* YCClockAlarm@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCClockAlarm@2x.png"; sourceTree = "<group>"; };
+		9C5B1DB7154E582D009235DB /* YCClockAlarm20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCClockAlarm20.png; sourceTree = "<group>"; };
+		9C5B1DB8154E582D009235DB /* YCClockAlarm20@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCClockAlarm20@2x.png"; sourceTree = "<group>"; };
 		9C66F3EE15486CA400577C4F /* BSAddressComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSAddressComponent.h; sourceTree = "<group>"; };
 		9C66F3EF15486CA400577C4F /* BSAddressComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSAddressComponent.m; sourceTree = "<group>"; };
 		9C66F3F015486CA400577C4F /* BSForwardGeocoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSForwardGeocoder.h; sourceTree = "<group>"; };
@@ -1745,6 +1761,12 @@
 		9CE8970713000275008FBD45 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		9CE8972A130003DF008FBD45 /* iAlarm_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iAlarm_Prefix.pch; sourceTree = "<group>"; };
 		9CE8973813000454008FBD45 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9CECE4F8154E4066001628BD /* YCAlarmStatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCAlarmStatusBar.h; sourceTree = "<group>"; };
+		9CECE4F9154E4066001628BD /* YCAlarmStatusBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCAlarmStatusBar.m; sourceTree = "<group>"; };
+		9CECE4FC154E4066001628BD /* YCSilver_Alarm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCSilver_Alarm.png; sourceTree = "<group>"; };
+		9CECE4FD154E4066001628BD /* YCSilver_Alarm@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCSilver_Alarm@2x.png"; sourceTree = "<group>"; };
+		9CECE4FE154E4066001628BD /* YCSilver_Base.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCSilver_Base.png; sourceTree = "<group>"; };
+		9CECE4FF154E4066001628BD /* YCSilver_Base@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCSilver_Base@2x.png"; sourceTree = "<group>"; };
 		9CEF84C815406D0300A68B2E /* YCGrayButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCGrayButton.png; sourceTree = "<group>"; };
 		9CEF84CB15406D1000A68B2E /* YCGrayButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCGrayButton@2x.png"; sourceTree = "<group>"; };
 		9CF0C93A1543B47600052CFE /* YCMapPointAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCMapPointAnnotation.h; sourceTree = "<group>"; };
@@ -2091,8 +2113,10 @@
 		9C85F37E14FBA68C00B49FF4 /* AlarmFind */ = {
 			isa = PBXGroup;
 			children = (
-				9C0B12A6154192E900729060 /* YCWatch.png */,
-				9C0B12A7154192EA00729060 /* YCWatch@2x.png */,
+				9C5B1DB7154E582D009235DB /* YCClockAlarm20.png */,
+				9C5B1DB8154E582D009235DB /* YCClockAlarm20@2x.png */,
+				9C5B1DB1154E56A1009235DB /* YCClockAlarm.png */,
+				9C5B1DB2154E56A1009235DB /* YCClockAlarm@2x.png */,
 				9C0B129A154187FE00729060 /* YCRing.png */,
 				9C0B129B154187FE00729060 /* YCRing@2x.png */,
 				9C0B129C154187FE00729060 /* YCRingClear.png */,
@@ -2597,6 +2621,7 @@
 		9CA993BE130284D300298E5D /* YCControl */ = {
 			isa = PBXGroup;
 			children = (
+				9CECE4F7154E4066001628BD /* YCAlarmStatusBar */,
 				9C7E400615340998003370C9 /* YCCopyLabel */,
 				9CE5955A14FFAE9100C0E28C /* YCTextView */,
 				9CCA0163133C1EA30002AB74 /* YCMaskView */,
@@ -3435,6 +3460,19 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
+		9CECE4F7154E4066001628BD /* YCAlarmStatusBar */ = {
+			isa = PBXGroup;
+			children = (
+				9CECE4F8154E4066001628BD /* YCAlarmStatusBar.h */,
+				9CECE4F9154E4066001628BD /* YCAlarmStatusBar.m */,
+				9CECE4FC154E4066001628BD /* YCSilver_Alarm.png */,
+				9CECE4FD154E4066001628BD /* YCSilver_Alarm@2x.png */,
+				9CECE4FE154E4066001628BD /* YCSilver_Base.png */,
+				9CECE4FF154E4066001628BD /* YCSilver_Base@2x.png */,
+			);
+			path = YCAlarmStatusBar;
+			sourceTree = "<group>";
+		};
 		9CFE83FD14683056004A4BF1 /* MoveArrow */ = {
 			isa = PBXGroup;
 			children = (
@@ -3851,8 +3889,14 @@
 				9C0B12A0154187FF00729060 /* YCRing@2x.png in Resources */,
 				9C0B12A2154187FF00729060 /* YCRingClear.png in Resources */,
 				9C0B12A4154187FF00729060 /* YCRingClear@2x.png in Resources */,
-				9C0B12A8154192EA00729060 /* YCWatch.png in Resources */,
-				9C0B12AA154192EA00729060 /* YCWatch@2x.png in Resources */,
+				9CECE506154E4066001628BD /* YCSilver_Alarm.png in Resources */,
+				9CECE508154E4066001628BD /* YCSilver_Alarm@2x.png in Resources */,
+				9CECE50A154E4066001628BD /* YCSilver_Base.png in Resources */,
+				9CECE50C154E4066001628BD /* YCSilver_Base@2x.png in Resources */,
+				9C5B1DB3154E56A2009235DB /* YCClockAlarm.png in Resources */,
+				9C5B1DB5154E56A2009235DB /* YCClockAlarm@2x.png in Resources */,
+				9C5B1DB9154E582D009235DB /* YCClockAlarm20.png in Resources */,
+				9C5B1DBB154E582D009235DB /* YCClockAlarm20@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4190,8 +4234,14 @@
 				9C0B12A1154187FF00729060 /* YCRing@2x.png in Resources */,
 				9C0B12A3154187FF00729060 /* YCRingClear.png in Resources */,
 				9C0B12A5154187FF00729060 /* YCRingClear@2x.png in Resources */,
-				9C0B12A9154192EA00729060 /* YCWatch.png in Resources */,
-				9C0B12AB154192EA00729060 /* YCWatch@2x.png in Resources */,
+				9CECE507154E4066001628BD /* YCSilver_Alarm.png in Resources */,
+				9CECE509154E4066001628BD /* YCSilver_Alarm@2x.png in Resources */,
+				9CECE50B154E4066001628BD /* YCSilver_Base.png in Resources */,
+				9CECE50D154E4066001628BD /* YCSilver_Base@2x.png in Resources */,
+				9C5B1DB4154E56A2009235DB /* YCClockAlarm.png in Resources */,
+				9C5B1DB6154E56A2009235DB /* YCClockAlarm@2x.png in Resources */,
+				9C5B1DBA154E582D009235DB /* YCClockAlarm20.png in Resources */,
+				9C5B1DBC154E582D009235DB /* YCClockAlarm20@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4370,6 +4420,7 @@
 				9C66F3F815486CA400577C4F /* BSForwardGeocoder.m in Sources */,
 				9C66F3FA15486CA400577C4F /* BSGoogleV3KmlParser.m in Sources */,
 				9C66F3FC15486CA400577C4F /* BSKmlResult.m in Sources */,
+				9CECE500154E4066001628BD /* YCAlarmStatusBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4545,6 +4596,7 @@
 				9C66F3F915486CA400577C4F /* BSForwardGeocoder.m in Sources */,
 				9C66F3FB15486CA400577C4F /* BSGoogleV3KmlParser.m in Sources */,
 				9C66F3FD15486CA400577C4F /* BSKmlResult.m in Sources */,
+				9CECE501154E4066001628BD /* YCAlarmStatusBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

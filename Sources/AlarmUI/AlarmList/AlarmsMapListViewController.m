@@ -1333,8 +1333,6 @@
             [notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
             
         }else {//隐藏bar
-            [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-
             NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
             NSNotification *aNotification = [NSNotification notificationWithName:IADoHideBarNotification 
                                                                           object:self

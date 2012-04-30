@@ -5,6 +5,8 @@
 //  Created by li shiyong on 12-2-27.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
+
+#import "YCAlarmStatusBar.h"
 #import "YCMapPointAnnotation+AlarmUI.h"
 #import "YCShareContent.h"
 #import "YCShareAppEngine.h"
@@ -62,6 +64,7 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
 - (UIImage*)takePhotoFromTheMapView;
 - (void)loadViewDataWithIndexOfNotifications:(NSInteger)index;
 - (void)reloadTimeIntervalLabel;
+- (void)makeMoveAlarmAnimationWithStatus:(NSInteger)theStatus;
 - (void)registerNotifications;
 - (void)unRegisterNotifications;
 
@@ -208,6 +211,9 @@ cell使用后height竟然会加1。奇怪！
         return;
     }
     
+    NSInteger status = (actionSheet == actionSheet1) ? 0 : 1;
+    [self makeMoveAlarmAnimationWithStatus:status]; 
+    
     if ( actionSheet == actionSheet1 || actionSheet == actionSheet2) {
         
         
@@ -239,7 +245,7 @@ cell使用后height竟然会加1。奇怪！
             [userInfo setObject:alarmMessage forKey:@"kMessageStringKey"];
         
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 4.2) {// iOS 4.2 带个闹钟的图标
-            NSString *iconString = @"\ue026";//这是钟表🕒
+            NSString *iconString = @"\ue02c";//这是钟表🕒
             alertTitle =  [NSString stringWithFormat:@"%@%@",iconString,alertTitle]; 
             [userInfo setObject:iconString forKey:@"kIconStringKey"];
         }
@@ -263,29 +269,36 @@ cell使用后height竟然会加1。奇怪！
         [app scheduleLocalNotification:notification];
     }
     
-    
-    
 }
 
 
 #pragma mark - Animation delegate
 
 - (void)animationDidStart:(CAAnimation *)theAnimation{
-    //self.view.userInteractionEnabled = NO;
-    //self.navigationController.navigationBar.userInteractionEnabled = NO;
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+    if ([theAnimation isKindOfClass:[CAKeyframeAnimation class]]) {
+        self.navigationController.wantsFullScreenLayout = YES;
+        self.view.window.windowLevel = UIWindowLevelStatusBar+2; //自定义的状态栏：+1。
+        [[YCAlarmStatusBar shareStatusBar] setHidden:NO animated:YES];
+    }
 }
 
 - (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag{
-    //self.view.userInteractionEnabled = YES;
-    //self.navigationController.navigationBar.userInteractionEnabled = YES;
+    if ([theAnimation isKindOfClass:[CAKeyframeAnimation class]]) {
+        self.view.window.windowLevel = UIWindowLevelNormal;
+        [[YCAlarmStatusBar shareStatusBar] setAlarmIconHidden:NO animated:NO];    
+        [[YCAlarmStatusBar shareStatusBar] increaseAlarmCount];
+        [clockAlarmImageView removeFromSuperview];
+    }
+    
     [[UIApplication sharedApplication] endIgnoringInteractionEvents];
 }
 
 #pragma mark - Utility
 
 - (UIImage*)takePhotoFromTheMapView{
-    UIGraphicsBeginImageContext(self.takeImageContainerView.frame.size);
+    //UIGraphicsBeginImageContext(self.takeImageContainerView.frame.size);
+    UIGraphicsBeginImageContextWithOptions(self.takeImageContainerView.frame.size,YES,0.0);
     [self.takeImageContainerView.layer renderInContext:UIGraphicsGetCurrentContext()]; 
     UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();     
@@ -408,6 +421,55 @@ cell使用后height竟然会加1。奇怪！
         CGFloat timeIntervalLabelH = self.timeIntervalLabel.bounds.size.height; 
         self.watchImageView.layer.position = CGPointMake(labelPosition.x, labelPosition.y - timeIntervalLabelH - 3); 
     }
+}
+
+- (void)makeMoveAlarmAnimationWithStatus:(NSInteger)theStatus{
+    
+    if (!clockAlarmImageView) {
+        clockAlarmImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"YCClockAlarm.png"]];
+        clockAlarmImageView.frame = CGRectMake(-100, -100, 32, 32);
+        clockAlarmImageView.contentMode = UIViewContentModeCenter;  //下面的要转换的图片不长宽不一致
+    }
+    [self.view.window addSubview:clockAlarmImageView];
+    
+    CGPoint moveEndPoint = [YCAlarmStatusBar shareStatusBar].alarmIconCenter;
+    moveEndPoint = [self.view.window convertPoint:moveEndPoint fromWindow:[YCAlarmStatusBar shareStatusBar]];
+    CGMutablePathRef thePath = CGPathCreateMutable();
+    //屏幕底端
+    if (0 == theStatus){ //右边的按钮
+        CGPathMoveToPoint(thePath,NULL,100,480); 
+        CGPathAddCurveToPoint(thePath,NULL,50.0,320.0, 300,160, moveEndPoint.x,moveEndPoint.y);//优美的弧线
+    }else{
+        CGPathMoveToPoint(thePath,NULL,200,480);
+        CGPathAddCurveToPoint(thePath,NULL,250.0,320.0, 300,160, moveEndPoint.x,moveEndPoint.y);//优美的弧线
+    }
+    
+    
+    
+    [CATransaction begin];
+    [CATransaction setAnimationDuration:1.5];
+    
+    CAKeyframeAnimation * moveAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
+    moveAnimation.delegate = self;
+    moveAnimation.path=thePath;
+    moveAnimation.timingFunction = [CAMediaTimingFunction functionWithControlPoints:0.1f :0.1f :0.1f :1.0f];//前快，后慢;
+    [clockAlarmImageView.layer addAnimation:moveAnimation forKey:@"MoveWatch"];
+    
+    CABasicAnimation *scaleAnimation=[CABasicAnimation animationWithKeyPath: @"transform.scale" ];
+	scaleAnimation.timingFunction= [CAMediaTimingFunction functionWithControlPoints:0.7f :0.1f :0.8f :1.0f];//前极慢，后极快  
+	scaleAnimation.fromValue= [NSNumber numberWithFloat:1.0];
+	scaleAnimation.toValue= [NSNumber numberWithFloat:0.32];   
+	[clockAlarmImageView.layer addAnimation :scaleAnimation forKey :@"ScaleWatch" ];    
+    
+    CABasicAnimation *contentsAnimation =[ CABasicAnimation animationWithKeyPath: @"contents" ];
+	contentsAnimation.timingFunction= [CAMediaTimingFunction functionWithControlPoints:0.7f :0.2f :0.9f :0.2f];//前极慢，后极快
+	contentsAnimation.fromValue = clockAlarmImageView.layer.contents;
+    contentsAnimation.toValue=  (id)[UIImage imageNamed:@"YCSilver_Alarm.png"].CGImage;   
+	[clockAlarmImageView.layer addAnimation :contentsAnimation forKey :@"contentsAnimation" ];
+    [CATransaction commit];
+    
+    CFRelease(thePath);
+    
 }
 
 #pragma mark - MapView delegate
@@ -741,6 +803,7 @@ cell使用后height竟然会加1。奇怪！
     [actionSheet1 release];
     [actionSheet2 release];
     [timer release];
+    [clockAlarmImageView release];
     [super dealloc];
 }
 
