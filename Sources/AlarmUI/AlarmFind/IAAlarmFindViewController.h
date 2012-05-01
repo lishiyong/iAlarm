@@ -35,7 +35,7 @@
 @property (nonatomic,retain) IBOutlet UIView *takeImageContainerView;
 @property (nonatomic,retain) IBOutlet UIView *containerView;
 @property (nonatomic,retain) IBOutlet MKMapView *mapView;
-@property (nonatomic,retain) IBOutlet UIImageView *imageView;
+@property (nonatomic,retain) IBOutlet UIImageView *maskImageView;
 @property (nonatomic,retain) IBOutlet UILabel *timeIntervalLabel;
 @property (nonatomic,retain) IBOutlet UIImageView *watchImageView;
 

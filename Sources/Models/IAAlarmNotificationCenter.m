@@ -6,6 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "IAAlarm.h"
 #import "UIApplication-YC.h"
 #import "IAAlarmNotification.h"
 #import "IAAlarmNotificationCenter.h"
@@ -67,6 +68,26 @@
         NSComparisonResult cr = [anObj.fireTimeStamp compare:now];
         BOOL add = (cr == NSOrderedDescending) ? !fired:fired;
         if (add) 
+            [resultArray addObject:anObj];
+    }
+    
+    return ([resultArray count] == 0) ? nil : resultArray;
+}
+
+- (NSArray*)notificationsForFired:(BOOL)fired soureAlarmNotification:(IAAlarmNotification*)soureAlarmNotification{
+    NSMutableArray *resultArray = [NSMutableArray array];
+    for (IAAlarmNotification *anObj in [self notificationsForFired:fired]) {
+        if ([anObj.soureAlarmNotification.notificationId isEqualToString:soureAlarmNotification.notificationId]) 
+            [resultArray addObject:anObj];
+    }
+    
+    return ([resultArray count] == 0) ? nil : resultArray;
+}
+
+- (NSArray*)notificationsForFired:(BOOL)fired alarmId:(NSString*)alarmId{
+    NSMutableArray *resultArray = [NSMutableArray array];
+    for (IAAlarmNotification *anObj in [self notificationsForFired:fired]) {
+        if ([alarmId isEqualToString:anObj.alarm.alarmId]) 
             [resultArray addObject:anObj];
     }
     

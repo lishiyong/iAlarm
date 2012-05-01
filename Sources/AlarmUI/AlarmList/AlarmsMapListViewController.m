@@ -1294,8 +1294,8 @@
  */
 
 -(void)mapViewTap:(UITapGestureRecognizer *)sender{
-	if (tapCalloutViewGesture == sender) {
-        return;
+	if (tapCalloutViewGesture == sender) { //点pin的Callout不处理
+        return; 
     }
     
     if (sender.state == UIGestureRecognizerStateEnded) {
@@ -1341,18 +1341,7 @@
     
 }
 
--(void)pinTap:(UITapGestureRecognizer *)sender{
-	
-	//NSLog(@"pinTap:");
-	/*
-	YCPinAnnotationView *annotationView = (YCPinAnnotationView*)sender.view;
-	if(![annotationView isKindOfClass:[YCPinAnnotationView class]]) return;
-	
-	if (UIGestureRecognizerStateBegan == sender.state){ //只处理长按开始
-		[(YCPinAnnotationView*)annotationView performSelector:@selector(updatePinColor) withObject:nil afterDelay:0.25];
-		[(YCPinAnnotationView*)annotationView performSelector:@selector(updatePinColor) withObject:nil afterDelay:1.75];
-	}
-	 */
+-(void)pinTap:(UITapGestureRecognizer *)sender{	
 	
 }
 
@@ -1605,7 +1594,7 @@
     return YES;
      
     */
-    
+        
     //点的范围是否在UICalloutView内
     BOOL touchInCalloutView = NO;
     id<MKAnnotation> selectedAnnotation = nil;

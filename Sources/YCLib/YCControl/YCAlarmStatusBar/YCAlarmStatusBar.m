@@ -165,9 +165,12 @@ static YCAlarmStatusBar *bar = nil;
     if (!hidden) {
         //设置自动隐藏
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideSelf) object:nil];
-        if (autoHideInterval > 0) {
+        if (autoHide && autoHideInterval > 0) {
             [self performSelector:@selector(hideSelf) withObject:nil afterDelay:autoHideInterval];
         }
+    }else{
+        //图标也先隐藏了
+        [self setAlarmIconHidden:hidden animated:animated];
     }
     
     if (animated) {
@@ -191,6 +194,7 @@ static YCAlarmStatusBar *bar = nil;
             [self makeKeyWindow];
     }
     
+    
 }
 
 - (void)setAlarmIconHidden:(BOOL)hidden animated:(BOOL)animated{
@@ -204,6 +208,7 @@ static YCAlarmStatusBar *bar = nil;
     }
     xContainerView.hidden = hidden;
     alarmIconLayer.hidden = hidden;
+    oneLabel.text = nil;
     [CATransaction commit];
 }
 

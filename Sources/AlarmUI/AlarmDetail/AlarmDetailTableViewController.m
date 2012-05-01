@@ -1143,6 +1143,7 @@
 	//反转坐标
 	self.placemarkForReverse = nil; //先赋空相关数据
 	[reverseGeocoder start];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	[self performSelector:@selector(endReverse) withObject:nil afterDelay:kTimeOutForReverse];
 }
  
@@ -1161,6 +1162,7 @@
 	
 	//如果超时了，反转还没结束，结束它
 	[reverseGeocoder cancel];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	//取消掉另一个调用
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(endReverse) object:nil];
 	
@@ -1253,7 +1255,7 @@
 }
 
 
-#define kTimeOutForLocation 12.0
+#define kTimeOutForLocation 10.0
 -(void)beginLocation
 {
 	self->endingManual = NO;
@@ -1611,7 +1613,6 @@
 	
 }
 
-
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {	
 	//定位服务没有开启，或没有授权时候：收到失败数据就直接结束定位
@@ -1622,28 +1623,28 @@
 	}
 }
 
-
-
-
 #pragma mark -
 #pragma mark MKReverseGeocoderDelegate
 - (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFindPlacemark:(MKPlacemark *)placemark
 {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	self.placemarkForReverse = placemark;
 	[self performSelector:@selector(endReverse) withObject:nil afterDelay:0.1];  //数据更新后，等待x秒
 }
 
 - (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFailWithError:(NSError *)error
 {	
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	//无网络连接时候，收到失败数据，就结束反转
 	BOOL connectedToInternet = [[YCSystemStatus deviceStatusSingleInstance] connectedToInternet];
 	if (!connectedToInternet) {
 		self.placemarkForReverse = nil;
-		[self performSelector:@selector(endReverse) withObject:nil afterDelay:0.1];  //等待x秒，结束
-	}
+		[self performSelector:@selector(endReverse) withObject:nil afterDelay:0.1];  
+	}else{
+        self.placemarkForReverse = nil;
+		[self performSelector:@selector(endReverse) withObject:nil afterDelay:2.0];  //虽然有网络，查询稍等一下就结束
+    }
 }
-
-
 
 #pragma mark -
 #pragma mark Memory management
@@ -1671,6 +1672,7 @@
 	[self freeResouceRecreated];
 	//取消所有定时执行的函数
 	[reverseGeocoder cancel];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
 	
     [lastUpdateDistanceTimestamp release];

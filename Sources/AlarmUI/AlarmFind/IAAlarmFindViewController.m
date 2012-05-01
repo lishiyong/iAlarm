@@ -76,7 +76,7 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
 #pragma mark - property
 
 @synthesize tableView;
-@synthesize mapViewCell, takeImageContainerView, containerView, mapView, imageView, timeIntervalLabel, watchImageView;
+@synthesize mapViewCell, takeImageContainerView, containerView, mapView, maskImageView, timeIntervalLabel, watchImageView;
 @synthesize buttonCell, button1, button2, button3;
 @synthesize notesCell, notesLabel;
 
@@ -211,6 +211,7 @@ cell使用后height竟然会加1。奇怪！
         return;
     }
     
+    //闹钟弧形动画
     NSInteger status = (actionSheet == actionSheet1) ? 0 : 1;
     [self makeMoveAlarmAnimationWithStatus:status]; 
     
@@ -277,19 +278,25 @@ cell使用后height竟然会加1。奇怪！
 - (void)animationDidStart:(CAAnimation *)theAnimation{
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     if ([theAnimation isKindOfClass:[CAKeyframeAnimation class]]) {
-        self.navigationController.wantsFullScreenLayout = YES;
-        self.view.window.windowLevel = UIWindowLevelStatusBar+2; //自定义的状态栏：+1。
+        //self.navigationController.wantsFullScreenLayout = YES;
+        self.view.window.windowLevel = UIWindowLevelStatusBar+2; //自定义的状态栏：+1,所以这里+2。
         [[YCAlarmStatusBar shareStatusBar] setHidden:NO animated:YES];
     }
 }
 
 - (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag{
     if ([theAnimation isKindOfClass:[CAKeyframeAnimation class]]) {
+        
+        //动画结束后，把主window设置成正常状态
         self.view.window.windowLevel = UIWindowLevelNormal;
+        //在bar上立刻显示闹钟图标
         [[YCAlarmStatusBar shareStatusBar] setAlarmIconHidden:NO animated:NO];    
-        [[YCAlarmStatusBar shareStatusBar] increaseAlarmCount];
+        
+        //动画结束，图就没用了
         [clockAlarmImageView removeFromSuperview];
         [clockAlarmImageView release];clockAlarmImageView = nil;
+        //bar的闹钟数量累加
+        [[YCAlarmStatusBar shareStatusBar] increaseAlarmCount];
     }
     
     [[UIApplication sharedApplication] endIgnoringInteractionEvents];
@@ -299,7 +306,7 @@ cell使用后height竟然会加1。奇怪！
 
 - (UIImage*)takePhotoFromTheMapView{
     //UIGraphicsBeginImageContext(self.takeImageContainerView.frame.size);
-    UIGraphicsBeginImageContextWithOptions(self.takeImageContainerView.frame.size,YES,0.0);
+    UIGraphicsBeginImageContextWithOptions(self.takeImageContainerView.frame.size,NO,0.0);
     [self.takeImageContainerView.layer renderInContext:UIGraphicsGetCurrentContext()]; 
     UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();     
@@ -392,6 +399,11 @@ cell使用后height竟然会加1。奇怪！
     boundsOfnotesCell.size.height = self.notesLabel.bounds.size.height < 21 ? 21 : self.notesLabel.bounds.size.height;
     self.notesCell.bounds = boundsOfnotesCell;
 
+    //状态栏
+    [[YCAlarmStatusBar shareStatusBar] setHidden:YES animated:YES];
+    //查寻文件得到延后通知的数量，免得重启后内存中就没了
+    NSInteger nCount = [[IAAlarmNotificationCenter defaultCenter] notificationsForFired:NO alarmId:viewedAlarmNotification.alarm.alarmId].count;
+    [[YCAlarmStatusBar shareStatusBar] setAlarmCount:nCount];
     
     //其他数据
     [self.tableView reloadData];
@@ -641,17 +653,17 @@ cell使用后height竟然会加1。奇怪！
     self.navigationItem.rightBarButtonItem = self.upDownBarItem;
     
     //containerView 显示阴影。因为mapView，imageView显示阴影均有问题
-    self.mapView.layer.cornerRadius = 6;
-    self.imageView.layer.cornerRadius = 6;
-    self.imageView.layer.masksToBounds = YES;
+    self.mapView.layer.cornerRadius = 4;
+    self.maskImageView.layer.cornerRadius = 4;
+    self.maskImageView.layer.masksToBounds = YES;
     
-    self.containerView.layer.cornerRadius = 6;
+    self.containerView.layer.cornerRadius = 4;
     self.containerView.layer.borderColor = [UIColor grayColor].CGColor;
     self.containerView.layer.borderWidth = 1.0;
-    self.containerView.layer.shadowRadius = 2.0;
-    self.containerView.layer.shadowOpacity = 0.3;
-    self.containerView.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.containerView.layer.shadowOffset = CGSizeMake(0, 1.0);
+    //self.containerView.layer.shadowRadius = 2.0;
+    //self.containerView.layer.shadowOpacity = 0.3;
+    //self.containerView.layer.shadowColor = [UIColor blackColor].CGColor;
+    //self.containerView.layer.shadowOffset = CGSizeMake(0, 1.0);
     
     //把position设置到左下角
     self.timeIntervalLabel.layer.anchorPoint = CGPointMake(1, 1);
@@ -701,6 +713,7 @@ cell使用后height竟然会加1。奇怪！
     [timer invalidate]; [timer release]; timer = nil;
     [actionSheet1 dismissWithClickedButtonIndex:1 animated:NO];
     [actionSheet2 dismissWithClickedButtonIndex:1 animated:NO];
+    [[YCAlarmStatusBar shareStatusBar] setHidden:YES animated:YES];
 }
 
 #pragma mark - Notification
@@ -759,7 +772,7 @@ cell使用后height竟然会加1。奇怪！
     self.mapViewCell = nil;
     self.containerView = nil;
     self.mapView = nil;
-    self.imageView = nil;
+    self.maskImageView = nil;
     self.timeIntervalLabel = nil;
     self.watchImageView = nil;
     
@@ -783,7 +796,7 @@ cell使用后height竟然会加1。奇怪！
     [takeImageContainerView release];
     [containerView release];
     [mapView release];
-    [imageView release];
+    [maskImageView release];
     [timeIntervalLabel release];
     [watchImageView release];
     

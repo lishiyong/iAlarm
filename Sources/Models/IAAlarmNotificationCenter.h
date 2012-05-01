@@ -25,5 +25,9 @@
 //- (NSArray*)notificationsForViewed:(BOOL)viewed;
 - (NSArray*)notificationsForFired:(BOOL)fired;
 - (IAAlarmNotification*)notificationOfId:(NSString*)noId;
+- (NSArray*)notificationsForFired:(BOOL)fired soureAlarmNotification:(IAAlarmNotification*)soureAlarmNotification;
+- (NSArray*)notificationsForFired:(BOOL)fired alarmId:(NSString*)alarmId;
+
+
 
 @end

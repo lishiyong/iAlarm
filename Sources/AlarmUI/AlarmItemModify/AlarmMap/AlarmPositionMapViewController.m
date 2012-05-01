@@ -118,7 +118,7 @@
 	if (forwardGeocoder == nil) {
 		forwardGeocoder = [[BSForwardGeocoder alloc] initWithDelegate:self];
         forwardGeocoder.timeoutInterval = 20.0;
-        //forwardGeocoder.useHTTP = YES;
+        forwardGeocoder.useHTTP = YES;
 	}
 	return forwardGeocoder;
 }

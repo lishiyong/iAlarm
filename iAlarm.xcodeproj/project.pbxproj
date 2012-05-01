@@ -746,6 +746,8 @@
 		9CA993BD1302815900298E5D /* YCShadowTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA993BA1302815900298E5D /* YCShadowTableView.m */; };
 		9CA993C2130284D300298E5D /* YCBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA993C1130284D300298E5D /* YCBarButtonItem.m */; };
 		9CA993C51302854100298E5D /* YCPageCurlButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA993C41302854100298E5D /* YCPageCurlButtonItem.m */; };
+		9CBF82B6154FE1B600E6D58A /* UINavigationController+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CBF82B5154FE1B600E6D58A /* UINavigationController+YC.m */; };
+		9CBF82B7154FE1B600E6D58A /* UINavigationController+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CBF82B5154FE1B600E6D58A /* UINavigationController+YC.m */; };
 		9CC011EF13C6E3ED0042D744 /* BackgroundViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC011EC13C6E3ED0042D744 /* BackgroundViewController.m */; };
 		9CC011F013C6E3ED0042D744 /* BackgroundViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CC011ED13C6E3ED0042D744 /* BackgroundViewController.xib */; };
 		9CC011F113C6E3ED0042D744 /* BackgroundViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC011EC13C6E3ED0042D744 /* BackgroundViewController.m */; };
@@ -1455,6 +1457,8 @@
 		9CA993C1130284D300298E5D /* YCBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCBarButtonItem.m; sourceTree = "<group>"; };
 		9CA993C31302854100298E5D /* YCPageCurlButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCPageCurlButtonItem.h; sourceTree = "<group>"; };
 		9CA993C41302854100298E5D /* YCPageCurlButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCPageCurlButtonItem.m; sourceTree = "<group>"; };
+		9CBF82B4154FE1B500E6D58A /* UINavigationController+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+YC.h"; sourceTree = "<group>"; };
+		9CBF82B5154FE1B600E6D58A /* UINavigationController+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+YC.m"; sourceTree = "<group>"; };
 		9CC011EC13C6E3ED0042D744 /* BackgroundViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackgroundViewController.m; sourceTree = "<group>"; };
 		9CC011ED13C6E3ED0042D744 /* BackgroundViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BackgroundViewController.xib; sourceTree = "<group>"; };
 		9CC011EE13C6E3ED0042D744 /* BackgroundViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundViewController.h; sourceTree = "<group>"; };
@@ -2995,6 +2999,8 @@
 				9CD278CE1347044100A7EAAB /* AVAudioPlayer-YC.m */,
 				9C0BBCA61529DC56002509F3 /* UIColor+YC.h */,
 				9C0BBCA71529DC56002509F3 /* UIColor+YC.m */,
+				9CBF82B4154FE1B500E6D58A /* UINavigationController+YC.h */,
+				9CBF82B5154FE1B600E6D58A /* UINavigationController+YC.m */,
 			);
 			path = YCCategories;
 			sourceTree = "<group>";
@@ -4421,6 +4427,7 @@
 				9C66F3FA15486CA400577C4F /* BSGoogleV3KmlParser.m in Sources */,
 				9C66F3FC15486CA400577C4F /* BSKmlResult.m in Sources */,
 				9CECE500154E4066001628BD /* YCAlarmStatusBar.m in Sources */,
+				9CBF82B6154FE1B600E6D58A /* UINavigationController+YC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4597,6 +4604,7 @@
 				9C66F3FB15486CA400577C4F /* BSGoogleV3KmlParser.m in Sources */,
 				9C66F3FD15486CA400577C4F /* BSKmlResult.m in Sources */,
 				9CECE501154E4066001628BD /* YCAlarmStatusBar.m in Sources */,
+				9CBF82B7154FE1B600E6D58A /* UINavigationController+YC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

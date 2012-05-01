@@ -6,6 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import "UINavigationController+YC.h"
 #import "YCSearchBarNotification.h"
 #import "IAAboutViewController.h"
 #import "IAAlarmFindViewController.h"
@@ -555,7 +556,7 @@
 	theControl.enabled = controlStatus;
 	
 }
-
+/*
 - (void)takeMaskViewWithBarDoHide:(BOOL)doHide{
 
     UIGraphicsBeginImageContextWithOptions(self.mapsViewController.mapView.frame.size,YES,0.0);
@@ -587,6 +588,35 @@
     [containerView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:UINavigationControllerHideShowBarDuration + 0.05];
     
 }
+ */
+
+- (void)takeMaskViewWithBarDoHide:(BOOL)doHide{
+    
+    UIGraphicsBeginImageContextWithOptions(self.mapsViewController.mapView.frame.size,YES,0.0);
+    [self.mapsViewController.mapView.layer renderInContext:UIGraphicsGetCurrentContext()]; 
+    UIImage *myImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();       
+    
+    
+    CGRect containerViewFrame = [self.navigationController.view convertRect:self.mapsViewController.mapView.bounds fromView:self.mapsViewController.mapView];
+    CGRect imageFrame = CGRectMake(0, 0, containerViewFrame.size.width, containerViewFrame.size.height);
+    
+    
+    //地图的截图放到容器view上
+    UIView *containerView = [[[UIView alloc] initWithFrame:containerViewFrame] autorelease];
+    containerView.backgroundColor = [UIColor clearColor];
+    containerView.clipsToBounds = YES;
+    UIImageView *imageView = [[[UIImageView alloc] initWithImage:myImage] autorelease];
+    imageView.frame = imageFrame;
+    [containerView addSubview:imageView];
+    
+    //地图的截图加入到背景中
+    [self.navigationController.view insertSubview:containerView aboveSubview:self.view];
+
+    [containerView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:UINavigationControllerHideShowBarDuration + 0.05];
+    
+}
+
 
 - (void)handleHideBar:(NSNotification*)notification{
     
@@ -607,13 +637,16 @@
     if (doHide == self.navBar.hidden) {
         return; //状况相等
     }
-   
+       
     //截图遮挡，避免屏幕跳动
     [self takeMaskViewWithBarDoHide:doHide];
 
     [self.navigationController setToolbarHidden:doHide animated:YES]; 
     [self.toolbar setItems:[self mapsViewToolbarItems] animated:NO];
-    [self.navigationController setNavigationBarHidden:doHide animated:YES];
+    //[self.navigationController setNavigationBarHidden:doHide animated:YES];
+    [self.navigationController setNavigationBarHidden:doHide animated:YES searchBar:self.searchBar fromSuperView:self.animationBackgroundView];
+
+    [self.mapsViewController.mapView performSelector:@selector(setUserInteractionEnabled:) withObject:(id)kCFBooleanTrue afterDelay:UINavigationControllerHideShowBarDuration + 0.05];//MKMapView有bug:地图到了最细致后，再放大mapview的尺寸，就禁止用户事件。
     
 }
 
@@ -1070,7 +1103,7 @@
         bounds = self.mapsViewController.mapView.visibleMapRect;
     }
     
-    NSString *regionBiasing = @"cn";
+    NSString *regionBiasing = nil;//@"cn";
 	
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     [self.forwardGeocoder forwardGeocodeWithQuery:searchString regionBiasing:regionBiasing viewportBiasing:bounds success:^(NSArray *results) {
