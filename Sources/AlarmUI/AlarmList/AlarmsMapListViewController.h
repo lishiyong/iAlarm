@@ -26,7 +26,6 @@
 
     /////////////////////////////////////
     //
-    IBOutlet YClocationServicesUsableAlert *locationServicesUsableAlert;  //测定位服务是否可用使用
 	IBOutlet MKMapView* mapView;            
 	IBOutlet UIView  *maskView;                              //覆盖View
 	IBOutlet UILabel *maskLabel;
@@ -71,12 +70,11 @@
     UITapGestureRecognizer *tapCalloutViewGesture;          //为了点地图的标签，而不取消选中
     UILongPressGestureRecognizer *longPressGesture;
     ////////////////////////////////////
-    //
+    //检测网络
     UIAlertView *checkNetAlert;
 	
 }
 
-@property (nonatomic,retain) IBOutlet YClocationServicesUsableAlert *locationServicesUsableAlert;
 @property (nonatomic,retain) IBOutlet MKMapView* mapView;
 @property (nonatomic,retain) IBOutlet UIView *maskView;
 @property (nonatomic,retain) IBOutlet UILabel *maskLabel;

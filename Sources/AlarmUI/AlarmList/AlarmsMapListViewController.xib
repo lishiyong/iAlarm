@@ -12,7 +12,6 @@
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<string>IBUICustomObject</string>
 			<string>IBUILabel</string>
 			<string>IBUIView</string>
 			<string>IBMKMapView</string>
@@ -46,7 +45,6 @@
 						<int key="NSvFlags">310</int>
 						<string key="NSFrame">{{0, 44}, {320, 328}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<bool key="IBMKShowsUserLocation">YES</bool>
@@ -114,9 +112,6 @@
 				<int key="IBUIContentMode">5</int>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
-			<object class="IBUICustomObject" id="236750389">
-				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-			</object>
 		</object>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
 			<object class="NSMutableArray" key="connectionRecords">
@@ -136,14 +131,6 @@
 						<reference key="destination" ref="28040185"/>
 					</object>
 					<int key="connectionID">239</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">locationServicesUsableAlert</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="236750389"/>
-					</object>
-					<int key="connectionID">247</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -195,11 +182,6 @@
 						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">174</int>
-						<reference key="object" ref="236750389"/>
-						<reference key="parent" ref="0"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">4</int>
 						<reference key="object" ref="28040185"/>
 						<reference key="parent" ref="191373211"/>
@@ -231,8 +213,6 @@
 					<string>-2.IBPluginDependency</string>
 					<string>1.IBPluginDependency</string>
 					<string>168.IBPluginDependency</string>
-					<string>174.CustomClassName</string>
-					<string>174.IBPluginDependency</string>
 					<string>205.IBPluginDependency</string>
 					<string>4.IBPluginDependency</string>
 				</object>
@@ -243,8 +223,6 @@
 					<string>UIResponder</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>YClocationServicesUsableAlert</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>

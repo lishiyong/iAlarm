@@ -65,7 +65,6 @@
 @synthesize soundCellDescription;
 @synthesize vibrateCellDescription;
 @synthesize nameCellDescription;
-@synthesize addressCellDescription;
 @synthesize radiusCellDescription;
 @synthesize triggerCellDescription; 
 @synthesize destionationCellDescription;
@@ -506,14 +505,7 @@
 	
 	
 	return self->notesCellDescription;
-}
-
-
-
-- (void) accessoryButtonTappedAddressCell:(id)sender{
-	[self didSelectNavCell:self.addressCellDescription.accessoryButtonTappedObject]; //导航到地图
-}
- 
+} 
 
 -(void)stopLocationAndReverseRestart:(BOOL)restart{	
 	
@@ -552,53 +544,6 @@
 
 - (void) didSelectAddressCell:(id)sender{
 	[self stopLocationAndReverseRestart:YES];
-}
-
-
-
-- (id)addressCellDescription{
-	
-	static NSString *CellIdentifier = @"WaitingCell";
-	
-	if (!self->addressCellDescription) {
-		self->addressCellDescription = [[TableViewCellDescription alloc] init];
-		UITableViewCell *cell = [[WaitingCell alloc] initWithReuseIdentifier:CellIdentifier];
-		[(WaitingCell*)cell accessoryImageView1].image = [UIImage imageNamed:@"IAPinPurple.png"];
-		[(WaitingCell*)cell accessoryImageView1].highlightedImage = [UIImage imageNamed:@"IAPinPressedPurple.png"];
-		cell.textLabel.text = KLabelAlarmPostion;
-
-		self->addressCellDescription.tableViewCell = cell;
-		self->addressCellDescription.didSelectCellSelector = @selector(didSelectAddressCell:);
-		
-		self->addressCellDescription.accessoryButtonTappedSelector = @selector(didSelectNavCell:);
-		AlarmPositionMapViewController *mapViewCtler = [[[AlarmPositionMapViewController alloc] initWithNibName:@"AlarmPositionMapViewController" bundle:nil alarm:self.alarmTemp] autorelease];
-		self->addressCellDescription.accessoryButtonTappedObject = mapViewCtler;
-		
-		
-		self->addressCellDescription.tableViewCell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
-		self->addressCellDescription.tableViewCell.detailTextLabel.minimumFontSize = 12.0;
-		
-		[(WaitingCell*)cell setAccessoryType:UITableViewCellAccessoryDetailDisclosureButton];
-		//[(WaitingCell*)cell setAccessoryButtonTarget:self action:@selector(accessoryButtonTappedAddressCell:) forControlEvents:UIControlEventTouchUpInside];
-		
-	}
-	
-	//新创建AlarmAnnotation标识
-	[(AlarmPositionMapViewController*)self->addressCellDescription.accessoryButtonTappedObject setNewAlarmAnnotation:YES];
-	
-	self->addressCellDescription.tableViewCell.detailTextLabel.text = self.alarmTemp.positionShort;
-	[(WaitingCell*)self->addressCellDescription.tableViewCell setAccessoryButtonTarget:self action:@selector(accessoryButtonTappedAddressCell:) forControlEvents:UIControlEventTouchUpInside];
-	
-	//self->addressCellDescription.tableViewCell.detailTextLabel.text = @"123°59‘59″N,123°59‘59″E";
-	//self->addressCellDescription.tableViewCell.detailTextLabel.text = @"北纬 123°59‘59″,东经 123°59‘59″";
-	
-	if (alarmTemp.usedCoordinateAddress) //字小一点，也把坐标显示全
-		self->addressCellDescription.tableViewCell.detailTextLabel.minimumFontSize = 10.0;
-	else 
-		self->addressCellDescription.tableViewCell.detailTextLabel.minimumFontSize = 12.0;
-
-	
-	return self->addressCellDescription;
 }
 
 - (id)radiusCellDescription{
@@ -1118,19 +1063,17 @@
 	self->endingManual = NO;
 	self->locatingAndReversingStatus = IALocatingAndReversingStatusReversing;
 	
-	
 	// 显示等待指示控件
-	WaitingCell* cell = (WaitingCell*)self.addressCellDescription.tableViewCell;
-	if (!cell.waiting) {
-		[self setTableCellsUserInteractionEnabled:NO]; //定位结束前不允许操作其他
-		cell.activityLabel.text = KTextPromptWhenReversing;
-		cell.activityImageView.image = [UIImage imageNamed:@"IALocationArrow.png"];
-		[cell setWaiting:YES];
-		[self.tableView reloadData]; //刷新界面
-	}
-	//新的cell
-	IADestinationCell* desCell = (IADestinationCell*)self.destionationCellDescription.tableViewCell;
-	[desCell setWaiting:YES andWaitText:KTextPromptWhenReversing];
+    [UIView transitionWithView:self.destionationCellDescription.tableViewCell 
+                      duration:0.25
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{ 
+                        IADestinationCell* cell = (IADestinationCell*)self.destionationCellDescription.tableViewCell;
+                        cell.locatingImageView.image = [UIImage imageNamed:@"IALocationArrow.png"];
+                        [cell setWaiting:YES andWaitText:KTextPromptWhenReversing];     
+                    }
+                    completion:NULL];
+
 	
 	//初始化，reverseGeocoder对象必须根据特定坐标init。
 	reverseGeocoder = [self reverseGeocoder:self->coordinateForReverse];
@@ -1169,9 +1112,8 @@
 	
 	if (self->endingManual) {//手工结束，不处理数据
 		self.cellDescriptions = nil;
-		[self setTableCellsUserInteractionEnabled:YES]; 
-		[(WaitingCell*)self.addressCellDescription.tableViewCell setWaiting:NO];
-		
+        [(IADestinationCell*)self.destionationCellDescription.tableViewCell setWaiting:NO andWaitText:nil];
+        
 		[self.tableView reloadData]; //刷新界面，使用原来的数据
 		self->locatingAndReversingStatus = IALocatingAndReversingStatusNone;
 		return;
@@ -1233,22 +1175,23 @@
 	}
 	
 	self.cellDescriptions = nil;
-	
-	[self setTableCellsUserInteractionEnabled:YES]; //可以用了
-
-	[(WaitingCell*)self.addressCellDescription.tableViewCell setWaiting:NO];
-	//新的cell
-	IADestinationCell* desCell = (IADestinationCell*)self.destionationCellDescription.tableViewCell;
-	[desCell setWaiting:NO andWaitText:NO];
-	
-	[self.tableView reloadData]; //最后，刷新界面
     
-
+    [UIView transitionWithView:self.destionationCellDescription.tableViewCell 
+                      duration:0.25
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{ [(IADestinationCell*)self.destionationCellDescription.tableViewCell setWaiting:NO andWaitText:nil]; }
+                    completion:^(BOOL flag){[self.tableView reloadData]; }];
+     
+                        
+    
+	
+/*
     //重新生成footer中的距离label
     self.footerView = nil;
     if (CLLocationCoordinate2DIsValid(self.alarmTemp.coordinate) && [YCSystemStatus deviceStatusSingleInstance].lastLocation) {
         [self setDistanceLabelVisibleInFooterViewWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];
     }
+ */
     
 
 	self->locatingAndReversingStatus = IALocatingAndReversingStatusNone;
@@ -1271,17 +1214,11 @@
 		[self performSelector:@selector(endLocation) withObject:nil afterDelay:0.1];  //数据更新后，等待x秒
 	}
 	
-	//self.cancelButtonItem.enabled = NO;   //定位结束前不允许回退
 	[self setTableCellsUserInteractionEnabled:NO]; //定位结束前不允许操作其他
 	
-	// 显示等待指示控件
-	WaitingCell* cell = (WaitingCell*)self.addressCellDescription.tableViewCell;
-	cell.activityLabel.text = KTextPromptWhenLocating;
-	cell.activityImageView.image = [UIImage imageNamed:@"IALocationArrow.png"];
-	[cell setWaiting:YES];
-	
-	//新的cell
+	//cell
 	IADestinationCell* desCell = (IADestinationCell*)self.destionationCellDescription.tableViewCell;
+    desCell.locatingImageView.image = [UIImage imageNamed:@"IALocationArrow.png"];
 	[desCell setWaiting:YES andWaitText:KTextPromptWhenLocating];
 	
 	[self.tableView reloadData]; //刷新界面
@@ -1308,12 +1245,12 @@
 	[[self locationManager] stopUpdatingLocation];
 	//取消掉另一个调用
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(endLocation) object:nil];
+    
+    //可以使用了
+    [self setTableCellsUserInteractionEnabled:YES]; 
 	
 	if (self->endingManual) {//手工结束，不处理数据
-		self.cellDescriptions = nil;
-		[self setTableCellsUserInteractionEnabled:YES]; 
-		[(WaitingCell*)self.addressCellDescription.tableViewCell setWaiting:NO];
-	
+		self.cellDescriptions = nil;	
 		[self.tableView reloadData]; //刷新界面，使用原来的数据
 		self->locatingAndReversingStatus = IALocatingAndReversingStatusNone;
 		return;
@@ -1323,20 +1260,15 @@
 	if(self.bestEffortAtLocation==nil)
 	{
 		self.cellDescriptions = nil;
-
-		[self setTableCellsUserInteractionEnabled:YES]; //定位失败、不用反转地址，可以了
 		
 		//界面提示 : 定位失败
 		self.titleForFooter = KTextPromptNeedSetLocationByMaps;
-		
-		[(WaitingCell*)self.addressCellDescription.tableViewCell setWaiting:NO];
-		
 		//新的cell
 		IADestinationCell* desCell = (IADestinationCell*)self.destionationCellDescription.tableViewCell;
 		[desCell setWaiting:NO andWaitText:nil];
+        
         [(IADestinationCell*)(self.destionationCellDescription.tableViewCell) setMoveArrow:YES]; //显示箭头动画
-
-		
+        
 		self.alarmTemp.coordinate = CLLocationCoordinate2DMake(-1000.0, -1000.0);
 		self.alarmTemp.position = nil;
 		self.alarmTemp.positionShort = nil;
@@ -1358,9 +1290,8 @@
         
 		//开始 反转坐标
 		self->coordinateForReverse = self.bestEffortAtLocation.coordinate;
-		[self beginReverse]; 
-        
-
+		
+        [self beginReverse]; 
         
 	}
 	
@@ -1372,6 +1303,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	isFirstShow = YES;
+    self.tableView.showsVerticalScrollIndicator = NO;
 	//self.alarmTemp = [[self.alarm copy] autorelease];  //为了给enable使用
 	
 	[self registerNotifications];
@@ -1386,7 +1318,6 @@
 	self.soundCellDescription = nil;
 	self.vibrateCellDescription = nil;
 	self.nameCellDescription = nil;
-	self.addressCellDescription = nil;
 	self.radiusCellDescription = nil; 
 	
 	
@@ -1694,7 +1625,6 @@
 	[nameCellDescription release];    
 	[notesCellDescription release];
 	
-	[addressCellDescription release];
 	[radiusCellDescription release];
 	[triggerCellDescription release];
 	[destionationCellDescription release];

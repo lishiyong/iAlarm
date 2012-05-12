@@ -18,7 +18,6 @@
 #import "YCAnimateRemoveFileView.h"
 #import "YCCalloutBarButton.h"
 #import "YCCalloutBar.h"
-#import "YClocationServicesUsableAlert.h"
 #import "YCPinAnnotationView.h"
 #import "IASaveInfo.h"
 #import "YCRemoveMinusButton.h"
@@ -55,7 +54,7 @@
 
 #pragma mark - property
 
-@synthesize locationServicesUsableAlert, mapView, maskView, maskLabel, maskActivityIndicator;
+@synthesize mapView, maskView, maskLabel, maskActivityIndicator;
 @synthesize mapAnnotations;
 @synthesize placemarkForUserLocation, placemarkForPin;
 @synthesize toolbarFloatingView, mapsTypeButton, satelliteTypeButton, hybridTypeButton;
@@ -1119,15 +1118,6 @@
 	
     [self registerNotifications];
 
-}
-
-//为了延时执行。否则有上个bar的痕迹
--(void)performShowBar:(UIView*)theBar{
-	BOOL isTopBar = YES;
-	if ([theBar isKindOfClass:[UIToolbar class]]) {
-		isTopBar = NO;
-	}
-	[UIUtility setBar:theBar topBar:isTopBar visible:YES animated:YES animateDuration:1.0 animateName:@"showOrHideToolbar"];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -2338,7 +2328,6 @@
     [super viewDidUnload];
 	[self unRegisterNotifications];
     
-    self.locationServicesUsableAlert = nil;
     self.mapView = nil; 
     self.maskView = nil;
     self.maskLabel = nil;
@@ -2363,7 +2352,6 @@
 - (void)dealloc {
 	[self unRegisterNotifications];
 	
-	[locationServicesUsableAlert release];
 	[mapView release];            
 	[maskView release];
     [maskLabel release];

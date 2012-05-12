@@ -152,12 +152,6 @@
     
 }
  
-- (void)testLocationServices{
-	//检测定位服务状态。如果不可用或未授权，弹出对话框
-	if ([YCSystemStatus deviceStatusSingleInstance].applicationDidFinishLaunchNumber > 1) {
-		[self.locationServicesUsableAlert locationServicesUsable];
-	}
-}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {  
 	
@@ -172,13 +166,6 @@
     self->locationManager = [LocationManagerFactory locationManagerInstanceWithDelegate:self];
     [self->locationManager start];
     
-    
-	//[self registerNotifications];
-	
-	//检测定位服务状态。如果不可用或未授权，弹出对话框
-	//[self.locationServicesUsableAlert performSelector:@selector(locationServicesUsable) withObject:nil afterDelay:2.0];
-	[self performSelector:@selector(testLocationServices) withObject:nil afterDelay:3.0];
-	
 	
 	//不停止其他程序的音乐播放
 	NSError *error = nil;
@@ -226,8 +213,19 @@
 	
 }
 
+- (void)testLocationServices{
+	//检测定位服务状态。如果不可用或未授权，弹出对话框
+	/*
+     if ([YCSystemStatus deviceStatusSingleInstance].applicationDidFinishLaunchNumber > 1) {
+     [self.locationServicesUsableAlert locationServicesUsable];
+     }
+     */
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive){
+        [self.locationServicesUsableAlert locationServicesUsable];
+    }
+}
+
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-	
 		
 	BOOL alreadyRate = [YCSystemStatus deviceStatusSingleInstance].alreadyRate;
 	BOOL notToRemindRate = [YCSystemStatus deviceStatusSingleInstance].notToRemindRate;
@@ -251,7 +249,7 @@
 	}
     
     //检测定位服务状态。如果不可用或未授权，弹出对话框
-	[self.locationServicesUsableAlert performSelector:@selector(locationServicesUsable) withObject:nil afterDelay:1.0];
+	[self performSelector:@selector(testLocationServices) withObject:nil afterDelay:2.0];
     
     //打开查看视图
     [self viewNotificationedAlarm:animatedView];

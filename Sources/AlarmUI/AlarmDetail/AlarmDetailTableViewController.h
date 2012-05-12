@@ -42,11 +42,10 @@ typedef enum {
 	TableViewCellDescription *soundCellDescription;               //声音;
 	TableViewCellDescription *vibrateCellDescription;             //振动;
 	TableViewCellDescription *nameCellDescription;                //名字;
-	TableViewCellDescription *addressCellDescription;             //地址;
 	TableViewCellDescription *radiusCellDescription;              //警示半径
 	TableViewCellDescription *triggerCellDescription;             //警示触发条件
 	TableViewCellDescription *destionationCellDescription;        //目的地
-    TableViewCellDescription *notesCellDescription;         //备注
+    TableViewCellDescription *notesCellDescription;               //备注
 	
 
 	CLLocationManager *locationManager;
@@ -86,7 +85,6 @@ typedef enum {
 @property(nonatomic,retain) TableViewCellDescription *soundCellDescription;
 @property(nonatomic,retain) TableViewCellDescription *vibrateCellDescription;
 @property(nonatomic,retain) TableViewCellDescription *nameCellDescription;
-@property(nonatomic,retain) TableViewCellDescription *addressCellDescription;
 @property(nonatomic,retain) TableViewCellDescription *radiusCellDescription; 
 @property(nonatomic,retain) TableViewCellDescription *triggerCellDescription;
 @property(nonatomic,retain) TableViewCellDescription *destionationCellDescription;
@@ -110,7 +108,6 @@ typedef enum {
 -(IBAction)saveButtonItemPressed:(id)sender;
 
 -(void)beginReverse;
-//-(void)beginReverseForCoordinate:(CLLocationCoordinate2D)coordinate;
 -(void)endReverse;
 -(void)beginLocation;
 -(void)endLocation;

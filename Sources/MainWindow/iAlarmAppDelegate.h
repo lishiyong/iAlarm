@@ -29,10 +29,8 @@
 	
 	YClocationServicesUsableAlert *locationServicesUsableAlert;  //测定位服务用
 	
-	//要求评分的对话框
-	UIAlertView *confirmRateAlertView;
-    UIAlertView *viewAlarmAlertView;
-    
+	UIAlertView *confirmRateAlertView;//要求评分的对话框
+    UIAlertView *viewAlarmAlertView; //查看
     
     NSUInteger indexForView;//查看的index
     BOOL animatedView;
