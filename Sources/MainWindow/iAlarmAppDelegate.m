@@ -152,10 +152,6 @@
     
 }
  
-
-
-//const NSInteger kMapViewControllerIndex = 0;
-
 - (void)testLocationServices{
 	//检测定位服务状态。如果不可用或未授权，弹出对话框
 	if ([YCSystemStatus deviceStatusSingleInstance].applicationDidFinishLaunchNumber > 1) {
