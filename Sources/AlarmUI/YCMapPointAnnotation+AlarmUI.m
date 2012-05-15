@@ -6,6 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCLocationManager.h"
 #import "LocalizedString.h"
 #import "CLLocation+AlarmUI.h"
 #import "YCMapPointAnnotation+AlarmUI.h"
@@ -14,9 +15,15 @@
 
 - (void)setDistanceSubtitleWithCurrentLocation:(CLLocation*)curLocation{ 
     
-    if (curLocation && CLLocationCoordinate2DIsValid(self.coordinate)) {
+    if (curLocation && CLLocationCoordinate2DIsValid(self.realCoordinate)) {
         
-        CLLocation *aLocation = [[[CLLocation alloc] initWithLatitude:self.coordinate.latitude longitude:self.coordinate.longitude] autorelease];
+        CLLocationCoordinate2D theCoordinate = kCLLocationCoordinate2DInvalid;
+        if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled])  //是否使用火星坐标
+            theCoordinate = self.realCoordinate;
+        else
+            theCoordinate = self.coordinate;
+        
+        CLLocation *aLocation = [[[CLLocation alloc] initWithLatitude:theCoordinate.latitude longitude:theCoordinate.longitude] autorelease];
         
         CLLocationDistance distance = [curLocation distanceFromLocation:aLocation];
         NSString *distanceString = [aLocation distanceStringFromCurrentLocation:curLocation];

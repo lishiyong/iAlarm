@@ -6,6 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCLocationManager.h"
 #import "CLLocation+AlarmUI.h"
 #import "IAAlarmNotificationCenter.h"
 #import "UIColor+YC.h"
@@ -1119,20 +1120,13 @@
 		return;
 	}
 	
-
-	//闹钟坐标赋值
-	if (CLLocationCoordinate2DIsValid(self->coordinateForReverse)) {
-		self.alarmTemp.coordinate = self->coordinateForReverse;
-		if (self.bestEffortAtLocation) //如果是通过定位
-			self.alarmTemp.locationAccuracy = self.bestEffortAtLocation.horizontalAccuracy;
-	}
 	
-	CLLocationCoordinate2D coordinate = self->coordinateForReverse;
+	CLLocationCoordinate2D coordinate = self.alarmTemp.coordinate;
 	self.alarmTemp.usedCoordinateAddress = NO;  
 	//闹钟位置、名称赋值
 	if (self.placemarkForReverse == nil) {
 		//反转坐标 失败，使用坐标作为地址；名称不改变
-		if (CLLocationCoordinate2DIsValid(self->coordinateForReverse)) {
+		if (CLLocationCoordinate2DIsValid(coordinate)) {
 			self.alarmTemp.position = [UIUtility convertCoordinate:coordinate];
 			self.alarmTemp.positionShort = [UIUtility convertCoordinate:coordinate];
             self.alarmTemp.reserve1 = self.alarmTemp.positionShort;  //做为addressTitle
@@ -1269,7 +1263,7 @@
         
         [(IADestinationCell*)(self.destionationCellDescription.tableViewCell) setMoveArrow:YES]; //显示箭头动画
         
-		self.alarmTemp.coordinate = CLLocationCoordinate2DMake(-1000.0, -1000.0);
+		self.alarmTemp.coordinate = kCLLocationCoordinate2DInvalid;
 		self.alarmTemp.position = nil;
 		self.alarmTemp.positionShort = nil;
 		[self.tableView reloadData]; //失败了，刷新界面，赋空数据
@@ -1288,9 +1282,17 @@
                                                                     userInfo:userInfo];
         [notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
         
+        
+        //闹钟坐标赋值
+        self.alarmTemp.coordinate = self.bestEffortAtLocation.coordinate;
+        self.alarmTemp.locationAccuracy = self.bestEffortAtLocation.horizontalAccuracy;
+        
 		//开始 反转坐标
-		self->coordinateForReverse = self.bestEffortAtLocation.coordinate;
-		
+        if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled]) { //是否使用火星坐标
+            self->coordinateForReverse = self.alarmTemp.marsCoordinate;
+        }else{
+            self->coordinateForReverse = self.alarmTemp.coordinate;
+        }
         [self beginReverse]; 
         
 	}
@@ -1324,7 +1326,8 @@
 	self.navigationItem.leftBarButtonItem = self.cancelButtonItem;
 	self.navigationItem.rightBarButtonItem = self.saveButtonItem;
 	
-	if (self.newAlarm) //新增加的闹钟，当前位置作为默认的闹钟地址
+	/*
+    if (self.newAlarm) //新增加的闹钟，当前位置作为默认的闹钟地址
 	{
 		if(CLLocationCoordinate2DIsValid(self.alarmTemp.coordinate)){
 			if (self.alarmTemp.usedCoordinateAddress){ //使用的是坐标地址
@@ -1340,12 +1343,30 @@
 			[self performSelector:@selector(beginReverse) withObject:nil afterDelay:0.1];
 		}
 	}
+     
+     
+     */
+    
+    if (CLLocationCoordinate2DIsValid(self.alarmTemp.coordinate)){ //坐标有效
+        if (self.alarmTemp.usedCoordinateAddress){ //使用的是坐标地址
+            
+            if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled]) { //是否使用火星坐标
+                self->coordinateForReverse = self.alarmTemp.marsCoordinate;
+            }else{
+                self->coordinateForReverse = self.alarmTemp.coordinate;
+            }
+            
+            [self performSelector:@selector(beginReverse) withObject:nil afterDelay:0.1];
+        }
+    }else{
+        [self performSelector:@selector(beginLocation) withObject:nil afterDelay:0.5];
+    }
 
-	
 	if (self.newAlarm && CLLocationCoordinate2DIsValid(self.alarmTemp.coordinate) && !self.alarmTemp.usedCoordinateAddress) //新alarm而且不用反转地址
-		self.saveButtonItem.enabled = YES;
-	else 
-		self.saveButtonItem.enabled = NO;
+        self.saveButtonItem.enabled = YES;
+    else 
+        self.saveButtonItem.enabled = NO;
+	
 	
 	//测试按钮
     UIView *viewp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 80)];    

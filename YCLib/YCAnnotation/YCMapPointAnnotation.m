@@ -6,10 +6,11 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCLocationManager.h"
 #import "YCMapPointAnnotation.h"
 
 @implementation YCMapPointAnnotation
-@synthesize coordinate, title, subtitle;
+@synthesize coordinate, title, subtitle, realCoordinate;
 
 -(id) initWithCoordinate:(CLLocationCoordinate2D) coord title:(NSString *) theTitle subTitle:(NSString *) theSubTitle{
     return [self initWithCoordinate:coord title:theTitle subTitle:theSubTitle addressDictionary:nil];
@@ -23,8 +24,25 @@
         title = [theTitle copy];
         subtitle = [theSubTitle copy];
         distanceFromCurrentLocation = -1.0; //小于0，表示未初始化
+        realCoordinate = kCLLocationCoordinate2DInvalid; //表示未初始化
     }
     return self;
+}
+
+- (void)setCoordinate:(CLLocationCoordinate2D)theCoordinate{
+    coordinate = theCoordinate;
+    realCoordinate = kCLLocationCoordinate2DInvalid; //要重新计算它
+}
+
+- (CLLocationCoordinate2D)realCoordinate{
+    if (!CLLocationCoordinate2DIsValid(realCoordinate)) {
+        if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled]) { //火星坐标
+            realCoordinate = [[YCLocationManager sharedLocationManager] convertToCoordinateFromMarsCoordinate:coordinate];
+        }else{
+            realCoordinate = coordinate;
+        }
+    }
+    return realCoordinate;
 }
 
 - (void)dealloc{

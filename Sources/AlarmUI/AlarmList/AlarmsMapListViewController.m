@@ -187,15 +187,18 @@
 //做annotation及其相应的view、circleOverlay，并把他们加入的列表中
 - (YCAnnotation*)insertAnnotationWithAlarm:(IAAlarm*)alarm atIndex:(NSInteger)index{
 	BOOL isEnabling = alarm.enabling;
+    CLLocationCoordinate2D theCoordinate = kCLLocationCoordinate2DInvalid;
+    if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled])  //是否使用火星坐标
+        theCoordinate = alarm.marsCoordinate;
+    else
+        theCoordinate = alarm.coordinate;
+    
 	
 	YCAnnotation *annotation = [[[YCAnnotation alloc] initWithCoordinate:alarm.coordinate identifier:alarm.alarmId] autorelease];
 	annotation.title = alarm.alarmName;
 	annotation.subtitle = alarm.position;
-    if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled]) { //是否使用火星坐标
-        annotation.coordinate = alarm.marsCoordinate;
-    }else{
-        annotation.coordinate = alarm.coordinate;
-    }
+    annotation.coordinate = theCoordinate;
+    
 	
 	
 	annotation.annotationType = isEnabling ? YCMapAnnotationTypeStandard:YCMapAnnotationTypeDisabled; //没启用
@@ -242,7 +245,7 @@
 	[self.mapAnnotationViews setObject:pinView forKey:alarm.alarmId];  //加入到列表
 	
 	//警示圈
-	MKCircle *circleOverlay = [MKCircle circleWithCenterCoordinate:alarm.coordinate	radius:alarm.radius];
+	MKCircle *circleOverlay = [MKCircle circleWithCenterCoordinate:theCoordinate radius:alarm.radius];
 	[self.circleOverlays setObject:circleOverlay forKey:alarm.alarmId];  //加入到列表
 	
 	return annotation;
@@ -826,16 +829,13 @@
 	CGPoint focusWhere;
 	if (CLLocationCoordinate2DIsValid(alarm.coordinate)) {
 		//使用闹钟里的坐标
-		focusWhere = [self.mapView convertCoordinate:alarm.coordinate toPointToView:self.mapView];
+        if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled]) { //是火星坐标
+            focusWhere = [self.mapView convertCoordinate:alarm.marsCoordinate toPointToView:self.mapView]; 
+        }else{
+            focusWhere = [self.mapView convertCoordinate:alarm.coordinate toPointToView:self.mapView];
+        }
 	}else {
-		if (self.mapView.userLocation.location) {
-			//使用当前位置
-			focusWhere = [self.mapView convertCoordinate:self.mapView.userLocation.location.coordinate toPointToView:self.mapView];
-		}else {
-			//使用屏幕中央点
-			focusWhere = CGPointMake(viewFrame.size.width/ 2 , viewFrame.size.height/ 2 );
-		}
-
+        focusWhere = CGPointMake(viewFrame.size.width/ 2 , viewFrame.size.height/ 2 );
 	}
 	
 	//判断聚焦点是否在可视范围内
@@ -1403,7 +1403,12 @@
 		
 		if (CLLocationCoordinate2DIsValid(coordinatePressed)){
 			IAAlarm *alarm = [[[IAAlarm alloc] init] autorelease];
-			alarm.coordinate = coordinatePressed; 
+			
+            if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled]) { //是火星坐标
+                alarm.coordinate = [[YCLocationManager sharedLocationManager] convertToCoordinateFromMarsCoordinate:coordinatePressed]; 
+            }else{
+                alarm.coordinate = coordinatePressed;
+            }
 			
 			NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 			NSNotification *aNotification = [NSNotification notificationWithName:IAAddIAlarmButtonPressedNotification 
@@ -1764,7 +1769,7 @@
 }
 
 
--(void)beginReverseWithAnnotation:(id<MKAnnotation>)annotation
+-(void)beginReverseWithAnnotation:(YCAnnotation*)annotation
 {	
 	//如果原来的还在查询，就先结束它
 	MKReverseGeocoder *oldReverseGeocoderForPin = [self.reverseGeocodersForPin objectForKey:[(YCAnnotation*)annotation identifier]];
@@ -1785,7 +1790,7 @@
 }
 
 
--(void)endReverseWithAnnotation:(id<MKAnnotation>)annotation
+-(void)endReverseWithAnnotation:(YCAnnotation*)annotation
 {
 	MKReverseGeocoder *aReverseGeocoderForPin = [self.reverseGeocodersForPin objectForKey:[(YCAnnotation*)annotation identifier]];
 	//如果超时了，反转还没结束，结束它
@@ -1795,7 +1800,9 @@
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(endReverseWithAnnotation:) object:annotation];
 	
 	IAAlarm *alarm = [IAAlarm findForAlarmId:[(YCAnnotation*)annotation identifier]];
-	CLLocationCoordinate2D coordinate = annotation.coordinate;
+	
+    CLLocationCoordinate2D coordinate = annotation.realCoordinate;
+    
 	MKPlacemark *placemark = self.placemarkForPin;
 	NSString *addressTitle = nil;
 	NSString *addressShort = nil;
@@ -1834,11 +1841,12 @@
 		[(YCAnnotation*)annotation setTitle:addressTitle];
 		alarm.alarmName = addressTitle;
 	}
-	alarm.coordinate = coordinate;
+    alarm.coordinate = coordinate;
 	alarm.position = address;
 	alarm.positionShort = addressShort;
     alarm.reserve1 = addressTitle;  //做为addressTitle
 	alarm.locationAccuracy = kCLLocationAccuracyBest;
+    
 	
 	[alarm saveFromSender:self];
 	
@@ -1865,7 +1873,7 @@
             NSString *alarmId = [array objectAtIndex:0];
             YCPinAnnotationView *anPinAnnotationView = (YCPinAnnotationView*)[mapAnnotationViews objectForKey:alarmId];
             if (anPinAnnotationView) {
-                [self endReverseWithAnnotation:[anPinAnnotationView annotation]];
+                [self endReverseWithAnnotation:(YCAnnotation*)[anPinAnnotationView annotation]];
             }
             
         }
@@ -1894,7 +1902,7 @@
                 NSString *alarmId = [array objectAtIndex:0];
                 YCPinAnnotationView *anPinAnnotationView = (YCPinAnnotationView*)[mapAnnotationViews objectForKey:alarmId];
                 if (anPinAnnotationView) {
-                    [self endReverseWithAnnotation:[anPinAnnotationView annotation]];
+                    [self endReverseWithAnnotation:(YCAnnotation*)[anPinAnnotationView annotation]];
                 }
                 
             }
@@ -1967,8 +1975,6 @@
 	YCAnnotation *annotation = (YCAnnotation*)annotationView.annotation;
 	if ([annotation isKindOfClass:[YCAnnotation class]])
 	{
-		//反转坐标－地址
-		//[self performSelector:@selector(beginReverseWithAnnotation:) withObject:annotation afterDelay:0.0];
 		
 		//先都隐藏
 		[self.mapView removeOverlays:[self.circleOverlays allValues]]; 
@@ -2266,20 +2272,20 @@
 				//显示距离当前位置XX公里
 				if ([YCSystemStatus deviceStatusSingleInstance].lastLocation) {
                     [(YCAnnotation*)annotation setDistanceSubtitleWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];
-					//为了有动画效果
+					/*
+                    //为了有动画效果
 					NSString *subtitleTemp = annotation.subtitle;
-					annotation.subtitle = nil;
+                    annotation.subtitle = nil;
                     if (subtitleTemp) 
                         [annotation performSelector:@selector(setSubtitle:) withObject:subtitleTemp afterDelay:0.75];
+                     */
                     
-					
 				}
 				//反转坐标－地址
 				[self performSelector:@selector(beginReverseWithAnnotation:) withObject:annotation afterDelay:0.0];
 				
 			}
 			//////////////////////////////////////////
-			
 			
 			
 			/////////////////////////////////////////
@@ -2292,9 +2298,6 @@
 			//[self.mapView addOverlay:newCircleOverlay]; 不用加到地图上，选中的委托方法会 加上的
 			/////////////////////////////////////////
 			
-			//对付 应该灰而不灰的情况
-			//[(YCPinAnnotationView*)annotationView performSelector:@selector(updatePinColor) withObject:nil afterDelay:0.25];
-			//[(YCPinAnnotationView*)annotationView performSelector:@selector(updatePinColor) withObject:nil afterDelay:1.75];
 			 
 			break;
 		case MKAnnotationViewDragStateCanceling: //取消拖拽
@@ -2308,10 +2311,6 @@
 					[self.mapView addOverlay:circleOverlay];
 				
 			}
-			
-			//对付 应该灰而不灰的情况
-			//[(YCPinAnnotationView*)annotationView performSelector:@selector(updatePinColor) withObject:nil afterDelay:0.25];
-			//[(YCPinAnnotationView*)annotationView performSelector:@selector(updatePinColor) withObject:nil afterDelay:1.75];			
 			break;
 		default:
 			break;

@@ -6,6 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCLocationManager.h"
 #import "UINavigationController+YC.h"
 #import "YCSearchBarNotification.h"
 #import "IAAboutViewController.h"
@@ -792,9 +793,32 @@
 - (void)addButtonPressed:(id)sender{
 	IAAlarm *alarm = [[[IAAlarm alloc] init] autorelease];
 	
-	if (self.mapsViewController == self.curViewController && self.mapsViewController.mapView.region.span.latitudeDelta < 10) {
-		//地图范围比较小，取地图中央的坐标
-		alarm.coordinate = self.mapsViewController.mapView.centerCoordinate; 
+	if (self.mapsViewController == self.curViewController) {
+        
+        CLLocationCoordinate2D theCoordinate = kCLLocationCoordinate2DInvalid;
+        
+        if (self.mapsViewController.mapView.region.span.latitudeDelta < 10) {//地图范围比较小，取地图中央的坐标
+            
+            theCoordinate = self.mapsViewController.mapView.centerCoordinate;
+            
+        }else{
+            if (self.mapsViewController.mapView.userLocation.location) {//使用当前位置
+                theCoordinate = self.mapsViewController.mapView.userLocation.location.coordinate;
+            }else {
+                //使用屏幕中央点
+                CGRect viewFrame= self.mapsViewController.mapView.frame; 
+                CGPoint mapViewCenterPoint = CGPointMake(viewFrame.size.width/ 2 , viewFrame.size.height/ 2 );
+                theCoordinate = [self.mapsViewController.mapView convertPoint:mapViewCenterPoint toCoordinateFromView:self.mapsViewController.mapView];
+            }
+        }
+		
+    
+        if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled]) { //是否使用火星坐标
+            alarm.coordinate = [[YCLocationManager sharedLocationManager] convertToCoordinateFromMarsCoordinate:theCoordinate]; 
+        }else{
+            alarm.coordinate = theCoordinate; 
+        }
+        
 	}
 	
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -931,10 +955,11 @@
 #pragma mark Utility - ForwardGeocoder
 
 -(void)resetAnnotationWithPlace:(BSKmlResult*)place{
-		
+    
 	////////////////////////
 	//Zoom into the location
 	MKCoordinateRegion region = place.coordinateRegion;
+    
 	if (!YCMKCoordinateRegionIsValid(region))
 		region = self.mapsViewController.mapView.region;
 	
@@ -942,16 +967,19 @@
 	double delay = [self.mapsViewController.mapView setRegion:region FromWorld:YES animatedToWorld:YES animatedToPlace:YES];
 	//Zoom into the location
 	////////////////////////
-	
-	
+    
+    CLLocationCoordinate2D realCoordinate = kCLLocationCoordinate2DInvalid;
+    if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled])  //是否使用火星坐标
+        realCoordinate = [[YCLocationManager sharedLocationManager] convertToCoordinateFromMarsCoordinate:place.coordinate];
+    else
+        realCoordinate = place.coordinate;
+
 	IAAlarm *alarm = [[[IAAlarm alloc] init] autorelease];
-	alarm.coordinate = place.coordinate;
+	alarm.coordinate = realCoordinate;
 	alarm.alarmName = self.forwardGeocoder.searchQuery;
 	alarm.positionShort = place.address;
 	alarm.position = place.address;
 	alarm.usedCoordinateAddress = NO;
-
-	
 	
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     NSNotification *aNotification = [NSNotification notificationWithName:IAAddIAlarmButtonPressedNotification 

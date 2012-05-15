@@ -5,6 +5,8 @@
 //  Created by li shiyong on 10-10-28.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
+
+#import "YCLocationManager.h"
 #import "CLLocation+AlarmUI.h"
 #import "YCPinAnnotationView.h"
 #import "UINavigationItem-YC.h"
@@ -196,7 +198,13 @@
 
 	CLLocation *curLocation = [YCSystemStatus deviceStatusSingleInstance].lastLocation;
 	if (curLocation) {
-        CLLocation *aLocation = [[[CLLocation alloc] initWithLatitude:self.annotationAlarmEditing.coordinate.latitude longitude:self.annotationAlarmEditing.coordinate.longitude] autorelease];
+        CLLocationCoordinate2D coordinate = kCLLocationCoordinate2DInvalid;
+        if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled])  //是否使用火星坐标
+            coordinate = self.annotationAlarmEditing.realCoordinate;
+        else
+            coordinate = self.annotationAlarmEditing.coordinate;
+        
+        CLLocation *aLocation = [[[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude] autorelease];
 		NSString *distance = [aLocation distanceStringFromCurrentLocation:curLocation];
 		[self.navigationItem setTitleView:[self detailTitleViewWithContent:distance] animated:YES];
 	}else
@@ -241,10 +249,15 @@
 	IAAlarm *temp = self.alarm;
 	self.annotationAlarmEditing.title = temp.alarmName;
 	self.annotationAlarmEditing.subtitle = temp.position;
-	self.annotationAlarmEditing.coordinate = temp.coordinate;
 	self.annotationAlarmEditing.annotationType = YCMapAnnotationTypeLocating;
 	self.annotationAlarmEditing.title = KLabelMapNewAnnotationTitle;
 	self.annotationAlarmEditing.subtitle = temp.position;
+    
+    if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled]) { //是否使用火星坐标
+        self.annotationAlarmEditing.coordinate = temp.marsCoordinate;
+    }else{
+        self.annotationAlarmEditing.coordinate = temp.coordinate;
+    }
 	
 }
 
@@ -560,7 +573,13 @@
         return; //为了对应父类中，难看的代码: - (void)viewWillDisappear:(BOOL)animated
     }
     
-	CLLocationCoordinate2D coordinate = self.annotationAlarmEditing.coordinate;
+	CLLocationCoordinate2D coordinate = kCLLocationCoordinate2DInvalid;
+    if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled]) { //是否使用火星坐标
+        coordinate = self.annotationAlarmEditing.realCoordinate;
+    }else{
+        coordinate = self.annotationAlarmEditing.coordinate;
+    }
+    
 	MKPlacemark *placemark = self.annotationAlarmEditing.placemarkForReverse;
 	BSKmlResult *place = self.annotationAlarmEditing.placeForSearch;
 	NSString *addressTitle = nil;

@@ -6,6 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCLocationManager.h"
 #import "YCAlarmStatusBar.h"
 #import "YCMapPointAnnotation+AlarmUI.h"
 #import "YCShareContent.h"
@@ -356,7 +357,12 @@ cell使用后height竟然会加1。奇怪！
     CLLocationDistance radius = alarm.radius;
     
     //大头针
-    pointAnnotation = [[YCMapPointAnnotation alloc] initWithCoordinate:alarm.coordinate title:alarm.alarmName subTitle:nil];    
+    if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled]) { //是否使用火星坐标
+        pointAnnotation = [[YCMapPointAnnotation alloc] initWithCoordinate:alarm.marsCoordinate title:alarm.alarmName subTitle:nil];
+    }else{
+        pointAnnotation = [[YCMapPointAnnotation alloc] initWithCoordinate:alarm.coordinate title:alarm.alarmName subTitle:nil];
+    }
+        
     [self.mapView addAnnotation:pointAnnotation];
     [pointAnnotation setDistanceSubtitleWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];//距离
     
