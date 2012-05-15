@@ -38,7 +38,7 @@
 			<string></string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb146975985381829aa</string>
+				<string>fb146975985381829</string>
 			</array>
 		</dict>
 	</array>
@@ -56,7 +56,7 @@
 		<string>location</string>
 	</array>
 	<key>UIFileSharingEnabled</key>
-	<false/>
+	<true/>
 	<key>UIPrerenderedIcon</key>
 	<true/>
 	<key>UIRequiredDeviceCapabilities</key>

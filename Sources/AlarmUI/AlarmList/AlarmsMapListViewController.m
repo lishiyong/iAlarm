@@ -6,6 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCLocationManager.h"
 #import "UIApplication-YC.h"
 #import "iAlarmAppDelegate.h"
 #import "YCMapPointAnnotation+AlarmUI.h"
@@ -190,7 +191,12 @@
 	YCAnnotation *annotation = [[[YCAnnotation alloc] initWithCoordinate:alarm.coordinate identifier:alarm.alarmId] autorelease];
 	annotation.title = alarm.alarmName;
 	annotation.subtitle = alarm.position;
-	annotation.coordinate = alarm.coordinate;
+    if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled]) { //是否使用火星坐标
+        annotation.coordinate = alarm.marsCoordinate;
+    }else{
+        annotation.coordinate = alarm.coordinate;
+    }
+	
 	
 	annotation.annotationType = isEnabling ? YCMapAnnotationTypeStandard:YCMapAnnotationTypeDisabled; //没启用
 	annotation.title = alarm.alarmName;

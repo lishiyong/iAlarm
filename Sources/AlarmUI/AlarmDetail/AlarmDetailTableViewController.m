@@ -1180,7 +1180,7 @@
                       duration:0.25
                        options:UIViewAnimationOptionTransitionCrossDissolve
                     animations:^{ [(IADestinationCell*)self.destionationCellDescription.tableViewCell setWaiting:NO andWaitText:nil]; }
-                    completion:^(BOOL flag){[self.tableView reloadData]; }];
+                    completion:^(BOOL flag){[self.tableView reloadData];}];
      
                         
     

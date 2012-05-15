@@ -6,6 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCLocationManager.h"
 #import "YCGFunctions.h"
 #import "IABuyManager.h"
 #import "UIApplication-YC.h"
@@ -363,6 +364,17 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 		}		 
 	}
 	return alarms;
+}
+
+- (CLLocationCoordinate2D)marsCoordinate{
+    if (CLLocationCoordinate2DIsValid(self.coordinate) 
+        && [[YCLocationManager sharedLocationManager] isInChinaWithCoordinate:self.coordinate]) 
+    {
+        
+        return [[YCLocationManager sharedLocationManager] convertToMarsCoordinateFromCoordinate:self.coordinate];
+    }else{
+        return self.coordinate;
+    }
 }
 
 

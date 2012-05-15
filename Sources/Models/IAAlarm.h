@@ -129,6 +129,8 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 //取得所有闹钟的列表
 + (NSArray*)alarmArray;
 
+@property(nonatomic,readonly) CLLocationCoordinate2D marsCoordinate;
+
 
 @end
 
