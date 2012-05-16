@@ -1288,11 +1288,7 @@
         self.alarmTemp.locationAccuracy = self.bestEffortAtLocation.horizontalAccuracy;
         
 		//开始 反转坐标
-        if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled]) { //是否使用火星坐标
-            self->coordinateForReverse = self.alarmTemp.marsCoordinate;
-        }else{
-            self->coordinateForReverse = self.alarmTemp.coordinate;
-        }
+        self->coordinateForReverse = self.alarmTemp.visualCoordinate;
         [self beginReverse]; 
         
 	}
@@ -1347,15 +1343,9 @@
      
      */
     
-    if (CLLocationCoordinate2DIsValid(self.alarmTemp.coordinate)){ //坐标有效
+    if (CLLocationCoordinate2DIsValid(self.alarmTemp.visualCoordinate)){ //坐标有效
         if (self.alarmTemp.usedCoordinateAddress){ //使用的是坐标地址
-            
-            if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled]) { //是否使用火星坐标
-                self->coordinateForReverse = self.alarmTemp.marsCoordinate;
-            }else{
-                self->coordinateForReverse = self.alarmTemp.coordinate;
-            }
-            
+            self->coordinateForReverse = self.alarmTemp.visualCoordinate;
             [self performSelector:@selector(beginReverse) withObject:nil afterDelay:0.1];
         }
     }else{

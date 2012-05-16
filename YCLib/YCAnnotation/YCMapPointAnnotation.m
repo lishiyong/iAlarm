@@ -36,13 +36,25 @@
 
 - (CLLocationCoordinate2D)realCoordinate{
     if (!CLLocationCoordinate2DIsValid(realCoordinate)) {
-        if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled]) { //火星坐标
+        if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled] 
+            && [[YCLocationManager sharedLocationManager] isInChinaWithCoordinate:self.coordinate]) { //火星坐标
             realCoordinate = [[YCLocationManager sharedLocationManager] convertToCoordinateFromMarsCoordinate:coordinate];
         }else{
             realCoordinate = coordinate;
         }
     }
     return realCoordinate;
+}
+
+- (void)setRealCoordinate:(CLLocationCoordinate2D)theRealCoordinate{
+    //通过设置coordinate来更新realCoordinate
+    if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled] && [[YCLocationManager sharedLocationManager] isInChinaWithCoordinate:theRealCoordinate]) { //开启了转换选项 并且 坐标在中国境内
+        
+        self.coordinate = [[YCLocationManager sharedLocationManager] convertToMarsCoordinateFromCoordinate:theRealCoordinate];
+        
+    }else{
+        self.coordinate = theRealCoordinate;
+    }
 }
 
 - (void)dealloc{

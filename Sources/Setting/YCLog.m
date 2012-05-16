@@ -28,7 +28,7 @@
 
 -(void)addlog:(NSString*) log
 {
-	
+	/*
 	NSLog(@"%@",log);
 	
     
@@ -67,7 +67,7 @@
     [logFile closeFile];
 	///////////////////
 	
-	 
+	 */
 	 
      
 }

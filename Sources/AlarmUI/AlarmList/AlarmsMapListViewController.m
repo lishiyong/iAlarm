@@ -6,6 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCGFunctions.h"
 #import "YCLocationManager.h"
 #import "UIApplication-YC.h"
 #import "iAlarmAppDelegate.h"
@@ -187,23 +188,13 @@
 //做annotation及其相应的view、circleOverlay，并把他们加入的列表中
 - (YCAnnotation*)insertAnnotationWithAlarm:(IAAlarm*)alarm atIndex:(NSInteger)index{
 	BOOL isEnabling = alarm.enabling;
-    CLLocationCoordinate2D theCoordinate = kCLLocationCoordinate2DInvalid;
-    if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled])  //是否使用火星坐标
-        theCoordinate = alarm.marsCoordinate;
-    else
-        theCoordinate = alarm.coordinate;
-    
+    CLLocationCoordinate2D visualCoordinate = alarm.visualCoordinate;;
 	
-	YCAnnotation *annotation = [[[YCAnnotation alloc] initWithCoordinate:alarm.coordinate identifier:alarm.alarmId] autorelease];
+	YCAnnotation *annotation = [[[YCAnnotation alloc] initWithCoordinate:visualCoordinate identifier:alarm.alarmId] autorelease];
 	annotation.title = alarm.alarmName;
 	annotation.subtitle = alarm.position;
-    annotation.coordinate = theCoordinate;
-    
-	
-	
+    annotation.coordinate = visualCoordinate;    
 	annotation.annotationType = isEnabling ? YCMapAnnotationTypeStandard:YCMapAnnotationTypeDisabled; //没启用
-	annotation.title = alarm.alarmName;
-	annotation.subtitle = nil;
 	
 	if (index < 0 || index > self.mapAnnotations.count-1)
 		[self.mapAnnotations addObject:annotation];
@@ -245,7 +236,7 @@
 	[self.mapAnnotationViews setObject:pinView forKey:alarm.alarmId];  //加入到列表
 	
 	//警示圈
-	MKCircle *circleOverlay = [MKCircle circleWithCenterCoordinate:theCoordinate radius:alarm.radius];
+	MKCircle *circleOverlay = [MKCircle circleWithCenterCoordinate:visualCoordinate radius:alarm.radius];
 	[self.circleOverlays setObject:circleOverlay forKey:alarm.alarmId];  //加入到列表
 	
 	return annotation;
@@ -827,13 +818,9 @@
 	
 	IAAlarm *alarm = [[notification userInfo] objectForKey:IAAlarmAddedKey];
 	CGPoint focusWhere;
-	if (CLLocationCoordinate2DIsValid(alarm.coordinate)) {
+	if (CLLocationCoordinate2DIsValid(alarm.visualCoordinate)) {
 		//使用闹钟里的坐标
-        if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled]) { //是火星坐标
-            focusWhere = [self.mapView convertCoordinate:alarm.marsCoordinate toPointToView:self.mapView]; 
-        }else{
-            focusWhere = [self.mapView convertCoordinate:alarm.coordinate toPointToView:self.mapView];
-        }
+        focusWhere = [self.mapView convertCoordinate:alarm.visualCoordinate toPointToView:self.mapView];
 	}else {
         focusWhere = CGPointMake(viewFrame.size.width/ 2 , viewFrame.size.height/ 2 );
 	}
@@ -843,7 +830,7 @@
 	MKMapPoint focusMapPoint = MKMapPointForCoordinate(focusCoordinate);
 	MKMapRect visibleRect = [self.mapView visibleMapRect];
 	if (!MKMapRectContainsPoint(visibleRect,focusMapPoint)){
-		[self.mapView setCenterCoordinate:focusCoordinate animated:YES];
+		[self.mapView setCenterCoordinate:focusCoordinate animated:YES];//先把聚焦的点移到中心位置
 		focusWhere = CGPointMake(viewFrame.size.width/ 2 , viewFrame.size. height/ 2 );
 		
 		//延时执行
@@ -864,7 +851,6 @@
 }
 
 - (void)handle_currentLocationButtonPressed:(NSNotification*)notification{
-	//[self performSelector:@selector(setLocationBarItem:) withObject:nil afterDelay:0.5];//0.5秒后，把barItem改回正常状态
 	MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(self.mapView.userLocation.location.coordinate,kDefaultLatitudinalMeters,kDefaultLongitudinalMeters);
 	[self.mapView setRegion:region FromWorld:NO animatedToWorld:NO animatedToPlace:YES];
 	[self.mapView performSelector:@selector(animateSelectAnnotation:) withObject:self.mapView.userLocation afterDelay:0.5]; //适当延长时间		
@@ -1400,15 +1386,9 @@
 		
 		CGPoint pointPressed = [gestureRecognizer locationInView:self.mapView];
 		CLLocationCoordinate2D coordinatePressed = [self.mapView convertPoint:pointPressed toCoordinateFromView:self.mapView];
-		
 		if (CLLocationCoordinate2DIsValid(coordinatePressed)){
 			IAAlarm *alarm = [[[IAAlarm alloc] init] autorelease];
-			
-            if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled]) { //是火星坐标
-                alarm.coordinate = [[YCLocationManager sharedLocationManager] convertToCoordinateFromMarsCoordinate:coordinatePressed]; 
-            }else{
-                alarm.coordinate = coordinatePressed;
-            }
+            alarm.visualCoordinate = coordinatePressed;
 			
 			NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 			NSNotification *aNotification = [NSNotification notificationWithName:IAAddIAlarmButtonPressedNotification 
@@ -2281,6 +2261,11 @@
                      */
                     
 				}
+                
+                //坐标改变了，保存
+                alarm.coordinate = annotation.realCoordinate;
+                [alarm saveFromSender:self];
+                
 				//反转坐标－地址
 				[self performSelector:@selector(beginReverseWithAnnotation:) withObject:annotation afterDelay:0.0];
 				

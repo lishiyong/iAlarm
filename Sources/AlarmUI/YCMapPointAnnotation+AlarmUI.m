@@ -17,13 +17,8 @@
     
     if (curLocation && CLLocationCoordinate2DIsValid(self.realCoordinate)) {
         
-        CLLocationCoordinate2D theCoordinate = kCLLocationCoordinate2DInvalid;
-        if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled])  //是否使用火星坐标
-            theCoordinate = self.realCoordinate;
-        else
-            theCoordinate = self.coordinate;
-        
-        CLLocation *aLocation = [[[CLLocation alloc] initWithLatitude:theCoordinate.latitude longitude:theCoordinate.longitude] autorelease];
+        CLLocationCoordinate2D theRealCoordinate = self.realCoordinate;
+        CLLocation *aLocation = [[[CLLocation alloc] initWithLatitude:theRealCoordinate.latitude longitude:theRealCoordinate.longitude] autorelease];
         
         CLLocationDistance distance = [curLocation distanceFromLocation:aLocation];
         NSString *distanceString = [aLocation distanceStringFromCurrentLocation:curLocation];

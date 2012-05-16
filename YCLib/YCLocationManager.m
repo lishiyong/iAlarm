@@ -6,6 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCGFunctions.h"
 #import "OffsetDataDao.h"
 #import "OffsetData.h"
 #import "YCLocationManager.h"
@@ -21,13 +22,28 @@
 
 
 - (OffsetData*)offsetDataWithCoordinate:(CLLocationCoordinate2D)coordinate{
-    NSString *lat =  [NSString stringWithFormat:@"%.1f",coordinate.latitude];
-    NSString *lng =  [NSString stringWithFormat:@"%.1f",coordinate.longitude];
+    /*
+    NSInteger ilat = coordinate.latitude *10;
+    NSInteger ilng = coordinate.longitude *10;
+    NSString *lat =  [NSString stringWithFormat:@"%.1f",ilat/10.0];
+    NSString *lng =  [NSString stringWithFormat:@"%.1f",ilng/10.0];
+     
+     NSLog(@"coordinate: %@",NSStringFromCLLocationCoordinate2D(coordinate));
+     NSLog(@"OffsetData: %@",offsetData);
+     */ 
     
-    OffsetDataDao *dao = [[[OffsetDataDao alloc] init] autorelease];
-    OffsetData *offsetData = [dao findOffsetDataWithLatitude:lat longitude:lng];
-    return offsetData;
-
+    @try {
+        NSString *lat =  [NSString stringWithFormat:@"%.1f",coordinate.latitude];
+        NSString *lng =  [NSString stringWithFormat:@"%.1f",coordinate.longitude];
+        
+        OffsetDataDao *dao = [[[OffsetDataDao alloc] init] autorelease];
+        OffsetData *offsetData = [dao findOffsetDataWithLatitude:lat longitude:lng];
+        
+        return offsetData;
+    }@catch (NSException *exception) {
+        return nil;
+    }
+    
 }
 
 /**
@@ -40,8 +56,18 @@
 /**
  坐标是否在中国境内
  **/
+#define kMinChinaLatitude  18.0
+#define kMaxChinaLatitude  53.5
+#define kMinChinaLongitude 73.5
+#define kMaxChinaLongitude 134.7
+
 - (BOOL)isInChinaWithCoordinate:(CLLocationCoordinate2D) coordinate{
-    return [self offsetDataWithCoordinate:coordinate] ? YES : NO;
+    if (coordinate.latitude >= kMinChinaLatitude && coordinate.latitude <= kMaxChinaLatitude 
+        && coordinate.longitude >= kMinChinaLongitude &&  coordinate.longitude <= kMaxChinaLongitude) {//先大概算一下
+        return [self offsetDataWithCoordinate:coordinate] ? YES : NO;
+    }else{
+        return NO;
+    }
 }
 
 /**

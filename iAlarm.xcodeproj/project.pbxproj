@@ -1249,6 +1249,7 @@
 		9C66F3F315486CA400577C4F /* BSGoogleV3KmlParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSGoogleV3KmlParser.m; sourceTree = "<group>"; };
 		9C66F3F415486CA400577C4F /* BSKmlResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSKmlResult.h; sourceTree = "<group>"; };
 		9C66F3F515486CA400577C4F /* BSKmlResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSKmlResult.m; sourceTree = "<group>"; };
+		9C71D1CA15635C770031FB7E /* 家里 沈阳.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "家里 沈阳.gpx"; sourceTree = "<group>"; };
 		9C7484C01562981F00486793 /* BaseDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseDao.h; sourceTree = "<group>"; };
 		9C7484C11562981F00486793 /* BaseDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseDao.m; sourceTree = "<group>"; };
 		9C7484C21562981F00486793 /* DB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DB.h; sourceTree = "<group>"; };
@@ -1907,6 +1908,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				9C71D1CA15635C770031FB7E /* 家里 沈阳.gpx */,
 				9CE894A212FFFFD2008FBD45 /* Sources */,
 				9CE8941F12FFFFD2008FBD45 /* Resources */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,

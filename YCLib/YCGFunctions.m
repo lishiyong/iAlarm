@@ -27,3 +27,7 @@ NSComparisonResult compareFloat(CGFloat anFloat, CGFloat anotherFloat){
     }
 }
 
+NSString* NSStringFromCLLocationCoordinate2D(CLLocationCoordinate2D coord){
+    return [NSString stringWithFormat:@"latitude = %.6f, longitude = %.6f",coord.latitude,coord.longitude];
+}
+

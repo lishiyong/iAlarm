@@ -207,12 +207,7 @@
 
 -(void)setCircleOverlayAndMapRegionWithAlarmRadius:(CLLocationDistance)alarmRadius{
 	
-    CLLocationCoordinate2D centerCoordinate = kCLLocationCoordinate2DInvalid;
-    if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled]) { //是否使用火星坐标
-        centerCoordinate = self.alarm.marsCoordinate;
-    }else{
-        centerCoordinate = self.alarm.coordinate;
-    }
+    CLLocationCoordinate2D centerCoordinate = self.alarm.visualCoordinate;
     
 	if (!CLLocationCoordinate2DIsValid(centerCoordinate)) {
 		centerCoordinate = YCDefaultCoordinate(); //缺省坐标－apple公司总部坐标
@@ -375,18 +370,12 @@
 	
 	
 	//大头针
-	CLLocationCoordinate2D coordinate = kCLLocationCoordinate2DInvalid;
-    if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled]) { //是否使用火星坐标
-        coordinate = self.alarm.marsCoordinate;
-    }else{
-        coordinate = self.alarm.coordinate;
-    }
-    
-	if (!CLLocationCoordinate2DIsValid(coordinate)) {
-		coordinate = YCDefaultCoordinate(); //缺省作弊－apple公司总部坐标
+	CLLocationCoordinate2D visualCoordinate = self.alarm.visualCoordinate;
+	if (!CLLocationCoordinate2DIsValid(visualCoordinate)) {
+		visualCoordinate = YCDefaultCoordinate(); //缺省作弊－apple公司总部坐标
 	}
 	[self.mapView removeAnnotations:self.mapView.annotations];
-	MKPlacemark *annotation = [[[MKPlacemark alloc] initWithCoordinate:coordinate addressDictionary:nil] autorelease];
+	MKPlacemark *annotation = [[[MKPlacemark alloc] initWithCoordinate:visualCoordinate addressDictionary:nil] autorelease];
 	[self.mapView performSelectorOnMainThread:@selector(addAnnotation:) withObject:annotation waitUntilDone:YES];
 
 	

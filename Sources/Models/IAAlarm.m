@@ -74,6 +74,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 		positionShort = nil;
 		usedCoordinateAddress = YES;
 		coordinate = kCLLocationCoordinate2DInvalid;
+        visualCoordinate = kCLLocationCoordinate2DInvalid;
 		locationAccuracy = 101.1;
 		
 		enabling = YES; 
@@ -171,6 +172,8 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 		reserve1 = [[decoder decodeObjectForKey:kreserve1] retain];
 		reserve2 = [[decoder decodeObjectForKey:kreserve2] retain];
 		reserve3 = [[decoder decodeObjectForKey:kreserve3] retain];
+        
+        visualCoordinate = kCLLocationCoordinate2DInvalid;
 		
     }
     return self;
@@ -366,14 +369,35 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	return alarms;
 }
 
-- (CLLocationCoordinate2D)marsCoordinate{
-    if (CLLocationCoordinate2DIsValid(self.coordinate) 
-        && [[YCLocationManager sharedLocationManager] isInChinaWithCoordinate:self.coordinate]) 
-    {
+- (void)setCoordinate:(CLLocationCoordinate2D)theCoordinate{
+    coordinate = theCoordinate;
+    visualCoordinate = kCLLocationCoordinate2DInvalid;//要重新计算它
+}
+
+- (CLLocationCoordinate2D)visualCoordinate{
+    
+    if (!CLLocationCoordinate2DIsValid(visualCoordinate)) {
+        if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled] && [[YCLocationManager sharedLocationManager] isInChinaWithCoordinate:coordinate]) { //开启了转换选项 并且 坐标在中国境内
+            
+            visualCoordinate = [[YCLocationManager sharedLocationManager] convertToMarsCoordinateFromCoordinate:coordinate];
+            
+        }else{
+            visualCoordinate = coordinate;
+        }
+    }
+    
+    return visualCoordinate;
+}
+
+- (void)setVisualCoordinate:(CLLocationCoordinate2D)theVisualCoordinate{
+    
+    //通过设置coordinate来更新visualCoordinate
+    if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled] && [[YCLocationManager sharedLocationManager] isInChinaWithCoordinate:theVisualCoordinate]) { //开启了转换选项 并且 坐标在中国境内
         
-        return [[YCLocationManager sharedLocationManager] convertToMarsCoordinateFromCoordinate:self.coordinate];
+        self.coordinate = [[YCLocationManager sharedLocationManager] convertToCoordinateFromMarsCoordinate:theVisualCoordinate];
+        
     }else{
-        return self.coordinate;
+        self.coordinate = theVisualCoordinate;
     }
 }
 

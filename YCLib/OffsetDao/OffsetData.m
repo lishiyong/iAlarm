@@ -10,11 +10,17 @@
 
 @implementation OffsetData
 
-@synthesize longitude, latitude, offsetLongitude, offsetLatitude;
+@synthesize latitude, longitude, offsetLatitude, offsetLongitude;
+
+- (NSString *)description{
+    NSString *s = [NSString stringWithFormat:@"latitude = %@, longitude = %@, offsetLatitude = %.6f, offsetLongitude = %.6f"
+                   ,latitude, longitude, offsetLatitude, offsetLongitude];
+    return s;
+}
 
 - (void)dealloc {
+    [latitude release];
 	[longitude release];
-	[latitude release];
 	[super dealloc];
 }
 

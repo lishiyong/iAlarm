@@ -198,13 +198,8 @@
 
 	CLLocation *curLocation = [YCSystemStatus deviceStatusSingleInstance].lastLocation;
 	if (curLocation) {
-        CLLocationCoordinate2D coordinate = kCLLocationCoordinate2DInvalid;
-        if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled])  //是否使用火星坐标
-            coordinate = self.annotationAlarmEditing.realCoordinate;
-        else
-            coordinate = self.annotationAlarmEditing.coordinate;
-        
-        CLLocation *aLocation = [[[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude] autorelease];
+        CLLocationCoordinate2D realCoordinate = self.annotationAlarmEditing.realCoordinate;
+        CLLocation *aLocation = [[[CLLocation alloc] initWithLatitude:realCoordinate.latitude longitude:realCoordinate.longitude] autorelease];
 		NSString *distance = [aLocation distanceStringFromCurrentLocation:curLocation];
 		[self.navigationItem setTitleView:[self detailTitleViewWithContent:distance] animated:YES];
 	}else
@@ -252,12 +247,7 @@
 	self.annotationAlarmEditing.annotationType = YCMapAnnotationTypeLocating;
 	self.annotationAlarmEditing.title = KLabelMapNewAnnotationTitle;
 	self.annotationAlarmEditing.subtitle = temp.position;
-    
-    if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled]) { //是否使用火星坐标
-        self.annotationAlarmEditing.coordinate = temp.marsCoordinate;
-    }else{
-        self.annotationAlarmEditing.coordinate = temp.coordinate;
-    }
+    self.annotationAlarmEditing.coordinate = temp.visualCoordinate;
 	
 }
 
@@ -573,12 +563,7 @@
         return; //为了对应父类中，难看的代码: - (void)viewWillDisappear:(BOOL)animated
     }
     
-	CLLocationCoordinate2D coordinate = kCLLocationCoordinate2DInvalid;
-    if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled]) { //是否使用火星坐标
-        coordinate = self.annotationAlarmEditing.realCoordinate;
-    }else{
-        coordinate = self.annotationAlarmEditing.coordinate;
-    }
+	CLLocationCoordinate2D realCoordinate = self.annotationAlarmEditing.realCoordinate;
     
 	MKPlacemark *placemark = self.annotationAlarmEditing.placemarkForReverse;
 	BSKmlResult *place = self.annotationAlarmEditing.placeForSearch;
@@ -612,7 +597,7 @@
 	}else {
 		//反转坐标 失败，使用坐标作为地址
 		addressTitle = KDefaultAlarmName;
-		address = [UIUtility convertCoordinate:coordinate];
+		address = [UIUtility convertCoordinate:realCoordinate];
 		addressShort = address;
 		self.alarm.usedCoordinateAddress = YES;
 	}
@@ -621,9 +606,9 @@
 	addressTitle = (addressTitle != nil) ? addressTitle:KDefaultAlarmName;
 	if (addressShort == nil) {
 		self.alarm.usedCoordinateAddress = YES;
-		addressShort = (addressShort != nil) ? addressShort : [UIUtility convertCoordinate:coordinate];
+		addressShort = (addressShort != nil) ? addressShort : [UIUtility convertCoordinate:realCoordinate];
 	}
-	address = (address != nil) ? address : [UIUtility convertCoordinate:coordinate];
+	address = (address != nil) ? address : [UIUtility convertCoordinate:realCoordinate];
 
 
 
@@ -631,7 +616,7 @@
 	if (!self.alarm.nameChanged) {
 		self.alarm.alarmName = addressTitle;
 	}
-	self.alarm.coordinate = coordinate;
+	self.alarm.coordinate = realCoordinate;
 	self.alarm.position = address;
 	self.alarm.positionShort = addressShort;
     self.alarm.reserve1 = addressTitle; //做为addressTitle

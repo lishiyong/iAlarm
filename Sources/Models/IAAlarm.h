@@ -79,6 +79,7 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 	NSString *reserve2;
 	NSString *reserve3;
 	
+    CLLocationCoordinate2D visualCoordinate;
 }
 
 @property (nonatomic,copy) NSString *alarmId;
@@ -129,7 +130,7 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 //取得所有闹钟的列表
 + (NSArray*)alarmArray;
 
-@property(nonatomic,readonly) CLLocationCoordinate2D marsCoordinate;
+@property(nonatomic) CLLocationCoordinate2D visualCoordinate;
 
 
 @end

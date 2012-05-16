@@ -23,7 +23,7 @@
 @property (nonatomic) CLLocationCoordinate2D coordinate;
 @property (nonatomic,copy) NSString *title;
 @property (nonatomic,copy) NSString *subtitle;
-@property (nonatomic,readonly) CLLocationCoordinate2D realCoordinate;
+@property (nonatomic) CLLocationCoordinate2D realCoordinate;
 
 -(id) initWithCoordinate:(CLLocationCoordinate2D) coord title:(NSString *) theTitle subTitle:(NSString *) theSubTitle;
 

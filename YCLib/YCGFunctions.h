@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
 
 //产生一个唯一的序列号
 NSString* YCSerialCode();
@@ -17,4 +18,6 @@ NSString* YCSerialCode();
     The anFloat is less than anotherFloat, NSOrderedAscending.
  */
 NSComparisonResult compareFloat(CGFloat anFloat, CGFloat anotherFloat);
+
+NSString* NSStringFromCLLocationCoordinate2D(CLLocationCoordinate2D coord);
 
