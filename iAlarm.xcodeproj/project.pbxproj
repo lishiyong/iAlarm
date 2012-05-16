@@ -209,6 +209,8 @@
 		9C66F3FB15486CA400577C4F /* BSGoogleV3KmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C66F3F315486CA400577C4F /* BSGoogleV3KmlParser.m */; };
 		9C66F3FC15486CA400577C4F /* BSKmlResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C66F3F515486CA400577C4F /* BSKmlResult.m */; };
 		9C66F3FD15486CA400577C4F /* BSKmlResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C66F3F515486CA400577C4F /* BSKmlResult.m */; };
+		9C6AE1DA1563DE4500F5A9CE /* YCLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6AE1D91563DE4500F5A9CE /* YCLocationManager.m */; };
+		9C6AE1DB1563DE4500F5A9CE /* YCLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6AE1D91563DE4500F5A9CE /* YCLocationManager.m */; };
 		9C7485AE1562981F00486793 /* BaseDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484C11562981F00486793 /* BaseDao.m */; };
 		9C7485AF1562981F00486793 /* BaseDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484C11562981F00486793 /* BaseDao.m */; };
 		9C7485B01562981F00486793 /* DB.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484C31562981F00486793 /* DB.m */; };
@@ -544,8 +546,6 @@
 		9C74872F1562989500486793 /* SKPSMTPMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C74871A1562989500486793 /* SKPSMTPMessage.m */; };
 		9C7487301562989500486793 /* SKPSMTPMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C74871A1562989500486793 /* SKPSMTPMessage.m */; };
 		9C748732156298D100486793 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C748731156298D100486793 /* libsqlite3.dylib */; };
-		9C748739156299E300486793 /* YCLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C748738156299E300486793 /* YCLocationManager.m */; };
-		9C74873A156299E300486793 /* YCLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C748738156299E300486793 /* YCLocationManager.m */; };
 		9C85F38614FBA99F00B49FF4 /* IAAlarmFindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C85F38414FBA99F00B49FF4 /* IAAlarmFindViewController.m */; };
 		9C85F38714FBA99F00B49FF4 /* IAAlarmFindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C85F38414FBA99F00B49FF4 /* IAAlarmFindViewController.m */; };
 		9C85F38814FBA99F00B49FF4 /* IAAlarmFindViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C85F38514FBA99F00B49FF4 /* IAAlarmFindViewController.xib */; };
@@ -1249,6 +1249,8 @@
 		9C66F3F315486CA400577C4F /* BSGoogleV3KmlParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSGoogleV3KmlParser.m; sourceTree = "<group>"; };
 		9C66F3F415486CA400577C4F /* BSKmlResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSKmlResult.h; sourceTree = "<group>"; };
 		9C66F3F515486CA400577C4F /* BSKmlResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSKmlResult.m; sourceTree = "<group>"; };
+		9C6AE1D81563DE4500F5A9CE /* YCLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCLocationManager.h; sourceTree = "<group>"; };
+		9C6AE1D91563DE4500F5A9CE /* YCLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCLocationManager.m; sourceTree = "<group>"; };
 		9C71D1CA15635C770031FB7E /* 家里 沈阳.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "家里 沈阳.gpx"; sourceTree = "<group>"; };
 		9C7484C01562981F00486793 /* BaseDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseDao.h; sourceTree = "<group>"; };
 		9C7484C11562981F00486793 /* BaseDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseDao.m; sourceTree = "<group>"; };
@@ -1472,8 +1474,6 @@
 		9C7487191562989500486793 /* SKPSMTPMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKPSMTPMessage.h; sourceTree = "<group>"; };
 		9C74871A1562989500486793 /* SKPSMTPMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKPSMTPMessage.m; sourceTree = "<group>"; };
 		9C748731156298D100486793 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
-		9C748737156299E300486793 /* YCLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCLocationManager.h; sourceTree = "<group>"; };
-		9C748738156299E300486793 /* YCLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCLocationManager.m; sourceTree = "<group>"; };
 		9C85F38314FBA99F00B49FF4 /* IAAlarmFindViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAAlarmFindViewController.h; sourceTree = "<group>"; };
 		9C85F38414FBA99F00B49FF4 /* IAAlarmFindViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAAlarmFindViewController.m; sourceTree = "<group>"; };
 		9C85F38514FBA99F00B49FF4 /* IAAlarmFindViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IAAlarmFindViewController.xib; sourceTree = "<group>"; };
@@ -2118,8 +2118,6 @@
 				9C74859E1562981F00486793 /* YCTapHideBar */,
 				9C7485A11562981F00486793 /* YCUtilities */,
 				9C7485AA1562981F00486793 /* YCViewController */,
-				9C748737156299E300486793 /* YCLocationManager.h */,
-				9C748738156299E300486793 /* YCLocationManager.m */,
 			);
 			path = YCLib;
 			sourceTree = "<group>";
@@ -2127,6 +2125,8 @@
 		9C7484BF1562981F00486793 /* OffsetDao */ = {
 			isa = PBXGroup;
 			children = (
+				9C6AE1D81563DE4500F5A9CE /* YCLocationManager.h */,
+				9C6AE1D91563DE4500F5A9CE /* YCLocationManager.m */,
 				9C7484C01562981F00486793 /* BaseDao.h */,
 				9C7484C11562981F00486793 /* BaseDao.m */,
 				9C7484C21562981F00486793 /* DB.h */,
@@ -4541,7 +4541,7 @@
 				9C74872B1562989500486793 /* HSK_CFUtilities.m in Sources */,
 				9C74872D1562989500486793 /* NSStream+SKPSMTPExtensions.m in Sources */,
 				9C74872F1562989500486793 /* SKPSMTPMessage.m in Sources */,
-				9C748739156299E300486793 /* YCLocationManager.m in Sources */,
+				9C6AE1DA1563DE4500F5A9CE /* YCLocationManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4729,7 +4729,7 @@
 				9C74872C1562989500486793 /* HSK_CFUtilities.m in Sources */,
 				9C74872E1562989500486793 /* NSStream+SKPSMTPExtensions.m in Sources */,
 				9C7487301562989500486793 /* SKPSMTPMessage.m in Sources */,
-				9C74873A156299E300486793 /* YCLocationManager.m in Sources */,
+				9C6AE1DB1563DE4500F5A9CE /* YCLocationManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
