@@ -1133,8 +1133,9 @@
 		}
 		self.alarmTemp.usedCoordinateAddress = YES; 
 		
-		//界面提示 : 反转地址失败
-		self.titleForFooter = KTextPromptNeedInternetToReversing;
+        BOOL connectedToInternet = [[YCSystemStatus deviceStatusSingleInstance] connectedToInternet];
+        if (!connectedToInternet) 
+            self.titleForFooter = KTextPromptNeedInternetToReversing;//界面提示 : 反转地址失败,需要网络
 
 	}else {
 
@@ -1382,8 +1383,12 @@
 		if (!CLLocationCoordinate2DIsValid(self.alarmTemp.coordinate)) {
 			self.titleForFooter = KTextPromptNeedSetLocationByMaps;
             [(IADestinationCell*)(self.destionationCellDescription.tableViewCell) setMoveArrow:YES]; //显示箭头动画
-		}else if (self.alarmTemp.usedCoordinateAddress) {
-			self.titleForFooter = KTextPromptNeedInternetToReversing;
+		}else if (self.alarmTemp.usedCoordinateAddress ) {
+            BOOL connectedToInternet = [[YCSystemStatus deviceStatusSingleInstance] connectedToInternet];
+			if(!connectedToInternet)
+                self.titleForFooter = KTextPromptNeedInternetToReversing;
+            else
+                self.titleForFooter = nil;
             [(IADestinationCell*)(self.destionationCellDescription.tableViewCell) setMoveArrow:NO]; //不显示箭头动画
 		}else {
 			self.titleForFooter = nil;

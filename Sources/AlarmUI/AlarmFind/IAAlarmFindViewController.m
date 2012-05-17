@@ -5,7 +5,7 @@
 //  Created by li shiyong on 12-2-27.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
-
+#import "UIButton+YC.h"
 #import "YCLocationManager.h"
 #import "YCAlarmStatusBar.h"
 #import "YCMapPointAnnotation+AlarmUI.h"
@@ -353,11 +353,11 @@ cell使用后height竟然会加1。奇怪！
         [pointAnnotation release];
     }
     
-    CLLocationCoordinate2D coord = alarm.coordinate;
+    CLLocationCoordinate2D coord = alarm.visualCoordinate;
     CLLocationDistance radius = alarm.radius;
     
     //大头针
-    pointAnnotation = [[YCMapPointAnnotation alloc] initWithCoordinate:alarm.visualCoordinate title:alarm.alarmName subTitle:nil];
+    pointAnnotation = [[YCMapPointAnnotation alloc] initWithCoordinate:coord title:alarm.alarmName subTitle:nil];
     [self.mapView addAnnotation:pointAnnotation];
     [pointAnnotation setDistanceSubtitleWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];//距离
     
@@ -673,31 +673,10 @@ cell使用后height竟然会加1。奇怪！
     //备注
     self.notesLabel.textColor = [UIColor text1Color];
     
-    //按钮    
-    UIImage *image = [UIImage imageNamed:@"YCGrayButton.png"];
-    UIImage *newImage = [image stretchableImageWithLeftCapWidth:10 topCapHeight:0];
-    
-    //UIColor *buttonTitleColor = [UIColor colorWithRed:97.0/255.0 green:109.0/255.0 blue:112.0/255.0 alpha:1.0];//camera+按钮配的这个颜色
-    UIColor *buttonTitleColor = [UIColor blackColor];
-    
-    
-    [self.button1 setBackgroundImage:newImage forState:UIControlStateNormal];
-    self.button1.backgroundColor = [UIColor clearColor];
+    //按钮
     [self.button1 setTitle:@"告诉朋友" forState:UIControlStateNormal];
-    [self.button1 setTitleColor:buttonTitleColor forState:UIControlStateNormal];
-    //[self.button1 setTitleColor:buttonTitleColor forState:UIControlStateHighlighted];
-    
-    [self.button2 setBackgroundImage:newImage forState:UIControlStateNormal];
-    self.button2.backgroundColor = [UIColor clearColor];
     [self.button2 setTitle:@"过5分钟再提醒" forState:UIControlStateNormal];
-    [self.button2 setTitleColor:buttonTitleColor forState:UIControlStateNormal];
-    //[self.button2 setTitleColor:buttonTitleColor forState:UIControlStateHighlighted];
-    
-    [self.button3 setBackgroundImage:newImage forState:UIControlStateNormal];
-    self.button3.backgroundColor = [UIColor clearColor];
     [self.button3 setTitle:@"过30分钟再提醒" forState:UIControlStateNormal];
-    [self.button3 setTitleColor:buttonTitleColor forState:UIControlStateNormal];
-    //[self.button3 setTitleColor:buttonTitleColor forState:UIControlStateHighlighted];
      
     
     [self registerNotifications];

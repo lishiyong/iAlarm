@@ -6,7 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
-#import "YCGFunctions.h"
+#import "YCFunctions.h"
 #import "IAAlarm.h"
 #import "IAAlarmNotification.h"
 

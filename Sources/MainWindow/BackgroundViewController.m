@@ -6,7 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "YCGFunctions.h"
+#import "YCFunctions.h"
 #import "YCLocationManager.h"
 #import "UINavigationController+YC.h"
 #import "YCSearchBarNotification.h"

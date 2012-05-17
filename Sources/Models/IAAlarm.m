@@ -7,7 +7,7 @@
 //
 
 #import "YCLocationManager.h"
-#import "YCGFunctions.h"
+#import "YCFunctions.h"
 #import "IABuyManager.h"
 #import "UIApplication-YC.h"
 #import "IASaveInfo.h"

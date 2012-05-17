@@ -6,7 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "YCGFunctions.h"
+#import "YCFunctions.h"
 #import "YCLocationManager.h"
 #import "UIApplication-YC.h"
 #import "iAlarmAppDelegate.h"
@@ -144,7 +144,7 @@
 	if (self.alarms.count == 1) {
 		IAAlarm *anAlarm = (IAAlarm*)[self.alarms objectAtIndex:0];
 		CLLocationDistance distanceForRegion = anAlarm.radius*2*1.8;//直径的1.x倍
-		r = MKCoordinateRegionMakeWithDistance(anAlarm.coordinate,distanceForRegion,distanceForRegion);
+		r = MKCoordinateRegionMakeWithDistance(anAlarm.visualCoordinate,distanceForRegion,distanceForRegion);
 	}else if (self.alarms.count > 1){
 		CLLocationDegrees minLati = 180.0;
 		CLLocationDegrees maxLati = -180.0;
@@ -152,10 +152,10 @@
 		CLLocationDegrees maxLong = -180.0;
 		
 		for (IAAlarm* oneObj in self.alarms) {
-			minLati = (oneObj.coordinate.latitude  < minLati) ? oneObj.coordinate.latitude  : minLati;
-			maxLati = (oneObj.coordinate.latitude  > maxLati) ? oneObj.coordinate.latitude  : maxLati;
-			minLong = (oneObj.coordinate.longitude < minLong) ? oneObj.coordinate.longitude : minLong;
-			maxLong = (oneObj.coordinate.longitude > maxLong) ? oneObj.coordinate.longitude : maxLong;
+			minLati = (oneObj.visualCoordinate.latitude  < minLati) ? oneObj.visualCoordinate.latitude  : minLati;
+			maxLati = (oneObj.visualCoordinate.latitude  > maxLati) ? oneObj.visualCoordinate.latitude  : maxLati;
+			minLong = (oneObj.visualCoordinate.longitude < minLong) ? oneObj.visualCoordinate.longitude : minLong;
+			maxLong = (oneObj.visualCoordinate.longitude > maxLong) ? oneObj.visualCoordinate.longitude : maxLong;
 		}
 		
 		CLLocationCoordinate2D center =  CLLocationCoordinate2DMake((maxLati + minLati)/2, (maxLong + minLong)/2);
@@ -1400,8 +1400,7 @@
 	
 }
 
-#pragma mark -
-#pragma mark UIAlertViewDelegate
+#pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (alertView == checkNetAlert && [[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:kAlertBtnSettings]) {
         NSString *str = @"prefs:root=General&path=Network"; //打开设置中的网络
@@ -1409,7 +1408,6 @@
     }
 }
 
-#pragma mark -
 #pragma mark - YCPinAnnotationViewDelegete
 
 //按下了删除按钮
@@ -1893,9 +1891,6 @@
 	
 }
 
-
-
-#pragma mark - 
 #pragma mark - MKMapViewDelegate
 /*
 - (MKAnnotationView *)mapView:(MKMapView *)theMapView viewForAnnotation:(id <MKAnnotation>)annotation
