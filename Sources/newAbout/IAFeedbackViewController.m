@@ -7,7 +7,7 @@
 //
 
 #import "YCSoundPlayer.h"
-#import "UIApplication-YC.h"
+#import "UIApplication+YC.h"
 #import "NSData+Base64Additions.h"
 #import "LocalizedStringAbout.h"
 #import <QuartzCore/QuartzCore.h>

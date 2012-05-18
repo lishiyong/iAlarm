@@ -5,7 +5,7 @@
 //  Created by li shiyong on 10-11-8.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
-#import "UIApplication-YC.h"
+#import "UIApplication+YC.h"
 #import "YCLog.h"
 
 

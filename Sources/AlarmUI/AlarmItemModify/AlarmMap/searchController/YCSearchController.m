@@ -6,7 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "UIApplication-YC.h"
+#import "UIApplication+YC.h"
 #import "YCParam.h"
 #import "YCSearchController.h"
 #import "YCSearchBar.h"

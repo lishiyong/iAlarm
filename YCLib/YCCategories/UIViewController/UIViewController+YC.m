@@ -6,7 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "UIViewController-YC.h"
+#import "UIViewController+YC.h"
 
 
 @implementation UIViewController (YC)

@@ -22,6 +22,10 @@
 		9C04958914F9103E00A89996 /* IAWhiteButtonNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C04958814F9103E00A89996 /* IAWhiteButtonNormal.png */; };
 		9C04958A14F9103E00A89996 /* IAWhiteButtonNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C04958814F9103E00A89996 /* IAWhiteButtonNormal.png */; };
 		9C057C4D13378B490068C209 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C057C4C13378B490068C209 /* InfoPlist.strings */; };
+		9C05ACA11565C91500983108 /* YCMapsGradientShine.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C05ACA01565C91500983108 /* YCMapsGradientShine.png */; };
+		9C05ACA21565C91500983108 /* YCMapsGradientShine.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C05ACA01565C91500983108 /* YCMapsGradientShine.png */; };
+		9C05ACA51565FE6000983108 /* CLLocation+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C05ACA41565FE5E00983108 /* CLLocation+YC.m */; };
+		9C05ACA61565FE6000983108 /* CLLocation+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C05ACA41565FE5E00983108 /* CLLocation+YC.m */; };
 		9C0706DC152C036000AC4207 /* IAAlarmNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0706DB152C036000AC4207 /* IAAlarmNotification.m */; };
 		9C0706DD152C036000AC4207 /* IAAlarmNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0706DB152C036000AC4207 /* IAAlarmNotification.m */; };
 		9C0706E0152C086900AC4207 /* IAAlarmNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0706DF152C086900AC4207 /* IAAlarmNotificationCenter.m */; };
@@ -42,6 +46,8 @@
 		9C0B12A3154187FF00729060 /* YCRingClear.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0B129C154187FE00729060 /* YCRingClear.png */; };
 		9C0B12A4154187FF00729060 /* YCRingClear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0B129D154187FF00729060 /* YCRingClear@2x.png */; };
 		9C0B12A5154187FF00729060 /* YCRingClear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0B129D154187FF00729060 /* YCRingClear@2x.png */; };
+		9C0BA7BC15667C250063E50C /* IAAlarmsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0BA7BB15667C250063E50C /* IAAlarmsManager.m */; };
+		9C0BA7BD15667C250063E50C /* IAAlarmsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0BA7BB15667C250063E50C /* IAAlarmsManager.m */; };
 		9C0BBC8E1529CD3D002509F3 /* UIPopoverButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0BBC8A1529CD3D002509F3 /* UIPopoverButton@2x.png */; };
 		9C0BBC8F1529CD3D002509F3 /* UIPopoverButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0BBC8A1529CD3D002509F3 /* UIPopoverButton@2x.png */; };
 		9C0BBC901529CD3D002509F3 /* UIPopoverButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0BBC8B1529CD3D002509F3 /* UIPopoverButton.png */; };
@@ -237,22 +243,20 @@
 		9C7485C51562981F00486793 /* YCPinAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484D81562981F00486793 /* YCPinAnnotationView.m */; };
 		9C7485C61562981F00486793 /* YClocationServicesUsableAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484DB1562981F00486793 /* YClocationServicesUsableAlert.m */; };
 		9C7485C71562981F00486793 /* YClocationServicesUsableAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484DB1562981F00486793 /* YClocationServicesUsableAlert.m */; };
-		9C7485C81562981F00486793 /* AVAudioPlayer-YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484DE1562981F00486793 /* AVAudioPlayer-YC.m */; };
-		9C7485C91562981F00486793 /* AVAudioPlayer-YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484DE1562981F00486793 /* AVAudioPlayer-YC.m */; };
-		9C7485CA1562981F00486793 /* MKMapView-YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484E01562981F00486793 /* MKMapView-YC.m */; };
-		9C7485CB1562981F00486793 /* MKMapView-YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484E01562981F00486793 /* MKMapView-YC.m */; };
-		9C7485CC1562981F00486793 /* NSCoder-YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484E21562981F00486793 /* NSCoder-YC.m */; };
-		9C7485CD1562981F00486793 /* NSCoder-YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484E21562981F00486793 /* NSCoder-YC.m */; };
-		9C7485CE1562981F00486793 /* NSObject-YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484E41562981F00486793 /* NSObject-YC.m */; };
-		9C7485CF1562981F00486793 /* NSObject-YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484E41562981F00486793 /* NSObject-YC.m */; };
-		9C7485D01562981F00486793 /* NSString-YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484E61562981F00486793 /* NSString-YC.m */; };
-		9C7485D11562981F00486793 /* NSString-YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484E61562981F00486793 /* NSString-YC.m */; };
-		9C7485D21562981F00486793 /* UIApplication-YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484E81562981F00486793 /* UIApplication-YC.m */; };
-		9C7485D31562981F00486793 /* UIApplication-YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484E81562981F00486793 /* UIApplication-YC.m */; };
+		9C7485CA1562981F00486793 /* MKMapView+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484E01562981F00486793 /* MKMapView+YC.m */; };
+		9C7485CB1562981F00486793 /* MKMapView+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484E01562981F00486793 /* MKMapView+YC.m */; };
+		9C7485CC1562981F00486793 /* NSCoder+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484E21562981F00486793 /* NSCoder+YC.m */; };
+		9C7485CD1562981F00486793 /* NSCoder+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484E21562981F00486793 /* NSCoder+YC.m */; };
+		9C7485CE1562981F00486793 /* NSObject+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484E41562981F00486793 /* NSObject+YC.m */; };
+		9C7485CF1562981F00486793 /* NSObject+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484E41562981F00486793 /* NSObject+YC.m */; };
+		9C7485D01562981F00486793 /* NSString+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484E61562981F00486793 /* NSString+YC.m */; };
+		9C7485D11562981F00486793 /* NSString+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484E61562981F00486793 /* NSString+YC.m */; };
+		9C7485D21562981F00486793 /* UIApplication+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484E81562981F00486793 /* UIApplication+YC.m */; };
+		9C7485D31562981F00486793 /* UIApplication+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484E81562981F00486793 /* UIApplication+YC.m */; };
 		9C7485D61562981F00486793 /* UINavigationController+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484EC1562981F00486793 /* UINavigationController+YC.m */; };
 		9C7485D71562981F00486793 /* UINavigationController+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484EC1562981F00486793 /* UINavigationController+YC.m */; };
-		9C7485D81562981F00486793 /* UINavigationItem-YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484EE1562981F00486793 /* UINavigationItem-YC.m */; };
-		9C7485D91562981F00486793 /* UINavigationItem-YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484EE1562981F00486793 /* UINavigationItem-YC.m */; };
+		9C7485D81562981F00486793 /* UINavigationItem+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484EE1562981F00486793 /* UINavigationItem+YC.m */; };
+		9C7485D91562981F00486793 /* UINavigationItem+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484EE1562981F00486793 /* UINavigationItem+YC.m */; };
 		9C7485DA1562981F00486793 /* IACannotLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C7484F01562981F00486793 /* IACannotLocation.png */; };
 		9C7485DB1562981F00486793 /* IACannotLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C7484F01562981F00486793 /* IACannotLocation.png */; };
 		9C7485DC1562981F00486793 /* IACannotLocation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C7484F11562981F00486793 /* IACannotLocation@2x.png */; };
@@ -261,8 +265,8 @@
 		9C7485DF1562981F00486793 /* IACannotLocationClear.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C7484F21562981F00486793 /* IACannotLocationClear.png */; };
 		9C7485E01562981F00486793 /* IACannotLocationClear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C7484F31562981F00486793 /* IACannotLocationClear@2x.png */; };
 		9C7485E11562981F00486793 /* IACannotLocationClear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C7484F31562981F00486793 /* IACannotLocationClear@2x.png */; };
-		9C7485E21562981F00486793 /* UIViewController-YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484F51562981F00486793 /* UIViewController-YC.m */; };
-		9C7485E31562981F00486793 /* UIViewController-YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484F51562981F00486793 /* UIViewController-YC.m */; };
+		9C7485E21562981F00486793 /* UIViewController+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484F51562981F00486793 /* UIViewController+YC.m */; };
+		9C7485E31562981F00486793 /* UIViewController+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484F51562981F00486793 /* UIViewController+YC.m */; };
 		9C7485E41562981F00486793 /* UIButtonBarPageCurlDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C7484FA1562981F00486793 /* UIButtonBarPageCurlDefault@2x.png */; };
 		9C7485E51562981F00486793 /* UIButtonBarPageCurlDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C7484FA1562981F00486793 /* UIButtonBarPageCurlDefault@2x.png */; };
 		9C7485E61562981F00486793 /* UIButtonBarPageCurlSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C7484FB1562981F00486793 /* UIButtonBarPageCurlSelected@2x.png */; };
@@ -509,14 +513,14 @@
 		9C7486DB1562981F00486793 /* YCSoundPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C74859D1562981F00486793 /* YCSoundPlayer.m */; };
 		9C7486DC1562981F00486793 /* YCTapHideBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7485A01562981F00486793 /* YCTapHideBarView.m */; };
 		9C7486DD1562981F00486793 /* YCTapHideBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7485A01562981F00486793 /* YCTapHideBarView.m */; };
-		9C7486DE1562981F00486793 /* YCDouble.c in Sources */ = {isa = PBXBuildFile; fileRef = 9C7485A21562981F00486793 /* YCDouble.c */; };
-		9C7486DF1562981F00486793 /* YCDouble.c in Sources */ = {isa = PBXBuildFile; fileRef = 9C7485A21562981F00486793 /* YCDouble.c */; };
-		9C7486E01562981F00486793 /* YCLocationUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7485A51562981F00486793 /* YCLocationUtility.m */; };
-		9C7486E11562981F00486793 /* YCLocationUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7485A51562981F00486793 /* YCLocationUtility.m */; };
-		9C7486E21562981F00486793 /* YCMapsUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7485A71562981F00486793 /* YCMapsUtility.m */; };
-		9C7486E31562981F00486793 /* YCMapsUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7485A71562981F00486793 /* YCMapsUtility.m */; };
-		9C7486E41562981F00486793 /* YCUIUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7485A91562981F00486793 /* YCUIUtility.m */; };
-		9C7486E51562981F00486793 /* YCUIUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7485A91562981F00486793 /* YCUIUtility.m */; };
+		9C7486DE1562981F00486793 /* YCDouble.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7485A21562981F00486793 /* YCDouble.m */; };
+		9C7486DF1562981F00486793 /* YCDouble.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7485A21562981F00486793 /* YCDouble.m */; };
+		9C7486E01562981F00486793 /* YCLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7485A51562981F00486793 /* YCLocation.m */; };
+		9C7486E11562981F00486793 /* YCLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7485A51562981F00486793 /* YCLocation.m */; };
+		9C7486E21562981F00486793 /* YCMaps.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7485A71562981F00486793 /* YCMaps.m */; };
+		9C7486E31562981F00486793 /* YCMaps.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7485A71562981F00486793 /* YCMaps.m */; };
+		9C7486E41562981F00486793 /* YCUIKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7485A91562981F00486793 /* YCUIKit.m */; };
+		9C7486E51562981F00486793 /* YCUIKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7485A91562981F00486793 /* YCUIKit.m */; };
 		9C7486E61562981F00486793 /* YCMaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7485AC1562981F00486793 /* YCMaskViewController.m */; };
 		9C7486E71562981F00486793 /* YCMaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7485AC1562981F00486793 /* YCMaskViewController.m */; };
 		9C7486E81562981F00486793 /* YCMaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C7485AD1562981F00486793 /* YCMaskViewController.xib */; };
@@ -945,8 +949,6 @@
 		9CD89F0C14106A60000570C8 /* YCDefaultBarButtonItemPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD89EF814106A60000570C8 /* YCDefaultBarButtonItemPressed@2x.png */; };
 		9CDB21E913679A2B004A7C72 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CDB21E813679A2B004A7C72 /* Default.png */; };
 		9CDD1E1D1331EB8300022B02 /* IAButtonOpenToolbarDone.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CDD1E1C1331EB8300022B02 /* IAButtonOpenToolbarDone.png */; };
-		9CDEF89C1547BA4600838461 /* CLLocation+AlarmUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CDEF89B1547BA4600838461 /* CLLocation+AlarmUI.m */; };
-		9CDEF89D1547BA4600838461 /* CLLocation+AlarmUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CDEF89B1547BA4600838461 /* CLLocation+AlarmUI.m */; };
 		9CE00EFE14985412000B0546 /* TrackingDot.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE00EF614985412000B0546 /* TrackingDot.png */; };
 		9CE00EFF14985412000B0546 /* TrackingDot.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE00EF614985412000B0546 /* TrackingDot.png */; };
 		9CE00F0014985412000B0546 /* TrackingDot@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE00EF714985412000B0546 /* TrackingDot@2x.png */; };
@@ -1131,6 +1133,9 @@
 		9C057C4E13378B640068C209 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_CN; path = OtherResource/zh_CN.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		9C057C6413378BCA0068C209 /* zh_TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_TW; path = OtherResource/zh_TW.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		9C057C6513378BD10068C209 /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Japanese; path = OtherResource/Japanese.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		9C05ACA01565C91500983108 /* YCMapsGradientShine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCMapsGradientShine.png; sourceTree = "<group>"; };
+		9C05ACA31565FE5E00983108 /* CLLocation+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CLLocation+YC.h"; sourceTree = "<group>"; };
+		9C05ACA41565FE5E00983108 /* CLLocation+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CLLocation+YC.m"; sourceTree = "<group>"; };
 		9C0706DA152C036000AC4207 /* IAAlarmNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAAlarmNotification.h; sourceTree = "<group>"; };
 		9C0706DB152C036000AC4207 /* IAAlarmNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAAlarmNotification.m; sourceTree = "<group>"; };
 		9C0706DE152C086900AC4207 /* IAAlarmNotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAAlarmNotificationCenter.h; sourceTree = "<group>"; };
@@ -1143,6 +1148,8 @@
 		9C0B129B154187FE00729060 /* YCRing@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCRing@2x.png"; sourceTree = "<group>"; };
 		9C0B129C154187FE00729060 /* YCRingClear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCRingClear.png; sourceTree = "<group>"; };
 		9C0B129D154187FF00729060 /* YCRingClear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCRingClear@2x.png"; sourceTree = "<group>"; };
+		9C0BA7BA15667C240063E50C /* IAAlarmsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAAlarmsManager.h; sourceTree = "<group>"; };
+		9C0BA7BB15667C250063E50C /* IAAlarmsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAAlarmsManager.m; sourceTree = "<group>"; };
 		9C0BBC8A1529CD3D002509F3 /* UIPopoverButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIPopoverButton@2x.png"; sourceTree = "<group>"; };
 		9C0BBC8B1529CD3D002509F3 /* UIPopoverButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIPopoverButton.png; sourceTree = "<group>"; };
 		9C0BBC8C1529CD3D002509F3 /* UIPopoverButtonPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIPopoverButtonPressed@2x.png"; sourceTree = "<group>"; };
@@ -1291,28 +1298,26 @@
 		9C7484D81562981F00486793 /* YCPinAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCPinAnnotationView.m; sourceTree = "<group>"; };
 		9C7484DA1562981F00486793 /* YClocationServicesUsableAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YClocationServicesUsableAlert.h; sourceTree = "<group>"; };
 		9C7484DB1562981F00486793 /* YClocationServicesUsableAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YClocationServicesUsableAlert.m; sourceTree = "<group>"; };
-		9C7484DD1562981F00486793 /* AVAudioPlayer-YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVAudioPlayer-YC.h"; sourceTree = "<group>"; };
-		9C7484DE1562981F00486793 /* AVAudioPlayer-YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAudioPlayer-YC.m"; sourceTree = "<group>"; };
-		9C7484DF1562981F00486793 /* MKMapView-YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKMapView-YC.h"; sourceTree = "<group>"; };
-		9C7484E01562981F00486793 /* MKMapView-YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKMapView-YC.m"; sourceTree = "<group>"; };
-		9C7484E11562981F00486793 /* NSCoder-YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSCoder-YC.h"; sourceTree = "<group>"; };
-		9C7484E21562981F00486793 /* NSCoder-YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSCoder-YC.m"; sourceTree = "<group>"; };
-		9C7484E31562981F00486793 /* NSObject-YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject-YC.h"; sourceTree = "<group>"; };
-		9C7484E41562981F00486793 /* NSObject-YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject-YC.m"; sourceTree = "<group>"; };
-		9C7484E51562981F00486793 /* NSString-YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString-YC.h"; sourceTree = "<group>"; };
-		9C7484E61562981F00486793 /* NSString-YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString-YC.m"; sourceTree = "<group>"; };
-		9C7484E71562981F00486793 /* UIApplication-YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication-YC.h"; sourceTree = "<group>"; };
-		9C7484E81562981F00486793 /* UIApplication-YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication-YC.m"; sourceTree = "<group>"; };
+		9C7484DF1562981F00486793 /* MKMapView+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKMapView+YC.h"; sourceTree = "<group>"; };
+		9C7484E01562981F00486793 /* MKMapView+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKMapView+YC.m"; sourceTree = "<group>"; };
+		9C7484E11562981F00486793 /* NSCoder+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSCoder+YC.h"; sourceTree = "<group>"; };
+		9C7484E21562981F00486793 /* NSCoder+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSCoder+YC.m"; sourceTree = "<group>"; };
+		9C7484E31562981F00486793 /* NSObject+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+YC.h"; sourceTree = "<group>"; };
+		9C7484E41562981F00486793 /* NSObject+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+YC.m"; sourceTree = "<group>"; };
+		9C7484E51562981F00486793 /* NSString+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+YC.h"; sourceTree = "<group>"; };
+		9C7484E61562981F00486793 /* NSString+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+YC.m"; sourceTree = "<group>"; };
+		9C7484E71562981F00486793 /* UIApplication+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+YC.h"; sourceTree = "<group>"; };
+		9C7484E81562981F00486793 /* UIApplication+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+YC.m"; sourceTree = "<group>"; };
 		9C7484EB1562981F00486793 /* UINavigationController+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+YC.h"; sourceTree = "<group>"; };
 		9C7484EC1562981F00486793 /* UINavigationController+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+YC.m"; sourceTree = "<group>"; };
-		9C7484ED1562981F00486793 /* UINavigationItem-YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationItem-YC.h"; sourceTree = "<group>"; };
-		9C7484EE1562981F00486793 /* UINavigationItem-YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationItem-YC.m"; sourceTree = "<group>"; };
+		9C7484ED1562981F00486793 /* UINavigationItem+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationItem+YC.h"; sourceTree = "<group>"; };
+		9C7484EE1562981F00486793 /* UINavigationItem+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationItem+YC.m"; sourceTree = "<group>"; };
 		9C7484F01562981F00486793 /* IACannotLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IACannotLocation.png; sourceTree = "<group>"; };
 		9C7484F11562981F00486793 /* IACannotLocation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IACannotLocation@2x.png"; sourceTree = "<group>"; };
 		9C7484F21562981F00486793 /* IACannotLocationClear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IACannotLocationClear.png; sourceTree = "<group>"; };
 		9C7484F31562981F00486793 /* IACannotLocationClear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IACannotLocationClear@2x.png"; sourceTree = "<group>"; };
-		9C7484F41562981F00486793 /* UIViewController-YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController-YC.h"; sourceTree = "<group>"; };
-		9C7484F51562981F00486793 /* UIViewController-YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController-YC.m"; sourceTree = "<group>"; };
+		9C7484F41562981F00486793 /* UIViewController+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+YC.h"; sourceTree = "<group>"; };
+		9C7484F51562981F00486793 /* UIViewController+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+YC.m"; sourceTree = "<group>"; };
 		9C7484FA1562981F00486793 /* UIButtonBarPageCurlDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIButtonBarPageCurlDefault@2x.png"; sourceTree = "<group>"; };
 		9C7484FB1562981F00486793 /* UIButtonBarPageCurlSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIButtonBarPageCurlSelected@2x.png"; sourceTree = "<group>"; };
 		9C7484FC1562981F00486793 /* UIButtonBarPageCurlSelectedDown@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIButtonBarPageCurlSelectedDown@2x.png"; sourceTree = "<group>"; };
@@ -1454,14 +1459,14 @@
 		9C74859D1562981F00486793 /* YCSoundPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCSoundPlayer.m; sourceTree = "<group>"; };
 		9C74859F1562981F00486793 /* YCTapHideBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCTapHideBarView.h; sourceTree = "<group>"; };
 		9C7485A01562981F00486793 /* YCTapHideBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCTapHideBarView.m; sourceTree = "<group>"; };
-		9C7485A21562981F00486793 /* YCDouble.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = YCDouble.c; sourceTree = "<group>"; };
+		9C7485A21562981F00486793 /* YCDouble.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCDouble.m; sourceTree = "<group>"; };
 		9C7485A31562981F00486793 /* YCDouble.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCDouble.h; sourceTree = "<group>"; };
-		9C7485A41562981F00486793 /* YCLocationUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCLocationUtility.h; sourceTree = "<group>"; };
-		9C7485A51562981F00486793 /* YCLocationUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCLocationUtility.m; sourceTree = "<group>"; };
-		9C7485A61562981F00486793 /* YCMapsUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCMapsUtility.h; sourceTree = "<group>"; };
-		9C7485A71562981F00486793 /* YCMapsUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCMapsUtility.m; sourceTree = "<group>"; };
-		9C7485A81562981F00486793 /* YCUIUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCUIUtility.h; sourceTree = "<group>"; };
-		9C7485A91562981F00486793 /* YCUIUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCUIUtility.m; sourceTree = "<group>"; };
+		9C7485A41562981F00486793 /* YCLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCLocation.h; sourceTree = "<group>"; };
+		9C7485A51562981F00486793 /* YCLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCLocation.m; sourceTree = "<group>"; };
+		9C7485A61562981F00486793 /* YCMaps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCMaps.h; sourceTree = "<group>"; };
+		9C7485A71562981F00486793 /* YCMaps.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCMaps.m; sourceTree = "<group>"; };
+		9C7485A81562981F00486793 /* YCUIKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCUIKit.h; sourceTree = "<group>"; };
+		9C7485A91562981F00486793 /* YCUIKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCUIKit.m; sourceTree = "<group>"; };
 		9C7485AB1562981F00486793 /* YCMaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCMaskViewController.h; sourceTree = "<group>"; };
 		9C7485AC1562981F00486793 /* YCMaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCMaskViewController.m; sourceTree = "<group>"; };
 		9C7485AD1562981F00486793 /* YCMaskViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = YCMaskViewController.xib; sourceTree = "<group>"; };
@@ -1705,8 +1710,6 @@
 		9CD89EF814106A60000570C8 /* YCDefaultBarButtonItemPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCDefaultBarButtonItemPressed@2x.png"; sourceTree = "<group>"; };
 		9CDB21E813679A2B004A7C72 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		9CDD1E1C1331EB8300022B02 /* IAButtonOpenToolbarDone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IAButtonOpenToolbarDone.png; sourceTree = "<group>"; };
-		9CDEF89A1547BA4600838461 /* CLLocation+AlarmUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CLLocation+AlarmUI.h"; sourceTree = "<group>"; };
-		9CDEF89B1547BA4600838461 /* CLLocation+AlarmUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CLLocation+AlarmUI.m"; sourceTree = "<group>"; };
 		9CE00EF614985412000B0546 /* TrackingDot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TrackingDot.png; sourceTree = "<group>"; };
 		9CE00EF714985412000B0546 /* TrackingDot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TrackingDot@2x.png"; sourceTree = "<group>"; };
 		9CE00EF814985412000B0546 /* TrackingDotGrey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TrackingDotGrey.png; sourceTree = "<group>"; };
@@ -2221,23 +2224,23 @@
 			isa = PBXGroup;
 			children = (
 				9CC472101564F61C00F79985 /* UIColor */,
-				9C7484DD1562981F00486793 /* AVAudioPlayer-YC.h */,
-				9C7484DE1562981F00486793 /* AVAudioPlayer-YC.m */,
-				9C7484DF1562981F00486793 /* MKMapView-YC.h */,
-				9C7484E01562981F00486793 /* MKMapView-YC.m */,
-				9C7484E11562981F00486793 /* NSCoder-YC.h */,
-				9C7484E21562981F00486793 /* NSCoder-YC.m */,
-				9C7484E31562981F00486793 /* NSObject-YC.h */,
-				9C7484E41562981F00486793 /* NSObject-YC.m */,
-				9C7484E51562981F00486793 /* NSString-YC.h */,
-				9C7484E61562981F00486793 /* NSString-YC.m */,
-				9C7484E71562981F00486793 /* UIApplication-YC.h */,
-				9C7484E81562981F00486793 /* UIApplication-YC.m */,
+				9C7484DF1562981F00486793 /* MKMapView+YC.h */,
+				9C7484E01562981F00486793 /* MKMapView+YC.m */,
+				9C7484E11562981F00486793 /* NSCoder+YC.h */,
+				9C7484E21562981F00486793 /* NSCoder+YC.m */,
+				9C7484E31562981F00486793 /* NSObject+YC.h */,
+				9C7484E41562981F00486793 /* NSObject+YC.m */,
+				9C7484E51562981F00486793 /* NSString+YC.h */,
+				9C7484E61562981F00486793 /* NSString+YC.m */,
+				9C7484E71562981F00486793 /* UIApplication+YC.h */,
+				9C7484E81562981F00486793 /* UIApplication+YC.m */,
 				9C7484EB1562981F00486793 /* UINavigationController+YC.h */,
 				9C7484EC1562981F00486793 /* UINavigationController+YC.m */,
-				9C7484ED1562981F00486793 /* UINavigationItem-YC.h */,
-				9C7484EE1562981F00486793 /* UINavigationItem-YC.m */,
+				9C7484ED1562981F00486793 /* UINavigationItem+YC.h */,
+				9C7484EE1562981F00486793 /* UINavigationItem+YC.m */,
 				9C7484EF1562981F00486793 /* UIViewController */,
+				9C05ACA31565FE5E00983108 /* CLLocation+YC.h */,
+				9C05ACA41565FE5E00983108 /* CLLocation+YC.m */,
 			);
 			path = YCCategories;
 			sourceTree = "<group>";
@@ -2249,8 +2252,8 @@
 				9C7484F11562981F00486793 /* IACannotLocation@2x.png */,
 				9C7484F21562981F00486793 /* IACannotLocationClear.png */,
 				9C7484F31562981F00486793 /* IACannotLocationClear@2x.png */,
-				9C7484F41562981F00486793 /* UIViewController-YC.h */,
-				9C7484F51562981F00486793 /* UIViewController-YC.m */,
+				9C7484F41562981F00486793 /* UIViewController+YC.h */,
+				9C7484F51562981F00486793 /* UIViewController+YC.m */,
 			);
 			path = UIViewController;
 			sourceTree = "<group>";
@@ -2602,14 +2605,14 @@
 		9C7485A11562981F00486793 /* YCUtilities */ = {
 			isa = PBXGroup;
 			children = (
-				9C7485A21562981F00486793 /* YCDouble.c */,
 				9C7485A31562981F00486793 /* YCDouble.h */,
-				9C7485A41562981F00486793 /* YCLocationUtility.h */,
-				9C7485A51562981F00486793 /* YCLocationUtility.m */,
-				9C7485A61562981F00486793 /* YCMapsUtility.h */,
-				9C7485A71562981F00486793 /* YCMapsUtility.m */,
-				9C7485A81562981F00486793 /* YCUIUtility.h */,
-				9C7485A91562981F00486793 /* YCUIUtility.m */,
+				9C7485A21562981F00486793 /* YCDouble.m */,
+				9C7485A41562981F00486793 /* YCLocation.h */,
+				9C7485A51562981F00486793 /* YCLocation.m */,
+				9C7485A61562981F00486793 /* YCMaps.h */,
+				9C7485A71562981F00486793 /* YCMaps.m */,
+				9C7485A81562981F00486793 /* YCUIKit.h */,
+				9C7485A91562981F00486793 /* YCUIKit.m */,
 			);
 			path = YCUtilities;
 			sourceTree = "<group>";
@@ -2718,6 +2721,7 @@
 		9C85F37E14FBA68C00B49FF4 /* AlarmFind */ = {
 			isa = PBXGroup;
 			children = (
+				9C05ACA01565C91500983108 /* YCMapsGradientShine.png */,
 				9C5B1DB7154E582D009235DB /* YCClockAlarm20.png */,
 				9C5B1DB8154E582D009235DB /* YCClockAlarm20@2x.png */,
 				9C5B1DB1154E56A1009235DB /* YCClockAlarm.png */,
@@ -3452,8 +3456,6 @@
 				9CE894A412FFFFD2008FBD45 /* AlarmDetail */,
 				9CE894A912FFFFD2008FBD45 /* AlarmItemModify */,
 				9CE894BB12FFFFD2008FBD45 /* AlarmList */,
-				9CDEF89A1547BA4600838461 /* CLLocation+AlarmUI.h */,
-				9CDEF89B1547BA4600838461 /* CLLocation+AlarmUI.m */,
 				9CF0C93E1543BDC500052CFE /* YCMapPointAnnotation+AlarmUI.h */,
 				9CF0C93F1543BDC500052CFE /* YCMapPointAnnotation+AlarmUI.m */,
 			);
@@ -3583,6 +3585,8 @@
 			children = (
 				9CE8951812FFFFD2008FBD45 /* IAAlarm.h */,
 				9CE8951912FFFFD2008FBD45 /* IAAlarm.m */,
+				9C0BA7BA15667C240063E50C /* IAAlarmsManager.h */,
+				9C0BA7BB15667C250063E50C /* IAAlarmsManager.m */,
 				9CE8951612FFFFD2008FBD45 /* IAAlarmRadiusType.h */,
 				9CE8951712FFFFD2008FBD45 /* IAAlarmRadiusType.m */,
 				9CE8951A12FFFFD2008FBD45 /* YCPositionType.h */,
@@ -4077,6 +4081,7 @@
 				9CC472191564F62B00F79985 /* YCTexturedButtonTextGradientSmall@2x.png in Resources */,
 				9CC4721F1564F70B00F79985 /* YCTexturedButtonTextGradient@2x.png in Resources */,
 				9CC472221564F76F00F79985 /* YCTexturedButtonTextGradientSmall.png in Resources */,
+				9C05ACA11565C91500983108 /* YCMapsGradientShine.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4431,6 +4436,7 @@
 				9CC4721A1564F62B00F79985 /* YCTexturedButtonTextGradientSmall@2x.png in Resources */,
 				9CC472201564F70B00F79985 /* YCTexturedButtonTextGradient@2x.png in Resources */,
 				9CC472231564F76F00F79985 /* YCTexturedButtonTextGradientSmall.png in Resources */,
+				9C05ACA21565C91500983108 /* YCMapsGradientShine.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4562,7 +4568,6 @@
 				9C1446BB153C79090071EFF2 /* OAToken.m in Sources */,
 				9C1446BD153C79090071EFF2 /* OATokenManager.m in Sources */,
 				9CF0C9401543BDC600052CFE /* YCMapPointAnnotation+AlarmUI.m in Sources */,
-				9CDEF89C1547BA4600838461 /* CLLocation+AlarmUI.m in Sources */,
 				9C66F3F615486CA400577C4F /* BSAddressComponent.m in Sources */,
 				9C66F3F815486CA400577C4F /* BSForwardGeocoder.m in Sources */,
 				9C66F3FA15486CA400577C4F /* BSGoogleV3KmlParser.m in Sources */,
@@ -4573,15 +4578,14 @@
 				9C7485C21562981F00486793 /* YCMapPointAnnotation.m in Sources */,
 				9C7485C41562981F00486793 /* YCPinAnnotationView.m in Sources */,
 				9C7485C61562981F00486793 /* YClocationServicesUsableAlert.m in Sources */,
-				9C7485C81562981F00486793 /* AVAudioPlayer-YC.m in Sources */,
-				9C7485CA1562981F00486793 /* MKMapView-YC.m in Sources */,
-				9C7485CC1562981F00486793 /* NSCoder-YC.m in Sources */,
-				9C7485CE1562981F00486793 /* NSObject-YC.m in Sources */,
-				9C7485D01562981F00486793 /* NSString-YC.m in Sources */,
-				9C7485D21562981F00486793 /* UIApplication-YC.m in Sources */,
+				9C7485CA1562981F00486793 /* MKMapView+YC.m in Sources */,
+				9C7485CC1562981F00486793 /* NSCoder+YC.m in Sources */,
+				9C7485CE1562981F00486793 /* NSObject+YC.m in Sources */,
+				9C7485D01562981F00486793 /* NSString+YC.m in Sources */,
+				9C7485D21562981F00486793 /* UIApplication+YC.m in Sources */,
 				9C7485D61562981F00486793 /* UINavigationController+YC.m in Sources */,
-				9C7485D81562981F00486793 /* UINavigationItem-YC.m in Sources */,
-				9C7485E21562981F00486793 /* UIViewController-YC.m in Sources */,
+				9C7485D81562981F00486793 /* UINavigationItem+YC.m in Sources */,
+				9C7485E21562981F00486793 /* UIViewController+YC.m in Sources */,
 				9C7485F01562981F00486793 /* YCBarButtonItem.m in Sources */,
 				9C7485F21562981F00486793 /* YCPageCurlButtonItem.m in Sources */,
 				9C7485F41562981F00486793 /* YCButton.m in Sources */,
@@ -4600,10 +4604,10 @@
 				9C7486D81562981F00486793 /* YCOverlayImageView.m in Sources */,
 				9C7486DA1562981F00486793 /* YCSoundPlayer.m in Sources */,
 				9C7486DC1562981F00486793 /* YCTapHideBarView.m in Sources */,
-				9C7486DE1562981F00486793 /* YCDouble.c in Sources */,
-				9C7486E01562981F00486793 /* YCLocationUtility.m in Sources */,
-				9C7486E21562981F00486793 /* YCMapsUtility.m in Sources */,
-				9C7486E41562981F00486793 /* YCUIUtility.m in Sources */,
+				9C7486DE1562981F00486793 /* YCDouble.m in Sources */,
+				9C7486E01562981F00486793 /* YCLocation.m in Sources */,
+				9C7486E21562981F00486793 /* YCMaps.m in Sources */,
+				9C7486E41562981F00486793 /* YCUIKit.m in Sources */,
 				9C7486E61562981F00486793 /* YCMaskViewController.m in Sources */,
 				9C74871B1562989500486793 /* FMDatabase.m in Sources */,
 				9C74871D1562989500486793 /* FMDatabaseAdditions.m in Sources */,
@@ -4624,6 +4628,8 @@
 				9C767F071564BCB200A4F397 /* UIButton+YC.m in Sources */,
 				9C767F0B1564BCC700A4F397 /* YCTexturedButton.m in Sources */,
 				9CC472131564F61C00F79985 /* UIColor+YC.m in Sources */,
+				9C05ACA51565FE6000983108 /* CLLocation+YC.m in Sources */,
+				9C0BA7BC15667C250063E50C /* IAAlarmsManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4752,7 +4758,6 @@
 				9C1446BC153C79090071EFF2 /* OAToken.m in Sources */,
 				9C1446BE153C79090071EFF2 /* OATokenManager.m in Sources */,
 				9CF0C9411543BDC600052CFE /* YCMapPointAnnotation+AlarmUI.m in Sources */,
-				9CDEF89D1547BA4600838461 /* CLLocation+AlarmUI.m in Sources */,
 				9C66F3F715486CA400577C4F /* BSAddressComponent.m in Sources */,
 				9C66F3F915486CA400577C4F /* BSForwardGeocoder.m in Sources */,
 				9C66F3FB15486CA400577C4F /* BSGoogleV3KmlParser.m in Sources */,
@@ -4763,15 +4768,14 @@
 				9C7485C31562981F00486793 /* YCMapPointAnnotation.m in Sources */,
 				9C7485C51562981F00486793 /* YCPinAnnotationView.m in Sources */,
 				9C7485C71562981F00486793 /* YClocationServicesUsableAlert.m in Sources */,
-				9C7485C91562981F00486793 /* AVAudioPlayer-YC.m in Sources */,
-				9C7485CB1562981F00486793 /* MKMapView-YC.m in Sources */,
-				9C7485CD1562981F00486793 /* NSCoder-YC.m in Sources */,
-				9C7485CF1562981F00486793 /* NSObject-YC.m in Sources */,
-				9C7485D11562981F00486793 /* NSString-YC.m in Sources */,
-				9C7485D31562981F00486793 /* UIApplication-YC.m in Sources */,
+				9C7485CB1562981F00486793 /* MKMapView+YC.m in Sources */,
+				9C7485CD1562981F00486793 /* NSCoder+YC.m in Sources */,
+				9C7485CF1562981F00486793 /* NSObject+YC.m in Sources */,
+				9C7485D11562981F00486793 /* NSString+YC.m in Sources */,
+				9C7485D31562981F00486793 /* UIApplication+YC.m in Sources */,
 				9C7485D71562981F00486793 /* UINavigationController+YC.m in Sources */,
-				9C7485D91562981F00486793 /* UINavigationItem-YC.m in Sources */,
-				9C7485E31562981F00486793 /* UIViewController-YC.m in Sources */,
+				9C7485D91562981F00486793 /* UINavigationItem+YC.m in Sources */,
+				9C7485E31562981F00486793 /* UIViewController+YC.m in Sources */,
 				9C7485F11562981F00486793 /* YCBarButtonItem.m in Sources */,
 				9C7485F31562981F00486793 /* YCPageCurlButtonItem.m in Sources */,
 				9C7485F51562981F00486793 /* YCButton.m in Sources */,
@@ -4790,10 +4794,10 @@
 				9C7486D91562981F00486793 /* YCOverlayImageView.m in Sources */,
 				9C7486DB1562981F00486793 /* YCSoundPlayer.m in Sources */,
 				9C7486DD1562981F00486793 /* YCTapHideBarView.m in Sources */,
-				9C7486DF1562981F00486793 /* YCDouble.c in Sources */,
-				9C7486E11562981F00486793 /* YCLocationUtility.m in Sources */,
-				9C7486E31562981F00486793 /* YCMapsUtility.m in Sources */,
-				9C7486E51562981F00486793 /* YCUIUtility.m in Sources */,
+				9C7486DF1562981F00486793 /* YCDouble.m in Sources */,
+				9C7486E11562981F00486793 /* YCLocation.m in Sources */,
+				9C7486E31562981F00486793 /* YCMaps.m in Sources */,
+				9C7486E51562981F00486793 /* YCUIKit.m in Sources */,
 				9C7486E71562981F00486793 /* YCMaskViewController.m in Sources */,
 				9C74871C1562989500486793 /* FMDatabase.m in Sources */,
 				9C74871E1562989500486793 /* FMDatabaseAdditions.m in Sources */,
@@ -4814,6 +4818,8 @@
 				9C767F081564BCB200A4F397 /* UIButton+YC.m in Sources */,
 				9C767F0C1564BCC700A4F397 /* YCTexturedButton.m in Sources */,
 				9CC472141564F61C00F79985 /* UIColor+YC.m in Sources */,
+				9C05ACA61565FE6000983108 /* CLLocation+YC.m in Sources */,
+				9C0BA7BD15667C250063E50C /* IAAlarmsManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

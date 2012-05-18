@@ -6,7 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "UIApplication-YC.h"
+#import "UIApplication+YC.h"
 
 
 @implementation UIApplication (YC)

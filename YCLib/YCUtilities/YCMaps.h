@@ -9,27 +9,14 @@
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
 
-@interface YCMapsUtility : NSObject {
 
-}
-
-BOOL YCMKCoordinateSpanIsValid(MKCoordinateSpan span);
 BOOL YCMKCoordinateRegionIsValid(MKCoordinateRegion region);
-/*
-//从地址信息提取地址字符串
-+(NSString*)positionStringFromPlacemark:(MKPlacemark*)placemark;
-+(NSString*)titleStringFromPlacemark:(MKPlacemark*)placemark;
-+(NSString*)positionShortStringFromPlacemark:(MKPlacemark*)placemark;
- */
+
+//比较数据类型；
+BOOL YCMKCoordinateSpanEqualToSpan(MKCoordinateSpan src1,MKCoordinateSpan src2);
+BOOL YCMKCoordinateRegionEqualToRegion(MKCoordinateRegion src1,MKCoordinateRegion src2);
 
 NSString* YCGetAddressString(MKPlacemark* placemark);
 NSString* YCGetAddressShortString(MKPlacemark* placemark);
 NSString* YCGetAddressTitleString(MKPlacemark* placemark);
 
-//比较2个 MKCoordinateRegion；
-//返回值:
-BOOL YCCompareMKCoordinateRegion(MKCoordinateRegion src1,MKCoordinateRegion src2);
-
-
-
-@end

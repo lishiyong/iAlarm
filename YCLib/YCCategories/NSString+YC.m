@@ -6,7 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "NSString-YC.h"
+#import "NSString+YC.h"
 
 
 @implementation NSString (YC)

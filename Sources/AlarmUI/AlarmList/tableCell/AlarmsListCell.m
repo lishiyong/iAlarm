@@ -5,7 +5,7 @@
 //  Created by li shiyong on 11-1-9.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 
-#import "CLLocation+AlarmUI.h"
+#import "CLLocation+YC.h"
 #import "UIColor+YC.h"
 #import "IARegionsCenter.h"
 #import "IANotifications.h"
@@ -50,18 +50,12 @@
     }
 }
 
-- (void)setDistanceLabelWithCurrentLocation:(CLLocation*)curLocation animated:(BOOL)animated;{ 
-    //最后位置过久，不用
-    //NSTimeInterval ti = [curLocation.timestamp timeIntervalSinceNow];
-    //if (ti < -120) curLocation = nil; //120秒内的数据可用
-    
+- (void)setDistanceLabelWithCurrentLocation:(CLLocation*)curLocation animated:(BOOL)animated{ 
     
     if (curLocation && alarm) {
         
-        CLLocation *aLocation = [[[CLLocation alloc] initWithLatitude:alarm.coordinate.latitude longitude:alarm.coordinate.longitude] autorelease];
-        
-        CLLocationDistance distance = [curLocation distanceFromLocation:aLocation];
-        NSString *distanceString = [aLocation distanceStringFromCurrentLocation:curLocation];
+        CLLocationDistance distance = [curLocation distanceFromCoordinate:alarm.coordinate];
+        NSString *distanceString = [curLocation distanceStringFromCoordinate:alarm.coordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
         
         //未设置过 或 与上次的距离超过100米
         //if (distanceFromCurrentLocation < 0.0 || fabs(distanceFromCurrentLocation - distance) > 100.0) 
@@ -115,6 +109,10 @@
     
 }
 
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated{
+    [super setEditing:editing animated:animated];
+    [UIView animateWithDuration:0.25 animations:^{ self.isEnabledLabel.alpha = editing ? 0.0 : 1.0;}];
+}
 
 #pragma mark - Init and Memery
 

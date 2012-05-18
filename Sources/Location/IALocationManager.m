@@ -7,7 +7,7 @@
 //
 
 #import "IAGlobal.h"
-#import "UIApplication-YC.h"
+#import "UIApplication+YC.h"
 #import "IANotifications.h"
 #import "IANotifications.h"
 #import "YCDistanceManager.h"

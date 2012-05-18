@@ -6,7 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "NSString-YC.h"
+#import "NSString+YC.h"
 #import "LocalizedString.h"
 #import "DicManager.h"
 #import "YCSound.h"

@@ -7,7 +7,7 @@
 //
 
 #import "YCShareAppNotifications.h"
-#import "NSObject-YC.h"
+#import "NSObject+YC.h"
 #import "YCShareContent.h"
 #import "MessageBodyCell.h"
 #import "YCBarButtonItem.h"

@@ -12,12 +12,11 @@
 //产生一个唯一的序列号
 NSString* YCSerialCode();
 
-/**
-    The anFloat and anotherFloat are exactly equal to each other, NSOrderedSame
-    The anFloat is greater than anotherFloat, NSOrderedDescending
-    The anFloat is less than anotherFloat, NSOrderedAscending.
- */
-NSComparisonResult compareFloat(CGFloat anFloat, CGFloat anotherFloat);
-
 NSString* NSStringFromCLLocationCoordinate2D(CLLocationCoordinate2D coord);
+
+//比较2个 CGPoint；
+BOOL YCCGPointEqualPoint(CGPoint src1,CGPoint src2);
+
+//比较2个 CGPoint。有允许误差；
+BOOL YCCGPointEqualPointWithOffSet(CGPoint src1,CGPoint src2,NSUInteger offSet);
 

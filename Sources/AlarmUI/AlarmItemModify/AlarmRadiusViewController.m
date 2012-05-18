@@ -9,7 +9,7 @@
 #import "YCLocationManager.h"
 #import "IAGlobal.h"
 #import "YCAnnotation.h"
-#import "YCLocationUtility.h"
+#import "YCLocation.h"
 #import "CustomPickerController.h"
 #import "UIUtility.h"
 #import "IAAlarm.h"
@@ -210,7 +210,7 @@
     CLLocationCoordinate2D centerCoordinate = self.alarm.visualCoordinate;
     
 	if (!CLLocationCoordinate2DIsValid(centerCoordinate)) {
-		centerCoordinate = YCDefaultCoordinate(); //缺省坐标－apple公司总部坐标
+		centerCoordinate = kYCDefaultCoordinate; //缺省坐标－apple公司总部坐标
 	}
 	MKCoordinateRegion newCircleRegion = MKCoordinateRegionMakeWithDistance(centerCoordinate, alarmRadius*2, alarmRadius*2);
 	
@@ -372,7 +372,7 @@
 	//大头针
 	CLLocationCoordinate2D visualCoordinate = self.alarm.visualCoordinate;
 	if (!CLLocationCoordinate2DIsValid(visualCoordinate)) {
-		visualCoordinate = YCDefaultCoordinate(); //缺省作弊－apple公司总部坐标
+		visualCoordinate = kYCDefaultCoordinate; //缺省作弊－apple公司总部坐标
 	}
 	[self.mapView removeAnnotations:self.mapView.annotations];
 	MKPlacemark *annotation = [[[MKPlacemark alloc] initWithCoordinate:visualCoordinate addressDictionary:nil] autorelease];

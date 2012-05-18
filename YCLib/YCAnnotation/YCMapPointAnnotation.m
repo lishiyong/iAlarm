@@ -50,11 +50,13 @@
     //通过设置coordinate来更新realCoordinate
     if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled] && [[YCLocationManager sharedLocationManager] isInChinaWithCoordinate:theRealCoordinate]) { //开启了转换选项 并且 坐标在中国境内
         
-        self.coordinate = [[YCLocationManager sharedLocationManager] convertToMarsCoordinateFromCoordinate:theRealCoordinate];
+        coordinate = [[YCLocationManager sharedLocationManager] convertToMarsCoordinateFromCoordinate:theRealCoordinate];
         
     }else{
-        self.coordinate = theRealCoordinate;
+        coordinate = theRealCoordinate;
     }
+    
+    realCoordinate = theRealCoordinate;
 }
 
 - (void)dealloc{

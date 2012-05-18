@@ -11,7 +11,7 @@
 #import "YCTwitterTweetViewController.h"
 #import "YCFacebookFeedViewController.h"
 #import "YCShareAppNotifications.h"
-#import "NSObject-YC.h"
+#import "NSObject+YC.h"
 #import "UIUtility.h"
 #import "YCSystemStatus.h"
 #import "LocalizedStringAbout.h"

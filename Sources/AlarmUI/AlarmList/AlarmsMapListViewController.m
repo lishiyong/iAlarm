@@ -8,13 +8,13 @@
 
 #import "YCFunctions.h"
 #import "YCLocationManager.h"
-#import "UIApplication-YC.h"
+#import "UIApplication+YC.h"
 #import "iAlarmAppDelegate.h"
 #import "YCMapPointAnnotation+AlarmUI.h"
 #import "YCOverlayImageView.h"
 #import "YCOverlayImage.h"
-#import "NSObject-YC.h"
-#import "UIViewController-YC.h"
+#import "NSObject+YC.h"
+#import "UIViewController+YC.h"
 #import "IANotifications.h"
 #import "IABuyManager.h"
 #import "YCAnimateRemoveFileView.h"
@@ -24,12 +24,12 @@
 #import "IASaveInfo.h"
 #import "YCRemoveMinusButton.h"
 #import "AlarmListNotifications.h"
-#import "YCMapsUtility.h"
+#import "YCMaps.h"
 #import "YCParam.h"
 #import "IAAlarmRadiusType.h"
 #import "YCAnnotation.h"
-#import "MKMapView-YC.h"
-#import "YCLocationUtility.h"
+#import "MKMapView+YC.h"
+#import "YCLocation.h"
 #import "YCSystemStatus.h"
 #import "UIUtility.h"
 #import "YCTapHideBarView.h"
@@ -161,9 +161,9 @@
 		CLLocationCoordinate2D center =  CLLocationCoordinate2DMake((maxLati + minLati)/2, (maxLong + minLong)/2);
 		MKCoordinateSpan span = MKCoordinateSpanMake((maxLati - minLati)*2.5, (maxLong - minLong)*2.5); //1.x倍span免得不能完全显示，
 		r = MKCoordinateRegionMake(center,span);
-		r = [self.mapView regionThatFits:r]; //修正一下
 	}
-	
+    
+	r = [self.mapView regionThatFits:r]; //修正一下
 	return r;
 	
 }
@@ -274,9 +274,8 @@
 	if (!CLLocationCoordinate2DIsValid(userCurrentLocation)) return NO; //无效坐标
 	
 	CGPoint userCurrentLocationPoint = [self.mapView convertCoordinate:userCurrentLocation toPointToView:nil];
-	int isA = YCCompareCGPointWithOffSet(currentMapCenterPoint, userCurrentLocationPoint,2); //允许误差2个像素
-
-	return (isA == 0) ? YES : NO;
+    
+	return YCCGPointEqualPointWithOffSet(currentMapCenterPoint, userCurrentLocationPoint,2);//允许误差2个像素
 }
 
 
@@ -477,56 +476,23 @@
 	
 }
 
-////选中。为了延时调用
--(void)selectForAnnotation:(id<MKAnnotation>)annotation{
-	
-	BOOL setAnimated = NO;
-	if (self->isApparing) setAnimated = YES;
-	[self.mapView selectAnnotation:annotation animated:setAnimated];//选中
-	
+//没有选中的，选中最近的.使被选中的在可视范围内
+-(void)selectAndVisibleTheNearestAnnotationFromCoordinate:(CLLocationCoordinate2D)fromCoordinate animated:(BOOL)animated{
+    //选中最近的一个
+    if (self.mapView.selectedAnnotations.count <=0){
+        id<MKAnnotation> selecting = [self.mapView theNearestAnnotationFromCoordinate:self.mapView.centerCoordinate];
+        if (!selecting) 
+            return;
+        
+        //使被选中的在可视范围内
+        BOOL isVisible = [self.mapView visibleForAnnotation:selecting]; //是否在可视范围
+        if (!isVisible) 
+            [self.mapView setCenterCoordinate:selecting.coordinate animated:animated];
+        
+        [self.mapView selectAnnotation:selecting animated:animated];
+        
+    }
 }
-
-//没有选中的，选中第一个.使被选中的在可视范围内
--(void)selectFirstPinAndVisibleAnimated:(BOOL)animated{
-	
-	if (self.mapAnnotations == nil || self.mapAnnotations.count==0 )//至少有1个pin
-		return;
-
-	id annotationSelected = [self.mapView.selectedAnnotations objectAtIndex:0];//目前选中的
-	
-	YCAnnotation *annotationSelecting = nil;//将要选中的
-	if ([annotationSelected isKindOfClass:[YCAnnotation class]]) //选中的是不是pin
-		 annotationSelecting = annotationSelected;
-	else
-		 annotationSelecting = [self.mapAnnotations objectAtIndex:0];
-		 
-	 //使被选中的在可视范围内
-	 BOOL isVisible = [self.mapView visibleForAnnotation:annotationSelecting]; //是否在可视范围
-	 if (!isVisible) {
-		 if ([annotationSelecting isKindOfClass:[YCAnnotation class]]) {
-			 CLLocationCoordinate2D coordinate =  ((YCAnnotation*)annotationSelecting).coordinate;
-			 if(animated)
-				 [self.mapView setCenterCoordinate:coordinate animated:YES];
-			 else 
-				 [self.mapView setCenterCoordinate:coordinate];
-		 }
-	 }
-	
-	//先居中，后选中
-	if (annotationSelecting != annotationSelected) {
-		if(animated)
-			[self.mapView selectAnnotation:annotationSelecting animated:YES];
-		else 
-			[self.mapView selectAnnotation:annotationSelecting];
-	}
-	
-}
-
--(void)selectFirstPinAndVisibleAnimatedObj:(NSNumber*/*BOOL*/)animatedObj{
-	BOOL b = [animatedObj boolValue];
-	[self selectFirstPinAndVisibleAnimated:b];
-}
-
 
 //tableView的编辑状态
 - (void) handle_alarmListEditStateDidChange:(NSNotification*) notification {	
@@ -540,7 +506,6 @@
 
 	//}
 	 
-
 }
 
 -(void)animateRemoveAnnotion:(id<MKAnnotation>)annotation{
@@ -598,11 +563,22 @@
 			
 			if ([(NSNotification*)notification object] == self) {
 				[self animateRemoveAnnotion:annotation]; //在自己的上删除，动画效果。自己只能删除
-				//[self performSelector:@selector(selectingPinAndVisible) withObject:nil afterDelay:1.0]; 
-				[self performSelector:@selector(selectFirstPinAndVisibleAnimated:) withObject:[NSNumber numberWithBool:YES] afterDelay:1.0];//播放删除完动画，再移动地图
+                
+                //播放删除完动画，再移动地图
+                CLLocationCoordinate2D coordinate = annotation.coordinate;
+                BOOL animated = YES;
+                SEL selector = @selector(selectAndVisibleTheNearestAnnotationFromCoordinate:animated:);
+                NSMethodSignature *signature = [self methodSignatureForSelector:selector];
+                NSInvocation *invocaton = [NSInvocation invocationWithMethodSignature:signature];
+                [invocaton setTarget:self];
+                [invocaton setSelector:selector];
+                [invocaton setArgument:&coordinate atIndex:2];  //self,_cmd分别占据0、1
+                [invocaton setArgument:&animated atIndex:3];
+                [invocaton performSelector:@selector(invoke) withObject:nil afterDelay:1.0];
+                
 			}else {
 				[self.mapView removeAnnotation:annotation];
-				[self selectFirstPinAndVisibleAnimated:NO]; //没有选中的，选中第一个;使被选中的在可视范围内
+                [self selectAndVisibleTheNearestAnnotationFromCoordinate: annotation.coordinate animated:NO];//选中离被删除最近的
 			}
 			
 			if ([self.mapAnnotations count] == 0) {
@@ -649,14 +625,15 @@
 		case IASaveTypeAdd:
 			annotation = [self insertAnnotationWithAlarm:[IAAlarm findForAlarmId:alarmId] atIndex:0];
 			if (!annotation) break;
-			//[self.mapView addAnnotation:annotation];
 			[self.mapView performSelectorOnMainThread:@selector(addAnnotation:) withObject:annotation waitUntilDone:YES];
 			
-			//新增的在屏幕中央
-			if(self->isApparing)
-				[self.mapView setCenterCoordinate:annotation.coordinate animated:YES];
-			else 
-				[self.mapView setCenterCoordinate:annotation.coordinate];
+			//新增的要弄到可视范围内
+            if (![self.mapView visibleForAnnotation:annotation]) {
+                if(self->isApparing)
+                    [self.mapView setCenterCoordinate:annotation.coordinate animated:YES];
+                else 
+                    [self.mapView setCenterCoordinate:annotation.coordinate];
+            }
 			
 			//如果屏幕没打开
 			if (NO == self.maskView.hidden){
@@ -752,11 +729,9 @@
     
 }
 
-
-
 - (void) handle_letAlarmMapsViewHaveAPinVisibleAndSelected:(id)notification{	
 	//没有选中的，选中第一个;使被选中的在可视范围内
-	[self selectFirstPinAndVisibleAnimated:YES];
+    [self selectAndVisibleTheNearestAnnotationFromCoordinate:self.mapView.centerCoordinate animated:YES];
 }
 
 //为了延时调用
@@ -873,6 +848,7 @@
 		}
 		
 	}
+    
 	
 	MKCoordinateRegion region = [self allPinsRegion];
 	
@@ -1333,8 +1309,6 @@
 	if(![annotationView isKindOfClass:[YCPinAnnotationView class]]) return; //按的不是pin
 	
 	
-
-
 	if (UIGestureRecognizerStateBegan == sender.state){ //只处理长按开始
 		
 		//[(YCPinAnnotationView*)annotationView performSelector:@selector(updatePinColor) withObject:nil afterDelay:0.25];
@@ -1462,118 +1436,7 @@
  */
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch{
-    /*
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     
-    //点的范围是否在UICalloutView内
-    BOOL touchInCalloutView = NO;
-    id<MKAnnotation> selectedAnnotation = nil;
-    MKAnnotationView *selectedView = nil;
-    if (self.mapView.selectedAnnotations.count >0) {
-        selectedAnnotation = [self.mapView.selectedAnnotations objectAtIndex:0];
-        selectedView = [self.mapView viewForAnnotation:selectedAnnotation];
-    }
-    
-    if ([selectedView isKindOfClass:[MKPinAnnotationView class]]) {
-        
-        UIView *calloutView = nil;
-        NSArray *subArray =[selectedView subviews];
-        for (UIView *subView in subArray) {
-            NSString *className = NSStringFromClass([subView class]) ;
-            if ([className isEqualToString:@"UICalloutView"]){
-                calloutView = subView;
-                break;
-            }
-        }
-        
-        if (calloutView) {
-            CGRect calloutViewFrame = [self.view convertRect:calloutView.frame fromView:selectedView];
-            CGPoint touchPoint = [touch locationInView:self.view]; 
-            touchInCalloutView = CGRectContainsPoint(calloutViewFrame,touchPoint);
-        }
-        
-    }
-    
-    
-    if (touchInCalloutView) {//点的范围内，响应自定义的,免得被下一个响应者给处理了
-        if (gestureRecognizer == tapCalloutViewGesture) 
-            return YES;
-        else 
-            return NO;
-    }
-    
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    if (gestureRecognizer == tapCalloutViewGesture){
-        return NO; //除了测试UICalloutView，tapCalloutViewGesture这个就没用了
-    }
-    
-    UIView *tapView = gestureRecognizer.view;
-    if ([tapView isKindOfClass:[YCPinAnnotationView class]] 
-        || [tapView isKindOfClass:[MKUserLocation class]]) { //点了一个pin或当前位置蓝点，固有的响应
-        if (gestureRecognizer == tapMapViewGesture) 
-            return NO;
-        else //UIMapView固有的
-            return YES;
-	}
-    
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    if (!self.toolbarFloatingView.hidden) { //有浮动菜单，响应自定义的
-        if (gestureRecognizer == tapMapViewGesture) 
-            return YES;
-        else if([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])//UIMapView固有的
-            return NO;
-    }
-    
-    
-    BOOL isNavigationBarHidden = [(UINavigationController*)[(iAlarmAppDelegate*)[UIApplication sharedApplication].delegate viewController] isNavigationBarHidden];
-    //注意: 依赖iAlarmAppDelegate 的viewController的类型
-    
-    BOOL selectedPinIsVisible = NO; //选中的pin在屏幕中
-    if (self.mapView.selectedAnnotations.count > 0){
-        
-        id selected = [self.mapView.selectedAnnotations objectAtIndex:0];
-        if ([self.mapView visibleForAnnotation:selected]) 
-            selectedPinIsVisible = YES;
-        else
-            selectedPinIsVisible = NO;
-        
-    }else{
-        selectedPinIsVisible = NO;
-    }
-    
-    
-    if (isNavigationBarHidden) { //bar隐藏,什么情况交给自定义的处理
-        if (gestureRecognizer == tapMapViewGesture) 
-            return YES;
-        else if([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])//UIMapView固有的
-            return NO;
-    }else{
-        if (selectedPinIsVisible) {//屏幕有选中的pin,交个固有的
-
-            if (gestureRecognizer == tapMapViewGesture) 
-                return NO;
-            else if([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])//UIMapView固有的
-                return YES;
-
-        }else{
-            
-            if (gestureRecognizer == tapMapViewGesture) 
-                return YES;
-            else if([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])//UIMapView固有的
-                return NO; 
-            
-        }
-        
-    }
-    
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    return YES;
-     
-    */
-        
     //点的范围是否在UICalloutView内
     BOOL touchInCalloutView = NO;
     id<MKAnnotation> selectedAnnotation = nil;
@@ -2103,25 +1966,18 @@
 	[notificationCenter performSelector:@selector(postNotification:) withObject:currentLocationNotification afterDelay:0.0];
 	
 	//设置“显示所有按钮”的可用状态。
-	BOOL focusStatus = NO;
+    BOOL focusStatus = NO;
 	if (self.alarms.count >0) {
-		//有一个pin不可视，按钮就可用
-		BOOL isHaveAPinVisible = NO;
-		for (YCAnnotation *anAnnotation in self.mapAnnotations) {
-			isHaveAPinVisible = [self.mapView visibleForAnnotation:anAnnotation];
-			if (!isHaveAPinVisible)
-				break;
-		}
-		focusStatus = !isHaveAPinVisible;
+		//有地图范围改变了，按钮就可用
+		focusStatus = !YCMKCoordinateRegionEqualToRegion(self.mapView.region, [self allPinsRegion]);
 	}
 	NSDictionary *focusDic = [NSDictionary dictionaryWithObjectsAndKeys:
-										 [NSNumber numberWithInteger:2],IAControlIdKey
-										,[NSNumber numberWithBool:focusStatus],IAControlStatusKey
-										,nil];
+                              [NSNumber numberWithInteger:2],IAControlIdKey
+                              ,[NSNumber numberWithBool:focusStatus],IAControlStatusKey
+                              ,nil];
 	NSNotification *focusNotification = [NSNotification notificationWithName:IAControlStatusShouldChangeNotification object:self userInfo:focusDic];
 	[notificationCenter performSelector:@selector(postNotification:) withObject:focusNotification afterDelay:0.0];
-	
-	
+    
 	
 	//设置警示半径圈
 	if (self.circleOverlays) {

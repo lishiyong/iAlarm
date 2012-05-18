@@ -6,7 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "NSObject-YC.h"
+#import "NSObject+YC.h"
 
 
 @implementation NSObject (YC)

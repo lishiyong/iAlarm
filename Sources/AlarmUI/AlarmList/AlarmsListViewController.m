@@ -8,10 +8,10 @@
 //#import "iAlarmAppDelegate.h"
 //#import "UIApplication-YC.h"
 
-#import "UIApplication-YC.h"
+#import "UIApplication+YC.h"
 #import "IARegionsCenter.h"
 #import "YCSystemStatus.h"
-#import "UIViewController-YC.h"
+#import "UIViewController+YC.h"
 #import "IANotifications.h"
 #import "YCParam.h"
 #import "IABuyManager.h"
@@ -62,14 +62,14 @@
 #pragma mark Utility 
 
 -(void)setUIEditing:(BOOL)theEditing{
-	
 	NSUInteger rowCount = [self tableView:(UITableView*)self.view numberOfRowsInSection:0];
 	self.backgroundTextLabel.hidden = (rowCount > 0); //背景文字
+    
 	if (rowCount == 0) {//行数>0,才可以编辑
 		[self.alarmListTableView setEditing:NO animated:YES] ;
 		self.navigationItem.leftBarButtonItem = nil; //编辑按钮 
 	}else {
-		[self.alarmListTableView setEditing:theEditing animated:YES] ;
+		[self.alarmListTableView setEditing:theEditing animated:YES];
 	}
 }
 
@@ -286,8 +286,50 @@
 	
 }
 
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+	return YES;
+}
 
+- (void)abctest{
+    while (self.alarmListTableView.visibleCells.count < 4) {
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+    }
+    
+    NSMutableArray *alarms = (NSMutableArray*)[IAAlarm alarmArray];
+    //上下阴影
+    for (AlarmsListCell *aCell in self.alarmListTableView.visibleCells) {
+        NSIndexPath *indexPath = [self.alarmListTableView indexPathForCell:aCell];
+        NSLog(@"indexPath.row = %d",indexPath.row);
+        
+        if (indexPath.row == 0) {
+            aCell.topShadowView.hidden = NO;
+            aCell.bottomShadowView.hidden = YES;
+        }else if(indexPath.row == (alarms.count -1)){
+            aCell.topShadowView.hidden = YES;
+            aCell.bottomShadowView.hidden = NO;
+        }else{
+            aCell.topShadowView.hidden = YES;
+            aCell.bottomShadowView.hidden = YES;
+        }
+    }
+}
 
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath{
+
+    NSMutableArray *alarms = (NSMutableArray*)[IAAlarm alarmArray];
+    
+    id object = [[alarms objectAtIndex:fromIndexPath.row] retain];
+    [alarms removeObjectAtIndex:fromIndexPath.row];
+    [alarms insertObject:object atIndex:toIndexPath.row];
+    [object release];
+
+    [IAAlarm saveAlarms];
+    
+    [self performSelector:@selector(abctest) withObject:nil afterDelay:0.0];
+    
+    //[self.alarmListTableView performSelector:@selector(reloadData) withObject:nil afterDelay:1.0];
+        
+}
 
 #pragma mark -
 #pragma mark Table view delegate

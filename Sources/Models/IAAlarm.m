@@ -9,9 +9,9 @@
 #import "YCLocationManager.h"
 #import "YCFunctions.h"
 #import "IABuyManager.h"
-#import "UIApplication-YC.h"
+#import "UIApplication+YC.h"
 #import "IASaveInfo.h"
-#import "NSCoder-YC.h"
+#import "NSCoder+YC.h"
 #import "LocalizedString.h"
 #import "YCPositionType.h"
 #import "YCSound.h"
@@ -369,6 +369,12 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	return alarms;
 }
 
++ (void)saveAlarms{
+    NSArray *alarms = [IAAlarm alarmArray];
+    NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kDataFilename];
+	[NSKeyedArchiver archiveRootObject:alarms toFile:filePathName];
+}
+
 - (void)setCoordinate:(CLLocationCoordinate2D)theCoordinate{
     coordinate = theCoordinate;
     visualCoordinate = kCLLocationCoordinate2DInvalid;//要重新计算它
@@ -394,11 +400,13 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
     //通过设置coordinate来更新visualCoordinate
     if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled] && [[YCLocationManager sharedLocationManager] isInChinaWithCoordinate:theVisualCoordinate]) { //开启了转换选项 并且 坐标在中国境内
         
-        self.coordinate = [[YCLocationManager sharedLocationManager] convertToCoordinateFromMarsCoordinate:theVisualCoordinate];
+        coordinate = [[YCLocationManager sharedLocationManager] convertToCoordinateFromMarsCoordinate:theVisualCoordinate];
         
     }else{
-        self.coordinate = theVisualCoordinate;
+        coordinate = theVisualCoordinate;
     }
+    
+    visualCoordinate = theVisualCoordinate;
 }
 
 

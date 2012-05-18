@@ -6,7 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "UINavigationItem-YC.h"
+#import "UINavigationItem+YC.h"
 #import <QuartzCore/QuartzCore.h>
 
 

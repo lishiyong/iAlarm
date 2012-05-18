@@ -6,16 +6,39 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "YCMapsUtility.h"
-#import "YCLocationUtility.h"
-#import "MKMapView-YC.h"
+#import "YCMapPointAnnotation.h"
+#import "YCMaps.h"
+#import "YCLocation.h"
+#import "MKMapView+YC.h"
 
+@interface MKMapView (private)
+/**
+ 不与当前位置取中点
+ **/
+- (void)newZoomToWorld:(CLLocationCoordinate2D)world animated:(BOOL)animated;
+- (void)newAnimateToWorldWithObj:(id/*CLLocationCoordinate2D*/)obj;
+
+- (void)zoomToWorld:(CLLocationCoordinate2D)world animated:(BOOL)animated;
+- (void)zoomToPlace:(MKCoordinateRegion)place animated:(BOOL)animated;
+- (void)animateToWorldWithObj:(id/*CLLocationCoordinate2D*/)obj;
+- (void)animateToPlaceWithObj:(id/*MKCoordinateRegion*/)obj;
+
+@end
 
 @implementation MKMapView (YC)
 
+- (void)newZoomToWorld:(CLLocationCoordinate2D)world animated:(BOOL)animated
+{   
+	if (!CLLocationCoordinate2DIsValid(world)) 
+		return;
+    
+    MKCoordinateRegion zoomOut = { { world.latitude, world.longitude }, {45, 45} };
+    [self setRegion:zoomOut animated:animated];
+}
+
 - (void)zoomToWorld:(CLLocationCoordinate2D)world animated:(BOOL)animated
 {   
-	if (!CLLocationCoordinate2DIsValid(world)) //无效返回
+	if (!CLLocationCoordinate2DIsValid(world)) 
 		return;
 	
     MKCoordinateRegion current = self.region;
@@ -37,6 +60,14 @@
     [self setRegion:place animated:animated];
 }
 
+- (void)newAnimateToWorldWithObj:(id/*CLLocationCoordinate2D*/)obj
+{   
+	CLLocationCoordinate2D target;
+	[obj getValue:&target];
+	
+	[self newZoomToWorld:target animated:YES];
+	
+}
 
 - (void)animateToWorldWithObj:(id/*CLLocationCoordinate2D*/)obj
 {   
@@ -78,12 +109,12 @@
 			{   delay +=0.3;
 				CLLocationCoordinate2D coordinate = region.center;
 				NSValue *coordinateObj = [NSValue valueWithBytes:&coordinate objCType:@encode(CLLocationCoordinate2D)];
-				[self performSelector:@selector(animateToWorldWithObj:) withObject:coordinateObj afterDelay:delay];
+				[self performSelector:@selector(newAnimateToWorldWithObj:) withObject:coordinateObj afterDelay:delay];
 			}else {
-				[self zoomToWorld:region.center animated:NO];
+				[self newZoomToWorld:region.center animated:NO];
 			}
 		}else {
-			[self zoomToWorld:region.center animated:NO];
+			[self newZoomToWorld:region.center animated:NO];
 		}
 		
 	}
@@ -122,7 +153,6 @@
 	[invocaton setArgument:&animated atIndex:3];
 	[invocaton performSelector:@selector(invoke) withObject:nil afterDelay:0.1];
 	 
-	
 }
 
 //从指定的array中选中index
@@ -150,10 +180,8 @@
 }
 
 -(void)selectAnnotationAtIndex:(NSInteger)index animated:(BOOL)animated
-{
-	
+{	
 	[self selectAnnotationFromAnnotations:self.annotations AtIndex:index animated:animated];
-	
 }
 
 //自带的 selectAnnotation:animated: 非动画调用。为了延时调用
@@ -168,5 +196,25 @@
 	return MKMapRectContainsPoint(vMKRect,annotationMKPoint);
 }
 
+- (YCMapPointAnnotation*)theNearestAnnotationFromCoordinate:(CLLocationCoordinate2D)Coordinate{
+    if (self.annotations.count == 0) {
+        return nil;
+    }
+    
+    YCMapPointAnnotation *annotation = nil;
+    CLLocationDistance distance = 8.0E+307;
+    for (id<MKAnnotation> anAnnotation in self.annotations) {
+        if (![anAnnotation isKindOfClass: [YCMapPointAnnotation class]]) 
+            continue;
+        
+        CLLocationDistance distanceTmp = distanceBetweenCoordinates(Coordinate, anAnnotation.coordinate);
+        if (distanceTmp < distance) {
+            distance = distanceTmp;
+            annotation = (YCMapPointAnnotation*)anAnnotation;
+        }
+    }
+    
+    return annotation;
+}
 
 @end

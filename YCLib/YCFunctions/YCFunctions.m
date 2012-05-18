@@ -16,18 +16,45 @@ NSString* YCSerialCode(){
 	return ss;
 }
 
-
-NSComparisonResult compareFloat(CGFloat anFloat, CGFloat anotherFloat){
-    if (fabs(anFloat - anotherFloat) < 1.0e-5) {
-        return NSOrderedSame;
-    }else if(anFloat >anotherFloat){
-        return NSOrderedDescending;
-    }else{
-        return NSOrderedAscending;
-    }
-}
-
 NSString* NSStringFromCLLocationCoordinate2D(CLLocationCoordinate2D coord){
     return [NSString stringWithFormat:@"latitude = %.6f, longitude = %.6f",coord.latitude,coord.longitude];
 }
 
+BOOL YCCGPointEqualPoint(CGPoint src1,CGPoint src2){
+	
+	//CGPoint的x和y 使用double四舍五入后的整数部分
+	BOOL retVal = NO;
+	
+	int src1X= src1.x > 0 ? (int)(src1.x+0.5):(int)(src1.x-0.5);
+	int src1Y= src1.y > 0 ? (int)(src1.y+0.5):(int)(src1.y-0.5);
+	
+	int src2X= src2.x > 0 ? (int)(src2.x+0.5):(int)(src2.x-0.5);
+	int src2Y= src2.y > 0 ? (int)(src2.y+0.5):(int)(src2.y-0.5);
+	
+	if (src1X == src2X) {
+		if (src1Y == src2Y) {
+			retVal = YES;
+		}
+	}
+	
+	return retVal;
+}
+
+BOOL YCCGPointEqualPointWithOffSet(CGPoint src1,CGPoint src2,NSUInteger offSet){
+    
+	BOOL retVal = NO;
+	
+	int src1X= src1.x ;
+	int src1Y= src1.y ;
+	
+	int src2X= src2.x ;
+	int src2Y= src2.y ;
+	
+	if (abs(src1X - src2X) < offSet) {
+		if (abs(src1Y - src2Y) < offSet ) {
+			retVal = YES;
+		}
+	}
+	
+	return retVal;
+}

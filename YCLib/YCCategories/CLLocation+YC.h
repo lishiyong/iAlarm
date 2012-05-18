@@ -10,4 +10,18 @@
 
 @interface CLLocation (YC)
 
+/**
+ 假定坐标的海拔与接收者相同
+ **/
+- (CLLocationDistance)distanceFromCoordinate:(const CLLocationCoordinate2D)coordinate;
+
+/**
+ 假定坐标的海拔与接收者相同
+ **/
+- (NSString*)distanceStringFromCoordinate:(const CLLocationCoordinate2D)coordinate withFormat1:(NSString*)formate1 withFormat2:(NSString*)formate2 ;
+
+- (NSString*)distanceStringFromLocation:(const CLLocation*)location withFormat1:(NSString*)formate1 withFormat2:(NSString*)formate2;
+
+
+
 @end

@@ -7,7 +7,7 @@
 //
 
 #import "IAAlarm.h"
-#import "UIApplication-YC.h"
+#import "UIApplication+YC.h"
 #import "IAAlarmNotification.h"
 #import "IAAlarmNotificationCenter.h"
 

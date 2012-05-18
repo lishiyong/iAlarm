@@ -203,11 +203,10 @@ AAgACAAIAAEAAQABAAE</bytes>
 												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="844439163"/>
 												<reference key="IBUIBackgroundColor" ref="151062427"/>
-												<float key="IBUIAlpha">0.30000001192092896</float>
 												<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 												<object class="NSCustomResource" key="IBUIImage">
 													<string key="NSClassName">NSImage</string>
-													<string key="NSResourceName">IAGlassMask.png</string>
+													<string key="NSResourceName">YCMapsGradientShine.png</string>
 												</object>
 											</object>
 											<object class="IBUIImageView" id="844439163">
@@ -949,8 +948,8 @@ AAgACAAIAAEAAQABAAE</bytes>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="IAGlassMask.png">{320, 200}</string>
 			<string key="YCClockAlarm.png">{32, 32}</string>
+			<string key="YCMapsGradientShine.png">{96, 64}</string>
 			<string key="YCTexturedButton.png">{302, 46}</string>
 			<string key="horizontal_etched_line.png">{1, 2}</string>
 		</dictionary>

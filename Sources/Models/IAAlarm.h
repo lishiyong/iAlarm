@@ -124,6 +124,8 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 //发送通知更新所有关联视图
 - (void)sendNotifyToUpdateAllViewsFromSender:(id)sender;
 
++(void)saveAlarms;//保存列表
+
 
 //根据Id找到闹钟
 + (id)findForAlarmId:(NSString*)theAlarmId;

@@ -112,6 +112,4 @@ typedef enum {
 -(void)beginLocation;
 -(void)endLocation;
 
-- (NSString*)distanceStringFromDestionationToCurrentLocation:(CLLocation*)location;
-
 @end

@@ -6,12 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "YCUIUtility.h"
-
-
-@implementation YCUIUtility
-
-@end
+#import "YCUIKit.h"
 
 CGFloat textLabelWidth(NSString*text, UIFont* font){
 	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 0.0)] ;

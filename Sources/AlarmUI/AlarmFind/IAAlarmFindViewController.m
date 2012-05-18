@@ -15,7 +15,7 @@
 #import "IANotifications.h"
 #import "YCSystemStatus.h"
 #import "LocalizedString.h"
-#import "NSString-YC.h"
+#import "NSString+YC.h"
 #import "IAAlarm.h"
 #import "YCSound.h"
 #import "YCPositionType.h"

@@ -6,14 +6,14 @@
 //  Copyright __MyCompanyName__ 2010. All rights reserved.
 //
 
-#import "NSString-YC.h"
+#import "NSString+YC.h"
 #import "IAAlarmFindViewController.h"
 #import "IAAlarmNotification.h"
 #import "IAAlarmNotificationCenter.h"
 #import "LocationManagerFactory.h"
 #import "IABasicLocationManager.h"
 #import "IARegionMonitoringLocationManager.h"
-#import "NSObject-YC.h"
+#import "NSObject+YC.h"
 #import "ShareAppConfig.h"
 #import "LocalizedStringAbout.h"
 #import "IANotifications.h"
@@ -21,7 +21,7 @@
 #import "YCPositionType.h"
 #import "YClocationServicesUsableAlert.h"
 #import "YCSystemStatus.h"
-#import "UIApplication-YC.h"
+#import "UIApplication+YC.h"
 #import "IARegionsCenter.h"
 #import "YCSoundPlayer.h"
 #import "YCParam.h"
@@ -321,27 +321,6 @@
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	NSNotification *aNotification = [NSNotification notificationWithName:IAAlarmDidAlertNotification object:self userInfo:nil];
 	[notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
-
-	
-	
-	/*
-	NSString *alertBody = nil;
-	
-	CLLocationCoordinate2D curCoordinate = currentLocation.coordinate;
-	if (CLLocationCoordinate2DIsValid(curCoordinate)) {
-		
-		CLLocation *curLocation = [[CLLocation alloc] initWithLatitude:curCoordinate.latitude longitude:curCoordinate.longitude];
-		CLLocation *regLocation = [[CLLocation alloc] initWithLatitude:alarmForNotif.coordinate.latitude longitude:alarmForNotif.coordinate.longitude];
-		CLLocationDistance distance = [curLocation distanceFromLocation:regLocation];	
-		NSString *promptTemple = arrived?kAlertFrmStringArrived:kAlertFrmStringLeaved;
-		alertBody = [[[NSString alloc] initWithFormat:promptTemple,alarmForNotif.alarmName,distance] autorelease];
-		
-		//修改 2011-09-05
-		[curLocation release];
-		[regLocation release];
-		
-	}
-     */
 
     
     IAAlarm *alarmForNotif = region.alarm;

@@ -12,9 +12,9 @@
 #import "YCSearchBarNotification.h"
 #import "IAAboutViewController.h"
 #import "IAAlarmFindViewController.h"
-#import "NSObject-YC.h"
-#import "YCMapsUtility.h"
-#import "MKMapView-YC.h"
+#import "NSObject+YC.h"
+#import "YCMaps.h"
+#import "MKMapView+YC.h"
 #import "UIUtility.h"
 #import "YCSearchBar.h"
 #import "YCSystemStatus.h"
@@ -763,12 +763,33 @@
 	NSNotification *aNotification = [NSNotification notificationWithName:IACurrentLocationButtonPressedNotification object:self userInfo:nil];
 	[notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
     
+    //地图移动期间禁止用户操作
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+    [[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:2.5];//加解禁的保险
+    
+    while (self.currentLocationBarButtonItem.enabled && [UIApplication sharedApplication].isIgnoringInteractionEvents) {
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+    }
+    if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+    
+    
 }
 
 - (void)focusButtonPressed:(id)sender{
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	NSNotification *aNotification = [NSNotification notificationWithName:IAFocusButtonPressedNotification object:self userInfo:nil];
 	[notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
+    
+    //地图移动期间禁止用户操作
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+    [[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:2.5];//加解禁的保险
+    
+    while (self.focusBarButtonItem.enabled && [UIApplication sharedApplication].isIgnoringInteractionEvents) {
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];//加解禁的保险
+    }
+    if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
 }
 
 - (void)mapTypeButtonPressed:(id)sender{

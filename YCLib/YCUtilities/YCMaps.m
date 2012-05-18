@@ -7,21 +7,13 @@
 //
 
 #import "YCDouble.h"
-#import "NSString-YC.h"
-#import "YCLocationUtility.h"
-#import "YCMapsUtility.h"
+#import "NSString+YC.h"
+#import "YCLocation.h"
+#import "YCMaps.h"
 
-
-@implementation YCMapsUtility
-
+BOOL YCMKCoordinateSpanIsValid(MKCoordinateSpan span);
 BOOL YCMKCoordinateSpanIsValid(MKCoordinateSpan span)
-{	/*
-	 double lad = span.latitudeDelta;
-	 double lod = span.longitudeDelta;
-	 if (lad > 180.0 || lad < 0.0) return NO;
-	 if (lod > 180.0 || lod < 0.0) return NO;
-	 */
-	
+{	
 	return YES;
 }
 
@@ -32,15 +24,21 @@ BOOL YCMKCoordinateRegionIsValid(MKCoordinateRegion region)
 	return YES;
 }
 
-/*
-NSString* trimString(NSString* src){
-	NSString* des = [src stringByTrimmingCharactersInSet: 
-					[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+BOOL YCMKCoordinateSpanEqualToSpan(MKCoordinateSpan src1,MKCoordinateSpan src2){
+	NSComparisonResult cResult = YCCompareFloatWithNumber(src1.latitudeDelta, src2.latitudeDelta, 4); 
+	if (NSOrderedSame != cResult) return NO;
+    
+	cResult = YCCompareFloatWithNumber(src1.longitudeDelta, src2.longitudeDelta,4);
+	if (NSOrderedSame != cResult) return NO;
 	
-	if([des length] == 0) des = nil; 
-	return des;
+	return YES;
 }
- */
+
+BOOL YCMKCoordinateRegionEqualToRegion(MKCoordinateRegion src1,MKCoordinateRegion src2){
+    if (!YCCLLocationCoordinate2DEqualToCoordinate(src1.center, src2.center)) 
+        return NO;
+	return YCMKCoordinateSpanEqualToSpan(src1.span,src2.span);
+}
 
 NSString* YCGetAddressString(MKPlacemark* placemark){
 	
@@ -121,19 +119,3 @@ NSString* YCGetAddressTitleString(MKPlacemark* placemark){
 	return thoroughfare;
 }
 
-BOOL YCCompareMKCoordinateSpan(MKCoordinateSpan src1,MKCoordinateSpan src2){
-	int b = YCCompareDouble(src1.latitudeDelta, src2.latitudeDelta); 
-	if (b !=0) return NO;
-	b = YCCompareDouble(src1.longitudeDelta, src2.longitudeDelta);
-	if (b !=0) return NO;
-	
-	return YES;
-}
-
-BOOL YCCompareMKCoordinateRegion(MKCoordinateRegion src1,MKCoordinateRegion src2){
-	int b = YCCompareCLLocationCoordinate2D(src1.center, src2.center);
-	if (b !=0) return NO;
-	return YCCompareMKCoordinateSpan(src1.span,src2.span);
-}
-
-@end

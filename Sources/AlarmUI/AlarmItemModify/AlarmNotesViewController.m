@@ -8,7 +8,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "YCTextView.h"
-#import "NSString-YC.h"
+#import "NSString+YC.h"
 #import "IAAlarm.h"
 #import "AlarmNotesViewController.h"
 

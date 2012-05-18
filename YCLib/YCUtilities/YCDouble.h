@@ -7,10 +7,20 @@
  *
  */
 
-//比较2个浮点数；
-//返回值:
-//0：相等；1：src1>src2; -1:src1<src2
-int YCCompareDouble(double src1,double src2);
+#import <Foundation/Foundation.h>
+#import <math.h>
+
+/**
+ The anFloat and anotherFloat are exactly equal to each other, NSOrderedSame
+ The anFloat is greater than anotherFloat, NSOrderedDescending
+ The anFloat is less than anotherFloat, NSOrderedAscending.
+
+ NSOrderedSame:       相等；
+ NSOrderedDescending: anFloat > anotherFloat; 
+ NSOrderedAscending:  anFloat < anotherFloat;
+ **/
+NSComparisonResult YCCompareFloat(CGFloat anFloat, CGFloat anotherFloat);
+
 
 //n:小数点后有限位
-int YCCompareDoubleWithNumber(double src1,double src2,int n);
+NSComparisonResult YCCompareFloatWithNumber(CGFloat anFloat, CGFloat anotherFloat,NSInteger n);

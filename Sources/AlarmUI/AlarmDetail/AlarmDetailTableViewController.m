@@ -7,25 +7,25 @@
 //
 
 #import "YCLocationManager.h"
-#import "CLLocation+AlarmUI.h"
+#import "CLLocation+YC.h"
 #import "IAAlarmNotificationCenter.h"
 #import "UIColor+YC.h"
 #import "IAAlarmFindViewController.h"
 #import "IAAlarmNotification.h"
 #import "AlarmNotesViewController.h"
-#import "NSString-YC.h"
+#import "NSString+YC.h"
 #import "YCSoundPlayer.h"
 #import "IADestinationCell.h"
 #import "AlarmTriggerTableViewController.h"
 #import "YCPositionType.h"
 #import "IAGlobal.h"
-#import "NSObject-YC.h"
-#import "UIViewController-YC.h"
+#import "NSObject+YC.h"
+#import "UIViewController+YC.h"
 #import "IANotifications.h"
 #import "AlarmDetailFooterView.h"
 #import "YCSystemStatus.h"
 #import "YClocationServicesUsableAlert.h"
-#import "YCMapsUtility.h"
+#import "YCMaps.h"
 #import "IAAlarmRadiusType.h"
 #import "AlarmRadiusViewController.h"
 #import "YCParam.h"
@@ -645,7 +645,8 @@
 
 	if (CLLocationCoordinate2DIsValid(self.alarmTemp.coordinate) && [YCSystemStatus deviceStatusSingleInstance].lastLocation) {
 		[theCell setAddressLabelWithLarge:NO];
-		NSString *distanceString = [self distanceStringFromDestionationToCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];
+        CLLocation *currentLocation = [YCSystemStatus deviceStatusSingleInstance].lastLocation;
+		NSString *distanceString = [currentLocation distanceStringFromCoordinate:self.alarmTemp.coordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
 		[theCell setDistanceWaiting:NO andDistanceText:distanceString];
 	}else {
 		[theCell setAddressLabelWithLarge:YES];
@@ -720,12 +721,6 @@
 }
 
 
-//显示距离当前位置XX公里
-- (NSString*)distanceStringFromDestionationToCurrentLocation:(CLLocation*)location{
-    CLLocation *aLocation = [[[CLLocation alloc] initWithLatitude:self.alarmTemp.coordinate.latitude longitude:self.alarmTemp.coordinate.longitude] autorelease];
-	return [aLocation distanceStringFromCurrentLocation:location];
-}
-
 //等待结束，显示距离当前位置XX公里
 - (void)setDistanceLabelVisibleInFooterViewWithCurrentLocation:(CLLocation*)location{
     //结束等待
@@ -733,9 +728,7 @@
     self.footerView.distanceLabel.hidden = NO;
     
     //设置距离文本
-    
-    CLLocation *aLocation = [[[CLLocation alloc] initWithLatitude:self.alarmTemp.coordinate.latitude longitude:self.alarmTemp.coordinate.longitude] autorelease];
-    self.footerView.distanceLabel.text = [aLocation distanceStringFromCurrentLocation:location];
+    self.footerView.distanceLabel.text =  [location distanceStringFromCoordinate:self.alarmTemp.coordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
     
     //下面的提示文体向下推
     self.footerView.promptLabel.frame = CGRectMake(19.0,32.0,284.0,170.0);
@@ -842,8 +835,9 @@
         if (CLLocationCoordinate2DIsValid(self.alarmTemp.coordinate)) {
 			IADestinationCell* desCell = (IADestinationCell*)self.destionationCellDescription.tableViewCell;
 			[desCell setDistanceWaiting:YES andDistanceText:nil];//出现等待圈
-			NSString *distanceString = [self distanceStringFromDestionationToCurrentLocation:location];
-            [self performSelector:@selector(setCellDistanceString:) withObject:distanceString afterDelay:1.5];//有距离数据，看x秒等待圈
+            
+			NSString *distanceString = [location distanceStringFromCoordinate:self.alarmTemp.coordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
+            [self performSelector:@selector(setCellDistanceString:) withObject:distanceString afterDelay:1.0];//有距离数据，看x秒等待圈
         }
         
     }

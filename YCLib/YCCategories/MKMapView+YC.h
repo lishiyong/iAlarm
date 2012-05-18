@@ -10,13 +10,10 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
 
+
+@class YCMapPointAnnotation;
 @interface MKMapView (YC)
 
-- (void)zoomToWorld:(CLLocationCoordinate2D)world animated:(BOOL)animated;
-- (void)zoomToPlace:(MKCoordinateRegion)place animated:(BOOL)animated;
-
-- (void)animateToWorldWithObj:(id/*CLLocationCoordinate2D*/)obj;
-- (void)animateToPlaceWithObj:(id/*MKCoordinateRegion*/)obj;
 
 ////坐标转换 to world -> to Place
 ////返回值：延时
@@ -38,5 +35,8 @@
 
 //指示annotation是否在地图的可视范围内
 - (BOOL)visibleForAnnotation:(id < MKAnnotation >)annotation;
+
+//找到离指定坐标最近的Annotation
+- (YCMapPointAnnotation*)theNearestAnnotationFromCoordinate:(CLLocationCoordinate2D)Coordinate;
 
 @end

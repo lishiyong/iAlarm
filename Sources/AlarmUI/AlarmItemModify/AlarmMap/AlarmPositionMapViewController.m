@@ -6,23 +6,24 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCFunctions.h"
 #import "YCLocationManager.h"
-#import "CLLocation+AlarmUI.h"
+#import "CLLocation+YC.h"
 #import "YCPinAnnotationView.h"
-#import "UINavigationItem-YC.h"
-#import "UIViewController-YC.h"
+#import "UINavigationItem+YC.h"
+#import "UIViewController+YC.h"
 #import "IANotifications.h"
 #import "YCCalloutBar.h" 
 #import "YCCalloutBarButton.h" 
 #import "YClocationServicesUsableAlert.h"
-#import "NSString-YC.h"
-#import "MKMapView-YC.h"
+#import "NSString+YC.h"
+#import "MKMapView+YC.h"
 #import "IAAlarmRadiusType.h"
 #import "YCBarButtonItem.h"
 #import "YCAlertTableView.h"
 #import "YCSystemStatus.h"
-#import "YCMapsUtility.h"
-#import "YCLocationUtility.h"
+#import "YCMaps.h"
+#import "YCLocation.h"
 #import "YCSearchBar.h"
 #import "AlarmPositionMapViewController.h"
 #import "YCAnnotation.h"
@@ -170,16 +171,6 @@
 -(id)annotationAlarmEditing{
 	if (annotationAlarmEditing == nil) {
 		annotationAlarmEditing = [[YCAnnotation alloc] initWithIdentifier:nil];
-		
-		/*
-		annotationAlarmEditing.title = self.alarm.alarmName;
-		annotationAlarmEditing.subtitle = self.alarm.position;
-		annotationAlarmEditing.coordinate = self.alarm.coordinate;
-		annotationAlarmEditing.annotationType = YCMapAnnotationTypeLocating;
-		annotationAlarmEditing.title = KMapNewAnnotationTitle;
-		annotationAlarmEditing.subtitle = self.alarm.position;
-		 */
-		
 		[annotationAlarmEditing addObserver:self forKeyPath:@"coordinate" options:0 context:nil];
 		[annotationAlarmEditing addObserver:self forKeyPath:@"subtitle" options:0 context:nil];
 		
@@ -198,12 +189,14 @@
 
 	CLLocation *curLocation = [YCSystemStatus deviceStatusSingleInstance].lastLocation;
 	if (curLocation) {
+        
         CLLocationCoordinate2D realCoordinate = self.annotationAlarmEditing.realCoordinate;
-        CLLocation *aLocation = [[[CLLocation alloc] initWithLatitude:realCoordinate.latitude longitude:realCoordinate.longitude] autorelease];
-		NSString *distance = [aLocation distanceStringFromCurrentLocation:curLocation];
+		NSString *distance = [curLocation distanceStringFromCoordinate:realCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
 		[self.navigationItem setTitleView:[self detailTitleViewWithContent:distance] animated:YES];
+        
 	}else
 		self.navigationItem.titleView = nil;
+    
 }
 
 -(void)alertInternet{
@@ -265,21 +258,9 @@
 
 //关掉MaskView,加入Annotations
 -(void)addAnnotationsAfterCloseMask{
-	/*
-	if (CLLocationCoordinate2DIsValid(self.annotationAlarmEditing.coordinate)) 
-	{
-		if (self.alarm.usedCoordinateAddress) //使用坐标作为地址
-			self.annotationAlarmEditing.coordinate = self.alarm.coordinate; //为了激活通知,反转地址
-		
-	}else //alarm坐标无效，取屏幕中心
-		self.annotationAlarmEditing.coordinate = self.mapView.region.center;
-	 */
 	if (!CLLocationCoordinate2DIsValid(self.annotationAlarmEditing.coordinate)) //alarm坐标无效，取屏幕中心
 		self.annotationAlarmEditing.coordinate = self.mapView.region.center;
 	
-	
-	
-	//[self.mapView addAnnotation:self.annotationAlarmEditing];
 	[self.mapView performSelectorOnMainThread:@selector(addAnnotation:) withObject:self.annotationAlarmEditing waitUntilDone:YES];
 	
 }
@@ -336,8 +317,7 @@
 	if (!CLLocationCoordinate2DIsValid(userCurrentLocation)) return; //无效坐标
 	
 	CGPoint userCurrentLocationPoint = [self.mapView convertCoordinate:userCurrentLocation toPointToView:nil];
-	int isA = YCCompareCGPointWithOffSet(currentMapCenterPoint, userCurrentLocationPoint,2); //允许误差2个像素
-	if (0 == isA) {
+	if (YCCGPointEqualPointWithOffSet(currentMapCenterPoint, userCurrentLocationPoint,2)) {//允许误差2个像素
 		self.currentLocationBarItem.enabled = NO;
 	}else {
 		self.currentLocationBarItem.enabled = YES;
@@ -359,8 +339,7 @@
 	if (!CLLocationCoordinate2DIsValid(alarmEditing)) return; //无效坐标
 	
 	CGPoint alarmEditingPoint = [self.mapView convertCoordinate:alarmEditing toPointToView:nil];
-	int isA = YCCompareCGPointWithOffSet(currentMapCenterPoint, alarmEditingPoint,2);//允许误差2个像素
-	if (0 == isA) {
+	if (YCCGPointEqualPointWithOffSet(currentMapCenterPoint, alarmEditingPoint,2)) {//允许误差2个像素
 		self.currentPinBarItem.enabled = NO;
 	}else {
 		self.currentPinBarItem.enabled = YES;
@@ -441,7 +420,7 @@
 			[self.mapView addAnnotation:self.annotationAlarmEditing];
 			
 			//改变可视范围
-			MKCoordinateRegion region = [self regionWithCoordinate:self.alarm.coordinate radius:self.alarm.radius];
+			MKCoordinateRegion region = [self regionWithCoordinate:self.alarm.visualCoordinate radius:self.alarm.radius];
 			[self.mapView setRegion:region];
 			
 		}
@@ -458,7 +437,7 @@
 			return;
 		}
 		
-		BOOL equalToCoordinate = (YCCompareCLLocationCoordinate2D(self.alarm.coordinate, self.annotationAlarmEditing.coordinate)==0);
+		BOOL equalToCoordinate = YCCLLocationCoordinate2DEqualToCoordinate(self.alarm.visualCoordinate, self.annotationAlarmEditing.coordinate);
 		BOOL equalToSubtitle = [self.alarm.position isEqualToString:self.annotationAlarmEditing.subtitle];
 		if (!equalToCoordinate || !equalToSubtitle)
 		{ //任何一项不等
@@ -930,9 +909,9 @@
 	//3.当前位置
 	
 	MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(-1000.0, -1000.0), 0.0, 0.0);
-	if (CLLocationCoordinate2DIsValid(self.alarm.coordinate)){  //1
+	if (CLLocationCoordinate2DIsValid(self.alarm.visualCoordinate)){  //1
 		
-		region = [self regionWithCoordinate:self.alarm.coordinate radius:self.alarm.radius];
+		region = [self regionWithCoordinate:self.alarm.visualCoordinate radius:self.alarm.radius];
 	
 	}else if(YCMKCoordinateRegionIsValid([YCParam paramSingleInstance].lastLoadMapRegion)){ //2
 		
@@ -983,13 +962,12 @@
 -(void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
+    self->isApparing = YES;
+	self.title = KViewTitleAlarmPostion;
+    
 	//浮动工具条
 	self.openToolbarBarItem.style = UIBarButtonItemStyleBordered;
 	self.toolbarFloatingView.hidden = YES;
-	
-	
-	self->isApparing = YES;
-	self.title = KViewTitleAlarmPostion;
 	
 	//除了第一次外，每次WillAppear都显示Searchbar。-animated:NO 
 	if (!isFirstShow) {
@@ -1002,7 +980,7 @@
 		if (self.newAlarmAnnotation ){//从详细页面进入
 			
 			
-			if ( YCCompareCLLocationCoordinate2D(self.alarm.coordinate, self.annotationAlarmEditing.coordinate)!=0) 
+			if (!YCCLLocationCoordinate2DEqualToCoordinate(self.alarm.visualCoordinate, self.annotationAlarmEditing.coordinate)) 
 			{//并且坐标不相等
 				
 				//先移除
@@ -1147,12 +1125,12 @@
 				
 				
 				CLLocationCoordinate2D new = annotation.coordinate;
-				CLLocationCoordinate2D old = self.alarm.coordinate;
-				if (YCCompareCLLocationCoordinate2D(new, old)!=0) { //坐标不相等
+				CLLocationCoordinate2D old = self.alarm.visualCoordinate;
+				if (!YCCLLocationCoordinate2DEqualToCoordinate(new, old)) { //坐标不相等
 					annotation.subtitle = @"";
 				}
 				
-				if (YCCompareCLLocationCoordinate2D(new, old)!=0 || self.alarm.usedCoordinateAddress) { //坐标不相等 或使用的的是坐标地址
+				if (!YCCLLocationCoordinate2DEqualToCoordinate(new, old) || self.alarm.usedCoordinateAddress) { //坐标不相等 或使用的的是坐标地址
 				//反转坐标－地址
 					[self performSelector:@selector(beginReverseWithAnnotation:) withObject:annotation afterDelay:0.0];
 				}else {
@@ -1220,12 +1198,12 @@
 			if ([annotation isKindOfClass:[YCAnnotation class]])
 			{
 				CLLocationCoordinate2D new = annotation.coordinate;
-				CLLocationCoordinate2D old = self.alarm.coordinate;
-				if (YCCompareCLLocationCoordinate2D(new, old)!=0) { //坐标不相等
+				CLLocationCoordinate2D old = self.alarm.visualCoordinate;
+				if (!YCCLLocationCoordinate2DEqualToCoordinate(new, old)) { //坐标不相等
 					annotation.subtitle = @"";
 				}
 				
-				if (YCCompareCLLocationCoordinate2D(new, old)!=0 || self.alarm.usedCoordinateAddress) { //坐标不相等 或使用的的是坐标地址
+				if (!YCCLLocationCoordinate2DEqualToCoordinate(new, old) || self.alarm.usedCoordinateAddress) { //坐标不相等 或使用的的是坐标地址
 					//反转坐标－地址
 					[self performSelector:@selector(beginReverseWithAnnotation:) withObject:annotation afterDelay:0.0];
 				}else {
@@ -1555,11 +1533,11 @@
 	
 	
 	
-	if (YCCompareCLLocationCoordinate2D(placemark.coordinate, self.annotationAlarmEditing.coordinate)==0) {
+	if (YCCLLocationCoordinate2DEqualToCoordinate(placemark.coordinate, self.annotationAlarmEditing.coordinate)) {
 		self.placemarkForPin = placemark;
 		[self endReverseWithAnnotation:self.annotationAlarmEditing];
 	}
-	if (YCCompareCLLocationCoordinate2D(placemark.coordinate, self.mapView.userLocation.location.coordinate)==0) {
+	if (YCCLLocationCoordinate2DEqualToCoordinate(placemark.coordinate, self.mapView.userLocation.location.coordinate)) {
 		self.placemarkForUserLocation = placemark;
 		[self endReverseWithAnnotation:self.mapView.userLocation];
 	}
@@ -1576,12 +1554,12 @@
 	//无网络连接时候，收到失败数据，就结束反转
 	BOOL connectedToInternet = [[YCSystemStatus deviceStatusSingleInstance] connectedToInternet];
 	if (!connectedToInternet) {
-		if (YCCompareCLLocationCoordinate2D(geocoder.coordinate, self.annotationAlarmEditing.coordinate)==0) {
+		if (YCCLLocationCoordinate2DEqualToCoordinate(geocoder.coordinate, self.annotationAlarmEditing.coordinate)) {
 			self.placemarkForPin = nil;
 			[self endReverseWithAnnotation:self.annotationAlarmEditing];
 		}
 		
-		if (YCCompareCLLocationCoordinate2D(geocoder.coordinate, self.mapView.userLocation.location.coordinate)==0) {
+		if (YCCLLocationCoordinate2DEqualToCoordinate(geocoder.coordinate, self.mapView.userLocation.location.coordinate)) {
 			self.placemarkForUserLocation = nil;
 			[self endReverseWithAnnotation:self.mapView.userLocation];
 		}
