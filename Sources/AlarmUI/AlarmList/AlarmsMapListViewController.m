@@ -478,20 +478,30 @@
 
 //没有选中的，选中最近的.使被选中的在可视范围内
 -(void)selectAndVisibleTheNearestAnnotationFromCoordinate:(CLLocationCoordinate2D)fromCoordinate animated:(BOOL)animated{
-    //选中最近的一个
-    if (self.mapView.selectedAnnotations.count <=0){
-        id<MKAnnotation> selecting = [self.mapView theNearestAnnotationFromCoordinate:self.mapView.centerCoordinate];
-        if (!selecting) 
-            return;
-        
-        //使被选中的在可视范围内
-        BOOL isVisible = [self.mapView visibleForAnnotation:selecting]; //是否在可视范围
-        if (!isVisible) 
-            [self.mapView setCenterCoordinate:selecting.coordinate animated:animated];
-        
+    //找到最近的一个
+    id<MKAnnotation> selecting = [self.mapView theNearestAnnotationFromCoordinate:self.mapView.centerCoordinate];
+    if (!selecting) 
+        return;
+    
+    //找到目前选中的
+    id<MKAnnotation> selected = (self.mapView.selectedAnnotations.count > 0) 
+                                    ? [self.mapView.selectedAnnotations objectAtIndex:0]
+                                    : nil;
+    
+    if (![selected isKindOfClass: [YCAnnotation class]]) {
+        //反选目前选中的
+        [self.mapView deselectAnnotation:selected animated:animated];
+        //选中
         [self.mapView selectAnnotation:selecting animated:animated];
-        
+    }else{
+        selecting = selected;
     }
+    
+    //使被选中的在可视范围内
+    BOOL isVisible = [self.mapView visibleForAnnotation:selecting]; //是否在可视范围
+    if (!isVisible) 
+        [self.mapView setCenterCoordinate:selecting.coordinate animated:animated];
+    
 }
 
 //tableView的编辑状态
@@ -1969,7 +1979,17 @@
     BOOL focusStatus = NO;
 	if (self.alarms.count >0) {
 		//有地图范围改变了，按钮就可用
-		focusStatus = !YCMKCoordinateRegionEqualToRegion(self.mapView.region, [self allPinsRegion]);
+		BOOL mapsChanged = !YCMKCoordinateRegionEqualToRegion(self.mapView.region, [self allPinsRegion]);
+        
+        //有一个pin不可视，按钮就可用
+		BOOL isHaveAPinVisible = NO;
+		for (YCAnnotation *anAnnotation in self.mapAnnotations) {
+			isHaveAPinVisible = [self.mapView visibleForAnnotation:anAnnotation];
+			if (!isHaveAPinVisible)
+				break;
+		}
+        
+		focusStatus = (!isHaveAPinVisible) || mapsChanged;
 	}
 	NSDictionary *focusDic = [NSDictionary dictionaryWithObjectsAndKeys:
                               [NSNumber numberWithInteger:2],IAControlIdKey

@@ -10,6 +10,12 @@
 
 @interface UIColor (YC)
 
+/**
+ 255做被除数
+ **/
+- (UIColor *)initWithIntRed:(NSInteger)intRed intGreen:(NSInteger)intGreen intBlue:(NSInteger)intBlue intAlpha:(NSInteger)intAlpha;
++ (UIColor *)colorWithIntRed:(NSInteger)intRed intGreen:(NSInteger)intGreen intBlue:(NSInteger)intBlue intAlpha:(NSInteger)intAlpha;
+
 
 // 151.0/255.0, 152.0/255.0, 155.0/255.0 RGB
 + (UIColor *)darkBackgroundColor; 

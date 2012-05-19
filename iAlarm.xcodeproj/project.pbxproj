@@ -22,8 +22,6 @@
 		9C04958914F9103E00A89996 /* IAWhiteButtonNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C04958814F9103E00A89996 /* IAWhiteButtonNormal.png */; };
 		9C04958A14F9103E00A89996 /* IAWhiteButtonNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C04958814F9103E00A89996 /* IAWhiteButtonNormal.png */; };
 		9C057C4D13378B490068C209 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C057C4C13378B490068C209 /* InfoPlist.strings */; };
-		9C05ACA11565C91500983108 /* YCMapsGradientShine.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C05ACA01565C91500983108 /* YCMapsGradientShine.png */; };
-		9C05ACA21565C91500983108 /* YCMapsGradientShine.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C05ACA01565C91500983108 /* YCMapsGradientShine.png */; };
 		9C05ACA51565FE6000983108 /* CLLocation+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C05ACA41565FE5E00983108 /* CLLocation+YC.m */; };
 		9C05ACA61565FE6000983108 /* CLLocation+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C05ACA41565FE5E00983108 /* CLLocation+YC.m */; };
 		9C0706DC152C036000AC4207 /* IAAlarmNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0706DB152C036000AC4207 /* IAAlarmNotification.m */; };
@@ -1133,7 +1131,6 @@
 		9C057C4E13378B640068C209 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_CN; path = OtherResource/zh_CN.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		9C057C6413378BCA0068C209 /* zh_TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_TW; path = OtherResource/zh_TW.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		9C057C6513378BD10068C209 /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Japanese; path = OtherResource/Japanese.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		9C05ACA01565C91500983108 /* YCMapsGradientShine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCMapsGradientShine.png; sourceTree = "<group>"; };
 		9C05ACA31565FE5E00983108 /* CLLocation+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CLLocation+YC.h"; sourceTree = "<group>"; };
 		9C05ACA41565FE5E00983108 /* CLLocation+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CLLocation+YC.m"; sourceTree = "<group>"; };
 		9C0706DA152C036000AC4207 /* IAAlarmNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAAlarmNotification.h; sourceTree = "<group>"; };
@@ -1283,7 +1280,6 @@
 		9C6AE1E51563E0BA00F5A9CE /* OffsetDataDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OffsetDataDao.m; sourceTree = "<group>"; };
 		9C6AE1E61563E0BA00F5A9CE /* YCLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCLocationManager.h; sourceTree = "<group>"; };
 		9C6AE1E71563E0BA00F5A9CE /* YCLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCLocationManager.m; sourceTree = "<group>"; };
-		9C71D1CA15635C770031FB7E /* 家里 沈阳.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "家里 沈阳.gpx"; sourceTree = "<group>"; };
 		9C7484CA1562981F00486793 /* YCAlertTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCAlertTableView.h; sourceTree = "<group>"; };
 		9C7484CB1562981F00486793 /* YCAlertTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCAlertTableView.m; sourceTree = "<group>"; };
 		9C7484CC1562981F00486793 /* YCShadowTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCShadowTableView.h; sourceTree = "<group>"; };
@@ -1937,7 +1933,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				9C71D1CA15635C770031FB7E /* 家里 沈阳.gpx */,
 				9CE894A212FFFFD2008FBD45 /* Sources */,
 				9CE8941F12FFFFD2008FBD45 /* Resources */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
@@ -2721,7 +2716,6 @@
 		9C85F37E14FBA68C00B49FF4 /* AlarmFind */ = {
 			isa = PBXGroup;
 			children = (
-				9C05ACA01565C91500983108 /* YCMapsGradientShine.png */,
 				9C5B1DB7154E582D009235DB /* YCClockAlarm20.png */,
 				9C5B1DB8154E582D009235DB /* YCClockAlarm20@2x.png */,
 				9C5B1DB1154E56A1009235DB /* YCClockAlarm.png */,
@@ -4081,7 +4075,6 @@
 				9CC472191564F62B00F79985 /* YCTexturedButtonTextGradientSmall@2x.png in Resources */,
 				9CC4721F1564F70B00F79985 /* YCTexturedButtonTextGradient@2x.png in Resources */,
 				9CC472221564F76F00F79985 /* YCTexturedButtonTextGradientSmall.png in Resources */,
-				9C05ACA11565C91500983108 /* YCMapsGradientShine.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4436,7 +4429,6 @@
 				9CC4721A1564F62B00F79985 /* YCTexturedButtonTextGradientSmall@2x.png in Resources */,
 				9CC472201564F70B00F79985 /* YCTexturedButtonTextGradient@2x.png in Resources */,
 				9CC472231564F76F00F79985 /* YCTexturedButtonTextGradientSmall.png in Resources */,
-				9C05ACA21565C91500983108 /* YCMapsGradientShine.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

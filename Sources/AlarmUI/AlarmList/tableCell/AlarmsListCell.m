@@ -25,15 +25,15 @@
         self.isEnabledLabel.text = KDicOn; 
         self.isEnabledLabel.alpha = 1.0;
         self.alarmDetailLabel.alpha = 1.0;
-        self.alarmTitleLabel.textColor = [UIColor blackColor];
-        self.alarmDetailLabel.textColor = [UIColor darkGrayColor];
+        self.alarmTitleLabel.textColor = [UIColor colorWithWhite:0.03 alpha:0.9];
+        self.alarmDetailLabel.textColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+        self.isEnabledLabel.textColor = [UIColor colorWithWhite:0.03 alpha:0.85];
     }else{
         self.flagImageView.image = [UIImage imageNamed:@"IAFlagGray.png"];//灰色的旗帜
         self.isEnabledLabel.text = KDicOff; //文字:关闭
-        self.isEnabledLabel.alpha = 0.8;
-        self.alarmDetailLabel.alpha = 0.8;
         self.alarmTitleLabel.textColor = [UIColor darkGrayColor];
         self.alarmDetailLabel.textColor = [UIColor darkGrayColor];
+        self.isEnabledLabel.textColor = [UIColor grayColor];
     }
 }
 

@@ -290,44 +290,49 @@
 	return YES;
 }
 
-- (void)abctest{
-    while (self.alarmListTableView.visibleCells.count < 4) {
-        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-    }
-    
-    NSMutableArray *alarms = (NSMutableArray*)[IAAlarm alarmArray];
-    //上下阴影
-    for (AlarmsListCell *aCell in self.alarmListTableView.visibleCells) {
-        NSIndexPath *indexPath = [self.alarmListTableView indexPathForCell:aCell];
-        NSLog(@"indexPath.row = %d",indexPath.row);
-        
-        if (indexPath.row == 0) {
-            aCell.topShadowView.hidden = NO;
-            aCell.bottomShadowView.hidden = YES;
-        }else if(indexPath.row == (alarms.count -1)){
-            aCell.topShadowView.hidden = YES;
-            aCell.bottomShadowView.hidden = NO;
-        }else{
-            aCell.topShadowView.hidden = YES;
-            aCell.bottomShadowView.hidden = YES;
-        }
-    }
-}
-
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath{
 
-    NSMutableArray *alarms = (NSMutableArray*)[IAAlarm alarmArray];
+    if (fromIndexPath.row == toIndexPath.row) 
+        return;
     
+    //列表顺序改变后 保存 
+    NSMutableArray *alarms = (NSMutableArray*)[IAAlarm alarmArray];
     id object = [[alarms objectAtIndex:fromIndexPath.row] retain];
     [alarms removeObjectAtIndex:fromIndexPath.row];
     [alarms insertObject:object atIndex:toIndexPath.row];
     [object release];
-
     [IAAlarm saveAlarms];
-    
-    [self performSelector:@selector(abctest) withObject:nil afterDelay:0.0];
-    
-    //[self.alarmListTableView performSelector:@selector(reloadData) withObject:nil afterDelay:1.0];
+        
+    [UIView animateWithDuration:0.0 animations:^{;} completion:^(BOOL finished)
+    {
+        NSMutableArray *alarms = (NSMutableArray*)[IAAlarm alarmArray];
+
+        while (self.alarmListTableView.visibleCells.count != alarms.count //如果cell总数小于4，可视cell数目等于所有的cell，说明着移动完成了。
+               && self.alarmListTableView.visibleCells.count != 4) {//可视cell的数目等于4，说明着移动完成了。
+            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+        }
+        
+        //上下阴影
+        for (AlarmsListCell *aCell in self.alarmListTableView.visibleCells) {
+            NSIndexPath *indexPath = [self.alarmListTableView indexPathForCell:aCell];
+            
+            if (alarms.count ==1) { //共一行
+                aCell.topShadowView.hidden = NO;
+                aCell.bottomShadowView.hidden = NO;
+            }else if (indexPath.row == 0) {
+                aCell.topShadowView.hidden = NO;
+                aCell.bottomShadowView.hidden = YES;
+            }else if(indexPath.row == (alarms.count -1)){
+                aCell.topShadowView.hidden = YES;
+                aCell.bottomShadowView.hidden = NO;
+            }else{
+                aCell.topShadowView.hidden = YES;
+                aCell.bottomShadowView.hidden = YES;
+            }
+            
+        }
+ 
+    }];
         
 }
 

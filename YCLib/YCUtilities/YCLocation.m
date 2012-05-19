@@ -15,14 +15,18 @@ const  CLLocationDistance kDefaultLongitudinalMeters = 2500.0;
 //缺省坐标－apple公司总部坐标
 const CLLocationCoordinate2D kYCDefaultCoordinate = {37.331689, -122.030731};
 
-BOOL YCCLLocationCoordinate2DEqualToCoordinate(CLLocationCoordinate2D src1,CLLocationCoordinate2D src2){
+BOOL YCCLLocationCoordinate2DEqualToCoordinateWithAccuracy(CLLocationCoordinate2D src1,CLLocationCoordinate2D src2,NSUInteger accuracy){
 	BOOL retVal = NO;
-	if (NSOrderedSame == YCCompareFloatWithNumber(src1.latitude,src2.latitude,4)) {
-		if (NSOrderedSame == YCCompareFloatWithNumber(src1.longitude,src2.longitude,4)) {
+	if (NSOrderedSame == YCCompareFloatWithAccuracy(src1.latitude,src2.latitude,accuracy)) {
+		if (NSOrderedSame == YCCompareFloatWithAccuracy(src1.longitude,src2.longitude,accuracy)) {
 			retVal = YES;
 		}
 	}
 	return retVal;
+}
+
+BOOL YCCLLocationCoordinate2DEqualToCoordinate(CLLocationCoordinate2D src1,CLLocationCoordinate2D src2){
+	return YCCLLocationCoordinate2DEqualToCoordinateWithAccuracy(src1,src2,6);
 }
 
 CLLocationDistance distanceBetweenCoordinates(CLLocationCoordinate2D aCoordinate,CLLocationCoordinate2D anotherCoordinate){

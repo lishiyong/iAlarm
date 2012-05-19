@@ -22,5 +22,5 @@
 NSComparisonResult YCCompareFloat(CGFloat anFloat, CGFloat anotherFloat);
 
 
-//n:小数点后有限位
-NSComparisonResult YCCompareFloatWithNumber(CGFloat anFloat, CGFloat anotherFloat,NSInteger n);
+//accuracy:小数点后有限位
+NSComparisonResult YCCompareFloatWithAccuracy(CGFloat anFloat, CGFloat anotherFloat,NSUInteger accuracy);

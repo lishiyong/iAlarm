@@ -10,6 +10,14 @@
 
 @implementation UIColor (YC)
 
+- (UIColor *)initWithIntRed:(NSInteger)intRed intGreen:(NSInteger)intGreen intBlue:(NSInteger)intBlue intAlpha:(NSInteger)intAlpha{
+    return [self initWithRed:intRed/255.0f green:intGreen/255.0f blue:intBlue/255.0f alpha:intAlpha/255.0];
+}
+
++ (UIColor *)colorWithIntRed:(NSInteger)intRed intGreen:(NSInteger)intGreen intBlue:(NSInteger)intBlue intAlpha:(NSInteger)intAlpha{
+    return [[[UIColor alloc] initWithIntRed:intRed intGreen:intGreen intBlue:intBlue intAlpha:intAlpha] autorelease];
+}
+
 + (UIColor *)darkBackgroundColor{
     return [UIColor colorWithRed:151.0/255.0 green:152.0/255.0 blue:155.0/255.0 alpha:1.0];
 }

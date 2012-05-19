@@ -757,6 +757,7 @@
 #pragma mark Event
 
 - (void)currentLocationButtonPressed:(id)sender{
+    
 	[self setLocationBarItem:YES];    //把barItem改成正在定位的状态
 	[self performSelector:@selector(setLocationBarItem:) withInteger:NO afterDelay:0.5];//0.5秒后，把barItem改回正常状态
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -765,15 +766,18 @@
     
     //地图移动期间禁止用户操作
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-    [[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:2.5];//加解禁的保险
+    [[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:2.0];//加解禁的保险
     
-    while (self.currentLocationBarButtonItem.enabled && [UIApplication sharedApplication].isIgnoringInteractionEvents) {
-        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-    }
-    if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
-        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
-    
-    
+    [UIView animateWithDuration:0.0 animations:^{;} completion:^(BOOL finished)
+     {         
+         while (self.currentLocationBarButtonItem.enabled && [UIApplication sharedApplication].isIgnoringInteractionEvents) {
+             [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+         }
+         if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
+             [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+         
+     }];
+     
 }
 
 - (void)focusButtonPressed:(id)sender{
@@ -785,11 +789,16 @@
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     [[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:2.5];//加解禁的保险
     
-    while (self.focusBarButtonItem.enabled && [UIApplication sharedApplication].isIgnoringInteractionEvents) {
-        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];//加解禁的保险
-    }
-    if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
-        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+    [UIView animateWithDuration:0.0 animations:^{;} completion:^(BOOL finished)
+     {         
+         while (self.focusBarButtonItem.enabled && [UIApplication sharedApplication].isIgnoringInteractionEvents) {
+             [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+         }
+         if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
+             [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+         
+     }];
+    
 }
 
 - (void)mapTypeButtonPressed:(id)sender{

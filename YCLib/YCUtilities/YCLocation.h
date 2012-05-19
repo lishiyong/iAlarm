@@ -18,6 +18,7 @@ extern const CLLocationCoordinate2D kYCDefaultCoordinate;
  
 //比较2个 CLLocationCoordinate2D；
 BOOL YCCLLocationCoordinate2DEqualToCoordinate(CLLocationCoordinate2D src1,CLLocationCoordinate2D src2);
+BOOL YCCLLocationCoordinate2DEqualToCoordinateWithAccuracy(CLLocationCoordinate2D src1,CLLocationCoordinate2D src2,NSUInteger accuracy);
 
 //两点坐标间距离，假定海拔都是0
 CLLocationDistance distanceBetweenCoordinates(CLLocationCoordinate2D aCoordinate,CLLocationCoordinate2D anotherCoordinate);
