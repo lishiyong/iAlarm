@@ -63,4 +63,22 @@
 }
 
 
+- (void)callBlock:(void (^)(id anArgument))block withObject:(id)anArgument{
+    block(anArgument);
+}
+
+- (void)performWithObject:(id)anArgument afterDelay:(NSTimeInterval)delay block:(void (^)(id anArgument))block{
+    SEL aSelector = @selector(callBlock:withObject:);
+    NSMethodSignature *signature = [self methodSignatureForSelector:aSelector];
+	NSInvocation *invocaton = [NSInvocation invocationWithMethodSignature:signature];
+	[invocaton setTarget:self];
+	[invocaton setSelector:aSelector];
+	[invocaton setArgument:&block atIndex:2];
+	[invocaton setArgument:&anArgument atIndex:3]; 
+	[invocaton performSelector:@selector(invoke) withObject:nil afterDelay:delay];
+}
+
+
 @end
+
+

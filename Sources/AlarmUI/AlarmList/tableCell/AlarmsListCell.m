@@ -43,7 +43,7 @@
     alarm = theAlarm;
     
     alarmTitleLabel.text = self.alarm.alarmName;
-    self.enabled = alarm.enabling;
+    self.enabled = alarm.enabled;
     if (self.enabled) {
         NSString *imageName = self.alarm.alarmRadiusType.alarmRadiusTypeImageName;
         self.flagImageView.image = [UIImage imageNamed:imageName];

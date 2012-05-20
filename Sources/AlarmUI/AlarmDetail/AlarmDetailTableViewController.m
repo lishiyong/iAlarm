@@ -61,7 +61,7 @@
 @synthesize placemarkForReverse;
 
 @synthesize cellDescriptions;   
-@synthesize enablingCellDescription;
+@synthesize enabledCellDescription;
 @synthesize repeatCellDescription;
 @synthesize soundCellDescription;
 @synthesize vibrateCellDescription;
@@ -90,43 +90,6 @@
     return footerView;
 }
 
-/*
-- (void)setAlarmTemp:(IAAlarm*)obj{
-	if (alarmTemp) {
-		[alarmTemp removeObserver:self forKeyPath:@"alarmName"];
-		[alarmTemp removeObserver:self forKeyPath:@"position"];
-		[alarmTemp removeObserver:self forKeyPath:@"positionShort"];
-		[alarmTemp removeObserver:self forKeyPath:@"description"];
-		[alarmTemp removeObserver:self forKeyPath:@"enabling"];
-		[alarmTemp removeObserver:self forKeyPath:@"coordinate"];
-		[alarmTemp removeObserver:self forKeyPath:@"vibrate"];
-		[alarmTemp removeObserver:self forKeyPath:@"sound"];
-		[alarmTemp removeObserver:self forKeyPath:@"repeatType"];
-		[alarmTemp removeObserver:self forKeyPath:@"alarmRadiusType"];
-		[alarmTemp removeObserver:self forKeyPath:@"radius"];	
-	}
-	
-	
-	[obj retain];
-	[alarmTemp release];
-	alarmTemp = obj;
-	
-	if (alarmTemp) {
-		[alarmTemp addObserver:self forKeyPath:@"alarmName" options:0 context:nil];
-		[alarmTemp addObserver:self forKeyPath:@"position" options:0 context:nil];
-		[alarmTemp addObserver:self forKeyPath:@"positionShort" options:0 context:nil];
-		[alarmTemp addObserver:self forKeyPath:@"description" options:0 context:nil];
-		[alarmTemp addObserver:self forKeyPath:@"enabling" options:0 context:nil];
-		[alarmTemp addObserver:self forKeyPath:@"coordinate" options:0 context:nil];
-		[alarmTemp addObserver:self forKeyPath:@"vibrate" options:0 context:nil];
-		[alarmTemp addObserver:self forKeyPath:@"sound" options:0 context:nil];
-		[alarmTemp addObserver:self forKeyPath:@"repeatType" options:0 context:nil];
-		[alarmTemp addObserver:self forKeyPath:@"alarmRadiusType" options:0 context:nil];
-		[alarmTemp addObserver:self forKeyPath:@"radius" options:0 context:nil];
-	}
-}
- */
- 
 - (void)setAlarmTemp:(IAAlarm*)obj{
 	[obj retain];
 	[alarmTemp release];
@@ -142,7 +105,7 @@
 			[alarmTemp addObserver:self forKeyPath:@"position" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"positionShort" options:0 context:nil];
 			//[alarmTemp addObserver:self forKeyPath:@"notes" options:0 context:nil];
-			[alarmTemp addObserver:self forKeyPath:@"enabling" options:0 context:nil];
+			[alarmTemp addObserver:self forKeyPath:@"enabled" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"coordinate" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"vibrate" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"sound" options:0 context:nil];
@@ -260,7 +223,7 @@
 	if (!self->cellDescriptions) {
 		//第一组
 		NSArray *oneArray = [NSArray arrayWithObjects:
-							  self.enablingCellDescription
+							  self.enabledCellDescription
 							 ,nil];
 		
 		NSArray *twoArray = nil;
@@ -298,10 +261,10 @@
 
 
 //////////////////////////////////
-//enablingCellDescription
+//enabledCellDescription
 
-- (void) didChangedSwitchCtlInEnablingCell:(id)sender{
-	self.alarmTemp.enabling = ((UISwitch *)sender).on;
+- (void)didChangedSwitchCtlInEnabledCell:(id)sender{
+	self.alarmTemp.enabled = ((UISwitch *)sender).on;
 	/*
 	//改变了，发送通知
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -309,27 +272,27 @@
 	 */
 }
 
-- (id)enablingCellDescription{
+- (id)enabledCellDescription{
 	
-	static NSString *CellIdentifier = @"enablingCell";
+	static NSString *CellIdentifier = @"enabledCell";
 	
-	if (!self->enablingCellDescription) {
-		self->enablingCellDescription = [[TableViewCellDescription alloc] init];
+	if (!self->enabledCellDescription) {
+		self->enabledCellDescription = [[TableViewCellDescription alloc] init];
 		
 		BoolCell *cell = [[BoolCell alloc] initWithReuseIdentifier:CellIdentifier];
 		cell.textLabel.text = KLabelAlarmEnable;
-		[cell.switchCtl addTarget:self action: @selector(didChangedSwitchCtlInEnablingCell:) forControlEvents:UIControlEventValueChanged];
+		[cell.switchCtl addTarget:self action: @selector(didChangedSwitchCtlInEnabledCell:) forControlEvents:UIControlEventValueChanged];
 
-		self->enablingCellDescription.tableViewCell = cell;
+		self->enabledCellDescription.tableViewCell = cell;
 		
-		self->enablingCellDescription.didSelectCellSelector = NULL; //无选中事件
+		self->enabledCellDescription.didSelectCellSelector = NULL; //无选中事件
 	}
 	
 	//置开关状态
-	UISwitch *switchCtl = ((BoolCell *)self->enablingCellDescription.tableViewCell).switchCtl;
-	switchCtl.on = self.alarmTemp.enabling;
+	UISwitch *switchCtl = ((BoolCell *)self->enabledCellDescription.tableViewCell).switchCtl;
+	switchCtl.on = self.alarmTemp.enabled;
 	
-	return self->enablingCellDescription;
+	return self->enabledCellDescription;
 }
 
 //////////////////////////////////
@@ -672,10 +635,10 @@
 
 -(void)setTableCellsUserInteractionEnabled:(BOOL)enabled{
     
-	self.enablingCellDescription.tableViewCell.userInteractionEnabled = enabled;
-	self.enablingCellDescription.tableViewCell.textLabel.enabled = enabled;
-	self.enablingCellDescription.tableViewCell.detailTextLabel.enabled = enabled;
-	[(BoolCell*)self.enablingCellDescription.tableViewCell switchCtl].enabled = enabled;
+	self.enabledCellDescription.tableViewCell.userInteractionEnabled = enabled;
+	self.enabledCellDescription.tableViewCell.textLabel.enabled = enabled;
+	self.enabledCellDescription.tableViewCell.detailTextLabel.enabled = enabled;
+	[(BoolCell*)self.enabledCellDescription.tableViewCell switchCtl].enabled = enabled;
 	
     
 	self.repeatCellDescription.tableViewCell.userInteractionEnabled = enabled;
@@ -877,28 +840,6 @@
 }
 
 - (void) registerNotifications {
-	/*
-	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-	
-	[notificationCenter addObserver: self
-						   selector: @selector (handle_alarmItemsDidChange:)
-							   name: IAAlarmItemsDidChangeNotification
-							 object: nil];
-	 */
-	
-	/*
-	[self.alarmTemp addObserver:self forKeyPath:@"alarmName" options:0 context:nil];
-	[self.alarmTemp addObserver:self forKeyPath:@"position" options:0 context:nil];
-	[self.alarmTemp addObserver:self forKeyPath:@"positionShort" options:0 context:nil];
-	[self.alarmTemp addObserver:self forKeyPath:@"description" options:0 context:nil];
-	[self.alarmTemp addObserver:self forKeyPath:@"enabling" options:0 context:nil];
-	[self.alarmTemp addObserver:self forKeyPath:@"coordinate" options:0 context:nil];
-	[self.alarmTemp addObserver:self forKeyPath:@"vibrate" options:0 context:nil];
-	[self.alarmTemp addObserver:self forKeyPath:@"sound" options:0 context:nil];
-	[self.alarmTemp addObserver:self forKeyPath:@"repeatType" options:0 context:nil];
-	[self.alarmTemp addObserver:self forKeyPath:@"alarmRadiusType" options:0 context:nil];
-	[self.alarmTemp addObserver:self forKeyPath:@"radius" options:0 context:nil];
-	 */
 	
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 
@@ -924,27 +865,6 @@
 }
 
 - (void) unRegisterNotifications {
-	
-	/*
-	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-	
-	[notificationCenter removeObserver: self
-								  name: IAAlarmItemsDidChangeNotification
-							    object: nil];
-	 */
-	/*
-	[self.alarmTemp removeObserver:self forKeyPath:@"alarmName"];
-	[self.alarmTemp removeObserver:self forKeyPath:@"position"];
-	[self.alarmTemp removeObserver:self forKeyPath:@"positionShort"];
-	[self.alarmTemp removeObserver:self forKeyPath:@"description"];
-	[self.alarmTemp removeObserver:self forKeyPath:@"enabling"];
-	[self.alarmTemp removeObserver:self forKeyPath:@"coordinate"];
-	[self.alarmTemp removeObserver:self forKeyPath:@"vibrate"];
-	[self.alarmTemp removeObserver:self forKeyPath:@"sound"];
-	[self.alarmTemp removeObserver:self forKeyPath:@"repeatType"];
-	[self.alarmTemp removeObserver:self forKeyPath:@"alarmRadiusType"];
-	[self.alarmTemp removeObserver:self forKeyPath:@"radius"];
-	 */
     
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     
@@ -969,7 +889,7 @@
 	
 	///////////////////////
 	//保存闹钟
-	self.alarm.enabling = self.alarmTemp.enabling;
+	self.alarm.enabled = self.alarmTemp.enabled;
 	self.alarm.coordinate = self.alarmTemp.coordinate;
 	self.alarm.alarmName = self.alarmTemp.alarmName;
 	self.alarm.position = self.alarmTemp.position;
@@ -1306,7 +1226,7 @@
 	//取消所有定时执行的函数
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
 	self.cellDescriptions = nil;  
-	self.enablingCellDescription = nil;
+	self.enabledCellDescription = nil;
 	self.repeatCellDescription = nil;
 	self.soundCellDescription = nil;
 	self.vibrateCellDescription = nil;
@@ -1628,7 +1548,7 @@
     [testAlarmButton release];
 	
 	[cellDescriptions release];
-	[enablingCellDescription release];            
+	[enabledCellDescription release];            
 	[repeatCellDescription release];             
 	[soundCellDescription release];              
 	[vibrateCellDescription release];            
@@ -1651,7 +1571,7 @@
 			[alarmTemp removeObserver:self forKeyPath:@"position"];
 			[alarmTemp removeObserver:self forKeyPath:@"positionShort"];
 			//[alarmTemp removeObserver:self forKeyPath:@"notes"];
-			[alarmTemp removeObserver:self forKeyPath:@"enabling"];
+			[alarmTemp removeObserver:self forKeyPath:@"enabled"];
 			[alarmTemp removeObserver:self forKeyPath:@"coordinate"];
 			[alarmTemp removeObserver:self forKeyPath:@"vibrate"];
 			[alarmTemp removeObserver:self forKeyPath:@"sound"];

@@ -8,7 +8,7 @@
 
 #import "YCLocationManager.h"
 #import "IAGlobal.h"
-#import "YCAnnotation.h"
+#import "IAAnnotation.h"
 #import "YCLocation.h"
 #import "CustomPickerController.h"
 #import "UIUtility.h"
@@ -88,15 +88,6 @@
  */
 
 
-
--(id)middlePointAnnotion{
-	if (middlePointAnnotion == nil) {
-		middlePointAnnotion = [[YCAnnotation alloc] initWithIdentifier:@"middlePointAnnotion"];
-	}
-	
-	return middlePointAnnotion;
-}
-
 #pragma mark -
 #pragma mark Events Handle
 
@@ -119,7 +110,7 @@
 #pragma mark Utility
 -(void)updateAlarmRadiusCircleOverlay:(MKCircle*)circleOverlay{
 	
-	[self.mapView removeAnnotation:self.middlePointAnnotion]; //删除半径标签提示
+	[self.mapView removeAnnotation:middlePointAnnotion]; //删除半径标签提示
 	[self.mapView removeOverlays:self.mapView.overlays];
 	[self.mapView addOverlay:circleOverlay];
 	
@@ -342,9 +333,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	
 	self.mapView.delegate = self;
 	self.title = KViewTitleAlarmRadius;
+    middlePointAnnotion = [[IAAnnotation alloc] initWithAlarm:self.alarm];
+    
 	[self registerNotifications];
 
 }
@@ -564,7 +556,7 @@
 	
 	static NSString* pinViewAnnotationIdentifier = nil;
 	
-	if ([annotation isKindOfClass:[YCAnnotation class]]) {
+	if ([annotation isKindOfClass:[IAAnnotation class]]) {
 		pinViewAnnotationIdentifier = @"edgeViewAnnotationIdentifier";
 		MKAnnotationView* middlePointView = (MKPinAnnotationView *)
 		[theMapView dequeueReusableAnnotationViewWithIdentifier:pinViewAnnotationIdentifier];
@@ -588,7 +580,7 @@
 		
 		//标签，例如：3.0kms
 		CLLocationDistance radius = [self alarmRadiusValue];
-		((YCAnnotation*)annotation).title =  [UIUtility convertDistance:radius];
+		((IAAnnotation*)annotation).title =  [UIUtility convertDistance:radius];
 		
 		return middlePointView;
 	}else {
@@ -659,7 +651,7 @@
 - (void)mapView:(MKMapView *)theMapView didAddAnnotationViews:(NSArray *)views{
 	for (id oneObj in views) {
 		id annotation = ((MKAnnotationView*)oneObj).annotation;
-		if ([ annotation isKindOfClass:[YCAnnotation class]]) {
+		if ([ annotation isKindOfClass:[IAAnnotation class]]) {
 			[self performSelector:@selector(animateSelectAnotation:) withObject:annotation afterDelay:0.3];
 		}
 	}
@@ -700,10 +692,10 @@
 	[self.mapView addOverlay:lineOverlay];
 	
 	//加线标签
-	self.middlePointAnnotion.coordinate = middle;
+	middlePointAnnotion.coordinate = middle;
 	//self.middlePointAnnotion.title = [UIUtility convertDistance:radius];
-	[self.mapView removeAnnotation:self.middlePointAnnotion];
-	[self.mapView addAnnotation:self.middlePointAnnotion];
+	[self.mapView removeAnnotation:middlePointAnnotion];
+	[self.mapView addAnnotation:middlePointAnnotion];
 }
 
 

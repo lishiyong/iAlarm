@@ -107,7 +107,7 @@
         if (theIARegion == nil) return;
 		
 		if (IASaveTypeUpdate == saveInfo.saveType || IASaveTypeAdd == saveInfo.saveType) {
-			if (theIARegion.alarm.enabling) {
+			if (theIARegion.alarm.enabled) {
                 //替换或添加
                 [self.standardLocationManager startMonitoringForRegion:theIARegion.region desiredAccuracy:theIARegion.monitoringForRegionDesiredAccuracy];
                 NSLog(@"替换或添加名称：%@ desiredAccuracy = %f",theIARegion.alarm.alarmName,theIARegion.monitoringForRegionDesiredAccuracy);

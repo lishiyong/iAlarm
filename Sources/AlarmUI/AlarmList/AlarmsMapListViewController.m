@@ -20,14 +20,14 @@
 #import "YCAnimateRemoveFileView.h"
 #import "YCCalloutBarButton.h"
 #import "YCCalloutBar.h"
-#import "YCPinAnnotationView.h"
+#import "IAAnnotationView.h"
 #import "IASaveInfo.h"
 #import "YCRemoveMinusButton.h"
 #import "AlarmListNotifications.h"
 #import "YCMaps.h"
 #import "YCParam.h"
 #import "IAAlarmRadiusType.h"
-#import "YCAnnotation.h"
+#import "IAAnnotation.h"
 #import "MKMapView+YC.h"
 #import "YCLocation.h"
 #import "YCSystemStatus.h"
@@ -57,7 +57,7 @@
 #pragma mark - property
 
 @synthesize mapView, maskView, maskLabel, maskActivityIndicator;
-@synthesize mapAnnotations;
+@synthesize mapPointAnnotations;
 @synthesize placemarkForUserLocation, placemarkForPin;
 @synthesize toolbarFloatingView, mapsTypeButton, satelliteTypeButton, hybridTypeButton;
 
@@ -87,23 +87,6 @@
 
 -(void)setUserInteractionEnabled:(BOOL)enabled{
 	[self.view setUserInteractionEnabled:enabled];
-}
-
-//刷新pinview
-- (void)refreshPinView{
-	
-	if (pinsEditing) return;
-	
-	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(refreshPinView) object:nil];
-	
-	for (YCAnnotation *aAnnotation in self.mapAnnotations) {
-		YCPinAnnotationView *pinView = (YCPinAnnotationView*)[self.mapView viewForAnnotation:aAnnotation];
-		
-		//[pinView updatePinColor]; //对付 应该灰而不灰的情况
-		[pinView performSelector:@selector(updatePinColor) withObject:nil afterDelay:0.0];
-		
-	}
-     
 }
 
 -(void)alertInternet{
@@ -186,44 +169,19 @@
 }
 
 //做annotation及其相应的view、circleOverlay，并把他们加入的列表中
-- (YCAnnotation*)insertAnnotationWithAlarm:(IAAlarm*)alarm atIndex:(NSInteger)index{
-	BOOL isEnabling = alarm.enabling;
-    CLLocationCoordinate2D visualCoordinate = alarm.visualCoordinate;;
+- (IAAnnotation*)insertAnnotationWithAlarm:(IAAlarm*)alarm atIndex:(NSInteger)index{
+
+	IAAnnotation *annotation = [[[IAAnnotation alloc] initWithAlarm:alarm] autorelease];
 	
-	YCAnnotation *annotation = [[[YCAnnotation alloc] initWithCoordinate:visualCoordinate identifier:alarm.alarmId] autorelease];
-	annotation.title = alarm.alarmName;
-	annotation.subtitle = alarm.position;
-    annotation.coordinate = visualCoordinate;    
-	annotation.annotationType = isEnabling ? YCMapAnnotationTypeStandard:YCMapAnnotationTypeDisabled; //没启用
-	
-	if (index < 0 || index > self.mapAnnotations.count-1)
-		[self.mapAnnotations addObject:annotation];
+	if (index < 0 || index > self.mapPointAnnotations.count-1)
+		[self.mapPointAnnotations addObject:annotation];
 	else 
-		[self.mapAnnotations insertObject:annotation atIndex:index];
-	
-	//pinview
-	NSString *imageName = alarm.alarmRadiusType.alarmRadiusTypeImageName;
-	imageName = [NSString stringWithFormat:@"20_%@",imageName]; //使用20像素的图标
-	imageName = isEnabling ? imageName: @"20_IAFlagGray.png";  //没有启用，使用灰色旗帜
-	UIImageView *sfIconView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)] autorelease];
-	sfIconView.image = [UIImage imageNamed:imageName];
+		[self.mapPointAnnotations insertObject:annotation atIndex:index];
 	
 	static NSString* YCpinViewAnnotationIdentifier = @"YCpinViewAnnotationIdentifier";
-	YCPinAnnotationView* pinView = [[[YCPinAnnotationView alloc]
+	IAAnnotationView* pinView = [[[IAAnnotationView alloc]
 								  initWithAnnotation:annotation reuseIdentifier:YCpinViewAnnotationIdentifier] autorelease];
 	pinView.delegate = self;
-	
-	
-	UIButton* rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-	pinView.rightCalloutAccessoryView = rightButton; 
-	pinView.leftCalloutAccessoryView = sfIconView;
-
-	
-	
-	pinView.canShowCallout = YES;
-	pinView.animatesDrop = NO;
-	pinView.draggable = NO;
-	pinView.pinColor = MKPinAnnotationColorRed;
 	
 	//长按pin
     UILongPressGestureRecognizer *pinLongPressGesture = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(pinLongPressed:)] autorelease];
@@ -233,9 +191,10 @@
 	[pinView addGestureRecognizer:pinLongPressGesture];
 	
 	
-	[self.mapAnnotationViews setObject:pinView forKey:alarm.alarmId];  //加入到列表
+	[self.mapPointAnnotationViews setObject:pinView forKey:alarm.alarmId];  //加入到列表
 	
 	//警示圈
+    CLLocationCoordinate2D visualCoordinate = alarm.visualCoordinate;
 	MKCircle *circleOverlay = [MKCircle circleWithCenterCoordinate:visualCoordinate radius:alarm.radius];
 	[self.circleOverlays setObject:circleOverlay forKey:alarm.alarmId];  //加入到列表
 	
@@ -245,8 +204,8 @@
 -(void)updateMapAnnotations
 {
     
-	[self.mapAnnotations removeAllObjects];
-	[self.mapAnnotationViews removeAllObjects];
+	[self.mapPointAnnotations removeAllObjects];
+	[self.mapPointAnnotationViews removeAllObjects];
 	[self.circleOverlays removeAllObjects];
 	for (IAAlarm *temp in self.alarms)
 	{
@@ -254,14 +213,6 @@
 	}
 	
 }
-
--(void)addMapAnnotations
-{	[self updateMapAnnotations];
-	//[self.mapView addAnnotations:self.mapAnnotations];
-	[self.mapView performSelectorOnMainThread:@selector(addAnnotations:) withObject:self.mapAnnotations waitUntilDone:YES];
-	//[self.mapView addOverlays:[self.circleOverlays allValues]];
-}
-
 
 //用户的当前位置（小蓝点）是否在地图中心
 - (BOOL)isUserLocationInMapsCenter{
@@ -392,20 +343,20 @@
 	return animateRemoveFileView;
 }
 
--(id) mapAnnotationViews{
-	if (mapAnnotationViews == nil)
+-(id) mapPointAnnotationViews{
+	if (mapPointAnnotationViews == nil)
     {
-        mapAnnotationViews = [[NSMutableDictionary dictionary] retain];
+        mapPointAnnotationViews = [[NSMutableDictionary dictionary] retain];
     }
-    return mapAnnotationViews;
+    return mapPointAnnotationViews;
 }
 
--(id) mapAnnotations{
-	if (mapAnnotations == nil)
+-(id) mapPointAnnotations{
+	if (mapPointAnnotations == nil)
     {
-        mapAnnotations = [[NSMutableArray array] retain];
+        mapPointAnnotations = [[NSMutableArray array] retain];
     }
-    return mapAnnotations;
+    return mapPointAnnotations;
 }
 
 -(id) circleOverlays{
@@ -419,7 +370,7 @@
 - (void)setPinsEditing:(BOOL)theEditing{
 	
 	
-	NSInteger count = self.mapAnnotations.count;
+	NSInteger count = self.mapPointAnnotations.count;
 	if (count == 0 ) {
 		pinsEditing = NO;
 		return ;
@@ -427,12 +378,18 @@
 	
 	pinsEditing = theEditing;
 	
-	for (YCAnnotation *aAnnotation in self.mapAnnotations) {
+	for (IAAnnotation *aAnnotation in self.mapPointAnnotations) {
 		IAAlarm *alarm = [IAAlarm findForAlarmId:aAnnotation.identifier];
-		YCPinAnnotationView * aAnnotationView = [self.mapAnnotationViews objectForKey:aAnnotation.identifier];
+		IAAnnotationView * aAnnotationView = [self.mapPointAnnotationViews objectForKey:aAnnotation.identifier];
 		
 		if (aAnnotationView ==nil ) continue;
-		aAnnotationView.calloutViewEditing = theEditing;
+        
+        if ([self.mapView isVisibleForAnnotation:aAnnotation] 
+            && [self.mapView isSelectedForAnnotation:aAnnotation]
+            && [self isViewAppeared]) 
+            [aAnnotationView setEditing:theEditing animated:YES];//可视 && 选中 && 本视图在显示 动画切换
+        else
+            aAnnotationView.editing = theEditing;
 		
 		//拖动
 		aAnnotationView.pinColor = theEditing ? MKPinAnnotationColorPurple : MKPinAnnotationColorRed;
@@ -443,8 +400,6 @@
 		aAnnotation.title = newTitle;
 	}
 
-	//灰pin的颜色
-	[self refreshPinView];
 }
 
 #pragma mark -
@@ -467,19 +422,10 @@
 	[self setUIEditing:target];
 }
 
-////居中。为了延时调用
--(void)setCenterForAnnotation:(id<MKAnnotation>)annotation{
-	
-	BOOL setAnimated = NO;
-	if (self->isApparing) setAnimated = YES;
-	[self.mapView setCenterCoordinate:annotation.coordinate animated:setAnimated]; //居中
-	
-}
-
 //没有选中的，选中最近的.使被选中的在可视范围内
 -(void)selectAndVisibleTheNearestAnnotationFromCoordinate:(CLLocationCoordinate2D)fromCoordinate animated:(BOOL)animated{
     //找到最近的一个
-    id<MKAnnotation> selecting = [self.mapView theNearestAnnotationFromCoordinate:self.mapView.centerCoordinate];
+    id<MKAnnotation> selecting = [self.mapView theNearestAnnotationFromCoordinate:fromCoordinate];
     if (!selecting) 
         return;
     
@@ -488,19 +434,22 @@
                                     ? [self.mapView.selectedAnnotations objectAtIndex:0]
                                     : nil;
     
-    if (![selected isKindOfClass: [YCAnnotation class]]) {
-        //反选目前选中的
-        [self.mapView deselectAnnotation:selected animated:animated];
-        //选中
-        [self.mapView selectAnnotation:selecting animated:animated];
-    }else{
+    if (![selected isKindOfClass: [IAAnnotation class]]) {//选中的不是pin，反选
+        if (selected)
+            [self.mapView deselectAnnotation:selected animated:animated];
+    }else{//选中的是pin
         selecting = selected;
     }
     
+    
     //使被选中的在可视范围内
-    BOOL isVisible = [self.mapView visibleForAnnotation:selecting]; //是否在可视范围
+    BOOL isVisible = [self.mapView isVisibleForAnnotation:selecting]; //是否在可视范围
     if (!isVisible) 
         [self.mapView setCenterCoordinate:selecting.coordinate animated:animated];
+    
+    //选中
+    if (![self.mapView isSelectedForAnnotation:selecting])
+        [self.mapView selectAnnotation:selecting animated:animated];
     
 }
 
@@ -511,10 +460,7 @@
 	if (![self isViewLoaded]) return;
 	
 	NSNumber *isEditingObj = [[notification userInfo] objectForKey:IAEditStatusKey];
-	//if(isApparing){
-		[self setUIEditing:[isEditingObj boolValue]];
-
-	//}
+    [self setUIEditing:[isEditingObj boolValue]];
 	 
 }
 
@@ -552,30 +498,33 @@
 //闹钟列表发生变化
 - (void) handle_alarmsDataListDidChange:(NSNotification*)notification {
 	
-	//还没加载
+    //还没加载
 	if (![self isViewLoaded]) return;
 	
 	//更新大头针
 	IASaveInfo *saveInfo = [((NSNotification*)notification).userInfo objectForKey:IASaveInfoKey];
 	NSString *alarmId = saveInfo.objId;
-	YCAnnotation *annotation = nil;
+	IAAnnotationView *annotationView = [[[self.mapPointAnnotationViews objectForKey:alarmId] retain] autorelease];
+    IAAnnotation *annotation = [[(IAAnnotation*)annotationView.annotation retain] autorelease];
+    MKCircle *circleOverlay = [[[self.circleOverlays objectForKey:alarmId] retain] autorelease];
+    CLLocationCoordinate2D coordinate = annotation ? annotation.coordinate : kCLLocationCoordinate2DInvalid;
+    
 	switch (saveInfo.saveType) {
 		case IASaveTypeDelete:
-			if ([self.mapView.annotations count] == 0) break;//如果地图没有大头针，防系统bug
+            
+			if ([self.mapView.mapPointAnnotations count] == 0) break;//如果地图没有大头针，防系统bug
 			
-			annotation = [[self.mapAnnotationViews objectForKey:alarmId] annotation];
-			if (!annotation) break;
-			
-			[self.mapView removeOverlay:[self.circleOverlays objectForKey:alarmId]];
-			[self.mapAnnotations removeObject:annotation];
-			[self.mapAnnotationViews removeObjectForKey:alarmId];
-			[self.circleOverlays removeObjectForKey:alarmId];
-			
-			if ([(NSNotification*)notification object] == self) {
-				[self animateRemoveAnnotion:annotation]; //在自己的上删除，动画效果。自己只能删除
+            [self.mapPointAnnotationViews removeObjectForKey:alarmId];
+			[self.mapPointAnnotations removeObject:annotation];
+            [self.circleOverlays removeObjectForKey:alarmId];
+            
+			if ([(NSNotification*)notification object] == self) {                
                 
+				[self animateRemoveAnnotion:annotation];  //在自己的上删除，动画效果。自己只能删除
+                [self.mapView removeAnnotation:annotation];
+                [self.mapView removeOverlay:circleOverlay];
+
                 //播放删除完动画，再移动地图
-                CLLocationCoordinate2D coordinate = annotation.coordinate;
                 BOOL animated = YES;
                 SEL selector = @selector(selectAndVisibleTheNearestAnnotationFromCoordinate:animated:);
                 NSMethodSignature *signature = [self methodSignatureForSelector:selector];
@@ -585,13 +534,16 @@
                 [invocaton setArgument:&coordinate atIndex:2];  //self,_cmd分别占据0、1
                 [invocaton setArgument:&animated atIndex:3];
                 [invocaton performSelector:@selector(invoke) withObject:nil afterDelay:1.0];
-                
+                        
 			}else {
-				[self.mapView removeAnnotation:annotation];
+                //列表上删除的。先都删除了。
+				[self.mapView removeAnnotations:self.mapView.mapPointAnnotations];
+                [self.mapView removeOverlay:circleOverlay];
+                [self.mapView addAnnotations:self.mapPointAnnotations];
                 [self selectAndVisibleTheNearestAnnotationFromCoordinate: annotation.coordinate animated:NO];//选中离被删除最近的
 			}
 			
-			if ([self.mapAnnotations count] == 0) {
+			if ([self.mapPointAnnotations count] == 0) {
 				//改变编辑状态
 				BOOL isEditing = NO;
 				NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -602,66 +554,77 @@
 			}
 			
 			break;
+            
 		case IASaveTypeUpdate:
+            
 			if (notification.object == self) break; //如果是自身视图的大头针拖动，不用做下面的
-			if ([self.mapView.annotations count] == 0) break;//如果地图没有大头针，防系统bug
-			
-			annotation = [[self.mapAnnotationViews objectForKey:alarmId] annotation];
+			if ([self.mapView.mapPointAnnotations count] == 0) break;//如果地图没有大头针，防系统bug
 			if (!annotation) break;
-			NSInteger index = [self.mapAnnotations indexOfObject:annotation];
+			NSInteger index = [self.mapPointAnnotations indexOfObject:annotation];
 			
-			//先都删除了
-			[self.mapView removeAnnotation:annotation];
-			[self.mapView removeOverlay:[self.circleOverlays objectForKey:alarmId]];
-			[self.mapAnnotations removeObject:annotation];
-			[self.mapAnnotationViews removeObjectForKey:alarmId];
-			[self.circleOverlays removeObjectForKey:alarmId];
-			
+			//先都删除了   
+            [self.mapView removeAnnotation:annotation];
+            [self.mapView removeOverlay:circleOverlay];
+            [self.mapPointAnnotationViews removeObjectForKey:alarmId];
+			[self.mapPointAnnotations removeObject:annotation];
+            [self.circleOverlays removeObjectForKey:alarmId];
+  
 			//再增加
 			annotation = [self insertAnnotationWithAlarm:[IAAlarm findForAlarmId:alarmId] atIndex:index];
-			//[self.mapView addAnnotation:annotation];
-			[self.mapView performSelectorOnMainThread:@selector(addAnnotation:) withObject:annotation waitUntilDone:YES];
+			//[self.mapView performSelectorOnMainThread:@selector(addAnnotation:) withObject:annotation waitUntilDone:YES];
+            [self.mapView addAnnotation:annotation];
+            [self.mapView selectAnnotation:annotation];//刚加上的，竟然无法用动画选中！！
+            
+            if ([[[UIDevice currentDevice] systemVersion] floatValue] < 4.2) 
+            {//before 4.2， addAnnotation后 等一会才能选中，等多久，不知道！                
+                while (![self.mapView isSelectedForAnnotation:annotation]) {
+                    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+                    [self.mapView selectAnnotation:annotation];
+                }
+            }
 			
-			if (![self.mapView visibleForAnnotation:annotation]) { //如果annotation不在可视范围
-				//新增的在屏幕中央
-				if(self->isApparing)
+			if (![self.mapView isVisibleForAnnotation:annotation]) { //如果annotation不在可视范围
+				if([self isViewAppeared])
 					[self.mapView setCenterCoordinate:annotation.coordinate animated:YES];
 				else 
 					[self.mapView setCenterCoordinate:annotation.coordinate];
 			}
-
-			
+            
 			break;
+            
 		case IASaveTypeAdd:
+            
 			annotation = [self insertAnnotationWithAlarm:[IAAlarm findForAlarmId:alarmId] atIndex:0];
 			if (!annotation) break;
-			[self.mapView performSelectorOnMainThread:@selector(addAnnotation:) withObject:annotation waitUntilDone:YES];
 			
 			//新增的要弄到可视范围内
-            if (![self.mapView visibleForAnnotation:annotation]) {
-                if(self->isApparing)
-                    [self.mapView setCenterCoordinate:annotation.coordinate animated:YES];
-                else 
-                    [self.mapView setCenterCoordinate:annotation.coordinate];
+            if (![self.mapView isVisibleForAnnotation:annotation]) {
+                [self.mapView setCenterCoordinate:annotation.coordinate animated:YES];
             }
+            
+            [self.mapView addAnnotation:annotation];
+            [self.mapView selectAnnotation:annotation];//刚加上的，竟然无法用动画选中！！
+            
+            if ([[[UIDevice currentDevice] systemVersion] floatValue] < 4.2) 
+            {//before 4.2， addAnnotation后 等一会才能选中，等多久，不知道！                
+                while (![self.mapView isSelectedForAnnotation:annotation]) {
+                    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+                    [self.mapView selectAnnotation:annotation];
+                }
+            }
+            
 			
 			//如果屏幕没打开
 			if (NO == self.maskView.hidden){
 				isFirstShow = YES;//为了让在viewWillAppear重新打开
 			}
-						
+            
 			break;
+            
 		default:
 			break;
 	}
-		
 	
-	/*
-	//编辑按钮
-	[self setUIEditing:self.pinsEditing];
-	*/
-	
-	//设置“显示所有按钮”的可用状态。
 	 
 }
 
@@ -711,7 +674,7 @@
 	if (![self isViewLoaded]) return;
     
     CLLocation *location = [[notification userInfo] objectForKey:IAStandardLocationKey];
-    for (YCAnnotation *oneObj in self.mapAnnotations ) {
+    for (IAAnnotation *oneObj in self.mapPointAnnotations ) {
         [oneObj setDistanceSubtitleWithCurrentLocation:location];
     }
     
@@ -724,18 +687,20 @@
 	//self.mapView.showsUserLocation = NO;
 	
 	//不再刷新pin
-	[refreshPinLoopTimer invalidate];[refreshPinLoopTimer release];refreshPinLoopTimer = nil;
+	//[refreshPinLoopTimer invalidate];[refreshPinLoopTimer release];refreshPinLoopTimer = nil;
 	
     //关闭未关闭的对话框
     [checkNetAlert dismissWithClickedButtonIndex:checkNetAlert.cancelButtonIndex animated:NO];
 }
 
 - (void) handle_applicationDidBecomeActive:(id)notification{	
-	//刷新pin
+	/*
+    //刷新pin
     NSTimeInterval ti = 0.75;
     [refreshPinLoopTimer invalidate];
     [refreshPinLoopTimer release];
     refreshPinLoopTimer = [[NSTimer scheduledTimerWithTimeInterval:ti target:self selector:@selector(refreshPinView) userInfo:nil repeats:YES] retain];
+     */
     
 }
 
@@ -844,17 +809,17 @@
 - (void)handle_focusButtonPressed:(NSNotification*)notification{
 		
 	//选中第一个
-	if (self.mapAnnotations.count >0) {
+	if (self.mapPointAnnotations.count >0) {
 		if (self.mapView.selectedAnnotations.count ==1) { 
 			id selectedAnnotation = [self.mapView.selectedAnnotations objectAtIndex:0];
 			if ([selectedAnnotation isKindOfClass:[MKUserLocation class]]) { 
 				//目前选中是当前位置
-				[self.mapView animateSelectAnnotation:[self.mapAnnotations objectAtIndex:0]];
+				[self.mapView animateSelectAnnotation:[self.mapPointAnnotations objectAtIndex:0]];
 			}
 			
 		}else if (self.mapView.selectedAnnotations.count <=0){
 			//没有选中的
-			[self.mapView animateSelectAnnotation:[self.mapAnnotations objectAtIndex:0]];
+			[self.mapView animateSelectAnnotation:[self.mapPointAnnotations objectAtIndex:0]];
 		}
 		
 	}
@@ -1073,7 +1038,22 @@
 	 
 	 
 	//显示大头针
-	[self addMapAnnotations];
+	[self updateMapAnnotations];
+    if (self.mapPointAnnotations.count >0) {
+        [self.mapView addAnnotations:self.mapPointAnnotations];
+        //[self.mapView selectAnnotation:[self.mapPointAnnotations objectAtIndex:0]];
+        id selecting = [self.mapPointAnnotations objectAtIndex:0];
+        [self.mapView performSelector:@selector(selectAnnotation:) withObject:selecting afterDelay:0.25];
+        
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] < 4.2) 
+        {//before 4.2， addAnnotation后 等一会才能选中，等多久，不知道！                
+            while (![self.mapView isSelectedForAnnotation:selecting]) {
+                [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+                [self.mapView selectAnnotation:selecting];
+            }
+        }
+        
+    }
 	
 	//检查网络
 	isAlreadyAlertForInternet = NO;
@@ -1100,9 +1080,7 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {	
-	[super viewWillAppear:animated];
-	self->isApparing = YES;
-	
+	[super viewWillAppear:animated];	
 	
 	if (isFirstShow){
 		NSInteger alarmsCount = self.alarms.count;
@@ -1156,15 +1134,17 @@
         NSTimeInterval ti = [location.timestamp timeIntervalSinceNow];
         if (ti < -120) location = nil; //120秒内的数据可用。最后位置过久，不用.
     }
-    for (YCAnnotation *oneObj in self.mapAnnotations ) {
+    for (IAAnnotation *oneObj in self.mapPointAnnotations ) {
         [oneObj setDistanceSubtitleWithCurrentLocation:location];
     }
 	
     //刷新pin
+    /*
     NSTimeInterval ti = 0.75;
     [refreshPinLoopTimer invalidate];
     [refreshPinLoopTimer release];
     refreshPinLoopTimer = [[NSTimer scheduledTimerWithTimeInterval:ti target:self selector:@selector(refreshPinView) userInfo:nil repeats:YES] retain];
+     */
     
 	isFirstShow = NO;
 	
@@ -1173,8 +1153,6 @@
 -(void)viewDidDisappear:(BOOL)animated
 {
 	[super viewDidDisappear:animated];
-	self->isApparing = NO;
-
 
 	//保存最后加载的区域
 	if (self.mapView.region.span.latitudeDelta < 20.0) { //很大的地图就不存了
@@ -1193,8 +1171,7 @@
 		self.toolbarFloatingView.hidden = YES;
     
     //不再刷新pin
-	[refreshPinLoopTimer invalidate];[refreshPinLoopTimer release];refreshPinLoopTimer = nil;
-
+	//[refreshPinLoopTimer invalidate];[refreshPinLoopTimer release];refreshPinLoopTimer = nil;
 }
 
 
@@ -1272,7 +1249,7 @@
         if (self.mapView.selectedAnnotations.count > 0){
             
             id selected = [self.mapView.selectedAnnotations objectAtIndex:0];
-            if ([self.mapView visibleForAnnotation:selected]) 
+            if ([self.mapView isVisibleForAnnotation:selected]) 
                 selectedPinIsVisible = YES;
             else
                 selectedPinIsVisible = NO;
@@ -1315,8 +1292,8 @@
 
 - (void)pinLongPressed:(UILongPressGestureRecognizer *)sender{
 	
-	YCPinAnnotationView *annotationView = (YCPinAnnotationView*)sender.view;
-	if(![annotationView isKindOfClass:[YCPinAnnotationView class]]) return; //按的不是pin
+	IAAnnotationView *annotationView = (IAAnnotationView*)sender.view;
+	if(![annotationView isKindOfClass:[IAAnnotationView class]]) return; //按的不是pin
 	
 	
 	if (UIGestureRecognizerStateBegan == sender.state){ //只处理长按开始
@@ -1392,23 +1369,25 @@
     }
 }
 
-#pragma mark - YCPinAnnotationViewDelegete
+#pragma mark - IAAnnotationViewDelegete
 
 //按下了删除按钮
-- (void)annotationView:(YCPinAnnotationView *)annotationView didPressDeleteButton:(UIButton*)button{	
+- (void)annotationView:(IAAnnotationView *)annotationView didPressDeleteButton:(UIButton*)button{	
 	//删除Alarm
-	NSString *alarmId = [(YCAnnotation*)annotationView.annotation identifier];
-	IAAlarm *alarmSelected =[IAAlarm findForAlarmId:alarmId];
+	IAAlarm *alarmSelected =[(IAAnnotation*)annotationView.annotation alarm];
 	[alarmSelected deleteFromSender:self];
 }
 
-/*
-//AnnotationView收到消息
-- (void)annotationView:(YCPinAnnotationView *)annotationView hitTestWithEven:(UIEvent *)event{
-	//对付 应该灰而不灰的情况
-	[self performSelector:@selector(refreshPinView) withObject:nil afterDelay:1.0];
+- (void)annotationView:(IAAnnotationView *)annotationView didPressDetailButton:(UIButton*)button{
+    // ">"按钮被按下，打开编辑alarm
+	IAAlarm *theAlarm =[(IAAnnotation*)annotationView.annotation alarm];
+    
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    NSNotification *aNotification = [NSNotification notificationWithName:IAEditIAlarmButtonPressedNotification 
+                                                                  object:self
+                                                                userInfo:[NSDictionary dictionaryWithObject:theAlarm forKey:IAEditIAlarmButtonPressedNotifyAlarmObjectKey]];
+    [notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
 }
- */
 
 #pragma mark -
 #pragma mark Utility - UIGestureRecognizerDelegate
@@ -1425,7 +1404,7 @@
 	
 	return NO;
      */
-    BOOL isLongPressPin = [gestureRecognizer.view isKindOfClass:[YCPinAnnotationView class]] || [otherGestureRecognizer.view isKindOfClass:[YCPinAnnotationView class]];
+    BOOL isLongPressPin = [gestureRecognizer.view isKindOfClass:[IAAnnotationView class]] || [otherGestureRecognizer.view isKindOfClass:[IAAnnotationView class]];
     
     if (isLongPressPin && gestureRecognizer != tapMapViewGesture && otherGestureRecognizer != tapMapViewGesture) 
     {
@@ -1484,7 +1463,7 @@
     if (self.mapView.selectedAnnotations.count > 0){
         
         id selected = [self.mapView.selectedAnnotations objectAtIndex:0];
-        if ([self.mapView visibleForAnnotation:selected]) 
+        if ([self.mapView isVisibleForAnnotation:selected]) 
             selectedPinIsVisible = YES;
         else
             selectedPinIsVisible = NO;
@@ -1620,10 +1599,10 @@
 }
 
 
--(void)beginReverseWithAnnotation:(YCAnnotation*)annotation
+-(void)beginReverseWithAnnotation:(IAAnnotation*)annotation
 {	
 	//如果原来的还在查询，就先结束它
-	MKReverseGeocoder *oldReverseGeocoderForPin = [self.reverseGeocodersForPin objectForKey:[(YCAnnotation*)annotation identifier]];
+	MKReverseGeocoder *oldReverseGeocoderForPin = [self.reverseGeocodersForPin objectForKey:[(IAAnnotation*)annotation identifier]];
 	if (oldReverseGeocoderForPin && oldReverseGeocoderForPin.querying) {
 		[oldReverseGeocoderForPin cancel];
 		[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(endReverseWithAnnotation:) object:annotation];
@@ -1632,7 +1611,7 @@
 	//初始化，reverseGeocoder对象必须根据特定坐标init。
 	MKReverseGeocoder *aReverseGeocoderForPin = [[[MKReverseGeocoder alloc] initWithCoordinate:annotation.coordinate] autorelease];
 	aReverseGeocoderForPin.delegate = self;
-	[self.reverseGeocodersForPin setObject:aReverseGeocoderForPin forKey:[(YCAnnotation*)annotation identifier]];//应该不需要释放老的，自动了
+	[self.reverseGeocodersForPin setObject:aReverseGeocoderForPin forKey:[(IAAnnotation*)annotation identifier]];//应该不需要释放老的，自动了
 
 	//反转坐标
 	self.placemarkForPin = nil; //先赋空相关数据
@@ -1641,16 +1620,16 @@
 }
 
 
--(void)endReverseWithAnnotation:(YCAnnotation*)annotation
+-(void)endReverseWithAnnotation:(IAAnnotation*)annotation
 {
-	MKReverseGeocoder *aReverseGeocoderForPin = [self.reverseGeocodersForPin objectForKey:[(YCAnnotation*)annotation identifier]];
+	MKReverseGeocoder *aReverseGeocoderForPin = [self.reverseGeocodersForPin objectForKey:[(IAAnnotation*)annotation identifier]];
 	//如果超时了，反转还没结束，结束它
 	if ([aReverseGeocoderForPin respondsToSelector:@selector(cancel)])
 		[aReverseGeocoderForPin cancel];
 	//取消掉另一个调用，如果有
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(endReverseWithAnnotation:) object:annotation];
 	
-	IAAlarm *alarm = [IAAlarm findForAlarmId:[(YCAnnotation*)annotation identifier]];
+	IAAlarm *alarm = [IAAlarm findForAlarmId:[(IAAnnotation*)annotation identifier]];
 	
     CLLocationCoordinate2D coordinate = annotation.realCoordinate;
     
@@ -1689,7 +1668,7 @@
 	
 	
 	if (!alarm.nameChanged) {
-		[(YCAnnotation*)annotation setTitle:addressTitle];
+		[(IAAnnotation*)annotation setTitle:addressTitle];
 		alarm.alarmName = addressTitle;
 	}
     alarm.coordinate = coordinate;
@@ -1722,9 +1701,9 @@
 		NSArray *array = [self.reverseGeocodersForPin allKeysForObject:geocoder];
 		if (array.count >0) {
             NSString *alarmId = [array objectAtIndex:0];
-            YCPinAnnotationView *anPinAnnotationView = (YCPinAnnotationView*)[mapAnnotationViews objectForKey:alarmId];
+            IAAnnotationView *anPinAnnotationView = (IAAnnotationView*)[mapPointAnnotationViews objectForKey:alarmId];
             if (anPinAnnotationView) {
-                [self endReverseWithAnnotation:(YCAnnotation*)[anPinAnnotationView annotation]];
+                [self endReverseWithAnnotation:(IAAnnotation*)[anPinAnnotationView annotation]];
             }
             
         }
@@ -1751,9 +1730,9 @@
 			NSArray *array = [self.reverseGeocodersForPin allKeysForObject:geocoder];
             if (array.count >0) {
                 NSString *alarmId = [array objectAtIndex:0];
-                YCPinAnnotationView *anPinAnnotationView = (YCPinAnnotationView*)[mapAnnotationViews objectForKey:alarmId];
+                IAAnnotationView *anPinAnnotationView = (IAAnnotationView*)[mapPointAnnotationViews objectForKey:alarmId];
                 if (anPinAnnotationView) {
-                    [self endReverseWithAnnotation:(YCAnnotation*)[anPinAnnotationView annotation]];
+                    [self endReverseWithAnnotation:(IAAnnotation*)[anPinAnnotationView annotation]];
                 }
                 
             }
@@ -1789,8 +1768,8 @@
 	}
     
 	MKPinAnnotationView* pinView = nil;
-	if ([annotation isKindOfClass:[YCAnnotation class]]) {
-		pinView = [self.mapAnnotationViews objectForKey:((YCAnnotation*)annotation).identifier];
+	if ([annotation isKindOfClass:[IAAnnotation class]]) {
+		pinView = [self.mapPointAnnotationViews objectForKey:((IAAnnotation*)annotation).identifier];
 	}else {
 		//临时的pin
 		pinView = [[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil] autorelease];
@@ -1813,15 +1792,15 @@
 	}
 	
 	//设置最后选中的索引
-	self->lastSelectedAnnotionIndex = [self.mapAnnotations indexOfObject:annotationView.annotation];
+	self->lastSelectedAnnotionIndex = [self.mapPointAnnotations indexOfObject:annotationView.annotation];
 	if (NSNotFound == self->lastSelectedAnnotionIndex) 
 		self->lastSelectedAnnotionIndex = -1;//没有被选中的
 	
 	
 	/////////////////////////////////////////
 	//警示圈
-	YCAnnotation *annotation = (YCAnnotation*)annotationView.annotation;
-	if ([annotation isKindOfClass:[YCAnnotation class]])
+	IAAnnotation *annotation = (IAAnnotation*)annotationView.annotation;
+	if ([annotation isKindOfClass:[IAAnnotation class]])
 	{
 		
 		//先都隐藏
@@ -1914,47 +1893,23 @@
 }
 
 - (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views{
-	//设置选中
-	//if (-1 == self->lastSelectedAnnotionIndex) self->lastSelectedAnnotionIndex = 0;
-	//[self.mapView selectAnnotationFromAnnotations:self.mapAnnotations AtIndex:self->lastSelectedAnnotionIndex animated:YES];
-	
-	BOOL hasSelected = NO;
+    
 	for (MKAnnotationView *annotationView in views) {
 
-		YCAnnotation *annoation = (YCAnnotation*)annotationView.annotation ;
+		IAAnnotation *annoation = (IAAnnotation*)annotationView.annotation ;
 
 		
-		if ([annoation isKindOfClass:[YCAnnotation class]]) {
+		if ([annoation isKindOfClass:[IAAnnotation class]]) {
             
             //显示距离当前位置XX公里
             annoation.subtitle = nil;
             if ([YCSystemStatus deviceStatusSingleInstance].lastLocation) {
-                [(YCAnnotation*)annoation setDistanceSubtitleWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];
+                [(IAAnnotation*)annoation setDistanceSubtitleWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];
             }
-		}
-		
-		
-		//选中
-		if (!hasSelected) {
-			if (self.mapAnnotations.count == views.count) { //view load时候，选中最新加入的
-				id annotationselecting = nil;
-                if (self.mapAnnotations.count > 0) {
-                    annotationselecting = [self.mapAnnotations objectAtIndex:0];
-                    [self.mapView performSelector:@selector(selectAnnotation:) withObject:annotationselecting afterDelay:0.0]; 
-                }
-				
-				
-			}else {
-				if ([annoation isKindOfClass:[YCAnnotation class]]) 
-					[self.mapView performSelector:@selector(selectAnnotation:) withObject:annoation afterDelay:0.0]; 
-			}
-			
-			hasSelected = YES;
 		}
 
 	}
 	
-
 }
  
 
@@ -1983,8 +1938,8 @@
         
         //有一个pin不可视，按钮就可用
 		BOOL isHaveAPinVisible = NO;
-		for (YCAnnotation *anAnnotation in self.mapAnnotations) {
-			isHaveAPinVisible = [self.mapView visibleForAnnotation:anAnnotation];
+		for (IAAnnotation *anAnnotation in self.mapPointAnnotations) {
+			isHaveAPinVisible = [self.mapView isVisibleForAnnotation:anAnnotation];
 			if (!isHaveAPinVisible)
 				break;
 		}
@@ -2008,8 +1963,8 @@
 			BOOL isSelecting = NO;
 			NSArray *selectedArray = [self.mapView selectedAnnotations];
 			if (selectedArray.count >0) {
-				YCAnnotation *selected = [self.mapView.selectedAnnotations objectAtIndex:0];
-				if ([selected isKindOfClass:[YCAnnotation class]]) {
+				IAAnnotation *selected = [self.mapView.selectedAnnotations objectAtIndex:0];
+				if ([selected isKindOfClass:[IAAnnotation class]]) {
 					MKCircle *selectedCircle = [self.circleOverlays objectForKey:selected.identifier];
 					if (selectedCircle == circleOverlay) 
 						isSelecting = YES;
@@ -2059,41 +2014,10 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
-
-- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)theView calloutAccessoryControlTapped:(UIControl *)control{
-	
-	if (![theView isKindOfClass:[YCPinAnnotationView class]]) {
-		return;
-	}
-	
-	if (theView.rightCalloutAccessoryView != control) { //只处理右按钮
-		return;
-	}
-	
-	NSString *alarmId = [(YCAnnotation*)theView.annotation identifier]; 
-	IAAlarm *theAlarm =[IAAlarm findForAlarmId:alarmId];
-	if (![(YCPinAnnotationView*)theView calloutViewEditing]) {
-		// ">"按钮被按下，打开编辑alarm
-		NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-		NSNotification *aNotification = [NSNotification notificationWithName:IAEditIAlarmButtonPressedNotification 
-																	  object:self
-																	userInfo:[NSDictionary dictionaryWithObject:theAlarm forKey:IAEditIAlarmButtonPressedNotifyAlarmObjectKey]];
-		[notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
-		
-	}else {
-		// "删除"按钮被按下
-		//[theAlarm deleteFromSender:self];
-		
-		//不好用，没找到原因呢
-	}
-
-} 
-
-
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)annotationView didChangeDragState:(MKAnnotationViewDragState)newState fromOldState:(MKAnnotationViewDragState)oldState 
 {
     
-	YCAnnotation *annotation = (YCAnnotation*)annotationView.annotation;
+	IAAnnotation *annotation = (IAAnnotation*)annotationView.annotation;
 	MKCircle *circleOverlay = [self.circleOverlays objectForKey:annotation.identifier];
 	
 	IAAlarm *alarm = [IAAlarm findForAlarmId:annotation.identifier];
@@ -2115,14 +2039,14 @@
 			
 			//////////////////////////////////////////
 			//反转
-			if ([annotation isKindOfClass:[YCAnnotation class]])
+			if ([annotation isKindOfClass:[IAAnnotation class]])
 			{
 				if (!alarm.nameChanged)
 					annotation.title = @" . . .             ";
 				
 				//显示距离当前位置XX公里
 				if ([YCSystemStatus deviceStatusSingleInstance].lastLocation) {
-                    [(YCAnnotation*)annotation setDistanceSubtitleWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];
+                    [(IAAnnotation*)annotation setDistanceSubtitleWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];
 					/*
                     //为了有动画效果
 					NSString *subtitleTemp = annotation.subtitle;
@@ -2199,8 +2123,8 @@
 	self.satelliteTypeButton = nil;                   
 	self.hybridTypeButton = nil;
 	
-	[self.mapAnnotationViews removeAllObjects];
-	[self.mapAnnotations removeAllObjects];
+	[self.mapPointAnnotationViews removeAllObjects];
+	[self.mapPointAnnotations removeAllObjects];
 	[self.circleOverlays removeAllObjects];
     
     [tapMapViewGesture release]; tapMapViewGesture = nil;
@@ -2218,8 +2142,8 @@
     [maskLabel release];
 	[maskActivityIndicator release];
     
-    [mapAnnotations release];                         
-	[mapAnnotationViews release];  
+    [mapPointAnnotations release];                         
+	[mapPointAnnotationViews release];  
 	[circleOverlays release];
     
     [reverseGeocoderForUserLocation release];

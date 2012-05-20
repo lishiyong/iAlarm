@@ -58,7 +58,7 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 	CLLocationCoordinate2D coordinate;       //坐标
 	CLLocationAccuracy locationAccuracy;     //定位时候的精度
 	
-	BOOL enabling;                           //启用状态
+	BOOL enabled;                           //启用状态
 	YCSound *sound;                          //声音
 	YCRepeatType *repeatType;                //重复类型，一次，二次，永远
 	IAAlarmRadiusType *alarmRadiusType;      //公交，地铁等等
@@ -73,7 +73,7 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 	BOOL ring;                               //是否静音                    --目前未使用
 	YCPositionType *positionType;            //位置类型 当前位置，地图指定位置。--使用作为“触发警告的类型”
 	NSString *positionTypeId;                //                          --目前未使用
-	NSString *notes;                   //描述                       --使用2012-2-23
+	NSString *notes;                         //描述                       --使用2012-2-23
 	
 	NSString *reserve1;                      //作为addressTitle，为alarmName临时存储
 	NSString *reserve2;
@@ -92,7 +92,7 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 @property (nonatomic,assign) CLLocationCoordinate2D coordinate;
 @property (nonatomic,assign) CLLocationAccuracy locationAccuracy;
 
-@property (nonatomic,assign) BOOL enabling;
+@property (nonatomic,assign) BOOL enabled;
 @property (nonatomic,retain) YCSound *sound;
 @property (nonatomic,retain) YCRepeatType *repeatType;
 @property (nonatomic,retain) IAAlarmRadiusType *alarmRadiusType;

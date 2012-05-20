@@ -111,6 +111,10 @@
 	[self.removeSoundPlayer play];
 }
 
+- (BOOL)isAnimating{
+    return [self.animationImageView isAnimating];
+}
+
 - (void)dealloc {
 	[animationImage01 release];
 	[animationImage02 release];

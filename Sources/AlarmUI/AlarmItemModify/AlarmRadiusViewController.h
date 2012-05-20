@@ -14,12 +14,12 @@
 extern NSString *IAAlarmRadiusDidChangeNotification;
 
 @class CustomPickerController;
-@class YCAnnotation;
+@class IAAnnotation;
 @interface AlarmRadiusViewController : AlarmModifyViewController 
 <UIPickerViewDelegate, UIPickerViewDataSource,MKMapViewDelegate>{
 	IBOutlet MKMapView *mapView;
 	IBOutlet UIView *mapViewContainer;
-	YCAnnotation *middlePointAnnotion; //线的标签
+	IAAnnotation *middlePointAnnotion; //线的标签
 	MKCircle *lastCircleOverlay;   //为了取消函数调用
 	
 	IBOutlet UIView *alarmRadiusPickerViewContainer;
@@ -38,12 +38,9 @@ extern NSString *IAAlarmRadiusDidChangeNotification;
 	BOOL isAnimatedForAlarmRadiusPicker ;
 	////////////////////
 	
-
-	
 }
 @property(nonatomic,retain) IBOutlet MKMapView *mapView;
 @property(nonatomic,retain) IBOutlet UIView *mapViewContainer;
-@property(nonatomic,readonly) YCAnnotation *middlePointAnnotion;
 @property(nonatomic,retain) MKCircle *lastCircleOverlay;
 
 @property(nonatomic,retain) IBOutlet UIView *alarmRadiusPickerViewContainer;

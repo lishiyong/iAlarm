@@ -92,7 +92,7 @@
 	[self setUIEditing:self.alarmListTableView.editing];
 	
 	if ([(NSNotification*)notification object] != self) {  //自己改变就不用更新了，更新了还会有删除第一行问题
-		[self.alarmListTableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:self->isApparing];
+        [self.alarmListTableView performSelector:@selector(reloadData) withObject:nil afterDelay:0.0];
 	}
 }
 
@@ -218,14 +218,12 @@
 
 - (void)viewDidAppear:(BOOL)animated{
 	[super viewDidAppear:animated];
-	self->isApparing = YES;
     [self.alarmListTableView reloadData];//为了雷达扫描
 }
 
 
 - (void)viewDidDisappear:(BOOL)animated{
 	[super viewDidDisappear:animated];
-	self->isApparing = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated{

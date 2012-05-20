@@ -10,4 +10,6 @@
 
 @interface UIViewController (YC)
 
+- (BOOL)isViewAppeared;
+
 @end

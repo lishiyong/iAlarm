@@ -10,4 +10,13 @@
 
 @implementation UIViewController (YC)
 
+- (BOOL)isViewAppeared{
+    if (![self isViewLoaded]) return NO;
+    
+    if (self.view.superview && self.view.window) 
+        return YES;
+    
+    return NO;
+}
+
 @end

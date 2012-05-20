@@ -9,7 +9,7 @@
 #import "YCFunctions.h"
 #import "YCLocationManager.h"
 #import "CLLocation+YC.h"
-#import "YCPinAnnotationView.h"
+#import "IAAnnotationView.h"
 #import "UINavigationItem+YC.h"
 #import "UIViewController+YC.h"
 #import "IANotifications.h"
@@ -26,7 +26,7 @@
 #import "YCLocation.h"
 #import "YCSearchBar.h"
 #import "AlarmPositionMapViewController.h"
-#import "YCAnnotation.h"
+#import "IAAnnotation.h"
 #import "IAAlarm.h"
 #import "UIUtility.h"
 #import "YCParam.h"
@@ -170,7 +170,7 @@
 
 -(id)annotationAlarmEditing{
 	if (annotationAlarmEditing == nil) {
-		annotationAlarmEditing = [[YCAnnotation alloc] initWithIdentifier:nil];
+		annotationAlarmEditing = [[IAAnnotation alloc] initWithAlarm:alarm];
 		[annotationAlarmEditing addObserver:self forKeyPath:@"coordinate" options:0 context:nil];
 		[annotationAlarmEditing addObserver:self forKeyPath:@"subtitle" options:0 context:nil];
 		
@@ -183,6 +183,24 @@
 
 #pragma mark - 
 #pragma mark - Utility
+
+const CGFloat detailTitleViewW = 206.0; // 固定宽度
+- (UIView*)detailTitleViewWithContent:(NSString*)content{
+	
+	CGRect titleLabelFrame = CGRectMake(0.0,0.0,detailTitleViewW,44.0);
+	UILabel *titleLabel = [[[UILabel alloc] initWithFrame:titleLabelFrame] autorelease];
+	titleLabel.backgroundColor = [UIColor clearColor];
+	titleLabel.textColor = [UIColor colorWithRed:18.0/256.0 green:35.0/256.0 blue:70.0/256.0 alpha:1.0];
+	titleLabel.text = content;
+	titleLabel.font = [UIFont systemFontOfSize:14.0];
+	titleLabel.adjustsFontSizeToFitWidth = YES;
+	titleLabel.minimumFontSize = 10.0;
+	titleLabel.shadowColor = [UIColor lightTextColor];
+	titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+	titleLabel.textAlignment = UITextAlignmentCenter;
+    
+	return titleLabel;
+}
 
 //设置title为显示当前位置的距离
 - (void)setDistanceLabel{
@@ -237,7 +255,7 @@
 	IAAlarm *temp = self.alarm;
 	self.annotationAlarmEditing.title = temp.alarmName;
 	self.annotationAlarmEditing.subtitle = temp.position;
-	self.annotationAlarmEditing.annotationType = YCMapAnnotationTypeLocating;
+	self.annotationAlarmEditing.annotationType = IAMapAnnotationTypeLocating;
 	self.annotationAlarmEditing.title = KLabelMapNewAnnotationTitle;
 	self.annotationAlarmEditing.subtitle = temp.position;
     self.annotationAlarmEditing.coordinate = temp.visualCoordinate;
@@ -962,7 +980,6 @@
 -(void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
-    self->isApparing = YES;
 	self.title = KViewTitleAlarmPostion;
     
 	//浮动工具条
@@ -1027,7 +1044,6 @@
 -(void)viewDidDisappear:(BOOL)animated
 {
 	[super viewDidDisappear:animated];
-	self->isApparing = NO;
 	self.title = nil;
 	
 	[reverseGeocoder cancel];
@@ -1070,7 +1086,7 @@
 	
 	///////////////////////////////////
 	//不显示了，就不需要反转当前地址了
-	if(!self->isApparing) 
+	if(![self isViewAppeared]) 
 		return;
 	
 	if (self.mapView.userLocation.location) //反转坐标－地址。延时调用
@@ -1112,8 +1128,8 @@
 			annotationView.rightCalloutAccessoryView = rightButton;
 		}
 		
-		YCAnnotation *annotation = (YCAnnotation*)annotationView.annotation;
-		if ([annotation isKindOfClass:[YCAnnotation class]])
+		IAAnnotation *annotation = (IAAnnotation*)annotationView.annotation;
+		if ([annotation isKindOfClass:[IAAnnotation class]])
 		{
 			//选中
 			[self.mapView performSelector:@selector(animateSelectAnnotation:) withObject:annotation afterDelay:0.75];
@@ -1165,7 +1181,7 @@
 
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)annotationView didChangeDragState:(MKAnnotationViewDragState)newState fromOldState:(MKAnnotationViewDragState)oldState 
 {
-	YCAnnotation *annotation = (YCAnnotation*)annotationView.annotation;
+	IAAnnotation *annotation = (IAAnnotation*)annotationView.annotation;
 	switch (newState) 
 	{
 			
@@ -1195,7 +1211,7 @@
 
 			//////////////////////////////////////////
 			//反转
-			if ([annotation isKindOfClass:[YCAnnotation class]])
+			if ([annotation isKindOfClass:[IAAnnotation class]])
 			{
 				CLLocationCoordinate2D new = annotation.coordinate;
 				CLLocationCoordinate2D old = self.alarm.visualCoordinate;
@@ -1299,7 +1315,7 @@
 	{
 		//pinView = [[[MKPinAnnotationView alloc]
 		//			initWithAnnotation:annotation reuseIdentifier:pinViewAnnotationIdentifier] autorelease];
-		pinView = [[[YCPinAnnotationView alloc]
+		pinView = [[[IAAnnotationView alloc]
 					initWithAnnotation:annotation reuseIdentifier:pinViewAnnotationIdentifier] autorelease];
 		
 		pinView.canShowCallout = YES;
@@ -1390,8 +1406,8 @@
 		
 	/////////////////////////////////////////
 	//警示圈
-	YCAnnotation *annotation = (YCAnnotation*)annotationView.annotation;
-	if ([annotation isKindOfClass:[YCAnnotation class]])
+	IAAnnotation *annotation = (IAAnnotation*)annotationView.annotation;
+	if ([annotation isKindOfClass:[IAAnnotation class]])
 	{
 
 		MKOverlayView *circleView = [self.mapView viewForOverlay:self.circleOverlay];
@@ -1410,8 +1426,8 @@
 - (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)annotationView{
 	
 	//隐藏警示圈
-	YCAnnotation *annotation = (YCAnnotation*)annotationView.annotation;
-	if ([annotation isKindOfClass:[YCAnnotation class]])
+	IAAnnotation *annotation = (IAAnnotation*)annotationView.annotation;
+	if ([annotation isKindOfClass:[IAAnnotation class]])
 	{		
 		MKOverlayView *circleView = [self.mapView viewForOverlay:self.circleOverlay];
 		[self animateSetHidden:YES circleView:circleView];
@@ -1453,7 +1469,7 @@
 	
 	//反转坐标
 	//先赋空相关数据
-	if ([annotation isKindOfClass:[YCAnnotation class]]) {
+	if ([annotation isKindOfClass:[IAAnnotation class]]) {
 		self.placemarkForPin = nil; 
 	}else if ([annotation isKindOfClass:[MKUserLocation class]]){
 		self.placemarkForUserLocation = nil; 
@@ -1483,7 +1499,7 @@
 	///////////////////////////////////
 	
 	MKPlacemark *placemark = nil;
-	if ([annotation isKindOfClass:[YCAnnotation class]]) {
+	if ([annotation isKindOfClass:[IAAnnotation class]]) {
 		placemark = self.placemarkForPin; 
 	}else if ([annotation isKindOfClass:[MKUserLocation class]]){
 		placemark = self.placemarkForUserLocation; 
@@ -1500,16 +1516,16 @@
 		address = (address != nil) ? address : [UIUtility convertCoordinate:coordinate];
 	}
 	
-	if ([annotation isKindOfClass:[YCAnnotation class]]) {
+	if ([annotation isKindOfClass:[IAAnnotation class]]) {
 		////////////
 		//Done按钮使用
-		((YCAnnotation*)annotation).placemarkForReverse = placemark;
-		((YCAnnotation*)annotation).placeForSearch = nil;
+		((IAAnnotation*)annotation).placemarkForReverse = placemark;
+		((IAAnnotation*)annotation).placeForSearch = nil;
 		////////////
 		
-		if (![((YCAnnotation*)annotation).subtitle isEqualToString:address]) { //不相等，才赋值。
+		if (![((IAAnnotation*)annotation).subtitle isEqualToString:address]) { //不相等，才赋值。
 			//[(IAAnnotation*)annotation performSelector:@selector(setSubtitle:) withObject:address afterDelay:0.0];
-			[(YCAnnotation*)annotation setSubtitle:address];
+			[(IAAnnotation*)annotation setSubtitle:address];
 		}
 		
 		
@@ -1571,7 +1587,7 @@
 
 -(void)resetAnnotationWithPlace:(BSKmlResult*)place{
 	
-	YCAnnotation *annotationTemp = nil;
+	IAAnnotation *annotationTemp = nil;
 	annotationTemp = self.annotationAlarmEditing;
 	
 	

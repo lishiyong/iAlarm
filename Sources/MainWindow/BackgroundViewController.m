@@ -423,6 +423,7 @@
 	if (alarmsCount == 0) {//空列表不显示编辑按钮
 		//self.navBar.topItem.leftBarButtonItem = nil;
 		[self.navBar.topItem performSelector:@selector(setLeftBarButtonItem:) withObject:nil afterDelay:0.25]; //按钮消失在列表空之后
+        self.focusBarButtonItem.enabled = NO;//没有pin，显示所有按钮当然不可用了
 	}else {
 		if (self.navBar.topItem.leftBarButtonItem == nil) {
 			self.navBar.topItem.leftBarButtonItem = self.editButtonItem;
@@ -850,7 +851,7 @@
 }
 
 -(IBAction)editOrDoneButtonItemPressed:(id)sender{
-	
+	/*
 	//防止连续点击编辑按钮，pin的CalloutAccessoryView出现空白
 	static NSDate *lastInvokeTime = nil;
 	if (lastInvokeTime == nil) 
@@ -860,6 +861,7 @@
     {
         return; 
     }
+     */
 	
 	//改变编辑状态
 	BOOL isEditing = (self.navBar.topItem.leftBarButtonItem == self.editButtonItem) ? YES : NO;
@@ -875,9 +877,10 @@
                                                                 userInfo:nil];
     [notificationCenter performSelector:@selector(postNotification:) withObject:bNotification afterDelay:0.0];
 	
-	
+	/*
 	[lastInvokeTime release];
 	lastInvokeTime = [[NSDate date] retain];
+     */
 	
 }
 

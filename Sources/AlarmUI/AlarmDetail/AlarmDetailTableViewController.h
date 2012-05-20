@@ -37,7 +37,7 @@ typedef enum {
 	
 	NSArray *cellDescriptions;
 
-	TableViewCellDescription *enablingCellDescription;            //启用状态;
+	TableViewCellDescription *enabledCellDescription;            //启用状态;
 	TableViewCellDescription *repeatCellDescription;              //重复;
 	TableViewCellDescription *soundCellDescription;               //声音;
 	TableViewCellDescription *vibrateCellDescription;             //振动;
@@ -80,7 +80,7 @@ typedef enum {
 @property(nonatomic,retain,readonly) UIButton *testAlarmButton;
 
 @property(nonatomic,retain) NSArray *cellDescriptions;   
-@property(nonatomic,retain) TableViewCellDescription *enablingCellDescription;
+@property(nonatomic,retain) TableViewCellDescription *enabledCellDescription;
 @property(nonatomic,retain) TableViewCellDescription *repeatCellDescription;
 @property(nonatomic,retain) TableViewCellDescription *soundCellDescription;
 @property(nonatomic,retain) TableViewCellDescription *vibrateCellDescription;

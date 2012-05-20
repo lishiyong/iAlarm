@@ -151,7 +151,7 @@
 
 - (void)registerNotifications {
 	[self addObserver:self forKeyPath:@"userLocationType" options:NSKeyValueObservingOptionNew context:nil];
-    [self.alarm addObserver:self forKeyPath:@"enabling" options:NSKeyValueObservingOptionNew context:nil];
+    [self.alarm addObserver:self forKeyPath:@"enabled" options:NSKeyValueObservingOptionNew context:nil];
     
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	
@@ -165,7 +165,7 @@
 
 - (void)unRegisterNotifications{
 	[self removeObserver:self forKeyPath:@"userLocationType"];
-    [self.alarm removeObserver:self forKeyPath:@"enabling"];
+    [self.alarm removeObserver:self forKeyPath:@"enabled"];
     
     
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -221,7 +221,7 @@
 }
 
 - (BOOL)isDetecting{
-    if (self.alarm.enabling){
+    if (self.alarm.enabled){
         if ([self.alarm.positionType.positionTypeId isEqualToString:@"p002"]) { //到达时候提醒
             if (IAUserLocationTypeOuter == self.userLocationType) {
                 return YES;

@@ -78,7 +78,7 @@ NSString *IARegionKey = @"IARegionKey";
 			//再增加
 			IAAlarm *alarm = [IAAlarm findForAlarmId:saveInfo.objId];
             region = [[[IARegion alloc] initWithAlarm:alarm currentLocation:lastLocation] autorelease];
-			if (alarm.enabling) {//判断是否启用
+			if (alarm.enabled) {//判断是否启用
 				[(NSMutableDictionary*)self.regions setObject:region forKey:saveInfo.objId];
 			}
 			
@@ -87,7 +87,7 @@ NSString *IARegionKey = @"IARegionKey";
 			//增加
 			IAAlarm *alarm = [IAAlarm findForAlarmId:saveInfo.objId];
             region = [[[IARegion alloc] initWithAlarm:alarm currentLocation:lastLocation] autorelease]; 
-			if (alarm.enabling) {//判断是否启用
+			if (alarm.enabled) {//判断是否启用
 				[(NSMutableDictionary*)self.regions setObject:region forKey:saveInfo.objId];
 			}
 			
@@ -133,7 +133,7 @@ NSString *IARegionKey = @"IARegionKey";
 	for (IAAlarm *oneAlarm in [IAAlarm alarmArray]) {
 		IARegion *region = [[IARegion alloc] initWithAlarm:oneAlarm currentLocation:currentLocation];
 		
-		if (oneAlarm.enabling) { //判断是否启用
+		if (oneAlarm.enabled) { //判断是否启用
 			[theRegions setObject:region forKey:oneAlarm.alarmId];
 		}
 		

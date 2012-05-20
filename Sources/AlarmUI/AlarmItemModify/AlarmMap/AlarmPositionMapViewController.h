@@ -18,7 +18,7 @@
 
 @protocol YCAlertTableViewDelegete;
 @class YCBarButtonItem;
-@class YCAnnotation;
+@class IAAnnotation;
 @class AlarmNameViewController;
 @class YCTapHideBarView;
 @class YCAlertTableView;
@@ -63,10 +63,9 @@
 	//BOOL isAlreadyCenterCoord;    //中心坐标是否准备好
 	BOOL isCurl;                  //是否已经半卷
 	BOOL isNotificationsRegistered; //通知是否已经注册
-	BOOL isApparing;                //本视图正在显示
 
 	
-	YCAnnotation *annotationAlarmEditing;     //编辑中的Alarm的annotation
+	IAAnnotation *annotationAlarmEditing;     //编辑中的Alarm的annotation
 
 	
 	//BOOL isRegionWithUserLocation ; //是否用设备位置作为中心;变量用于等待地图定位异步处理
@@ -118,7 +117,7 @@
 @property (nonatomic,retain,readonly) BSForwardGeocoder *forwardGeocoder;
 @property (nonatomic,retain) YCSearchController *searchController;
 @property (nonatomic,assign) BOOL newAlarmAnnotation;
-@property (nonatomic,retain) YCAnnotation *annotationAlarmEditing;
+@property (nonatomic,retain) IAAnnotation *annotationAlarmEditing;
 
 @property (nonatomic,retain) MKCircle *circleOverlay;
 

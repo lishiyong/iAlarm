@@ -34,9 +34,15 @@
 - (void)selectAnnotation:(id < MKAnnotation >)annotation;
 
 //指示annotation是否在地图的可视范围内
-- (BOOL)visibleForAnnotation:(id < MKAnnotation >)annotation;
+- (BOOL)isVisibleForAnnotation:(id < MKAnnotation >)annotation;
 
 //找到离指定坐标最近的Annotation
 - (YCMapPointAnnotation*)theNearestAnnotationFromCoordinate:(CLLocationCoordinate2D)Coordinate;
+
+//Annotation是否被选中
+- (BOOL)isSelectedForAnnotation:(id < MKAnnotation >)annotation; 
+
+//地图上所有的YCMapPointAnnotation
+@property(nonatomic, readonly) NSArray *mapPointAnnotations;
 
 @end

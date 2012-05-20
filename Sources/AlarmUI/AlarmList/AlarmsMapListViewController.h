@@ -8,10 +8,10 @@
 
 #import <MapKit/MapKit.h>
 #import <UIKit/UIKit.h>
-#import "YCPinAnnotationView.h"
+#import "IAAnnotationView.h"
 
 @class YCOverlayImage;
-@class YCAnnotation;
+@class IAAnnotation;
 @class YCPageCurlButtonItem;
 @class AlarmDetailTableViewController;
 @class YCBarButtonItem;
@@ -21,7 +21,7 @@
 @class YCAnimateRemoveFileView;
 @class IAAlarm;
 @interface AlarmsMapListViewController : UIViewController
-<MKMapViewDelegate,MKReverseGeocoderDelegate,CLLocationManagerDelegate,UIGestureRecognizerDelegate,YCPinAnnotationViewDelegete>{
+<MKMapViewDelegate,MKReverseGeocoderDelegate,CLLocationManagerDelegate,UIGestureRecognizerDelegate,IAAnnotationViewDelegete>{
 	
 
     /////////////////////////////////////
@@ -32,9 +32,9 @@
 	IBOutlet UIActivityIndicatorView *maskActivityIndicator;
     /////////////////////////////////////
     //
-	NSMutableArray *mapAnnotations;                         //地图标签集合
-	NSMutableDictionary *mapAnnotationViews;                //地图标签集合
-	NSMutableDictionary *circleOverlays;                     //警示圈集合
+	NSMutableArray *mapPointAnnotations;                         //地图标签集合
+	NSMutableDictionary *mapPointAnnotationViews;                //地图标签集合
+	NSMutableDictionary *circleOverlays;                         //警示圈集合
 	/////////////////////////////////////
 	//地址反转
 	MKReverseGeocoder *reverseGeocoderForUserLocation;
@@ -59,11 +59,10 @@
     BOOL isFirstShow;                                       //第一次显示
 	NSInteger lastSelectedAnnotionIndex;                    //最后选中的pin，alarms更新后，重新设定选中。－1没有被选中的
 	BOOL pinsEditing;                                       //编辑状态,对应tableView的editing
-	BOOL isApparing;                                        //本视图正在显示
     BOOL isAlreadyAlertForInternet;                         //第一次加载地图数据失败
 	////////////////////////////////////
     //刷新pin
-	NSTimer	*refreshPinLoopTimer;
+	//NSTimer	*refreshPinLoopTimer;
     ////////////////////////////////////
     //为了区别UIMapView固有的UITapGestureRecognizer
     UITapGestureRecognizer *tapMapViewGesture;
@@ -80,8 +79,8 @@
 @property (nonatomic,retain) IBOutlet UILabel *maskLabel;
 @property (nonatomic,retain) IBOutlet UIActivityIndicatorView *maskActivityIndicator;
 
-@property (nonatomic,retain,readonly) NSMutableArray *mapAnnotations;
-@property (nonatomic,retain,readonly) NSMutableDictionary *mapAnnotationViews;
+@property (nonatomic,retain,readonly) NSMutableArray *mapPointAnnotations;
+@property (nonatomic,retain,readonly) NSMutableDictionary *mapPointAnnotationViews;
 @property (nonatomic,retain,readonly) NSMutableDictionary *circleOverlays;
 
 @property (nonatomic,retain)            MKPlacemark *placemarkForUserLocation;

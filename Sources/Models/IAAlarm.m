@@ -39,7 +39,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 @synthesize coordinate;
 @synthesize locationAccuracy;
 
-@synthesize enabling;
+@synthesize enabled;
 @synthesize sound;
 @synthesize repeatType;
 @synthesize alarmRadiusType;
@@ -77,7 +77,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
         visualCoordinate = kCLLocationCoordinate2DInvalid;
 		locationAccuracy = 101.1;
 		
-		enabling = YES; 
+		enabled = YES; 
 		sound = [[[DicManager soundDictionary] objectForKey:@"s001"] retain];
 		repeatType = [[[DicManager repeatTypeDictionary] objectForKey:@"r001"] retain];
 		alarmRadiusType = [[[DicManager alarmRadiusTypeDictionary] objectForKey:@"ar002"] retain];
@@ -118,7 +118,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	[encoder encodeCLLocationCoordinate2D:coordinate forKey:kcoordinate];
 	[encoder encodeDouble:locationAccuracy forKey:klocationAccuracy];
 
-	[encoder encodeBool:enabling forKey:kenabling];
+	[encoder encodeBool:enabled forKey:kenabling];
 	[encoder encodeObject:sound.soundId forKey:kasoundId];
 	[encoder encodeObject:repeatType.repeatTypeId forKey:karepeatTypeId];
 	[encoder encodeObject:alarmRadiusType.alarmRadiusTypeId forKey:kavehicleTypeId];
@@ -151,7 +151,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 		coordinate = [decoder decodeCLLocationCoordinate2DForKey:kcoordinate];
 		locationAccuracy = [decoder decodeDoubleForKey:klocationAccuracy];
 		
-		enabling = [decoder decodeBoolForKey:kenabling];
+		enabled = [decoder decodeBoolForKey:kenabling];
 		soundId =[[decoder decodeObjectForKey:kasoundId] retain];
 		repeatTypeId =[[decoder decodeObjectForKey:karepeatTypeId] retain];
 		alarmRadiusTypeId = [[decoder decodeObjectForKey:kavehicleTypeId] retain];
@@ -197,7 +197,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	copy.coordinate = self.coordinate;
 	copy.locationAccuracy = self.locationAccuracy;
 	
-	copy.enabling = self.enabling;
+	copy.enabled = self.enabled;
 	copy.sound = self.sound;
 	copy.repeatType = self.repeatType;
 	copy.alarmRadiusType = self.alarmRadiusType;

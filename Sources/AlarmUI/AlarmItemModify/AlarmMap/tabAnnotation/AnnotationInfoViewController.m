@@ -10,7 +10,7 @@
 #import "UIUtility.h"
 #import "AnnotationTitleTableCell.h"
 #import "AnnotationSubtitleTableCell.h"
-#import "YCAnnotation.h"
+#import "IAAnnotation.h"
 #import <MapKit/MapKit.h>
 
 
@@ -68,22 +68,22 @@
 		//当前位置
 		image = [UIImage imageNamed:@"mapInfoCurrent.png"];
 		
-	}else if ([theAnnotation isKindOfClass:[YCAnnotation class]]){
+	}else if ([theAnnotation isKindOfClass:[IAAnnotation class]]){
 		
-		switch (((YCAnnotation*)theAnnotation).annotationType) {
-			case YCMapAnnotationTypeStandard:            //已经定位的普通类型
+		switch (((IAAnnotation*)theAnnotation).annotationType) {
+			case IAMapAnnotationTypeStandard:            //已经定位的普通类型
 				image = [UIImage imageNamed:@"mapInfoRed.png"];
 				break;
-			case YCMapAnnotationTypeStandardEnabledDrag: //已经定位的普通类型，但可以拖动
+			case IAMapAnnotationTypeStandardEnabledDrag: //已经定位的普通类型，但可以拖动
 				image = [UIImage imageNamed:@"mapInfoPurple.png"];
 				break;
-			case YCMapAnnotationTypeLocating:            //正在定位的
+			case IAMapAnnotationTypeLocating:            //正在定位的
 				image = [UIImage imageNamed:@"mapInfoPurple.png"];
 				break;
-			case YCMapAnnotationTypeMovingToTarget:      //接近的目标位置
+			case IAMapAnnotationTypeMovingToTarget:      //接近的目标位置
 				image = [UIImage imageNamed:@"mapInfoGreen.png"];
 				break;
-			case YCMapAnnotationTypeSearch:               //搜索的类型
+			case IAMapAnnotationTypeSearch:               //搜索的类型
 				image = [UIImage imageNamed:@"mapInfoRed.png"];
 				break;
 			default:

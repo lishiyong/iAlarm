@@ -190,7 +190,7 @@
 }
 
 //指示annotation是否在地图的可视范围内
-- (BOOL)visibleForAnnotation:(id < MKAnnotation >)annotation{
+- (BOOL)isVisibleForAnnotation:(id < MKAnnotation >)annotation{
 	MKMapRect vMKRect = self.visibleMapRect;
 	MKMapPoint annotationMKPoint = MKMapPointForCoordinate(annotation.coordinate);
 	return MKMapRectContainsPoint(vMKRect,annotationMKPoint);
@@ -215,6 +215,25 @@
     }
     
     return annotation;
+}
+
+- (BOOL)isSelectedForAnnotation:(id < MKAnnotation >)annotation{
+    if (self.selectedAnnotations.count > 0 ){
+        id selected = [self.selectedAnnotations objectAtIndex:0];
+        if (annotation == selected) 
+            return YES;
+    }
+    return NO;
+}
+
+- (NSArray *)mapPointAnnotations{
+    NSMutableArray *array = [NSMutableArray array];
+    for (id<MKAnnotation> anAnnotation in self.annotations) {
+        if ([anAnnotation isKindOfClass: [YCMapPointAnnotation class]]) {
+            [array addObject:anAnnotation];
+        }
+    }
+    return array;
 }
 
 @end

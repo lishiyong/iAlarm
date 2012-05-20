@@ -19,8 +19,6 @@
     IBOutlet UITableView *alarmListTableView;
 	IBOutlet UILabel *backgroundTextLabel;  //无闹钟时候的背景文字
 	IBOutlet UIView *backgroundView;
-    
-    BOOL isApparing;   //本视图正在显示
 }
 
 

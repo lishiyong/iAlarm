@@ -383,7 +383,7 @@
 	//只闹一次
 	if ([alarm.repeatType.repeatTypeId isEqualToString:@"r001"]) 
 	{
-		alarm.enabling = NO;
+		alarm.enabled = NO;
 		[alarm saveFromSender:self];
 	}
 	
@@ -409,7 +409,7 @@
 	//只闹一次
 	if ([alarm.repeatType.repeatTypeId isEqualToString:@"r001"]) 
 	{
-		alarm.enabling = NO;
+		alarm.enabled = NO;
 		[alarm saveFromSender:self];
 	}
 

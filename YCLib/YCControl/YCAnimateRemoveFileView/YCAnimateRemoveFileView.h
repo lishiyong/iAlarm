@@ -39,6 +39,8 @@
 
 - (void)startAnimating;
 - (void)startPlaying;
+- (BOOL)isAnimating;
+
 
 - (id)initWithOrigin:(CGPoint)origin;
 
