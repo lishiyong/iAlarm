@@ -12,71 +12,74 @@
 #import "IAAnnotationView.h"
 #import "YCMoveInButton.h"
 
+@interface IAAnnotationView (private) 
+- (void)_setEditing:(BOOL)isEditing animated:(BOOL)animated;
+@end
 
 @implementation IAAnnotationView
 
 #pragma mark - property
-@synthesize delegate, editing, editingForKVO;
+@synthesize delegate, editing;
 
-- (void)setEditing:(BOOL)isEditing{
-    [self setEditing:isEditing animated:NO];
-    self.editingForKVO = isEditing;
-}
-
-- (void)setEditing:(BOOL)isEditing animated:(BOOL)animated{
-    self.editingForKVO = isEditing;
-
-    if (editing == isEditing)
-		return;
-	
-	if (animated) {
+- (void)_setEditing:(BOOL)isEditing animated:(BOOL)animated{
+    
+    if (editing != isEditing){
+        editing = isEditing;//一定放到前面，因为下面的self.pinColor 引发的 self.image 需要判断 editing
         
-        [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-        [UIView animateWithDuration:0.5 animations:^{
-            minusButton.alpha = isEditing ? 1.0: 0.0;
-            deleteButton.alpha = isEditing ? 1.0: 0.0;
-            flagImageView.alpha = isEditing ? 0.0: 1.0;
-            detailButton.alpha = isEditing ? 0.0: 1.0;
-            self.pinColor = isEditing ? MKPinAnnotationColorPurple : MKPinAnnotationColorRed;
+        UIView *leftView = editing ? minusButton : flagImageView;
+        UIView *rightView = editing ? deleteButton : detailButton;
+        
+        
+        if (animated) {
             
-            self.rightCalloutAccessoryView = nil; //titleLable 可以自动拉伸
+            [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+            [UIView transitionWithView:self duration:0.25 options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                
+                self.rightCalloutAccessoryView = nil; //先赋空，titleLable可以自动拉伸。
+                self.leftCalloutAccessoryView = nil;
+                self.pinColor = editing ? MKPinAnnotationColorPurple : MKPinAnnotationColorRed;
+                
+            }completion:^(BOOL finished){
+                
+                self.rightCalloutAccessoryView = rightView;
+                self.leftCalloutAccessoryView = leftView;
+                [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+                
+            }];
+            
+        }else {
+            self.rightCalloutAccessoryView = nil; //系统bug，不先赋空，竟然不能显示新的按钮
             self.leftCalloutAccessoryView = nil;
-        }completion:^(BOOL finished){
-            if (!isEditing) {
-                [minusButton switchOpenStatus:NO];
-                [deleteButton setHidden:YES animated:NO];
-            }
+            
             self.rightCalloutAccessoryView = rightView;
             self.leftCalloutAccessoryView = leftView;
-            [[UIApplication sharedApplication] endIgnoringInteractionEvents];
-        }];
+            self.pinColor = editing ? MKPinAnnotationColorPurple : MKPinAnnotationColorRed;
+        }
         
-	}else {
-        minusButton.alpha = isEditing ? 1.0: 0.0;
-        deleteButton.alpha = isEditing ? 1.0: 0.0;;
-        flagImageView.alpha = isEditing ? 0.0: 1.0;;
-        detailButton.alpha = isEditing ? 0.0: 1.0;;
-        self.pinColor = isEditing ? MKPinAnnotationColorPurple : MKPinAnnotationColorRed;
-        if (!isEditing) {
-            [minusButton switchOpenStatus:NO];
+        //把减号恢复到水平,等
+        if (!editing) {
+            if(minusButton.isOpen)
+                [minusButton switchOpenStatus:NO];
+            
             [deleteButton setHidden:YES animated:NO];
         }
-    }    
-    
-	editing = isEditing;
-	if ([self.delegate respondsToSelector:@selector(annotationView:didChangeEditingStatus:)]) {
-		[self.delegate annotationView:self didChangeEditingStatus:isEditing];
-	}
+        
+        //调用delegate
+        if ([self.delegate respondsToSelector:@selector(annotationView:didChangeEditingStatus:)]) {
+            [self.delegate annotationView:self didChangeEditingStatus:editing];
+        }
+    }
     
 }
 
+- (void)setEditing:(BOOL)isEditing{
+    [self _setEditing:isEditing animated:NO];
+}
+ 
 
-#pragma mark - pin color
-
-
-- (void)updatePinColor{
-	if (![(IAAnnotation*) self.annotation alarm].enabled && self.editing == NO)
-		self.image = [UIImage imageNamed:@"IAMapPinGray.png"];
+- (void)setEditing:(BOOL)isEditing animated:(BOOL)animated{
+    [self _setEditing:isEditing animated:animated];
+    self.editing = isEditing;//者两条语句顺序不能颠倒：先执行实际操作，后设置的虽不起作用，但是可以启动kvo。
 }
 
 
@@ -142,45 +145,31 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated{
 	[super setSelected:selected animated:animated];
-    [self performSelector:@selector(updatePinColor) withObject:nil afterDelay:1.0];
     if (selected)
 		[self performSelector:@selector(whenPinViewSelected) withObject:nil afterDelay:0.1];
 }
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    [self performSelector:@selector(updatePinColor) withObject:nil afterDelay:0.0];
-    [self.nextResponder touchesBegan:touches withEvent:event];
+/**
+ 在这里使用灰色的pin
+ **/
+- (void)setImage:(UIImage *)aImage{
+    if ([(IAAnnotation*) self.annotation alarm].enabled == NO && editing == NO){
+        super.image = grayPin;    
+    }else{
+        super.image = aImage;
+    }
 }
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-    [self performSelector:@selector(updatePinColor) withObject:nil afterDelay:0.0];
-    [self.nextResponder touchesEnded:touches withEvent:event];
-}
-
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-    [self performSelector:@selector(updatePinColor) withObject:nil afterDelay:0.0];
-    [self.nextResponder touchesMoved:touches withEvent:event];
-}
-
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{
-    [self performSelector:@selector(updatePinColor) withObject:nil afterDelay:0.0];
-    [self.nextResponder touchesCancelled:touches withEvent:event];
-}
+ 
  
 #pragma mark -
 #pragma mark init and dealloc
 
 - (id)initWithAnnotation:(IAAnnotation*)annotation reuseIdentifier:(NSString *)reuseIdentifier{	
-	self = [super initWithAnnotation:annotation reuseIdentifier:reuseIdentifier];
+	//优先初始化。因为setImage:中要使用，而super的initWithAnnotation:reuseIdentifier:要调用setImage:。
+    grayPin = [[UIImage imageNamed:@"IAMapPinGray.png"] retain];
+    
+    self = [super initWithAnnotation:annotation reuseIdentifier:reuseIdentifier];
 	if (self) {
-        static CGFloat kWH = 32;
-		leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWH, kWH)];
-        rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWH, kWH)];
-        leftView.backgroundColor = [UIColor clearColor];
-        rightView.backgroundColor = [UIColor clearColor]; 
-        self.leftCalloutAccessoryView = leftView;
-        self.rightCalloutAccessoryView = rightView;
-        
         minusButton = [[YCRemoveMinusButton alloc] init];
 		deleteButton = [[YCMoveInButton alloc] init];
         flagImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
@@ -188,21 +177,6 @@
         [minusButton addTarget:self action:@selector(minusButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 		[deleteButton addTarget:self action:@selector(deleteButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         [detailButton addTarget:self action:@selector(detailButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-        
-        CGPoint leftViewCenter = {leftView.bounds.size.width/2, leftView.bounds.size.height/2} ;
-        CGPoint rightViewCenter = {rightView.bounds.size.width/2, rightView.bounds.size.height/2} ;
-        minusButton.center = leftViewCenter;
-        deleteButton.center = rightViewCenter;
-        flagImageView.center = leftViewCenter;
-        detailButton.center = rightViewCenter;
-        minusButton.alpha = 0;
-        deleteButton.alpha = 0;
-        
-        [leftView addSubview:minusButton];
-        [leftView addSubview:flagImageView];
-        [rightView addSubview:deleteButton];
-        [rightView addSubview:detailButton];
-        
 
         if ([annotation isKindOfClass:[IAAnnotation class]]) {
             IAAlarm *alarm = annotation.alarm;
@@ -212,14 +186,13 @@
             flagImageView.image = [UIImage imageNamed:imageName];
         }
         
+        [self addObserver:self forKeyPath:@"annotation.alarm.enabled" options:0 context:nil];
+        [self addObserver:self forKeyPath:@"editing" options:0 context:nil];
+        
         self.canShowCallout = YES;
         self.animatesDrop = NO;
         self.draggable = NO;
-        self.pinColor = MKPinAnnotationColorRed;
-        
-        [self addObserver:self forKeyPath:@"annotation.alarm.enabled" options:0 context:nil];
-        [self addObserver:self forKeyPath:@"selected" options:0 context:nil];
-        [self addObserver:self forKeyPath:@"editingForKVO" options:0 context:nil];
+        editing = YES;self.editing = NO; //改变初始值，才能触发属性的功能
         
 	}
 	return self;
@@ -230,21 +203,19 @@
                         change:(NSDictionary *)change
                        context:(void *)context
 {
-    [self updatePinColor];
-    [self performSelector:@selector(updatePinColor) withObject:nil afterDelay:0.5];
+    //setPinColor可以引发setImage:
+    self.pinColor = self.isEditing ? MKPinAnnotationColorPurple : MKPinAnnotationColorRed;
 }
 
 - (void)dealloc 
 {
     [self removeObserver:self forKeyPath:@"annotation.alarm.enabled"];
-    [self removeObserver:self forKeyPath:@"selected"];
-    [self removeObserver:self forKeyPath:@"editingForKVO"];
-	[leftView release];
-    [rightView release];
+    [self removeObserver:self forKeyPath:@"editing"];
     [minusButton release];
     [deleteButton release];
     [flagImageView release];
     [detailButton release];
+    [grayPin release];
 	[super dealloc];
 }
 

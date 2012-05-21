@@ -28,22 +28,21 @@
 
 @interface IAAnnotationView : MKPinAnnotationView {
     
-    UIView *leftView;
-    UIView *rightView;
     YCRemoveMinusButton *minusButton;
     YCMoveInButton *deleteButton;
     UIImageView *flagImageView;
     UIButton *detailButton;
+    UIImage *grayPin;
     
     //反射查找到的对象，每次选择反选可能都重新生成，所以不需要保存
     UIView *calloutView;
     UILabel *titleLabel;
+    
 }
 
 @property (nonatomic,assign) id delegate;
 @property (nonatomic,getter = isEditing) BOOL editing;
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 
-@property (nonatomic,getter = isEditingForKVO) BOOL editingForKVO;//为KVO而设置的
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 
 @end
