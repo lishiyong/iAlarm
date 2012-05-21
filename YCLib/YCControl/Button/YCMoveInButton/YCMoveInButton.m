@@ -195,8 +195,7 @@
 
 - (void)setHidden:(BOOL)theHidden animated:(BOOL)animated{
 	self.enabled = !theHidden;
-	
-	
+
 	if (!animated) {
 		
 		if (!theHidden) {
@@ -224,7 +223,6 @@
 			[self.animationImageView startAnimating];
 		}
 	}
-	
 	
 }
 
