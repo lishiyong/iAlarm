@@ -6,6 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import "UIAlertView+YC.h"
 #import "UIColor+YC.h"
 #import "YCFunctions.h"
 #import "YCLocationManager.h"
@@ -81,7 +82,7 @@
 
 #pragma mark - Utility
 
--(void)alertInternet{
+-(void)alertInternetAfterDelay:(NSTimeInterval)delay{
 	//检查网络
 	BOOL connectedToInternet = [[YCSystemStatus deviceStatusSingleInstance] connectedToInternet];
 	if (!connectedToInternet) {
@@ -108,25 +109,7 @@
                                                  otherButtonTitles:nil];
         }
         
-        [self performBlock:^{
-            
-            [self startOngoingSendingMessageWithTimeInterval:1.0];
-            while (!self.view.window.isKeyWindow || UIApplicationStateActive != [UIApplication sharedApplication].applicationState) 
-            {
-                [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-            }
-            [self stopOngoingSendingMessage];
-            
-            [self performBlock:^{
-                if(self.view.window.isKeyWindow && UIApplicationStateActive == [UIApplication sharedApplication].applicationState){ 
-                    if (![[YCSystemStatus deviceStatusSingleInstance] connectedToInternet]) {
-                        [checkNetAlert show];
-                        isAlreadyAlertForInternet = YES;
-                    }
-                }
-            } afterDelay:1.25];
-            
-        } afterDelay:0.25];
+        [checkNetAlert showWaitUntilBecomeKeyWindow:self.view.window afterDelay:delay];
         
 	}
 }
@@ -950,7 +933,7 @@
 #pragma mark - View lifecycle
 
 //取得用户当前位置的超时时间
-#define kTimeOutWaitingForUserLocation     30.0
+#define kTimeOutWaitingForUserLocation     20.0
 
 - (void)viewDidLoad {
     [super viewDidLoad];	
@@ -998,8 +981,10 @@
 	//检查网络
 	isAlreadyAlertForInternet = NO;
 	NSInteger alarmsCount = self.alarms.count;
-	if (0 == alarmsCount) { //闹钟数不等于0，就会直接加载地图了，在地图数据加载失败事件中会提示网络的。
-		[self performSelector:@selector(alertInternet) withObject:nil afterDelay:1.5];
+    NSInteger launchNumber = [[UIApplication sharedApplication] applicationDidFinishLaunchNumber];
+	if (0 == alarmsCount && 0 == launchNumber) { //闹钟数不等于0，就会直接加载地图了，在地图数据加载失败事件中会提示网络的。
+        isAlreadyAlertForInternet = YES;
+        [self performBlock:^{[self alertInternetAfterDelay:4.0];} afterDelay:1.0];
 	}
 		
 	//浮动工具栏
@@ -1010,9 +995,6 @@
 
     [self registerNotifications];//下面的maskview已经要用了
     
-    //解禁，做为循环超时的标识
-    //[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-    //[[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:kTimeOutWaitingForUserLocation];
     
     [UIView animateWithDuration:0.0 animations:^{;} completion:^(BOOL finished){
         
@@ -1092,16 +1074,6 @@
         
         
     }];//[UIView animateWithDuration: animations: completion:]
-    
-    /*
-    if ([UIApplication sharedApplication].applicationDidFinishLaunchNumber == 1) {
-        if (!isAlreadyAlertForInternet && [self isViewAppeared]) { //没警告过 而且 view在显示
-            //检查网络
-            [self alertInternet];
-            isAlreadyAlertForInternet = YES;
-        }
-    }
-     */
 
 }
 
@@ -1929,8 +1901,9 @@
 - (void)mapViewDidFailLoadingMap:(MKMapView *)mapView withError:(NSError *)error{
 
 	if (!isAlreadyAlertForInternet && [self isViewAppeared]) { //没警告过 而且 view在显示
-		//检查网络
-		[self alertInternet];
+        isAlreadyAlertForInternet = YES;
+        //检查网络
+		[self alertInternetAfterDelay:1.0];
 	}
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }

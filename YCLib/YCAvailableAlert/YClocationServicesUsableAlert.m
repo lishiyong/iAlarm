@@ -6,6 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import "UIAlertView+YC.h"
 #import "YCSystemStatus.h"
 #import "UIUtility.h"
 #import "YClocationServicesUsableAlert.h"
@@ -44,8 +45,12 @@
 
 //检测定位服务状态。如果不可用或未授权，弹出对话框
 - (void)show{
-	
-	//检查定位服务
+    [self showWaitUntilBecomeKeyWindow:nil afterDelay:0.0];
+}
+
+- (void)showWaitUntilBecomeKeyWindow:(UIWindow*)waitingWindow afterDelay:(NSTimeInterval)delay{
+    
+    //检查定位服务
 	BOOL enabledLocation = [[YCSystemStatus deviceStatusSingleInstance] enabledLocation];
 	if (enabledLocation) {
 		if (![CLLocationManager respondsToSelector:@selector(authorizationStatus)]) //iOS4.2版本后才支持
@@ -59,7 +64,7 @@
 	}
 	
 	if (!enabledLocation) {
-
+        
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0) {
             // iOS 5 code
             if (!alert) 
@@ -69,8 +74,8 @@
                                          cancelButtonTitle:kAlertBtnSettings
                                          otherButtonTitles:kAlertBtnCancel,nil];
             
-           
-
+            
+            
         }else {
             // iOS 4.x code
             [UIUtility simpleAlertBody:kAlertNeedLocationServicesBody alertTitle:kAlertNeedLocationServicesTitle cancelButtonTitle:kAlertBtnOK delegate:nil];
@@ -81,14 +86,19 @@
                                                   delegate:nil
                                          cancelButtonTitle:kAlertBtnOK
                                          otherButtonTitles:nil];
-                                         
+            
             
         }
         
-        [alert show];
-
+        if (waitingWindow == nil) {
+            [alert show];
+        }else{
+            [alert showWaitUntilBecomeKeyWindow:waitingWindow afterDelay:delay];
+        }
         
 	}
+    
+    
 }
 
 - (void)cancelAlertWithAnimated:(BOOL)animated{

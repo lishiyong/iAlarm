@@ -6,6 +6,7 @@
 //  Copyright __MyCompanyName__ 2010. All rights reserved.
 //
 
+#import "UIAlertView+YC.h"
 #import "NSString+YC.h"
 #import "IAAlarmFindViewController.h"
 #import "IAAlarmNotification.h"
@@ -234,36 +235,13 @@
                                                     otherButtonTitles:kAlertConfirmRateBtnToRate,kAlertConfirmRateBtnNotToremind,nil];
         }
         
-        [self performBlock:^{
-            
-            [self startOngoingSendingMessageWithTimeInterval:1.0];
-            while (!self.window.isKeyWindow) 
-            {
-                [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-            }
-            [self stopOngoingSendingMessage];
-            
-            [self performBlock:^{if(self.window.isKeyWindow && UIApplicationStateActive == application.applicationState) [confirmRateAlertView show];} afterDelay:2.0];
-            
-        } afterDelay:4.0];
+        [confirmRateAlertView showWaitUntilBecomeKeyWindow:self.window afterDelay:4.0];
 	}
     
     //检测定位服务状态。如果不可用或未授权，弹出对话框
-    if (application.applicationDidFinishLaunchNumber > 1) {
-                
-        [self performBlock:^{
-            
-            [self startOngoingSendingMessageWithTimeInterval:1.0];
-            while (!self.window.isKeyWindow) 
-            {
-                [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-            }
-            [self stopOngoingSendingMessage];
-            
-            [self performBlock:^{if(self.window.isKeyWindow && UIApplicationStateActive == application.applicationState) [self.locationServicesUsableAlert show];} afterDelay:1.0];
-            
-        } afterDelay:2.0];
-    }
+    if (application.applicationDidFinishLaunchNumber > 1) //第一次系统会提示的
+        [self.locationServicesUsableAlert showWaitUntilBecomeKeyWindow:self.window afterDelay:4.0];
+    
         
     //打开查看视图
     [self viewNotificationedAlarm:animatedView];

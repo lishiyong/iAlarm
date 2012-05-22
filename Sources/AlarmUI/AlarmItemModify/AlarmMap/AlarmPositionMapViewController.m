@@ -218,10 +218,11 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
     
 }
 
--(void)alertInternet{
+-(void)alertInternetAfterDelay:(NSTimeInterval)delay{
 	//检查网络
 	BOOL connectedToInternet = [[YCSystemStatus deviceStatusSingleInstance] connectedToInternet];
 	if (!connectedToInternet) {
+        
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0) {
             // iOS 5 code
             if (!checkNetAlert) 
@@ -244,18 +245,8 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
                                                  otherButtonTitles:nil];
         }
         
-        [self performBlock:^{
-            
-            [self startOngoingSendingMessageWithTimeInterval:1.0];
-            while (!self.view.window.isKeyWindow) 
-            {
-                [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-            }
-            [self stopOngoingSendingMessage];
-            
-            [self performBlock:^{if(self.view.window.isKeyWindow && UIApplicationStateActive == [UIApplication sharedApplication].applicationState) [checkNetAlert show];} afterDelay:0.25];
-            
-        } afterDelay:0.25];
+        isAlreadyAlertForInternet = YES;
+        [checkNetAlert showWaitUntilBecomeKeyWindow:self.view.window afterDelay:delay];
         
 	}
 }
@@ -962,10 +953,6 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 	
 	[self updateAnnotationAlarmEditing];//生成annotationAlarmEditing;
 	[self registerNotifications];
-
-	//检查网络
-	[self performSelector:@selector(alertInternet) withObject:nil afterDelay:1.5];
-	
 	
 	if (YCMKCoordinateRegionIsValid(region)) {
 		//先到世界地图，在下来
@@ -1460,6 +1447,11 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 }
 
 - (void)mapViewDidFailLoadingMap:(MKMapView *)mapView withError:(NSError *)error{
+    if (!isAlreadyAlertForInternet && [self isViewAppeared]) { //没警告过 而且 view在显示
+        isAlreadyAlertForInternet = YES;
+        //检查网络
+		[self alertInternetAfterDelay:1.0];
+	}
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 

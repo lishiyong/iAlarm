@@ -63,6 +63,7 @@
 	//BOOL isAlreadyCenterCoord;    //中心坐标是否准备好
 	BOOL isCurl;                  //是否已经半卷
 	BOOL isNotificationsRegistered; //通知是否已经注册
+    BOOL isAlreadyAlertForInternet;
 
 	
 	IAAnnotation *annotationAlarmEditing;     //编辑中的Alarm的annotation
