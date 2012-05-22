@@ -45,4 +45,12 @@
 //地图上所有的YCMapPointAnnotation
 @property(nonatomic, readonly) NSArray *mapPointAnnotations;
 
+//坐标是否在view的中心，offset:允许偏差的像素
+- (BOOL)isViewCenterForCoordinate:(CLLocationCoordinate2D) coordinate allowableOffset:(CGFloat)offset;
+
+/* MKOverlayView 加不上动画，为什么？
+- (void)addOverlay:(id<MKOverlay>)overlay animated:(BOOL)animated;
+- (void)removeOverlay:(id<MKOverlay>)overlay animated:(BOOL)animated;
+ */
+
 @end

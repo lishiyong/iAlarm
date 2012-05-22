@@ -77,6 +77,59 @@
 	[invocaton setArgument:&anArgument atIndex:3]; 
 	[invocaton performSelector:@selector(invoke) withObject:nil afterDelay:delay];
 }
+///
+// xx waitUntilDone xx 方法的 中间方法
+- (void)proxyPerformSelector:(SEL)aSelector onThread:(NSThread *)thr withInteger:(NSInteger)anInteger waitUntilDone:(BOOL)wait{
+    NSMethodSignature *signature = [self methodSignatureForSelector:aSelector];
+	NSInvocation *invocaton = [NSInvocation invocationWithMethodSignature:signature];
+	[invocaton setTarget:self];
+	[invocaton setSelector:aSelector];
+	[invocaton setArgument:&anInteger atIndex:2];
+	[invocaton performSelector:@selector(invoke) onThread:thr withObject:nil waitUntilDone:wait];
+}
+
+- (void)performSelector:(SEL)aSelector onThread:(NSThread *)thr withInteger:(NSInteger)anInteger waitUntilDone:(BOOL)wait afterDelay:(NSTimeInterval)delay{
+    //实现思路:由于waitUntilDone，afterDelay不能同时使用， 所以通过调用中间方法中转。
+    SEL proxySelector = @selector(proxyPerformSelector: onThread: withInteger: waitUntilDone:);
+    NSMethodSignature *signature = [self methodSignatureForSelector:proxySelector];
+	NSInvocation *invocaton = [NSInvocation invocationWithMethodSignature:signature];
+	[invocaton setTarget:self];
+	[invocaton setSelector:proxySelector];
+	[invocaton setArgument:&aSelector atIndex:2];
+    [invocaton setArgument:&thr atIndex:3];
+    [invocaton setArgument:&anInteger atIndex:4];
+    [invocaton setArgument:&wait atIndex:5];
+    [invocaton performSelector:@selector(invoke) withObject:nil afterDelay:delay];
+}
+///
+
+
+///
+- (void)timerFired:(NSTimer *)timer{
+    [self performSelector:@selector(retainCount) onThread:[NSThread currentThread] withObject:nil waitUntilDone:NO];//通过调用一个无害的函数，来发消息，目的是让runLoop循环一次。
+}
+
+static NSTimer *gTimer = nil;
+- (void)startOngoingSendingMessageWithTimeInterval:(NSTimeInterval)sec{
+    if (gTimer != nil) {
+        return;
+    }
+    
+    [gTimer invalidate];
+    [gTimer release];
+    
+    gTimer = [[NSTimer timerWithTimeInterval:sec target:self selector:@selector(timerFired:) userInfo:nil repeats:YES] retain];
+    [[NSRunLoop currentRunLoop] addTimer:gTimer forMode:NSDefaultRunLoopMode];
+}
+
+- (void)stopOngoingSendingMessage{
+    [gTimer invalidate];
+    [gTimer release];
+    gTimer = nil;
+}
+
+///
+
 
 
 @end

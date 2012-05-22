@@ -240,7 +240,7 @@
 
 - (void)handle_listViewMapsViewSwitch:(id)notification{	
     
-    if (self.navigationController.isNavigationBarHidden) {//隐藏bar 于 listview 只能做一个
+    if (self.navigationController.isNavigationBarHidden) {//隐藏bar 与 listview 只能做一个
         return;
     }
     
@@ -770,10 +770,12 @@
     [[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:2.0];//加解禁的保险
     
     [UIView animateWithDuration:0.0 animations:^{;} completion:^(BOOL finished)
-     {         
+     {   
+         [self startOngoingSendingMessageWithTimeInterval:0.5];
          while (self.currentLocationBarButtonItem.enabled && [UIApplication sharedApplication].isIgnoringInteractionEvents) {
              [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
          }
+         [self stopOngoingSendingMessage];
          if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
              [[UIApplication sharedApplication] endIgnoringInteractionEvents];
          
@@ -791,10 +793,12 @@
     [[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:2.5];//加解禁的保险
     
     [UIView animateWithDuration:0.0 animations:^{;} completion:^(BOOL finished)
-     {         
+     {   
+         [self startOngoingSendingMessageWithTimeInterval:0.5];
          while (self.focusBarButtonItem.enabled && [UIApplication sharedApplication].isIgnoringInteractionEvents) {
              [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
          }
+         [self stopOngoingSendingMessage];
          if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
              [[UIApplication sharedApplication] endIgnoringInteractionEvents];
          
@@ -892,12 +896,8 @@
 	UIView *backgroundView = [[self.switchBarButtonItem.customView subviews] objectAtIndex:0]; //一共2个，第1个是背景
 	backgroundView.hidden = YES; //转换完成，背景设成透明，否则影响按钮的边框
 	
-	/*
-	//转换完成后，事件重新绑定
-	UIButton *button = (UIButton*)[[self.switchBarButtonItem.customView subviews] objectAtIndex:1]; //一共2个，第2个是按钮
-	[button addTarget:self action:@selector(switchButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-     */
-    [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+    if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
 }
 
 #pragma mark -
@@ -920,7 +920,6 @@
 	[self.animationBackgroundView insertSubview:self.mapsViewController.view atIndex:0];
 	[self.mapsViewController viewDidAppear:NO];
 	self.curViewController = self.mapsViewController;
-	//[self.toolbar setItems:[self mapsViewToolbarItems] animated:NO];
 	
 	//Nav的标题
 	if ([self.curViewController isKindOfClass:[AlarmsListViewController class]]) {
@@ -930,7 +929,6 @@
 	}
 	
 	//searchBar
-	//self.searchBar.placeholderBackup = KTextPromptPlaceholderOfSearchBar;
 	self.searchBar.placeholder = KTextPromptPlaceholderOfSearchBar;
 	[(YCSearchBar*)self.searchBar setCanResignFirstResponder:YES];
 	self.searchController = [[YCSearchController alloc] initWithDelegate:self

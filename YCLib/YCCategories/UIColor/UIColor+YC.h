@@ -48,5 +48,10 @@
  **/
 + (UIColor *)texturedButtonGradientSmallColor; 
 
+/**
+ 地图没有打开时候显示的view的颜色
+ **/
++ (UIColor *)mapsMaskColor;
+
 
 @end

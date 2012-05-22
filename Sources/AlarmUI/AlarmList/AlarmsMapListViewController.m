@@ -6,6 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import "UIColor+YC.h"
 #import "YCFunctions.h"
 #import "YCLocationManager.h"
 #import "UIApplication+YC.h"
@@ -20,7 +21,7 @@
 #import "YCAnimateRemoveFileView.h"
 #import "YCCalloutBarButton.h"
 #import "YCCalloutBar.h"
-#import "IAAnnotationView.h"
+#import "IAPinAnnotationView.h"
 #import "IASaveInfo.h"
 #import "YCRemoveMinusButton.h"
 #import "AlarmListNotifications.h"
@@ -39,11 +40,6 @@
 #import "AlarmDetailTableViewController.h"
 #import "AlarmsMapListViewController.h"
 #import <QuartzCore/QuartzCore.h>
-
-//toolbar显示的时间
-#define kTimeIntervalForToolbarHide  25.0
-//取得用户当前位置的超时时间
-#define kTimeSpanForUserLocation     30.0
 
 @interface AlarmsMapListViewController (private) 
 
@@ -85,10 +81,6 @@
 
 #pragma mark - Utility
 
--(void)setUserInteractionEnabled:(BOOL)enabled{
-	[self.view setUserInteractionEnabled:enabled];
-}
-
 -(void)alertInternet{
 	//检查网络
 	BOOL connectedToInternet = [[YCSystemStatus deviceStatusSingleInstance] connectedToInternet];
@@ -124,11 +116,11 @@
 	
 	MKCoordinateRegion r = MKCoordinateRegionMakeWithDistance(kCLLocationCoordinate2DInvalid, 0, 0); //初始化，无效值
 	
-	if (self.alarms.count == 1) {
+	if (self.mapView.mapPointAnnotations.count == 1) {
 		IAAlarm *anAlarm = (IAAlarm*)[self.alarms objectAtIndex:0];
 		CLLocationDistance distanceForRegion = anAlarm.radius*2*1.8;//直径的1.x倍
 		r = MKCoordinateRegionMakeWithDistance(anAlarm.visualCoordinate,distanceForRegion,distanceForRegion);
-	}else if (self.alarms.count > 1){
+	}else if (self.mapView.mapPointAnnotations.count > 1){
 		CLLocationDegrees minLati = 180.0;
 		CLLocationDegrees maxLati = -180.0;
 		CLLocationDegrees minLong = 180.0;
@@ -151,23 +143,6 @@
 	
 }
 
-//关掉覆盖视图
--(void)animateCloseMaskViewAndShowToolbar
-{	
-
-	
-	//动画关闭
-	[UIView beginAnimations:@"Unmask" context:NULL];
-	[UIView setAnimationDuration:1.0];
-	self.maskView.alpha = 0.0f;
-	self.maskView.hidden = YES;
-	[UIView commitAnimations];
-	
-	self.navigationItem.leftBarButtonItem.enabled = YES;
-	self.navigationItem.rightBarButtonItem.enabled = YES; //mask已经被打开，可用
-	
-}
-
 //做annotation及其相应的view、circleOverlay，并把他们加入的列表中
 - (IAAnnotation*)insertAnnotationWithAlarm:(IAAlarm*)alarm atIndex:(NSInteger)index{
 
@@ -179,7 +154,7 @@
 		[self.mapPointAnnotations insertObject:annotation atIndex:index];
 	
 	static NSString* YCpinViewAnnotationIdentifier = @"YCpinViewAnnotationIdentifier";
-	IAAnnotationView* pinView = [[[IAAnnotationView alloc]
+	IAPinAnnotationView* pinView = [[[IAPinAnnotationView alloc]
 								  initWithAnnotation:annotation reuseIdentifier:YCpinViewAnnotationIdentifier] autorelease];
 	pinView.delegate = self;
 	
@@ -214,22 +189,6 @@
 	
 }
 
-//用户的当前位置（小蓝点）是否在地图中心
-- (BOOL)isUserLocationInMapsCenter{
-	CLLocationCoordinate2D currentMapCenter = self.mapView.region.center;
-	CGPoint currentMapCenterPoint = [self.mapView convertCoordinate:currentMapCenter toPointToView:nil];
-	
-	//比较的坐标转换后到屏幕上的点；相等：BarItem不可用
-	CLLocationCoordinate2D userCurrentLocation = kCLLocationCoordinate2DInvalid;
-	if (self.mapView.userLocation.location) userCurrentLocation = self.mapView.userLocation.location.coordinate;
-	if (!CLLocationCoordinate2DIsValid(userCurrentLocation)) return NO; //无效坐标
-	
-	CGPoint userCurrentLocationPoint = [self.mapView convertCoordinate:userCurrentLocation toPointToView:nil];
-    
-	return YCCGPointEqualPointWithOffSet(currentMapCenterPoint, userCurrentLocationPoint,2);//允许误差2个像素
-}
-
-
 ////是否有大头针在屏幕可视范围中
 -(BOOL)isHavePinVisible{
 	BOOL b = NO;
@@ -247,7 +206,6 @@
 
 #pragma mark -
 #pragma mark property
-
 
 - (id)focusBox{
 	if (focusBox == nil) {
@@ -325,7 +283,7 @@
 	}
 	return toolbarFloatingView;
 }
-
+/*
 - (id)maskActivityIndicator{  //做这个get属性的目的是：在进入前台时候不start动画
 	if (maskActivityIndicator == nil) {
 		maskActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -335,6 +293,7 @@
 	[maskActivityIndicator startAnimating];
 	return maskActivityIndicator;
 }
+ */
 
 - (id)animateRemoveFileView{
 	if (animateRemoveFileView == nil) {
@@ -380,7 +339,7 @@
 	
 	for (IAAnnotation *aAnnotation in self.mapPointAnnotations) {
 		IAAlarm *alarm = [IAAlarm findForAlarmId:aAnnotation.identifier];
-		IAAnnotationView * aAnnotationView = [self.mapPointAnnotationViews objectForKey:aAnnotation.identifier];
+		IAPinAnnotationView * aAnnotationView = [self.mapPointAnnotationViews objectForKey:aAnnotation.identifier];
 		
 		if (aAnnotationView ==nil ) continue;
         
@@ -504,7 +463,7 @@
 	//更新大头针
 	IASaveInfo *saveInfo = [((NSNotification*)notification).userInfo objectForKey:IASaveInfoKey];
 	NSString *alarmId = saveInfo.objId;
-	IAAnnotationView *annotationView = [[[self.mapPointAnnotationViews objectForKey:alarmId] retain] autorelease];
+	IAPinAnnotationView *annotationView = [[[self.mapPointAnnotationViews objectForKey:alarmId] retain] autorelease];
     IAAnnotation *annotation = [[(IAAnnotation*)annotationView.annotation retain] autorelease];
     MKCircle *circleOverlay = [[[self.circleOverlays objectForKey:alarmId] retain] autorelease];
     CLLocationCoordinate2D coordinate = annotation ? annotation.coordinate : kCLLocationCoordinate2DInvalid;
@@ -576,11 +535,13 @@
             [self.mapView selectAnnotation:annotation];//刚加上的，竟然无法用动画选中！！
             
             if ([[[UIDevice currentDevice] systemVersion] floatValue] < 4.2) 
-            {//before 4.2， addAnnotation后 等一会才能选中，等多久，不知道！                
+            {//before 4.2， addAnnotation后 等一会才能选中，等多久，不知道！    
+                [self startOngoingSendingMessageWithTimeInterval:0.1];
                 while (![self.mapView isSelectedForAnnotation:annotation]) {
                     [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
                     [self.mapView selectAnnotation:annotation];
                 }
+                [self stopOngoingSendingMessage];
             }
 			
 			if (![self.mapView isVisibleForAnnotation:annotation]) { //如果annotation不在可视范围
@@ -605,19 +566,16 @@
             [self.mapView addAnnotation:annotation];
             [self.mapView selectAnnotation:annotation];//刚加上的，竟然无法用动画选中！！
             
-            if ([[[UIDevice currentDevice] systemVersion] floatValue] < 4.2) 
-            {//before 4.2， addAnnotation后 等一会才能选中，等多久，不知道！                
+            //if ([[[UIDevice currentDevice] systemVersion] floatValue] < 4.2) 
+            {//before 4.2， addAnnotation后 等一会才能选中，等多久，不知道！所有的版本都检测一下也没坏处 
+                [self startOngoingSendingMessageWithTimeInterval:0.1];
                 while (![self.mapView isSelectedForAnnotation:annotation]) {
                     [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
                     [self.mapView selectAnnotation:annotation];
                 }
+                [self stopOngoingSendingMessage];
             }
             
-			
-			//如果屏幕没打开
-			if (NO == self.maskView.hidden){
-				isFirstShow = YES;//为了让在viewWillAppear重新打开
-			}
             
 			break;
             
@@ -658,15 +616,7 @@
 }
 
 - (void) handle_applicationWillEnterForeground: (id) notification{
-	
-	//如果mask还没打开，那么重新设置超时。(用户可能去设置去了)
-	if (!self.maskView.hidden) {
-		[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(endUpdateUserLocation) object:nil];
-		[self performSelector:@selector(endUpdateUserLocation) withObject:nil afterDelay:kTimeSpanForUserLocation];
-	}
-	
 	isAlreadyAlertForInternet = NO; //在mapview的加载地图数据失败时候中检查网络
-		
 }
 
 - (void) handle_standardLocationDidFinish: (NSNotification*) notification{
@@ -682,25 +632,11 @@
 
 - (void) handle_applicationWillResignActive:(id)notification{	
 	
-	//恢复navbar 标题
-	self.navigationItem.titleView = nil;
-	//self.mapView.showsUserLocation = NO;
-	
-	//不再刷新pin
-	//[refreshPinLoopTimer invalidate];[refreshPinLoopTimer release];refreshPinLoopTimer = nil;
-	
     //关闭未关闭的对话框
     [checkNetAlert dismissWithClickedButtonIndex:checkNetAlert.cancelButtonIndex animated:NO];
 }
 
 - (void) handle_applicationDidBecomeActive:(id)notification{	
-	/*
-    //刷新pin
-    NSTimeInterval ti = 0.75;
-    [refreshPinLoopTimer invalidate];
-    [refreshPinLoopTimer release];
-    refreshPinLoopTimer = [[NSTimer scheduledTimerWithTimeInterval:ti target:self selector:@selector(refreshPinView) userInfo:nil repeats:YES] retain];
-     */
     
 }
 
@@ -713,7 +649,6 @@
 - (void)focusToPoint:(CGPoint)focusWhere{
 		
 	//动画期间不允许拖动地图，不允许其他事件
-	//[self setUserInteractionEnabled:NO];
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 
 	//加上聚焦点
@@ -868,6 +803,7 @@
 
 }
 
+/*
 - (void)observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(id)object
                         change:(NSDictionary *)change
@@ -876,7 +812,6 @@
 	//还没加载
 	if (![self isViewLoaded]) return;
 	
-
 	if (object == self.maskView && [keyPath isEqualToString:@"hidden"])
 	{		
 		BOOL isHidden = [(NSNumber*)[change valueForKey:NSKeyValueChangeNewKey] boolValue];
@@ -892,6 +827,7 @@
 	
 	
 }
+ */
 
 - (void)registerNotifications {
 	
@@ -957,7 +893,7 @@
 							   name: IAMapTypeButtonPressedNotification
 							 object: nil];
 	
-	[self.maskView addObserver:self forKeyPath:@"hidden" options:NSKeyValueObservingOptionNew context:nil];
+	//[self.maskView addObserver:self forKeyPath:@"hidden" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)unRegisterNotifications{
@@ -975,7 +911,7 @@
 	[notificationCenter removeObserver:self	name: IAFocusButtonPressedNotification object: nil];
 	[notificationCenter removeObserver:self	name: IAMapTypeButtonPressedNotification object: nil];
 
-	[self.maskView removeObserver:self forKeyPath:@"hidden"];
+	//[self.maskView removeObserver:self forKeyPath:@"hidden"];
 
 }
 
@@ -988,27 +924,23 @@
 		[self.mapView performSelector:@selector(removeOverlay:) withObject:foucusOverlay afterDelay:1.25];
 
 	//详细页面出现后，再允许拖动地图、允许其他事件
-	//[self performSelector:@selector(setUserInteractionEnabled:) withInteger:YES afterDelay:1.25];
     [[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:1.25];
 
 }
 
+#pragma mark - View lifecycle
 
-#pragma mark -
-#pragma mark View lifecycle
+//取得用户当前位置的超时时间
+#define kTimeOutWaitingForUserLocation     30.0
 
 - (void)viewDidLoad {
-
     [super viewDidLoad];	
 	self.title = KViewTitleAlarmsListMaps;
-	self.maskLabel.text = KTextPromptWhenLoading;
 	self.mapView.delegate = self;
-	self->isFirstShow = YES;
-	
 	
 	//mask view
-	[self.maskView addSubview:self.maskActivityIndicator];
-	self.maskView.hidden = NO;
+    self.mapView.backgroundColor = [UIColor mapsMaskColor];
+	self.maskLabel.text = KTextPromptWhenLoading;
 	
 	
     //找到UIMapView自带的双点识别器
@@ -1036,24 +968,6 @@
 	longPressGesture.allowableMovement = 30.0;
 	[self.mapView addGestureRecognizer:longPressGesture];
 	 
-	 
-	//显示大头针
-	[self updateMapAnnotations];
-    if (self.mapPointAnnotations.count >0) {
-        [self.mapView addAnnotations:self.mapPointAnnotations];
-        //[self.mapView selectAnnotation:[self.mapPointAnnotations objectAtIndex:0]];
-        id selecting = [self.mapPointAnnotations objectAtIndex:0];
-        [self.mapView performSelector:@selector(selectAnnotation:) withObject:selecting afterDelay:0.25];
-        
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] < 4.2) 
-        {//before 4.2， addAnnotation后 等一会才能选中，等多久，不知道！                
-            while (![self.mapView isSelectedForAnnotation:selecting]) {
-                [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-                [self.mapView selectAnnotation:selecting];
-            }
-        }
-        
-    }
 	
 	//检查网络
 	isAlreadyAlertForInternet = NO;
@@ -1065,68 +979,106 @@
 		
 	//浮动工具栏
 	self.toolbarFloatingView.hidden = YES;
-    /*
-	[[self.view.window.subviews objectAtIndex:0] addSubview:self.toolbarFloatingView];  
-     //在这里superview是nil，放到按钮被按时候在添加吧
-     */
-	
 	self.mapsTypeButton = [[self.toolbarFloatingView buttons] objectAtIndex:0];
 	self.satelliteTypeButton  = [[self.toolbarFloatingView  buttons] objectAtIndex:1];
 	self.hybridTypeButton = [[self.toolbarFloatingView  buttons] objectAtIndex:2];
-	
-    [self registerNotifications];
+
+    [self registerNotifications];//下面的maskview已经要用了
+    
+    //解禁，做为循环超时的标识
+    //[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+    //[[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:kTimeOutWaitingForUserLocation];
+    
+    [UIView animateWithDuration:0.0 animations:^{;} completion:^(BOOL finished){
+        
+        //放大头针，选中
+        [self updateMapAnnotations];
+        if (self.mapPointAnnotations.count >0) 
+            [self.mapView addAnnotations:self.mapPointAnnotations];
+        
+        //地图的region
+        //1.显示所有pin的region
+        //2.显示最后显示的
+        //3.显示当前位置
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(kCLLocationCoordinate2DInvalid,0,0);
+        if (alarmsCount > 0) {   //1.
+            
+            region = [self allPinsRegion];
+            
+        }else if(YCMKCoordinateRegionIsValid([YCParam paramSingleInstance].lastLoadMapRegion)){       //2.
+            
+            region = [YCParam paramSingleInstance].lastLoadMapRegion;
+            
+        }else {//3.
+            
+            [UIView animateWithDuration:0.25 animations:^{
+                self.maskLabel.alpha = 1.0;
+                self.maskActivityIndicator.hidden = 1.0;
+                [self.maskActivityIndicator startAnimating];
+            } completion:NULL];
+            
+            //app.isIdleTimerDisabled 作为标识变量
+            UIApplication *app = [UIApplication sharedApplication];
+            BOOL newStatus = !app.isIdleTimerDisabled;
+            app.idleTimerDisabled = newStatus;
+            [app performSelector:@selector(setIdleTimerDisabled:) onThread:[NSThread currentThread] withInteger:!newStatus waitUntilDone:NO afterDelay:kTimeOutWaitingForUserLocation];
+            
+            while (!self.mapView.userLocation.location && app.isIdleTimerDisabled == newStatus) {
+                [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+            }
+            
+            if (self.mapView.userLocation.location) 
+                region = MKCoordinateRegionMakeWithDistance(self.mapView.userLocation.location.coordinate,kDefaultLatitudinalMeters,kDefaultLongitudinalMeters);
+        }
+        
+        
+        if (CLLocationCoordinate2DIsValid(region.center)) 
+            [self.mapView setRegion:region];
+        
+        
+        //选中
+        if (self.mapView.mapPointAnnotations.count >0) 
+        {
+            id selecting = [self.mapView.mapPointAnnotations objectAtIndex:0];
+            [self.mapView selectAnnotation:selecting];
+            
+            //if ([[[UIDevice currentDevice] systemVersion] floatValue] < 4.2) //所有版本都检测一下，也没坏处
+            {//before 4.2， addAnnotation后 等一会才能选中，等多久，不知道！
+                [self startOngoingSendingMessageWithTimeInterval:0.1];
+                while (![self.mapView isSelectedForAnnotation:selecting]) 
+                {
+                    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+                    [self.mapView selectAnnotation:selecting];
+                }
+                [self stopOngoingSendingMessage];
+            }
+            
+        }
+        
+        //关闭mask
+        //先通知，让toolbar等显示
+		NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+		NSNotification *aNotification = [NSNotification notificationWithName:IAAlarmMapsMaskingDidChangeNotification 
+																	  object:self
+																	userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:IAAlarmMapsMaskingKey]];
+		[notificationCenter postNotification:aNotification];
+        [UIView animateWithDuration:0.75 animations:^{self.maskView.alpha = 0.0;}];
+        
+        
+        
+    }];//[UIView animateWithDuration: animations: completion:]
 
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {	
 	[super viewWillAppear:animated];	
-	
-	if (isFirstShow){
-		NSInteger alarmsCount = self.alarms.count;
-		
-		//1.显示所有pin的region
-		//2.显示最后显示的
-		//3.显示当前位置
-		MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(-1000.0, -1000.0), 0.0, 0.0);;
-		if (alarmsCount > 0) {   //1.
-			
-			region = [self allPinsRegion];
-			
-		}else if(YCMKCoordinateRegionIsValid([YCParam paramSingleInstance].lastLoadMapRegion)){       //2.
-			
-			region = [YCParam paramSingleInstance].lastLoadMapRegion;
-			
-		}else {                                //3.
-			
-			if (!self.mapView.userLocation.location) { //设备当前位置
-				[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(endUpdateUserLocation) object:nil];//上一次viewload后，用户去setting了
-				[self performSelector:@selector(endUpdateUserLocation) withObject:nil afterDelay:kTimeSpanForUserLocation];
-			}else {
-				region = MKCoordinateRegionMakeWithDistance(self.mapView.userLocation.location.coordinate,kDefaultLatitudinalMeters,kDefaultLongitudinalMeters);
-			}
-			
-		}
-		
-		
-		
-		
-		if (YCMKCoordinateRegionIsValid(region)) {
-			//关掉覆盖视图,显示toolbar
-			[self animateCloseMaskViewAndShowToolbar];
-			//先到世界地图，在下来
-			[self.mapView setRegion:region FromWorld:YES animatedToWorld:NO animatedToPlace:YES];
-		}
-		
-		
-	}
-	
-	if (pinsEditing != [YCSystemStatus deviceStatusSingleInstance].isAlarmListEditing) {
+	    
+    if (pinsEditing != [YCSystemStatus deviceStatusSingleInstance].isAlarmListEditing) {
 		//刷新编辑状态
 		[self setUIEditing:[YCSystemStatus deviceStatusSingleInstance].isAlarmListEditing];
 	}
 	
-    //刷新距离
     //刷新距离
     CLLocation *location = [YCSystemStatus deviceStatusSingleInstance].lastLocation;
     if ([UIApplication sharedApplication].applicationDidFinishLaunchineTimeElapsing  < 5.0) {//小于x秒，刚启动，第一次显示view
@@ -1134,19 +1086,10 @@
         NSTimeInterval ti = [location.timestamp timeIntervalSinceNow];
         if (ti < -120) location = nil; //120秒内的数据可用。最后位置过久，不用.
     }
+    
     for (IAAnnotation *oneObj in self.mapPointAnnotations ) {
         [oneObj setDistanceSubtitleWithCurrentLocation:location];
     }
-	
-    //刷新pin
-    /*
-    NSTimeInterval ti = 0.75;
-    [refreshPinLoopTimer invalidate];
-    [refreshPinLoopTimer release];
-    refreshPinLoopTimer = [[NSTimer scheduledTimerWithTimeInterval:ti target:self selector:@selector(refreshPinView) userInfo:nil repeats:YES] retain];
-     */
-    
-	isFirstShow = NO;
 	
 }
 
@@ -1169,9 +1112,7 @@
 	//不显示工具条
 	if (!self.toolbarFloatingView.hidden)
 		self.toolbarFloatingView.hidden = YES;
-    
-    //不再刷新pin
-	//[refreshPinLoopTimer invalidate];[refreshPinLoopTimer release];refreshPinLoopTimer = nil;
+
 }
 
 
@@ -1292,8 +1233,8 @@
 
 - (void)pinLongPressed:(UILongPressGestureRecognizer *)sender{
 	
-	IAAnnotationView *annotationView = (IAAnnotationView*)sender.view;
-	if(![annotationView isKindOfClass:[IAAnnotationView class]]) return; //按的不是pin
+	IAPinAnnotationView *annotationView = (IAPinAnnotationView*)sender.view;
+	if(![annotationView isKindOfClass:[IAPinAnnotationView class]]) return; //按的不是pin
 	
 	
 	if (UIGestureRecognizerStateBegan == sender.state){ //只处理长按开始
@@ -1372,13 +1313,13 @@
 #pragma mark - IAAnnotationViewDelegete
 
 //按下了删除按钮
-- (void)annotationView:(IAAnnotationView *)annotationView didPressDeleteButton:(UIButton*)button{	
+- (void)annotationView:(IAPinAnnotationView *)annotationView didPressDeleteButton:(UIButton*)button{	
 	//删除Alarm
 	IAAlarm *alarmSelected =[(IAAnnotation*)annotationView.annotation alarm];
 	[alarmSelected deleteFromSender:self];
 }
 
-- (void)annotationView:(IAAnnotationView *)annotationView didPressDetailButton:(UIButton*)button{
+- (void)annotationView:(IAPinAnnotationView *)annotationView didPressDetailButton:(UIButton*)button{
     // ">"按钮被按下，打开编辑alarm
 	IAAlarm *theAlarm =[(IAAnnotation*)annotationView.annotation alarm];
     
@@ -1396,27 +1337,28 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
 
-    /*
-	if ([otherGestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]] || [gestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]]) {
-		return YES;
-	}
-     
-	
-	return NO;
-     */
-    BOOL isLongPressPin = [gestureRecognizer.view isKindOfClass:[IAAnnotationView class]] || [otherGestureRecognizer.view isKindOfClass:[IAAnnotationView class]];
+    IAPinAnnotationView *pinViewLongPressed = nil;      
+    UIView *gesView      =  gestureRecognizer.view;
+    UIView *otherGesView =  otherGestureRecognizer.view;
+    if ([gesView isKindOfClass:[IAPinAnnotationView class]]) {
+        pinViewLongPressed = (IAPinAnnotationView*)gesView;
+    }else if([otherGesView isKindOfClass:[IAPinAnnotationView class]]){
+        pinViewLongPressed = (IAPinAnnotationView*)otherGesView;
+    }
     
-    if (isLongPressPin && gestureRecognizer != tapMapViewGesture && otherGestureRecognizer != tapMapViewGesture) 
-    {
-		return YES;
-	}
+    BOOL isLongPressPin = pinViewLongPressed ? YES : NO;
+    BOOL isPingEditing = pinViewLongPressed.isEditing;
+    if (isLongPressPin && !isPingEditing) {//长按的是pin，而且pin不是编辑状态
+        if (gestureRecognizer != tapMapViewGesture && otherGestureRecognizer != tapMapViewGesture) 
+        {
+            return YES;
+        }
+    }
     
-	
+    	
 	return NO;
-
-
 }
- 
+
 
 /*
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer{
@@ -1473,8 +1415,6 @@
     }
     
     //UIView *tappedView = gestureRecognizer.view; //被点的view
-    
-    
     
     if (gestureRecognizer == tapCalloutViewGesture) {
         
@@ -1550,11 +1490,8 @@
 }
 
 
-
-
 #pragma mark -
 #pragma mark Utility - ReverseGeocoder
-
 
 #define kTimeOutForReverse 5.0
 
@@ -1701,7 +1638,7 @@
 		NSArray *array = [self.reverseGeocodersForPin allKeysForObject:geocoder];
 		if (array.count >0) {
             NSString *alarmId = [array objectAtIndex:0];
-            IAAnnotationView *anPinAnnotationView = (IAAnnotationView*)[mapPointAnnotationViews objectForKey:alarmId];
+            IAPinAnnotationView *anPinAnnotationView = (IAPinAnnotationView*)[mapPointAnnotationViews objectForKey:alarmId];
             if (anPinAnnotationView) {
                 [self endReverseWithAnnotation:(IAAnnotation*)[anPinAnnotationView annotation]];
             }
@@ -1730,7 +1667,7 @@
 			NSArray *array = [self.reverseGeocodersForPin allKeysForObject:geocoder];
             if (array.count >0) {
                 NSString *alarmId = [array objectAtIndex:0];
-                IAAnnotationView *anPinAnnotationView = (IAAnnotationView*)[mapPointAnnotationViews objectForKey:alarmId];
+                IAPinAnnotationView *anPinAnnotationView = (IAPinAnnotationView*)[mapPointAnnotationViews objectForKey:alarmId];
                 if (anPinAnnotationView) {
                     [self endReverseWithAnnotation:(IAAnnotation*)[anPinAnnotationView annotation]];
                 }
@@ -1744,21 +1681,6 @@
 }
 
 #pragma mark - MKMapViewDelegate
-/*
-- (MKAnnotationView *)mapView:(MKMapView *)theMapView viewForAnnotation:(id <MKAnnotation>)annotation
-{
-	if ([annotation isKindOfClass:[MKUserLocation class]])
-	{
-		return nil;
-	}
-    
-	MKPinAnnotationView* pinView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"ABCD"];
-	pinView.draggable = YES;
-	return pinView;
-    
-}
- */
-
 
 - (MKAnnotationView *)mapView:(MKMapView *)theMapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
@@ -1773,7 +1695,7 @@
 	}else {
 		//临时的pin
 		pinView = [[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil] autorelease];
-		pinView.pinColor = pinsEditing ? MKPinAnnotationColorPurple : MKPinAnnotationColorRed;
+		pinView.pinColor = MKPinAnnotationColorRed;
 		pinView.animatesDrop = YES;
 	}
 	return pinView;
@@ -1783,66 +1705,29 @@
 
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)annotationView
-{
-	//[self setPreviousNextButtonEnableStatus]; //设置上一个下一个按钮状态
-	
+{	
 	if ([annotationView.annotation isKindOfClass:[MKUserLocation class]])
-	{
 		return;
-	}
 	
-	//设置最后选中的索引
-	self->lastSelectedAnnotionIndex = [self.mapPointAnnotations indexOfObject:annotationView.annotation];
-	if (NSNotFound == self->lastSelectedAnnotionIndex) 
-		self->lastSelectedAnnotionIndex = -1;//没有被选中的
-	
-	
-	/////////////////////////////////////////
 	//警示圈
 	IAAnnotation *annotation = (IAAnnotation*)annotationView.annotation;
-	if ([annotation isKindOfClass:[IAAnnotation class]])
-	{
-		
-		//先都隐藏
-		[self.mapView removeOverlays:[self.circleOverlays allValues]]; 
-		
-		MKCircle *circleOverlay = [self.circleOverlays objectForKey:annotation.identifier];
-		[self.mapView performSelector:@selector(addOverlay:) withObject:circleOverlay afterDelay:0.5];
+	if ([annotation isKindOfClass:[IAAnnotation class]]){
+        MKCircle *overlay = [self.circleOverlays objectForKey:annotation.identifier];
+        [self.mapView addOverlay:overlay];
 	}
-	/////////////////////////////////////////
-	 
-	
 }
 
 - (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)annotationView{
-	
-	//先都隐藏
-	[self.mapView removeOverlays:[self.circleOverlays allValues]]; 	 
-}
-
-//重新地图设备当前地址共享结束，设这个函数是为了别的地方同步调用
-- (void)endUpdateUserLocation{
-	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(endUpdateUserLocation) object:nil];
-	
-	
-	if (self.mapView.userLocation.location){
-		CLLocationCoordinate2D coordinate = self.mapView.userLocation.location.coordinate;
-		NSValue *coordinateObj = [NSValue valueWithBytes:&coordinate objCType:@encode(CLLocationCoordinate2D)];
-		[self performSelector:@selector(beginReverseWithObj:) withObject:coordinateObj afterDelay:0.0]; //反转坐标－地址。延时调用
-		
-	}
-	
-	if (!self.maskView.hidden) {
-		//关掉覆盖视图,显示toolbar
-		[self animateCloseMaskViewAndShowToolbar];
-		
-		if (self.mapView.userLocation.location) {
-			MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(self.mapView.userLocation.location.coordinate,kDefaultLatitudinalMeters,kDefaultLongitudinalMeters);
-			if (YCMKCoordinateRegionIsValid(region)) //区域有有效
-				[self.mapView setRegion:region FromWorld:YES animatedToWorld:YES animatedToPlace:YES];//先到世界地图，在下来
-		}
-	}
-	
+    
+    if ([annotationView.annotation isKindOfClass:[MKUserLocation class]])
+		return;
+    
+    //警示圈
+	IAAnnotation *annotation = (IAAnnotation*)annotationView.annotation;
+	if ([annotation isKindOfClass:[IAAnnotation class]]){
+        MKCircle *overlay = [self.circleOverlays objectForKey:annotation.identifier];
+        [self.mapView removeOverlay:overlay];
+	}    
 }
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
@@ -1851,23 +1736,24 @@
         return;
     
     userLocation.subtitle = nil; //位置已经更新，地址需要用新的
-	[self performSelector:@selector(endUpdateUserLocation) withObject:nil afterDelay:0.0];
-	
+    
+    CLLocationCoordinate2D coordinate = userLocation.location.coordinate;
+    NSValue *coordinateObj = [NSValue valueWithBytes:&coordinate objCType:@encode(CLLocationCoordinate2D)];
+    [self performSelector:@selector(beginReverseWithObj:) withObject:coordinateObj afterDelay:0.0]; //反转坐标－地址。延时调用
+		
 	//设置“回到当前位置按钮”的可用状态。
-	BOOL currentLocationStatus = NO;
-	if (self.mapView.userLocation.location)
-		currentLocationStatus = ![self isUserLocationInMapsCenter];
+	BOOL isEnabled = NO;
+    isEnabled =  ![self.mapView isViewCenterForCoordinate:coordinate allowableOffset:3]; 
 	
 	NSDictionary *currentLocationDic = [NSDictionary dictionaryWithObjectsAndKeys:
 										[NSNumber numberWithInteger:1],IAControlIdKey
-										,[NSNumber numberWithBool:currentLocationStatus],IAControlStatusKey
+										,[NSNumber numberWithBool:isEnabled],IAControlStatusKey
 										,nil];
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	NSNotification *currentLocationNotification = [NSNotification notificationWithName:IAControlStatusShouldChangeNotification object:self userInfo:currentLocationDic];
 	[notificationCenter performSelector:@selector(postNotification:) withObject:currentLocationNotification afterDelay:0.0];
+    
 }
-
-
 
 - (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id <MKOverlay>)overlay{
 	NSArray *array = [self.circleOverlays allValues];
@@ -1918,27 +1804,28 @@
 - (void)mapView:(MKMapView *)theMapView regionDidChangeAnimated:(BOOL)animated{
 	
 	//设置“回到当前位置按钮”的可用状态。
-	BOOL currentLocationStatus = NO;
+	BOOL isEnabled = NO;
 	if (self.mapView.userLocation.location)
-		currentLocationStatus = ![self isUserLocationInMapsCenter];
+		isEnabled = ![self.mapView isViewCenterForCoordinate:self.mapView.userLocation.location.coordinate allowableOffset:3];
 	
 	NSDictionary *currentLocationDic = [NSDictionary dictionaryWithObjectsAndKeys:
 										 [NSNumber numberWithInteger:1],IAControlIdKey
-										,[NSNumber numberWithBool:currentLocationStatus],IAControlStatusKey
+										,[NSNumber numberWithBool:isEnabled],IAControlStatusKey
 										,nil];
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	NSNotification *currentLocationNotification = [NSNotification notificationWithName:IAControlStatusShouldChangeNotification object:self userInfo:currentLocationDic];
 	[notificationCenter performSelector:@selector(postNotification:) withObject:currentLocationNotification afterDelay:0.0];
+    
 	
 	//设置“显示所有按钮”的可用状态。
     BOOL focusStatus = NO;
-	if (self.alarms.count >0) {
+	if (self.mapView.mapPointAnnotations.count >0) {
 		//有地图范围改变了，按钮就可用
 		BOOL mapsChanged = !YCMKCoordinateRegionEqualToRegion(self.mapView.region, [self allPinsRegion]);
         
         //有一个pin不可视，按钮就可用
 		BOOL isHaveAPinVisible = NO;
-		for (IAAnnotation *anAnnotation in self.mapPointAnnotations) {
+		for (IAAnnotation *anAnnotation in self.mapView.mapPointAnnotations) {
 			isHaveAPinVisible = [self.mapView isVisibleForAnnotation:anAnnotation];
 			if (!isHaveAPinVisible)
 				break;
@@ -2015,21 +1902,17 @@
 }
 
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)annotationView didChangeDragState:(MKAnnotationViewDragState)newState fromOldState:(MKAnnotationViewDragState)oldState 
-{
-    
+{    
 	IAAnnotation *annotation = (IAAnnotation*)annotationView.annotation;
 	MKCircle *circleOverlay = [self.circleOverlays objectForKey:annotation.identifier];
-	
 	IAAlarm *alarm = [IAAlarm findForAlarmId:annotation.identifier];
-	
+     
 	switch (newState) 
 	{
 			
 		case MKAnnotationViewDragStateStarting:
-			//取消变灰的预约执行
-			//[NSObject cancelPreviousPerformRequestsWithTarget:annotationView selector:@selector(updatePinColor) object:nil];
 			//隐藏警示圈
-			[self.mapView removeOverlay:circleOverlay];
+            [self.mapView removeOverlay:circleOverlay];
 			break;
 		case MKAnnotationViewDragStateDragging:
 			//隐藏警示圈
@@ -2047,14 +1930,6 @@
 				//显示距离当前位置XX公里
 				if ([YCSystemStatus deviceStatusSingleInstance].lastLocation) {
                     [(IAAnnotation*)annotation setDistanceSubtitleWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];
-					/*
-                    //为了有动画效果
-					NSString *subtitleTemp = annotation.subtitle;
-                    annotation.subtitle = nil;
-                    if (subtitleTemp) 
-                        [annotation performSelector:@selector(setSubtitle:) withObject:subtitleTemp afterDelay:0.75];
-                     */
-                    
 				}
                 
                 //坐标改变了，保存
@@ -2081,7 +1956,8 @@
 			 
 			break;
 		case MKAnnotationViewDragStateCanceling: //取消拖拽
-			//显示警示半径圈
+			
+            //显示警示半径圈
 			if (circleOverlay) {
 				
 				MKCoordinateRegion overlayRegion = MKCoordinateRegionMakeWithDistance(circleOverlay.coordinate, circleOverlay.radius, circleOverlay.radius);
@@ -2091,12 +1967,12 @@
 					[self.mapView addOverlay:circleOverlay];
 				
 			}
+             
 			break;
 		default:
 			break;
 			
 	}
-	
 	
 }
 
@@ -2127,6 +2003,7 @@
 	[self.mapPointAnnotations removeAllObjects];
 	[self.circleOverlays removeAllObjects];
     
+    [viewLoadedDate release]; viewLoadedDate = nil;
     [tapMapViewGesture release]; tapMapViewGesture = nil;
     [tapCalloutViewGesture release]; tapCalloutViewGesture = nil;
     [longPressGesture release]; longPressGesture = nil;
@@ -2159,7 +2036,8 @@
     [focusBox release];
 	[foucusOverlay release];
 	
-	[animateRemoveFileView release];    
+	[animateRemoveFileView release]; 
+    [viewLoadedDate release];
 	    
     [tapMapViewGesture release];
     [tapCalloutViewGesture release];

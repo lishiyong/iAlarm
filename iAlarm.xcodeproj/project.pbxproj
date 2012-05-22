@@ -1042,8 +1042,8 @@
 		9CF1662B15691A9200281A33 /* UIViewController+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF1662915691A9200281A33 /* UIViewController+YC.m */; };
 		9CF166A015693B4000281A33 /* IAAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF1667615693B4000281A33 /* IAAnnotation.m */; };
 		9CF166A115693B4000281A33 /* IAAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF1667615693B4000281A33 /* IAAnnotation.m */; };
-		9CF166A215693B4000281A33 /* IAAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF1667815693B4000281A33 /* IAAnnotationView.m */; };
-		9CF166A315693B4000281A33 /* IAAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF1667815693B4000281A33 /* IAAnnotationView.m */; };
+		9CF166A215693B4000281A33 /* IAPinAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF1667815693B4000281A33 /* IAPinAnnotationView.m */; };
+		9CF166A315693B4000281A33 /* IAPinAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF1667815693B4000281A33 /* IAPinAnnotationView.m */; };
 		9CF166A415693B4000281A33 /* IAMapPinGray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF1667B15693B4000281A33 /* IAMapPinGray@2x.png */; };
 		9CF166A515693B4000281A33 /* IAMapPinGray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF1667B15693B4000281A33 /* IAMapPinGray@2x.png */; };
 		9CF166A615693B4000281A33 /* 20_IAFlagBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF1667D15693B4000281A33 /* 20_IAFlagBlue.png */; };
@@ -1871,8 +1871,8 @@
 		9CF1662915691A9200281A33 /* UIViewController+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+YC.m"; sourceTree = "<group>"; };
 		9CF1667515693B4000281A33 /* IAAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAAnnotation.h; sourceTree = "<group>"; };
 		9CF1667615693B4000281A33 /* IAAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAAnnotation.m; sourceTree = "<group>"; };
-		9CF1667715693B4000281A33 /* IAAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAAnnotationView.h; sourceTree = "<group>"; };
-		9CF1667815693B4000281A33 /* IAAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAAnnotationView.m; sourceTree = "<group>"; };
+		9CF1667715693B4000281A33 /* IAPinAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; path = IAPinAnnotationView.h; sourceTree = "<group>"; };
+		9CF1667815693B4000281A33 /* IAPinAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAPinAnnotationView.m; sourceTree = "<group>"; };
 		9CF1667B15693B4000281A33 /* IAMapPinGray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAMapPinGray@2x.png"; sourceTree = "<group>"; };
 		9CF1667D15693B4000281A33 /* 20_IAFlagBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 20_IAFlagBlue.png; sourceTree = "<group>"; };
 		9CF1667E15693B4000281A33 /* 20_IAFlagBlueDeep.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 20_IAFlagBlueDeep.png; sourceTree = "<group>"; };
@@ -3647,8 +3647,8 @@
 			children = (
 				9CF1667515693B4000281A33 /* IAAnnotation.h */,
 				9CF1667615693B4000281A33 /* IAAnnotation.m */,
-				9CF1667715693B4000281A33 /* IAAnnotationView.h */,
-				9CF1667815693B4000281A33 /* IAAnnotationView.m */,
+				9CF1667715693B4000281A33 /* IAPinAnnotationView.h */,
+				9CF1667815693B4000281A33 /* IAPinAnnotationView.m */,
 				9CF1667915693B4000281A33 /* Images */,
 			);
 			path = Annotation;
@@ -4730,7 +4730,7 @@
 				9C0BA7BC15667C250063E50C /* IAAlarmsManager.m in Sources */,
 				9CF1662A15691A9200281A33 /* UIViewController+YC.m in Sources */,
 				9CF166A015693B4000281A33 /* IAAnnotation.m in Sources */,
-				9CF166A215693B4000281A33 /* IAAnnotationView.m in Sources */,
+				9CF166A215693B4000281A33 /* IAPinAnnotationView.m in Sources */,
 				9CF166E615693B4000281A33 /* YCMapPointAnnotation+AlarmUI.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4920,7 +4920,7 @@
 				9C0BA7BD15667C250063E50C /* IAAlarmsManager.m in Sources */,
 				9CF1662B15691A9200281A33 /* UIViewController+YC.m in Sources */,
 				9CF166A115693B4000281A33 /* IAAnnotation.m in Sources */,
-				9CF166A315693B4000281A33 /* IAAnnotationView.m in Sources */,
+				9CF166A315693B4000281A33 /* IAPinAnnotationView.m in Sources */,
 				9CF166E715693B4000281A33 /* YCMapPointAnnotation+AlarmUI.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

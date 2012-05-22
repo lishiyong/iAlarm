@@ -299,8 +299,8 @@ cell使用后height竟然会加1。奇怪！
         //bar的闹钟数量累加
         [[YCAlarmStatusBar shareStatusBar] increaseAlarmCount];
     }
-    
-    [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+    if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
 }
 
 #pragma mark - Utility

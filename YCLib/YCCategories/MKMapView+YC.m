@@ -6,9 +6,11 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
 #import "YCMapPointAnnotation.h"
 #import "YCMaps.h"
 #import "YCLocation.h"
+#import "YCFunctions.h"
 #import "MKMapView+YC.h"
 
 @interface MKMapView (private)
@@ -234,6 +236,55 @@
         }
     }
     return array;
+}
+
+- (BOOL)isViewCenterForCoordinate:(CLLocationCoordinate2D)coordinate allowableOffset:(CGFloat)offset{
+    
+    CLLocationCoordinate2D centerCoor = self.region.center;
+	CGPoint centerPoint = [self convertCoordinate:centerCoor toPointToView:nil];
+	
+	CGPoint thePoint = [self convertCoordinate:coordinate toPointToView:nil];
+	return YCCGPointEqualPointWithOffSet(centerPoint, thePoint,offset);//允许误差x个像素
+    
+}
+
+- (void)addOverlay:(id<MKOverlay>)overlay animated:(BOOL)animated{
+    [self addOverlay:overlay];
+    
+    if (animated) {
+        MKOverlayView *overlayView = [self viewForOverlay:overlay];
+        //overlayView.alpha = 0.0;
+        
+        NSLog(@"overlayView.window = %@",overlayView.window);
+        NSLog(@"overlayView.superview = %@",overlayView.superview);
+        
+        CABasicAnimation *theAnimation = [CABasicAnimation animationWithKeyPath:@"alpha"];
+        theAnimation.duration=1.5;
+        theAnimation.autoreverses=YES;
+        theAnimation.fromValue=[NSNumber numberWithFloat:0.0];
+        theAnimation.toValue=[NSNumber numberWithFloat:1.0];
+        [overlayView.layer addAnimation:theAnimation forKey:@"animateAlpha"];
+        
+    }
+}
+- (void)removeOverlay:(id<MKOverlay>)overlay animated:(BOOL)animated{    
+    if (animated) {
+        MKOverlayView *overlayView = [self viewForOverlay:overlay];
+        overlayView.alpha = 1.0;
+        
+        [UIView transitionWithView:overlayView.superview duration:1.5 options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionTransitionCrossDissolve animations:^
+         {
+             overlayView.alpha = 0.0;
+             
+         }completion:^(BOOL finished){
+             
+             [self removeOverlay:overlay];
+             
+         }];
+        
+    }else{
+        [self removeOverlay:overlay];
+    }
 }
 
 @end

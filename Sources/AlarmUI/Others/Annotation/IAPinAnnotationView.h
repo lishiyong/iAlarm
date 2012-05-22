@@ -13,20 +13,20 @@
 #import "YCMoveInButton.h"
 
 
-@class IAAnnotationView;
+@class IAPinAnnotationView;
 @protocol IAAnnotationViewDelegete 
 
 @optional
 
 //按下了按钮
-- (void)annotationView:(IAAnnotationView *)annotationView didPressDeleteButton:(UIButton*)button;
-- (void)annotationView:(IAAnnotationView *)annotationView didPressDetailButton:(UIButton*)button;
+- (void)annotationView:(IAPinAnnotationView *)annotationView didPressDeleteButton:(UIButton*)button;
+- (void)annotationView:(IAPinAnnotationView *)annotationView didPressDetailButton:(UIButton*)button;
 //改变了calloutview的状态
-- (void)annotationView:(IAAnnotationView *)annotationView didChangeEditingStatus:(BOOL)isEditing;
+- (void)annotationView:(IAPinAnnotationView *)annotationView didChangeEditingStatus:(BOOL)isEditing;
 
 @end
 
-@interface IAAnnotationView : MKPinAnnotationView {
+@interface IAPinAnnotationView : MKPinAnnotationView {
     
     YCRemoveMinusButton *minusButton;
     YCMoveInButton *deleteButton;

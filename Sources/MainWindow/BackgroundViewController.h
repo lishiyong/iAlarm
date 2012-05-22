@@ -23,6 +23,7 @@
 	AlarmsListViewController *listViewController;
 	AlarmsMapListViewController *mapsViewController;
 	UIViewController *curViewController;
+    NSString *curViewControllerClassName; //做为标识
 	//BOOL *isCurEditing;//当前是否是在编辑状态
 	
 	UIBarButtonItem *editButtonItem;
@@ -46,6 +47,7 @@
 
 	
 	UIView *animationBackgroundView;//地图、list都加到这个view上
+    
 }
 
 

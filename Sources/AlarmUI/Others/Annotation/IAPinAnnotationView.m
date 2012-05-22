@@ -9,14 +9,14 @@
 #import "IAAlarm.h"
 #import "IAAnnotation.h"
 #import "YCRemoveMinusButton.h"
-#import "IAAnnotationView.h"
+#import "IAPinAnnotationView.h"
 #import "YCMoveInButton.h"
 
-@interface IAAnnotationView (private) 
+@interface IAPinAnnotationView (private) 
 - (void)_setEditing:(BOOL)isEditing animated:(BOOL)animated;
 @end
 
-@implementation IAAnnotationView
+@implementation IAPinAnnotationView
 
 #pragma mark - property
 @synthesize delegate, editing;
@@ -43,7 +43,9 @@
                 
                 self.rightCalloutAccessoryView = rightView;
                 self.leftCalloutAccessoryView = leftView;
-                [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+                
+                if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
+                    [[UIApplication sharedApplication] endIgnoringInteractionEvents];
                 
             }];
             

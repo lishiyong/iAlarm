@@ -50,5 +50,8 @@
     return [UIColor colorWithPatternImage:[UIImage imageNamed:@"YCTexturedButtonTextGradientSmall.png"]];
 }
 
++ (UIColor *)mapsMaskColor{
+    return [UIColor colorWithIntRed:179 intGreen:177 intBlue:173 intAlpha:255];
+}
 
 @end

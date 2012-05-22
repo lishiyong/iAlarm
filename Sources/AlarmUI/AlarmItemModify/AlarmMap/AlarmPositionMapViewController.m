@@ -9,7 +9,7 @@
 #import "YCFunctions.h"
 #import "YCLocationManager.h"
 #import "CLLocation+YC.h"
-#import "IAAnnotationView.h"
+#import "IAPinAnnotationView.h"
 #import "UINavigationItem+YC.h"
 #import "UIViewController+YC.h"
 #import "IANotifications.h"
@@ -1277,7 +1277,6 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 	//back按钮
 	self.title = nil;
 	
-	
 	//取得当前操作的Annotation
 	MKAnnotationView *annotationView = (MKAnnotationView *)((UIView*)sender).superview.superview;
 	//self.annotationAlarmEditing = annotationView.annotation;
@@ -1313,10 +1312,9 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 	
 	if (!pinView)
 	{
-		//pinView = [[[MKPinAnnotationView alloc]
-		//			initWithAnnotation:annotation reuseIdentifier:pinViewAnnotationIdentifier] autorelease];
-		pinView = [[[IAAnnotationView alloc]
+		pinView = [[[MKPinAnnotationView alloc]
 					initWithAnnotation:annotation reuseIdentifier:pinViewAnnotationIdentifier] autorelease];
+
 		
 		pinView.canShowCallout = YES;
 		
@@ -1391,7 +1389,7 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 -(void)animateSetHidden:(BOOL)hidden circleView:(MKOverlayView*)circleView{
 
 	CATransition *animation = [CATransition animation];   
-	[animation setDuration:0.75];
+	[animation setDuration:0.5];
 	animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]; 
 	[animation setType:kCATransitionFade];
 	[animation setFillMode:kCAFillModeForwards];
@@ -1418,8 +1416,6 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 		
 	}
 	/////////////////////////////////////////
-	
-	
 }
 
 

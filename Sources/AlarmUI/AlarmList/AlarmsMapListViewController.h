@@ -8,7 +8,7 @@
 
 #import <MapKit/MapKit.h>
 #import <UIKit/UIKit.h>
-#import "IAAnnotationView.h"
+#import "IAPinAnnotationView.h"
 
 @class YCOverlayImage;
 @class IAAnnotation;
@@ -27,7 +27,7 @@
     /////////////////////////////////////
     //
 	IBOutlet MKMapView* mapView;            
-	IBOutlet UIView  *maskView;                              //覆盖View
+	IBOutlet UIView  *maskView;                                  //覆盖View
 	IBOutlet UILabel *maskLabel;
 	IBOutlet UIActivityIndicatorView *maskActivityIndicator;
     /////////////////////////////////////
@@ -56,13 +56,9 @@
 	YCAnimateRemoveFileView *animateRemoveFileView;
     ////////////////////////////////////
     //标识变量
-    BOOL isFirstShow;                                       //第一次显示
-	NSInteger lastSelectedAnnotionIndex;                    //最后选中的pin，alarms更新后，重新设定选中。－1没有被选中的
 	BOOL pinsEditing;                                       //编辑状态,对应tableView的editing
     BOOL isAlreadyAlertForInternet;                         //第一次加载地图数据失败
-	////////////////////////////////////
-    //刷新pin
-	//NSTimer	*refreshPinLoopTimer;
+    NSDate *viewLoadedDate;                                  //做为打开mask的标识
     ////////////////////////////////////
     //为了区别UIMapView固有的UITapGestureRecognizer
     UITapGestureRecognizer *tapMapViewGesture;
