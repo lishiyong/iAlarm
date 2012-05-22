@@ -62,21 +62,6 @@
 	[invocaton performSelector:@selector(invoke) withObject:nil afterDelay:delay];
 }
 
-
-- (void)callBlock:(void (^)(id anArgument))block withObject:(id)anArgument{
-    block(anArgument);
-}
-
-- (void)performWithObject:(id)anArgument afterDelay:(NSTimeInterval)delay block:(void (^)(id anArgument))block{
-    SEL aSelector = @selector(callBlock:withObject:);
-    NSMethodSignature *signature = [self methodSignatureForSelector:aSelector];
-	NSInvocation *invocaton = [NSInvocation invocationWithMethodSignature:signature];
-	[invocaton setTarget:self];
-	[invocaton setSelector:aSelector];
-	[invocaton setArgument:&block atIndex:2];
-	[invocaton setArgument:&anArgument atIndex:3]; 
-	[invocaton performSelector:@selector(invoke) withObject:nil afterDelay:delay];
-}
 ///
 // xx waitUntilDone xx 方法的 中间方法
 - (void)proxyPerformSelector:(SEL)aSelector onThread:(NSThread *)thr withInteger:(NSInteger)anInteger waitUntilDone:(BOOL)wait{
@@ -103,6 +88,10 @@
 }
 ///
 
+- (void)performBlock:(void (^)(void))block afterDelay:(NSTimeInterval)delay{
+    NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:block];
+    [blockOperation performSelector:@selector(start) withObject:nil afterDelay:delay];
+}
 
 ///
 - (void)timerFired:(NSTimer *)timer{

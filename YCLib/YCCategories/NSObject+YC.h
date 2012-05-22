@@ -14,7 +14,10 @@
 - (void)performSelector:(SEL)aSelector withFloat:(CGFloat)anFloat afterDelay:(NSTimeInterval)delay;
 - (void)performSelector:(SEL)aSelector withObject:(id)anArgument withObject:(id)anotherObject afterDelay:(NSTimeInterval)delay;
 - (void)performSelector:(SEL)aSelector withObject:(id)anArgument withInteger:(NSInteger)anInteger afterDelay:(NSTimeInterval)delay;
-- (void)performWithObject:(id)anArgument afterDelay:(NSTimeInterval)delay block:(void (^)(id anArgument))block;
+- (void)performSelector:(SEL)aSelector withInteger:(NSInteger)anInteger withInteger:(NSInteger)anotherInteger afterDelay:(NSTimeInterval)delay;
+
+- (void)performSelector:(SEL)aSelector onThread:(NSThread *)thr withInteger:(NSInteger)anInteger waitUntilDone:(BOOL)wait afterDelay:(NSTimeInterval)delay;
+- (void)performBlock:(void (^)(void))block afterDelay:(NSTimeInterval)delay;
 
 
 @end
@@ -28,10 +31,9 @@
 - (void)performSelector:(SEL)aSelector withInteger:(NSInteger)anInteger withInteger:(NSInteger)anotherInteger afterDelay:(NSTimeInterval)delay;
 
 - (void)performSelector:(SEL)aSelector onThread:(NSThread *)thr withInteger:(NSInteger)anInteger waitUntilDone:(BOOL)wait afterDelay:(NSTimeInterval)delay;
+- (void)performBlock:(void (^)(void))block afterDelay:(NSTimeInterval)delay;
 
 
-//只是全局的block好用
-- (void)performWithObject:(id)anArgument afterDelay:(NSTimeInterval)delay block:(void (^)(id anArgument))block;
 
 //为当前runloop加一个持续不断发消息的Timer
 - (void)startOngoingSendingMessageWithTimeInterval:(NSTimeInterval)sec;

@@ -107,8 +107,19 @@
                                                  otherButtonTitles:nil];
         }
         
-        [checkNetAlert show];
-
+        [self performBlock:^{
+            
+            [self startOngoingSendingMessageWithTimeInterval:1.0];
+            while (!self.view.window.isKeyWindow) 
+            {
+                [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+            }
+            [self stopOngoingSendingMessage];
+            
+            [self performBlock:^{if(self.view.window.isKeyWindow && UIApplicationStateActive == [UIApplication sharedApplication].applicationState) [checkNetAlert show];} afterDelay:0.25];
+            
+        } afterDelay:0.25];
+        
 	}
 }
 
@@ -941,6 +952,13 @@
 	//mask view
     self.mapView.backgroundColor = [UIColor mapsMaskColor];
 	self.maskLabel.text = KTextPromptWhenLoading;
+    self.mapView.alpha = 1.0;
+    //通知，打开了maskview
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    NSNotification *aNotification = [NSNotification notificationWithName:IAAlarmMapsMaskingDidChangeNotification 
+                                                                  object:self
+                                                                userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:IAAlarmMapsMaskingKey]];
+    [notificationCenter postNotification:aNotification];
 	
 	
     //找到UIMapView自带的双点识别器

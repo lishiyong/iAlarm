@@ -1114,7 +1114,7 @@
 	self->locatingAndReversingStatus = IALocatingAndReversingStatusLocating;
 	
 	//检测定位服务状态。如果不可用或未授权，弹出对话框
-	[self.locationServicesUsableAlert locationServicesUsable];
+	[self.locationServicesUsableAlert show];
     
     //定位服务没有开启，或没有授权时候：收到失败数据就直接结束定位
 	BOOL enabledLocation = [[YCSystemStatus deviceStatusSingleInstance] enabledLocation];

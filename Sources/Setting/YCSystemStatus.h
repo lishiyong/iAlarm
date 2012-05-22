@@ -34,8 +34,8 @@
 @property (nonatomic,assign,readonly) BOOL canValidLocation; 
 @property (nonatomic,assign) BOOL isAlarmListEditing;
 
-@property (nonatomic,assign,readonly) NSInteger applicationDidFinishLaunchNumber;  //系统完成启动的次数
-@property (nonatomic,assign,readonly) NSInteger applicationDidBecomeActiveNumber;  //进入到前台的次数
+//@property (nonatomic,assign,readonly) NSInteger applicationDidFinishLaunchNumber;  //系统完成启动的次数
+//@property (nonatomic,assign,readonly) NSInteger applicationDidBecomeActiveNumber;  //进入到前台的次数
 @property (nonatomic,assign,readonly) NSInteger alarmAlertNumber;                  //iAlarm发出通知的次数
 //@property (nonatomic,assign)          NSInteger viewIndexWhenExit;                 //程序退出时候
 

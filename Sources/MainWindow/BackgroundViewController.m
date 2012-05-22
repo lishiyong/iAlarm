@@ -32,7 +32,6 @@
 @implementation BackgroundViewController
 @synthesize listViewController;
 @synthesize mapsViewController;
-@synthesize curViewController;
 @synthesize navBar;
 @synthesize searchBar;
 @synthesize searchController;
@@ -252,16 +251,28 @@
     [UIView setAnimationDuration:0.75];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
 	
-	
+	UIViewController *curViewController = nil;
+    UIViewController *changeToController = nil;
+    IASwitchViewControllerType changeToControllerType;
+    switch (curViewControllerType) {
+        case IAListViewController:
+            curViewController = self.listViewController;
+            changeToController = self.mapsViewController;
+            changeToControllerType = IAMapsViewController;
+            break;
+        case IAMapsViewController:
+            curViewController = self.mapsViewController;
+            changeToController = self.listViewController;
+            changeToControllerType = IAListViewController;
+        default:
+            break;
+    }
 		
-	UIViewController *changeToController = nil;
 	UIViewAnimationTransition trType;
-	if (self.curViewController == mapsViewController) {
-		changeToController = listViewController; 
+	if (IAMapsViewController == curViewControllerType) {
 		trType = UIViewAnimationTransitionFlipFromRight;
 		self.searchBar.hidden = YES;
 	}else {
-		changeToController = mapsViewController; 
 		trType = UIViewAnimationTransitionFlipFromLeft;
 		self.searchBar.hidden = NO;
 	}
@@ -273,15 +284,15 @@
 	[changeToController view];//防止内存警告后，view没有加载
 	
 	[changeToController viewWillAppear:YES];
-	[self.curViewController viewWillDisappear:YES];
-	[self.curViewController.view removeFromSuperview];
+	[curViewController viewWillDisappear:YES];
+	[curViewController.view removeFromSuperview];
 	[self.animationBackgroundView insertSubview:changeToController.view atIndex:0];
-	[self.curViewController viewDidDisappear:YES];
+	[curViewController viewDidDisappear:YES];
 	[changeToController viewDidAppear:YES];
 	
 	[UIView commitAnimations];
 	
-	self.curViewController = changeToController;
+	curViewControllerType = changeToControllerType;
 
 	
 	//////////////////////////
@@ -299,7 +310,7 @@
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
 	
 	
-	if (self.curViewController == mapsViewController) {
+	if (IAMapsViewController == curViewControllerType) {
 		[button setImage:[UIImage imageNamed:@"IAButtonBarLists.png"] forState:UIControlStateNormal];
 	}else {
 		[button setImage:[UIImage imageNamed:@"IAButtonBarMaps.png"] forState:UIControlStateNormal];
@@ -309,23 +320,29 @@
 	[UIView commitAnimations];
 	
 
-	//设置toolbar上的按钮
-	if (self.curViewController == mapsViewController)  
-		[self.toolbar setItems:[self mapsViewToolbarItems] animated:YES];
-	else
-		[self.toolbar setItems:[self listViewToolbarItems] animated:YES];
-	
-
-	//Nav的标题
-	if ([self.curViewController isKindOfClass:[AlarmsListViewController class]]) {
+	//Nav的标题,toolbar上的按钮
+	if (IAListViewController == curViewControllerType) {
 		self.title = KViewTitleAlarmsList;
+        [self.toolbar setItems:[self listViewToolbarItems] animated:YES];
 	}else {
 		self.title = KViewTitleAlarmsListMaps;
+        [self.toolbar setItems:[self mapsViewToolbarItems] animated:YES];
 	}
 
 }
 
 - (void)handle_editIAlarmButtonPressed:(NSNotification*)notification{
+    
+    UIViewController *curViewController = nil;
+    switch (curViewControllerType) {
+        case IAListViewController:
+            curViewController = self.listViewController;
+            break;
+        case IAMapsViewController:
+            curViewController = self.mapsViewController;
+        default:
+            break;
+    }
 	
 	id alarm = [[notification userInfo] objectForKey:IAEditIAlarmButtonPressedNotifyAlarmObjectKey];
 
@@ -333,9 +350,9 @@
     UINavigationController *detailNavigationController1 = [[[UINavigationController alloc] initWithRootViewController:detailController1] autorelease];
 	detailController1.alarm = alarm;
 	detailController1.newAlarm = NO;
-	[self.curViewController viewWillDisappear:YES];
+	[curViewController viewWillDisappear:YES];
 	[self presentModalViewController:detailNavigationController1 animated:YES];
-	[self.curViewController viewDidDisappear:YES];
+	[curViewController viewDidDisappear:YES];
 	
 	
 	
@@ -350,14 +367,25 @@
 }
 
 - (void)showAddAlarmView:(IAAlarm*)theAlarm{
+    
+    UIViewController *curViewController = nil;
+    switch (curViewControllerType) {
+        case IAListViewController:
+            curViewController = self.listViewController;
+            break;
+        case IAMapsViewController:
+            curViewController = self.mapsViewController;
+        default:
+            break;
+    }
 	
 	AlarmDetailTableViewController *detailController1 = [[[AlarmDetailTableViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
 	UINavigationController *detailNavigationController1 = [[[UINavigationController alloc] initWithRootViewController:detailController1] autorelease];
 	detailController1.alarm = theAlarm;
 	detailController1.newAlarm = YES;
-	[self.curViewController viewWillDisappear:YES];
+	[curViewController viewWillDisappear:YES];
 	[self presentModalViewController:detailNavigationController1 animated:YES];
-	[self.curViewController viewDidDisappear:YES];
+	[curViewController viewDidDisappear:YES];
 	
 	//页面消失，取消编辑状态
 	BOOL isEditing = NO;
@@ -387,7 +415,7 @@
 	
 	
 	IAAlarm *alarm = [[notification userInfo] objectForKey:IAAlarmAddedKey];
-	if (self.curViewController == self.mapsViewController) {
+	if (IAMapsViewController == curViewControllerType) {
 
 		//为定位动画留出时间
 		[self performSelector:@selector(showAddAlarmView:) withObject:alarm afterDelay:1.5];
@@ -458,17 +486,12 @@
 	if ([isMaskObj boolValue]) {//发生了覆盖
 		self.navBar.topItem.leftBarButtonItem = nil;
 		self.navBar.topItem.rightBarButtonItem = nil;
-		self.searchBar.hidden = YES;
-		
-		//map在当前显示做处理toolbar
-		if (self.curViewController == self.mapsViewController) 
-			[self.toolbar setItems:nil animated:YES]; 
-		
-		
+		self.searchBar.hidden = YES;		
+        [self.toolbar performSelector:@selector(setItems:) withObject:nil afterDelay:0.0];
 	}else {//解除了覆盖
 		
 		//map在当前显示做处理toolbar
-		if (self.curViewController == self.mapsViewController) 
+		if (IAMapsViewController == curViewControllerType) 
 			[self.toolbar setItems:[self mapsViewToolbarItems] animated:YES]; 
 		else 
 			[self.toolbar setItems:[self listViewToolbarItems] animated:YES]; 
@@ -480,7 +503,7 @@
 		NSUInteger alarmsCount = [IAAlarm alarmArray].count;		//空列表不显示编辑按钮
 		if (alarmsCount > 0) {
 			if (alarmsCount > 0 && [YCSystemStatus deviceStatusSingleInstance].isAlarmListEditing) {//原来是编辑状态，恢复成编辑状态
-				self.self.navBar.topItem.leftBarButtonItem = self.doneButtonItem;
+				self.navBar.topItem.leftBarButtonItem = self.doneButtonItem;
 				
 				//改变编辑状态
 				BOOL isEditing = YES;
@@ -623,7 +646,7 @@
 
 - (void)handleHideBar:(NSNotification*)notification{
     
-    if (self.curViewController == listViewController) {//隐藏bar 于 listview 只能做一个
+    if (IAListViewController == curViewControllerType) {//隐藏bar 于 listview 只能做一个
         return;
     }
     
@@ -829,7 +852,7 @@
 - (void)addButtonPressed:(id)sender{
 	IAAlarm *alarm = [[[IAAlarm alloc] init] autorelease];
 	
-	if (self.mapsViewController == self.curViewController) {
+	if (IAMapsViewController == curViewControllerType) {
         
         CLLocationCoordinate2D theCoordinate = kCLLocationCoordinate2DInvalid;
         
@@ -905,35 +928,50 @@
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
-    [super viewDidLoad];
-	[self registerNotifications];
-	
+    [super viewDidLoad];	
     self.navBar =self.navigationController.navigationBar;
     [self.navigationController setToolbarHidden:NO animated:NO];
     self.toolbar = self.navigationController.toolbar;
-
-	//view没有加载，先加载
-	[self.mapsViewController view];
-	[self.listViewController view];
-	
-	[self.mapsViewController viewWillAppear:NO];
-	[self.animationBackgroundView insertSubview:self.mapsViewController.view atIndex:0];
-	[self.mapsViewController viewDidAppear:NO];
-	self.curViewController = self.mapsViewController;
-	
-	//Nav的标题
-	if ([self.curViewController isKindOfClass:[AlarmsListViewController class]]) {
-		self.navBar.topItem.title = KViewTitleAlarmsList;
-	}else {
-		self.navBar.topItem.title = KViewTitleAlarmsListMaps;
-	}
-	
-	//searchBar
+    [self registerNotifications];
+    
+    //searchBar
 	self.searchBar.placeholder = KTextPromptPlaceholderOfSearchBar;
 	[(YCSearchBar*)self.searchBar setCanResignFirstResponder:YES];
 	self.searchController = [[YCSearchController alloc] initWithDelegate:self
 												 searchDisplayController:self.searchDisplayController];
 	self.searchController.originalSearchBarHidden = NO;//不自动隐藏
+    
+
+    //当前控制器、 Nav的标题、searchBar
+    UIViewController *curViewController = nil;
+    switch (curViewControllerType) {
+        case IAListViewController:
+            curViewController = self.listViewController;
+            self.navBar.topItem.title = KViewTitleAlarmsList;
+            [self.toolbar performSelector:@selector(setItems:) withObject: [self listViewToolbarItems] afterDelay:0.0]; 
+                                                                        //toolbar有bug，竟然需要延时设置才行
+            self.searchBar.hidden = YES;
+            break;
+        case IAMapsViewController:
+            curViewController = self.mapsViewController;
+            self.navBar.topItem.title = KViewTitleAlarmsListMaps;
+            [self.toolbar performSelector:@selector(setItems:) withObject: [self mapsViewToolbarItems] afterDelay:0.0];
+            self.searchBar.hidden = NO;
+        default:
+            break;
+    }
+    
+    //Nav按钮
+    self.navBar.topItem.rightBarButtonItem = self.addButtonItem;
+    self.navBar.topItem.leftBarButtonItem = self.editButtonItem;
+    
+    
+	//view没有加载，先加载
+	[curViewController view];
+	
+	[self.mapsViewController viewWillAppear:NO];
+	[self.animationBackgroundView insertSubview:curViewController.view atIndex:0];
+	[self.mapsViewController viewDidAppear:NO];
 
     //debug
     //[self debug];
@@ -1216,9 +1254,7 @@
 
 - (void)dealloc {
 	[listViewController release];
-	[mapsViewController release];
-	[curViewController release];
-	
+	[mapsViewController release];	
 	
 	[editButtonItem release];
 	[doneButtonItem release];

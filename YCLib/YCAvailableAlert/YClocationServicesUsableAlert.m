@@ -43,7 +43,7 @@
 
 
 //检测定位服务状态。如果不可用或未授权，弹出对话框
-- (void)locationServicesUsable{
+- (void)show{
 	
 	//检查定位服务
 	BOOL enabledLocation = [[YCSystemStatus deviceStatusSingleInstance] enabledLocation];

@@ -11,6 +11,11 @@
 #import "YCSearchController.h"
 #import <UIKit/UIKit.h>
 
+typedef enum {
+    IAMapsViewController,
+    IAListViewController
+} IASwitchViewControllerType;
+
 @protocol YCAlertTableViewDelegete;
 @class YCAlertTableView;
 @class AlarmsListViewController;
@@ -22,8 +27,7 @@
 
 	AlarmsListViewController *listViewController;
 	AlarmsMapListViewController *mapsViewController;
-	UIViewController *curViewController;
-    NSString *curViewControllerClassName; //做为标识
+    IASwitchViewControllerType curViewControllerType; //做为标识
 	//BOOL *isCurEditing;//当前是否是在编辑状态
 	
 	UIBarButtonItem *editButtonItem;
@@ -53,7 +57,6 @@
 
 @property (nonatomic, retain) IBOutlet AlarmsListViewController *listViewController;
 @property (nonatomic, retain) IBOutlet AlarmsMapListViewController *mapsViewController;
-@property (nonatomic, retain) UIViewController *curViewController;
 
 @property (nonatomic, retain, readonly) UIBarButtonItem *editButtonItem;
 @property (nonatomic, retain, readonly) UIBarButtonItem *doneButtonItem;

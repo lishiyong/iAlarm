@@ -6,6 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "NSObject+YC.h"
 #import "YCFunctions.h"
 #import "YCLocationManager.h"
 #import "CLLocation+YC.h"
@@ -243,7 +244,18 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
                                                  otherButtonTitles:nil];
         }
         
-        [checkNetAlert show];
+        [self performBlock:^{
+            
+            [self startOngoingSendingMessageWithTimeInterval:1.0];
+            while (!self.view.window.isKeyWindow) 
+            {
+                [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+            }
+            [self stopOngoingSendingMessage];
+            
+            [self performBlock:^{if(self.view.window.isKeyWindow && UIApplicationStateActive == [UIApplication sharedApplication].applicationState) [checkNetAlert show];} afterDelay:0.25];
+            
+        } afterDelay:0.25];
         
 	}
 }
@@ -636,7 +648,7 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 	
 	
 	//检测定位服务状态。如果不可用或未授权，弹出对话框
-	[self.locationServicesUsableAlert locationServicesUsable];
+	[self.locationServicesUsableAlert show];
 	
 	//选中当前位置
 	if (self.mapView.userLocation.location)

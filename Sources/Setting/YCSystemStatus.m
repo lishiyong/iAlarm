@@ -123,21 +123,25 @@ static NSString *kNotToRemindRateKey                 = @"kNotToRemindRateKey";
 }
 
 - (void)handle_applicationDidFinishLaunching:(id)notification{
-	NSInteger i = self.applicationDidFinishLaunchNumber;
+	/*
+    NSInteger i = self.applicationDidFinishLaunchNumber;
 	NSNumber *number = [NSNumber numberWithInteger:i+1];
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setObject: number forKey: ApplicationDidFinishLaunchNumberKey];
 	[defaults synchronize];
+     */
 }
 
 - (void)handle_applicationDidBecomeActive:(id)notification{
+    /*
 	NSInteger i = self.applicationDidBecomeActiveNumber;
 	NSNumber *number = [NSNumber numberWithInteger:i+1];
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setObject: number forKey: ApplicationDidBecomeActiveNumberKey];
 	[defaults synchronize];
+     */
 }
 
 

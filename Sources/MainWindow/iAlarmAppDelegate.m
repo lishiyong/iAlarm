@@ -154,7 +154,7 @@
  
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {  
-	
+	[application registerNotifications];
 	[YCSystemStatus deviceStatusSingleInstance]; //一定要有这个初始化
     
     self.window.backgroundColor = [UIColor clearColor]; //为了自定义状态栏
@@ -213,18 +213,6 @@
 	
 }
 
-- (void)testLocationServices{
-	//检测定位服务状态。如果不可用或未授权，弹出对话框
-	/*
-     if ([YCSystemStatus deviceStatusSingleInstance].applicationDidFinishLaunchNumber > 1) {
-     [self.locationServicesUsableAlert locationServicesUsable];
-     }
-     */
-    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive){
-        [self.locationServicesUsableAlert locationServicesUsable];
-    }
-}
-
 - (void)applicationDidBecomeActive:(UIApplication *)application {
 		
 	BOOL alreadyRate = [YCSystemStatus deviceStatusSingleInstance].alreadyRate;
@@ -233,7 +221,7 @@
 	//没有评过 且 没点过不再提示 且 (闹钟提示过一次 或 每启动x次)
 	BOOL letAlertShow = (!alreadyRate) && (!notToRemindRate) && ( application.applicationIconBadgeNumber > 0 );//没有评过 且 没点过不再提示 且 提醒过
 	
-    NSInteger applicationDidBecomeActiveNumber = [YCSystemStatus deviceStatusSingleInstance].applicationDidBecomeActiveNumber;
+    NSInteger applicationDidBecomeActiveNumber = application.applicationDidBecomeActiveNumber;
     letAlertShow = letAlertShow || (applicationDidBecomeActiveNumber == kLetOneVisibleBecomeActiveNumber); //或 启动次数大于规定次数
     
 	//弹出要求评分的对话框
@@ -245,12 +233,38 @@
                                                     cancelButtonTitle:kAlertConfirmRateBtnNoThanks  
                                                     otherButtonTitles:kAlertConfirmRateBtnToRate,kAlertConfirmRateBtnNotToremind,nil];
         }
-		[confirmRateAlertView performSelector:@selector(show) withObject:nil afterDelay:4.0];
+        
+        [self performBlock:^{
+            
+            [self startOngoingSendingMessageWithTimeInterval:1.0];
+            while (!self.window.isKeyWindow) 
+            {
+                [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+            }
+            [self stopOngoingSendingMessage];
+            
+            [self performBlock:^{if(self.window.isKeyWindow && UIApplicationStateActive == application.applicationState) [confirmRateAlertView show];} afterDelay:2.0];
+            
+        } afterDelay:4.0];
 	}
     
     //检测定位服务状态。如果不可用或未授权，弹出对话框
-	[self performSelector:@selector(testLocationServices) withObject:nil afterDelay:2.0];
-    
+    if (application.applicationDidFinishLaunchNumber > 1) {
+                
+        [self performBlock:^{
+            
+            [self startOngoingSendingMessageWithTimeInterval:1.0];
+            while (!self.window.isKeyWindow) 
+            {
+                [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+            }
+            [self stopOngoingSendingMessage];
+            
+            [self performBlock:^{if(self.window.isKeyWindow && UIApplicationStateActive == application.applicationState) [self.locationServicesUsableAlert show];} afterDelay:1.0];
+            
+        } afterDelay:2.0];
+    }
+        
     //打开查看视图
     [self viewNotificationedAlarm:animatedView];
         
