@@ -85,6 +85,7 @@
 	//检查网络
 	BOOL connectedToInternet = [[YCSystemStatus deviceStatusSingleInstance] connectedToInternet];
 	if (!connectedToInternet) {
+        
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0) {
             // iOS 5 code
             if (!checkNetAlert) 
@@ -110,13 +111,20 @@
         [self performBlock:^{
             
             [self startOngoingSendingMessageWithTimeInterval:1.0];
-            while (!self.view.window.isKeyWindow) 
+            while (!self.view.window.isKeyWindow || UIApplicationStateActive != [UIApplication sharedApplication].applicationState) 
             {
                 [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
             }
             [self stopOngoingSendingMessage];
             
-            [self performBlock:^{if(self.view.window.isKeyWindow && UIApplicationStateActive == [UIApplication sharedApplication].applicationState) [checkNetAlert show];} afterDelay:0.25];
+            [self performBlock:^{
+                if(self.view.window.isKeyWindow && UIApplicationStateActive == [UIApplication sharedApplication].applicationState){ 
+                    if (![[YCSystemStatus deviceStatusSingleInstance] connectedToInternet]) {
+                        [checkNetAlert show];
+                        isAlreadyAlertForInternet = YES;
+                    }
+                }
+            } afterDelay:1.25];
             
         } afterDelay:0.25];
         
@@ -992,7 +1000,6 @@
 	NSInteger alarmsCount = self.alarms.count;
 	if (0 == alarmsCount) { //闹钟数不等于0，就会直接加载地图了，在地图数据加载失败事件中会提示网络的。
 		[self performSelector:@selector(alertInternet) withObject:nil afterDelay:1.5];
-		isAlreadyAlertForInternet = YES;
 	}
 		
 	//浮动工具栏
@@ -1085,6 +1092,16 @@
         
         
     }];//[UIView animateWithDuration: animations: completion:]
+    
+    /*
+    if ([UIApplication sharedApplication].applicationDidFinishLaunchNumber == 1) {
+        if (!isAlreadyAlertForInternet && [self isViewAppeared]) { //没警告过 而且 view在显示
+            //检查网络
+            [self alertInternet];
+            isAlreadyAlertForInternet = YES;
+        }
+    }
+     */
 
 }
 
@@ -1911,10 +1928,9 @@
 
 - (void)mapViewDidFailLoadingMap:(MKMapView *)mapView withError:(NSError *)error{
 
-	if (!isAlreadyAlertForInternet && [self.view superview]!=nil) { //没警告过 而且 view在显示
+	if (!isAlreadyAlertForInternet && [self isViewAppeared]) { //没警告过 而且 view在显示
 		//检查网络
-		[self performSelector:@selector(alertInternet) withObject:nil afterDelay:0.25];
-		isAlreadyAlertForInternet = YES;
+		[self alertInternet];
 	}
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }

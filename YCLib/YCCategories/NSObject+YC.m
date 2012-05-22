@@ -62,6 +62,16 @@
 	[invocaton performSelector:@selector(invoke) withObject:nil afterDelay:delay];
 }
 
+- (void)performSelector:(SEL)aSelector withObject:(id)anArgument withDouble:(double)anDouble afterDelay:(NSTimeInterval)delay{
+    NSMethodSignature *signature = [self methodSignatureForSelector:aSelector];
+	NSInvocation *invocaton = [NSInvocation invocationWithMethodSignature:signature];
+	[invocaton setTarget:self];
+	[invocaton setSelector:aSelector];
+	[invocaton setArgument:&anArgument atIndex:2];
+	[invocaton setArgument:&anDouble atIndex:3]; 
+	[invocaton performSelector:@selector(invoke) withObject:nil afterDelay:delay];
+}
+
 ///
 // xx waitUntilDone xx 方法的 中间方法
 - (void)proxyPerformSelector:(SEL)aSelector onThread:(NSThread *)thr withInteger:(NSInteger)anInteger waitUntilDone:(BOOL)wait{

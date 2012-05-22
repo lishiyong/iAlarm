@@ -221,6 +221,8 @@
 		9C6AE1F11563E0BA00F5A9CE /* OffsetDataDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6AE1E51563E0BA00F5A9CE /* OffsetDataDao.m */; };
 		9C6AE1F21563E0BA00F5A9CE /* YCLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6AE1E71563E0BA00F5A9CE /* YCLocationManager.m */; };
 		9C6AE1F31563E0BA00F5A9CE /* YCLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6AE1E71563E0BA00F5A9CE /* YCLocationManager.m */; };
+		9C6B1098156BE21600AB5BD4 /* UIAlertView+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6B1097156BE21600AB5BD4 /* UIAlertView+YC.m */; };
+		9C6B1099156BE21600AB5BD4 /* UIAlertView+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6B1097156BE21600AB5BD4 /* UIAlertView+YC.m */; };
 		9C7485B81562981F00486793 /* YCAlertTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484CB1562981F00486793 /* YCAlertTableView.m */; };
 		9C7485B91562981F00486793 /* YCAlertTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484CB1562981F00486793 /* YCAlertTableView.m */; };
 		9C7485BA1562981F00486793 /* YCShadowTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484CD1562981F00486793 /* YCShadowTableView.m */; };
@@ -1310,6 +1312,8 @@
 		9C6AE1E51563E0BA00F5A9CE /* OffsetDataDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OffsetDataDao.m; sourceTree = "<group>"; };
 		9C6AE1E61563E0BA00F5A9CE /* YCLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCLocationManager.h; sourceTree = "<group>"; };
 		9C6AE1E71563E0BA00F5A9CE /* YCLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCLocationManager.m; sourceTree = "<group>"; };
+		9C6B1096156BE21600AB5BD4 /* UIAlertView+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+YC.h"; sourceTree = "<group>"; };
+		9C6B1097156BE21600AB5BD4 /* UIAlertView+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+YC.m"; sourceTree = "<group>"; };
 		9C7484CA1562981F00486793 /* YCAlertTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCAlertTableView.h; sourceTree = "<group>"; };
 		9C7484CB1562981F00486793 /* YCAlertTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCAlertTableView.m; sourceTree = "<group>"; };
 		9C7484CC1562981F00486793 /* YCShadowTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCShadowTableView.h; sourceTree = "<group>"; };
@@ -1871,7 +1875,7 @@
 		9CF1662915691A9200281A33 /* UIViewController+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+YC.m"; sourceTree = "<group>"; };
 		9CF1667515693B4000281A33 /* IAAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAAnnotation.h; sourceTree = "<group>"; };
 		9CF1667615693B4000281A33 /* IAAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAAnnotation.m; sourceTree = "<group>"; };
-		9CF1667715693B4000281A33 /* IAPinAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; path = IAPinAnnotationView.h; sourceTree = "<group>"; };
+		9CF1667715693B4000281A33 /* IAPinAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAPinAnnotationView.h; sourceTree = "<group>"; };
 		9CF1667815693B4000281A33 /* IAPinAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAPinAnnotationView.m; sourceTree = "<group>"; };
 		9CF1667B15693B4000281A33 /* IAMapPinGray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAMapPinGray@2x.png"; sourceTree = "<group>"; };
 		9CF1667D15693B4000281A33 /* 20_IAFlagBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 20_IAFlagBlue.png; sourceTree = "<group>"; };
@@ -2266,6 +2270,8 @@
 				9C05ACA41565FE5E00983108 /* CLLocation+YC.m */,
 				9CF1662815691A9200281A33 /* UIViewController+YC.h */,
 				9CF1662915691A9200281A33 /* UIViewController+YC.m */,
+				9C6B1096156BE21600AB5BD4 /* UIAlertView+YC.h */,
+				9C6B1097156BE21600AB5BD4 /* UIAlertView+YC.m */,
 			);
 			path = YCCategories;
 			sourceTree = "<group>";
@@ -4732,6 +4738,7 @@
 				9CF166A015693B4000281A33 /* IAAnnotation.m in Sources */,
 				9CF166A215693B4000281A33 /* IAPinAnnotationView.m in Sources */,
 				9CF166E615693B4000281A33 /* YCMapPointAnnotation+AlarmUI.m in Sources */,
+				9C6B1098156BE21600AB5BD4 /* UIAlertView+YC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4922,6 +4929,7 @@
 				9CF166A115693B4000281A33 /* IAAnnotation.m in Sources */,
 				9CF166A315693B4000281A33 /* IAPinAnnotationView.m in Sources */,
 				9CF166E715693B4000281A33 /* YCMapPointAnnotation+AlarmUI.m in Sources */,
+				9C6B1099156BE21600AB5BD4 /* UIAlertView+YC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

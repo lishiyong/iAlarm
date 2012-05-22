@@ -15,6 +15,7 @@
 - (void)performSelector:(SEL)aSelector withObject:(id)anArgument withObject:(id)anotherObject afterDelay:(NSTimeInterval)delay;
 - (void)performSelector:(SEL)aSelector withObject:(id)anArgument withInteger:(NSInteger)anInteger afterDelay:(NSTimeInterval)delay;
 - (void)performSelector:(SEL)aSelector withInteger:(NSInteger)anInteger withInteger:(NSInteger)anotherInteger afterDelay:(NSTimeInterval)delay;
+- (void)performSelector:(SEL)aSelector withObject:(id)anArgument withDouble:(double)anDouble afterDelay:(NSTimeInterval)delay;
 
 - (void)performSelector:(SEL)aSelector onThread:(NSThread *)thr withInteger:(NSInteger)anInteger waitUntilDone:(BOOL)wait afterDelay:(NSTimeInterval)delay;
 - (void)performBlock:(void (^)(void))block afterDelay:(NSTimeInterval)delay;
@@ -29,6 +30,7 @@
 - (void)performSelector:(SEL)aSelector withObject:(id)anArgument withObject:(id)anotherObject afterDelay:(NSTimeInterval)delay;
 - (void)performSelector:(SEL)aSelector withObject:(id)anArgument withInteger:(NSInteger)anInteger afterDelay:(NSTimeInterval)delay;
 - (void)performSelector:(SEL)aSelector withInteger:(NSInteger)anInteger withInteger:(NSInteger)anotherInteger afterDelay:(NSTimeInterval)delay;
+- (void)performSelector:(SEL)aSelector withObject:(id)anArgument withDouble:(double)anDouble afterDelay:(NSTimeInterval)delay;
 
 - (void)performSelector:(SEL)aSelector onThread:(NSThread *)thr withInteger:(NSInteger)anInteger waitUntilDone:(BOOL)wait afterDelay:(NSTimeInterval)delay;
 - (void)performBlock:(void (^)(void))block afterDelay:(NSTimeInterval)delay;
