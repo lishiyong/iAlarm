@@ -1524,7 +1524,6 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 		////////////
 		
 		if (![((IAAnnotation*)annotation).subtitle isEqualToString:address]) { //不相等，才赋值。
-			//[(IAAnnotation*)annotation performSelector:@selector(setSubtitle:) withObject:address afterDelay:0.0];
 			[(IAAnnotation*)annotation setSubtitle:address];
 		}
 		
