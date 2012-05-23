@@ -10,17 +10,44 @@
 
 @implementation UIAlertView (YC)
 
+
+- (void)registerNotifications {
+	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+	[notificationCenter addObserver: self
+						   selector: @selector (handleApplicationDidEnterBackground:)
+							   name: UIApplicationDidEnterBackgroundNotification
+							 object: nil];
+}
+
+- (void)unRegisterNotifications{
+	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+	[notificationCenter removeObserver:self	name: UIApplicationDidEnterBackgroundNotification object: nil];
+}
+
 - (void)showWaitUntilBecomeKeyWindow:(UIWindow*)waitingWindow afterDelay:(NSTimeInterval)delay{
+    //
+    [self unRegisterNotifications];
+    [self registerNotifications];
     
-    [self startOngoingSendingMessageWithTimeInterval:0.1];
-    while (!waitingWindow.isKeyWindow || UIApplicationStateActive != [UIApplication sharedApplication].applicationState) 
+    //
+    while (!waitingWindow.isKeyWindow || UIApplicationStateInactive == [UIApplication sharedApplication].applicationState) 
     {
+        if (UIApplicationStateBackground  == [UIApplication sharedApplication].applicationState) //都退到后台了
+            return;
+        
         [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
     }
-    [self stopOngoingSendingMessage];
     
     
+    if (UIApplicationStateBackground  == [UIApplication sharedApplication].applicationState) //都退到后台了
+        return;
+    
+    //
     [self performBlock:^{
+        if (UIApplicationStateBackground  == [UIApplication sharedApplication].applicationState) //都退到后台了
+            return;
+        
+        
         if (waitingWindow.isKeyWindow && UIApplicationStateActive == [UIApplication sharedApplication].applicationState){
             [self show];
         }else{
@@ -29,6 +56,15 @@
         }
     } afterDelay:delay];
     
+    
 }
+
+
+
+- (void)handleApplicationDidEnterBackground:(id)notification{
+    [NSObject cancelPreviousPerformBlockRequestsWithTarget:self];    
+}
+
+
 
 @end

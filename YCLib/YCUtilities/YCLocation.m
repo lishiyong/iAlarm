@@ -17,8 +17,8 @@ const CLLocationCoordinate2D kYCDefaultCoordinate = {37.331689, -122.030731};
 
 BOOL YCCLLocationCoordinate2DEqualToCoordinateWithAccuracy(CLLocationCoordinate2D src1,CLLocationCoordinate2D src2,NSUInteger accuracy){
 	BOOL retVal = NO;
-	if (NSOrderedSame == YCCompareFloatWithAccuracy(src1.latitude,src2.latitude,accuracy)) {
-		if (NSOrderedSame == YCCompareFloatWithAccuracy(src1.longitude,src2.longitude,accuracy)) {
+	if (NSOrderedSame == YCCompareDoubleWithAccuracy(src1.latitude,src2.latitude,accuracy)) {
+		if (NSOrderedSame == YCCompareDoubleWithAccuracy(src1.longitude,src2.longitude,accuracy)) {
 			retVal = YES;
 		}
 	}

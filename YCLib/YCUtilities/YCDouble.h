@@ -19,8 +19,7 @@
  NSOrderedDescending: anFloat > anotherFloat; 
  NSOrderedAscending:  anFloat < anotherFloat;
  **/
-NSComparisonResult YCCompareFloat(CGFloat anFloat, CGFloat anotherFloat);
-
+NSComparisonResult YCCompareDouble(double anDouble, double anotherDouble);
 
 //accuracy:小数点后有限位
-NSComparisonResult YCCompareFloatWithAccuracy(CGFloat anFloat, CGFloat anotherFloat,NSUInteger accuracy);
+NSComparisonResult YCCompareDoubleWithAccuracy(double anDouble, double anotherDouble,NSUInteger accuracy);

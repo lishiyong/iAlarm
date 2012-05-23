@@ -9,14 +9,14 @@
 
 #include "YCDouble.h"
 
-NSComparisonResult YCCompareFloat(CGFloat anFloat, CGFloat anotherFloat){
-    return YCCompareFloatWithAccuracy(anFloat, anotherFloat, 10);
+NSComparisonResult YCCompareDouble(double anDouble, double anotherDouble){
+    return YCCompareDoubleWithAccuracy(anDouble, anotherDouble, 10);
 }
 
-NSComparisonResult YCCompareFloatWithAccuracy(CGFloat anFloat, CGFloat anotherFloat,NSUInteger accuracy){
-    if (fabs(anFloat - anotherFloat) < pow(0.1,accuracy)) {
+NSComparisonResult YCCompareDoubleWithAccuracy(double anDouble, double anotherDouble,NSUInteger accuracy){
+    if (fabs(anDouble - anotherDouble) < pow(0.1,accuracy)) {
         return NSOrderedSame;
-    }else if(anFloat >anotherFloat){
+    }else if(anotherDouble >anotherDouble){
         return NSOrderedDescending;
     }else{
         return NSOrderedAscending;

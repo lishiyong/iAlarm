@@ -240,7 +240,7 @@
     
     //检测定位服务状态。如果不可用或未授权，弹出对话框
     if (application.applicationDidFinishLaunchNumber > 1) //第一次系统会提示的
-        [self.locationServicesUsableAlert showWaitUntilBecomeKeyWindow:self.window afterDelay:4.0];
+        [self.locationServicesUsableAlert showWaitUntilBecomeKeyWindow:self.window afterDelay:2.0];
     
         
     //打开查看视图

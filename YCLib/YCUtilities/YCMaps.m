@@ -25,10 +25,10 @@ BOOL YCMKCoordinateRegionIsValid(MKCoordinateRegion region)
 }
 
 BOOL YCMKCoordinateSpanEqualToSpan(MKCoordinateSpan src1,MKCoordinateSpan src2){
-	NSComparisonResult cResult = YCCompareFloatWithAccuracy(src1.latitudeDelta, src2.latitudeDelta, 2); 
+	NSComparisonResult cResult = YCCompareDoubleWithAccuracy(src1.latitudeDelta, src2.latitudeDelta, 2); 
 	if (NSOrderedSame != cResult) return NO;
     
-	cResult = YCCompareFloatWithAccuracy(src1.longitudeDelta, src2.longitudeDelta,2);
+	cResult = YCCompareDoubleWithAccuracy(src1.longitudeDelta, src2.longitudeDelta,2);
 	if (NSOrderedSame != cResult) return NO;
 	
 	return YES;
