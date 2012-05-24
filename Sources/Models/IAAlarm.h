@@ -22,6 +22,7 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 #define    kpositionShort           @"kpositionShort"
 #define    kusedCoordinateAddress   @"kusedCoordinateAddress"
 #define    kcoordinate              @"kcoordinate"
+#define    kvisualCoordinate        @"kvisualCoordinate"
 #define    klocationAccuracy        @"klocationAccuracy"
 
 #define    kenabling                @"kenabling"
@@ -55,7 +56,8 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 	NSString *position;                      //地点
 	NSString *positionShort;                 //短地点
 	BOOL      usedCoordinateAddress;         //使用的是坐标地址：没有反转成功
-	CLLocationCoordinate2D coordinate;       //坐标
+	CLLocationCoordinate2D realCoordinate;       //坐标
+    CLLocationCoordinate2D visualCoordinate;
 	CLLocationAccuracy locationAccuracy;     //定位时候的精度
 	
 	BOOL enabled;                           //启用状态
@@ -78,8 +80,7 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 	NSString *reserve1;                      //作为addressTitle，为alarmName临时存储
 	NSString *reserve2;
 	NSString *reserve3;
-	
-    CLLocationCoordinate2D visualCoordinate;
+
 }
 
 @property (nonatomic,copy) NSString *alarmId;
@@ -89,7 +90,8 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 @property (nonatomic,copy) NSString *position;
 @property (nonatomic,copy) NSString *positionShort;
 @property (nonatomic,assign) BOOL      usedCoordinateAddress;
-@property (nonatomic,assign) CLLocationCoordinate2D coordinate;
+@property (nonatomic,assign) CLLocationCoordinate2D realCoordinate;
+@property (nonatomic,assign) CLLocationCoordinate2D visualCoordinate;
 @property (nonatomic,assign) CLLocationAccuracy locationAccuracy;
 
 @property (nonatomic,assign) BOOL enabled;
@@ -113,6 +115,11 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 @property (nonatomic,copy) NSString *reserve2;
 @property (nonatomic,copy) NSString *reserve3;
 
+
+- (void)setRealCoordinateWithVisualCoordinate:(CLLocationCoordinate2D)theVisualCoordinate;
+- (void)setVisualCoordinateWithRealCoordinate:(CLLocationCoordinate2D)theCoordinate;
+
+
 //发送save通知
 - (void)sendSaveNotificationWithInfo:(IASaveInfo*)saveInfo fromSender:(id)sender;
 //保存闹钟,不发通知
@@ -132,7 +139,7 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 //取得所有闹钟的列表
 + (NSArray*)alarmArray;
 
-@property(nonatomic) CLLocationCoordinate2D visualCoordinate;
+
 
 
 @end

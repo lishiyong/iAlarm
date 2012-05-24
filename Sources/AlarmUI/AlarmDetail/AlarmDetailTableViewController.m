@@ -106,7 +106,7 @@
 			[alarmTemp addObserver:self forKeyPath:@"positionShort" options:0 context:nil];
 			//[alarmTemp addObserver:self forKeyPath:@"notes" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"enabled" options:0 context:nil];
-			[alarmTemp addObserver:self forKeyPath:@"coordinate" options:0 context:nil];
+			[alarmTemp addObserver:self forKeyPath:@"realCoordinate" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"vibrate" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"sound" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"repeatType" options:0 context:nil];
@@ -485,7 +485,7 @@
 			self.bestEffortAtLocation = nil;
 			[self endLocation];
 			//界面提示 : 定位失败
-			if (!CLLocationCoordinate2DIsValid(self.alarmTemp.coordinate)) {
+			if (!CLLocationCoordinate2DIsValid(self.alarmTemp.realCoordinate)) {
 				self.titleForFooter = KTextPromptNeedSetLocationByMaps;
                 [(IADestinationCell*)(self.destionationCellDescription.tableViewCell) setMoveArrow:YES]; //显示箭头动画
             }
@@ -495,7 +495,7 @@
 			self.placemarkForReverse = nil;
 			[self endReverse];
 			//界面提示 : 定位失败
-			if (!CLLocationCoordinate2DIsValid(self.alarmTemp.coordinate)) //在这里 不用也可以吧
+			if (!CLLocationCoordinate2DIsValid(self.alarmTemp.realCoordinate)) //在这里 不用也可以吧
             {
 				self.titleForFooter = KTextPromptNeedSetLocationByMaps;
                 [(IADestinationCell*)self.destionationCellDescription.tableViewCell setMoveArrow:YES]; //显示箭头动画
@@ -606,10 +606,11 @@
 	IADestinationCell *theCell = (IADestinationCell*)self->destionationCellDescription.tableViewCell;
 	theCell.addressLabel.text = self.alarmTemp.positionShort;
 
-	if (CLLocationCoordinate2DIsValid(self.alarmTemp.coordinate) && [YCSystemStatus deviceStatusSingleInstance].lastLocation) {
+    CLLocationCoordinate2D realCoordinate = self.alarmTemp.realCoordinate;
+	if (CLLocationCoordinate2DIsValid(realCoordinate) && [YCSystemStatus deviceStatusSingleInstance].lastLocation) {
 		[theCell setAddressLabelWithLarge:NO];
         CLLocation *currentLocation = [YCSystemStatus deviceStatusSingleInstance].lastLocation;
-		NSString *distanceString = [currentLocation distanceStringFromCoordinate:self.alarmTemp.coordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
+		NSString *distanceString = [currentLocation distanceStringFromCoordinate:realCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
 		[theCell setDistanceWaiting:NO andDistanceText:distanceString];
 	}else {
 		[theCell setAddressLabelWithLarge:YES];
@@ -691,7 +692,7 @@
     self.footerView.distanceLabel.hidden = NO;
     
     //设置距离文本
-    self.footerView.distanceLabel.text =  [location distanceStringFromCoordinate:self.alarmTemp.coordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
+    self.footerView.distanceLabel.text =  [location distanceStringFromCoordinate:self.alarmTemp.realCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
     
     //下面的提示文体向下推
     self.footerView.promptLabel.frame = CGRectMake(19.0,32.0,284.0,170.0);
@@ -776,10 +777,11 @@
     [self.footerView.waitingAIView startAnimating];
     self.footerView.distanceLabel.hidden = YES;
     
+    CLLocationCoordinate2D realCoordinate = self.alarmTemp.realCoordinate;
     CLLocation *location = [[notification userInfo] objectForKey:IAStandardLocationKey];
     if (location) {
         
-        if (CLLocationCoordinate2DIsValid(self.alarmTemp.coordinate)) {
+        if (CLLocationCoordinate2DIsValid(realCoordinate)) {
 
             [self performSelector:@selector(setDistanceLabelVisibleInFooterViewWithCurrentLocation:) withObject:location afterDelay:1.5];//有距离数据， 看x秒等待圈
             
@@ -795,11 +797,11 @@
 	//新的cell
 	if (location) {
         
-        if (CLLocationCoordinate2DIsValid(self.alarmTemp.coordinate)) {
+        if (CLLocationCoordinate2DIsValid(realCoordinate)) {
 			IADestinationCell* desCell = (IADestinationCell*)self.destionationCellDescription.tableViewCell;
 			[desCell setDistanceWaiting:YES andDistanceText:nil];//出现等待圈
             
-			NSString *distanceString = [location distanceStringFromCoordinate:self.alarmTemp.coordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
+			NSString *distanceString = [location distanceStringFromCoordinate:realCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
             [self performSelector:@selector(setCellDistanceString:) withObject:distanceString afterDelay:1.0];//有距离数据，看x秒等待圈
         }
         
@@ -820,7 +822,7 @@
 	self.cellDescriptions = nil;
 	[self.tableView reloadData];  //重新加载
 	
-	if (CLLocationCoordinate2DIsValid(self.alarmTemp.coordinate)) { //有效坐标才允许保存
+	if (CLLocationCoordinate2DIsValid(self.alarmTemp.realCoordinate)) { //有效坐标才允许保存
 		self.saveButtonItem.enabled = YES;
         self.testAlarmButton.enabled = YES;
 	}else {
@@ -890,7 +892,8 @@
 	///////////////////////
 	//保存闹钟
 	self.alarm.enabled = self.alarmTemp.enabled;
-	self.alarm.coordinate = self.alarmTemp.coordinate;
+	self.alarm.realCoordinate = self.alarmTemp.realCoordinate;
+    self.alarm.visualCoordinate = self.alarmTemp.visualCoordinate;
 	self.alarm.alarmName = self.alarmTemp.alarmName;
 	self.alarm.position = self.alarmTemp.position;
 	self.alarm.positionShort = self.alarmTemp.positionShort;
@@ -1035,14 +1038,14 @@
 	}
 	
 	
-	CLLocationCoordinate2D coordinate = self.alarmTemp.coordinate;
+	CLLocationCoordinate2D visualCoordinate = self.alarmTemp.visualCoordinate;
 	self.alarmTemp.usedCoordinateAddress = NO;  
 	//闹钟位置、名称赋值
 	if (self.placemarkForReverse == nil) {
 		//反转坐标 失败，使用坐标作为地址；名称不改变
-		if (CLLocationCoordinate2DIsValid(coordinate)) {
-			self.alarmTemp.position = [UIUtility convertCoordinate:coordinate];
-			self.alarmTemp.positionShort = [UIUtility convertCoordinate:coordinate];
+		if (CLLocationCoordinate2DIsValid(visualCoordinate)) {
+			self.alarmTemp.position = [UIUtility convertCoordinate:visualCoordinate];
+			self.alarmTemp.positionShort = [UIUtility convertCoordinate:visualCoordinate];
             self.alarmTemp.reserve1 = self.alarmTemp.positionShort;  //做为addressTitle
 		}
 		self.alarmTemp.usedCoordinateAddress = YES; 
@@ -1070,9 +1073,9 @@
 		addressTitle = (addressTitle != nil) ? addressTitle:KDefaultAlarmName;
 		if (addressShort == nil) {
 			self.alarmTemp.usedCoordinateAddress = YES;
-			addressShort = (addressShort != nil) ? addressShort : [UIUtility convertCoordinate:coordinate];
+			addressShort = (addressShort != nil) ? addressShort : [UIUtility convertCoordinate:visualCoordinate];
 		}
-		address = (address != nil) ? address : [UIUtility convertCoordinate:coordinate];
+		address = (address != nil) ? address : [UIUtility convertCoordinate:visualCoordinate];
 		
 		
 		self.alarmTemp.position = address;
@@ -1178,7 +1181,7 @@
         
         [(IADestinationCell*)(self.destionationCellDescription.tableViewCell) setMoveArrow:YES]; //显示箭头动画
         
-		self.alarmTemp.coordinate = kCLLocationCoordinate2DInvalid;
+		self.alarmTemp.realCoordinate = kCLLocationCoordinate2DInvalid;
 		self.alarmTemp.position = nil;
 		self.alarmTemp.positionShort = nil;
 		[self.tableView reloadData]; //失败了，刷新界面，赋空数据
@@ -1199,7 +1202,7 @@
         
         
         //闹钟坐标赋值
-        self.alarmTemp.coordinate = self.bestEffortAtLocation.coordinate;
+        self.alarmTemp.realCoordinate = self.bestEffortAtLocation.coordinate;
         self.alarmTemp.locationAccuracy = self.bestEffortAtLocation.horizontalAccuracy;
         
 		//开始 反转坐标
@@ -1267,7 +1270,7 @@
         [self performSelector:@selector(beginLocation) withObject:nil afterDelay:0.5];
     }
 
-	if (self.newAlarm && CLLocationCoordinate2DIsValid(self.alarmTemp.coordinate) && !self.alarmTemp.usedCoordinateAddress) //新alarm而且不用反转地址
+	if (self.newAlarm && CLLocationCoordinate2DIsValid(self.alarmTemp.realCoordinate) && !self.alarmTemp.usedCoordinateAddress) //新alarm而且不用反转地址
         self.saveButtonItem.enabled = YES;
     else 
         self.saveButtonItem.enabled = NO;
@@ -1294,7 +1297,7 @@
 	
 	if (NO == isFirstShow) {
 		//设置页脚
-		if (!CLLocationCoordinate2DIsValid(self.alarmTemp.coordinate)) {
+		if (!CLLocationCoordinate2DIsValid(self.alarmTemp.realCoordinate)) {
 			self.titleForFooter = KTextPromptNeedSetLocationByMaps;
             [(IADestinationCell*)(self.destionationCellDescription.tableViewCell) setMoveArrow:YES]; //显示箭头动画
 		}else if (self.alarmTemp.usedCoordinateAddress ) {
@@ -1313,7 +1316,7 @@
     
     //重新生成footer中的距离label
     self.footerView = nil;
-    if (CLLocationCoordinate2DIsValid(self.alarmTemp.coordinate) && [YCSystemStatus deviceStatusSingleInstance].lastLocation) {
+    if (CLLocationCoordinate2DIsValid(self.alarmTemp.realCoordinate) && [YCSystemStatus deviceStatusSingleInstance].lastLocation) {
         [self setDistanceLabelVisibleInFooterViewWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];
     }
 
@@ -1572,7 +1575,7 @@
 			[alarmTemp removeObserver:self forKeyPath:@"positionShort"];
 			//[alarmTemp removeObserver:self forKeyPath:@"notes"];
 			[alarmTemp removeObserver:self forKeyPath:@"enabled"];
-			[alarmTemp removeObserver:self forKeyPath:@"coordinate"];
+			[alarmTemp removeObserver:self forKeyPath:@"realCoordinate"];
 			[alarmTemp removeObserver:self forKeyPath:@"vibrate"];
 			[alarmTemp removeObserver:self forKeyPath:@"sound"];
 			[alarmTemp removeObserver:self forKeyPath:@"repeatType"];

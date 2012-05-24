@@ -6,6 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCDouble.h"
 #import "YCLocationManager.h"
 #import "YCFunctions.h"
 #import "IABuyManager.h"
@@ -36,7 +37,8 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 @synthesize position;
 @synthesize positionShort;
 @synthesize usedCoordinateAddress;
-@synthesize coordinate;
+@synthesize realCoordinate;
+@synthesize visualCoordinate;
 @synthesize locationAccuracy;
 
 @synthesize enabled;
@@ -73,7 +75,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 		position = nil;
 		positionShort = nil;
 		usedCoordinateAddress = YES;
-		coordinate = kCLLocationCoordinate2DInvalid;
+		realCoordinate = kCLLocationCoordinate2DInvalid;
         visualCoordinate = kCLLocationCoordinate2DInvalid;
 		locationAccuracy = 101.1;
 		
@@ -115,7 +117,8 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	[encoder encodeObject:position forKey:kposition];
 	[encoder encodeObject:positionShort forKey:kpositionShort];
 	[encoder encodeBool:usedCoordinateAddress forKey:kusedCoordinateAddress];
-	[encoder encodeCLLocationCoordinate2D:coordinate forKey:kcoordinate];
+	[encoder encodeCLLocationCoordinate2D:self.realCoordinate forKey:kcoordinate];
+    [encoder encodeCLLocationCoordinate2D:self.visualCoordinate forKey:kvisualCoordinate];
 	[encoder encodeDouble:locationAccuracy forKey:klocationAccuracy];
 
 	[encoder encodeBool:enabled forKey:kenabling];
@@ -148,7 +151,8 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 		position = [[decoder decodeObjectForKey:kposition] retain];
 		positionShort = [[decoder decodeObjectForKey:kpositionShort] retain];
 		usedCoordinateAddress = [decoder decodeBoolForKey:kusedCoordinateAddress];
-		coordinate = [decoder decodeCLLocationCoordinate2DForKey:kcoordinate];
+		realCoordinate = [decoder decodeCLLocationCoordinate2DForKey:kcoordinate];
+        visualCoordinate = [decoder decodeCLLocationCoordinate2DForKey:kvisualCoordinate];
 		locationAccuracy = [decoder decodeDoubleForKey:klocationAccuracy];
 		
 		enabled = [decoder decodeBoolForKey:kenabling];
@@ -173,7 +177,14 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 		reserve2 = [[decoder decodeObjectForKey:kreserve2] retain];
 		reserve3 = [[decoder decodeObjectForKey:kreserve3] retain];
         
-        visualCoordinate = kCLLocationCoordinate2DInvalid;
+        
+        if (YCCompareDouble(realCoordinate.latitude, 0.0) == NSOrderedSame || YCCompareDouble(realCoordinate.longitude, 0.0) == NSOrderedSame ) {
+            realCoordinate = [decoder oldDecodeCLLocationCoordinate2DForKey:kcoordinate];
+        }
+        if (YCCompareDouble(visualCoordinate.latitude, 0.0) == NSOrderedSame || YCCompareDouble(visualCoordinate.longitude, 0.0) == NSOrderedSame ) {
+            visualCoordinate = kCLLocationCoordinate2DInvalid;
+        }
+        
 		
     }
     return self;
@@ -194,7 +205,8 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
     copy.position = self.position;
 	copy.positionShort = self.positionShort;
 	copy.usedCoordinateAddress = self.usedCoordinateAddress;
-	copy.coordinate = self.coordinate;
+	copy.realCoordinate = self.realCoordinate;
+    copy.visualCoordinate = self.visualCoordinate;
 	copy.locationAccuracy = self.locationAccuracy;
 	
 	copy.enabled = self.enabled;
@@ -375,14 +387,16 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	[NSKeyedArchiver archiveRootObject:alarms toFile:filePathName];
 }
 
+/*
 - (void)setCoordinate:(CLLocationCoordinate2D)theCoordinate{
     coordinate = theCoordinate;
-    visualCoordinate = kCLLocationCoordinate2DInvalid;//要重新计算它
+    visualCoordinate = kCLLocationCoordinate2DInvalid;//要重新计算它。
 }
+
 
 - (CLLocationCoordinate2D)visualCoordinate{
     
-    if (!CLLocationCoordinate2DIsValid(visualCoordinate)) {
+    if (!CLLocationCoordinate2DIsValid(visualCoordinate)) {//从真实坐标转换
         if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled] && [[YCLocationManager sharedLocationManager] isInChinaWithCoordinate:coordinate]) { //开启了转换选项 并且 坐标在中国境内
             
             visualCoordinate = [[YCLocationManager sharedLocationManager] convertToMarsCoordinateFromCoordinate:coordinate];
@@ -408,6 +422,73 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
     
     visualCoordinate = theVisualCoordinate;
 }
+ */
+
+- (CLLocationCoordinate2D)visualCoordinate{
+    
+    if (!CLLocationCoordinate2DIsValid(visualCoordinate)) {//从真实坐标转换
+        if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled] && [[YCLocationManager sharedLocationManager] isInChinaWithCoordinate:realCoordinate]) { //开启了转换选项 并且 坐标在中国境内
+            
+            visualCoordinate = [[YCLocationManager sharedLocationManager] convertToMarsCoordinateFromCoordinate:realCoordinate];
+            
+        }else{
+            visualCoordinate = realCoordinate;
+        }
+    }
+    
+    return visualCoordinate;
+}
+
+- (CLLocationCoordinate2D)realCoordinate{
+    
+    if (!CLLocationCoordinate2DIsValid(realCoordinate)) {//从虚拟坐标转换
+        if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled] && [[YCLocationManager sharedLocationManager] isInChinaWithCoordinate:visualCoordinate]) { //开启了转换选项 并且 坐标在中国境内
+            
+            realCoordinate = [[YCLocationManager sharedLocationManager] convertToCoordinateFromMarsCoordinate:visualCoordinate];
+            
+        }else{
+            realCoordinate = visualCoordinate;
+        }
+    }
+    
+    return realCoordinate;
+    
+}
+
+- (void)setRealCoordinate:(CLLocationCoordinate2D)theRealCoordinate{
+    realCoordinate = theRealCoordinate;
+    [self setVisualCoordinateWithRealCoordinate:realCoordinate]; //计算虚拟坐标
+}
+
+- (void)setVisualCoordinate:(CLLocationCoordinate2D)theVisualCoordinate{
+    visualCoordinate = theVisualCoordinate;
+    [self setRealCoordinateWithVisualCoordinate:visualCoordinate]; //计算真实坐标
+}
+
+- (void)setRealCoordinateWithVisualCoordinate:(CLLocationCoordinate2D)theVisualCoordinate{
+    
+    if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled] && [[YCLocationManager sharedLocationManager] isInChinaWithCoordinate:theVisualCoordinate]) { //开启了转换选项 并且 坐标在中国境内
+        
+        realCoordinate = [[YCLocationManager sharedLocationManager] convertToCoordinateFromMarsCoordinate:theVisualCoordinate];
+        
+    }else{
+        realCoordinate = theVisualCoordinate;
+    }
+    
+}
+
+- (void)setVisualCoordinateWithRealCoordinate:(CLLocationCoordinate2D)theCoordinate{
+    
+    if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled] && [[YCLocationManager sharedLocationManager] isInChinaWithCoordinate:theCoordinate]) { //开启了转换选项 并且 坐标在中国境内
+        
+        visualCoordinate = [[YCLocationManager sharedLocationManager] convertToMarsCoordinateFromCoordinate:theCoordinate];
+        
+    }else{
+        visualCoordinate = theCoordinate;
+    }
+    
+}
+ 
 
 
 @end

@@ -89,7 +89,7 @@
 
 - (id)location{
 	if (location == nil) {
-		location = [[CLLocation alloc] initWithLatitude:alarm.coordinate.latitude longitude:alarm.coordinate.longitude];
+		location = [[CLLocation alloc] initWithLatitude:alarm.realCoordinate.latitude longitude:alarm.realCoordinate.longitude];
 	}
 	return location;
 }
@@ -179,7 +179,7 @@
     if (self) {
 		alarm = [theAlarm retain];
 		region = [[CLRegion alloc] 
-				  initCircularRegionWithCenter:theAlarm.coordinate radius:theAlarm.radius identifier:theAlarm.alarmId];
+				  initCircularRegionWithCenter:theAlarm.realCoordinate radius:theAlarm.radius identifier:theAlarm.alarmId];
 
         if ([YCParam paramSingleInstance].regionMonitoring) { //iphone 4
             if ([alarm.positionType.positionTypeId isEqualToString:@"p002"]) { //是 “到达时候”提醒

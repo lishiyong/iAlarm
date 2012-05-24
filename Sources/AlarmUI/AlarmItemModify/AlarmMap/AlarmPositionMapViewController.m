@@ -563,7 +563,7 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
         return; //为了对应父类中，难看的代码: - (void)viewWillDisappear:(BOOL)animated
     }
     
-	CLLocationCoordinate2D realCoordinate = self.annotationAlarmEditing.realCoordinate;
+	CLLocationCoordinate2D visualCoordinate = self.annotationAlarmEditing.coordinate;
     
 	MKPlacemark *placemark = self.annotationAlarmEditing.placemarkForReverse;
 	BSKmlResult *place = self.annotationAlarmEditing.placeForSearch;
@@ -597,7 +597,7 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 	}else {
 		//反转坐标 失败，使用坐标作为地址
 		addressTitle = KDefaultAlarmName;
-		address = [UIUtility convertCoordinate:realCoordinate];
+		address = [UIUtility convertCoordinate:visualCoordinate];
 		addressShort = address;
 		self.alarm.usedCoordinateAddress = YES;
 	}
@@ -606,9 +606,9 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 	addressTitle = (addressTitle != nil) ? addressTitle:KDefaultAlarmName;
 	if (addressShort == nil) {
 		self.alarm.usedCoordinateAddress = YES;
-		addressShort = (addressShort != nil) ? addressShort : [UIUtility convertCoordinate:realCoordinate];
+		addressShort = (addressShort != nil) ? addressShort : [UIUtility convertCoordinate:visualCoordinate];
 	}
-	address = (address != nil) ? address : [UIUtility convertCoordinate:realCoordinate];
+	address = (address != nil) ? address : [UIUtility convertCoordinate:visualCoordinate];
 
 
 
@@ -616,7 +616,7 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 	if (!self.alarm.nameChanged) {
 		self.alarm.alarmName = addressTitle;
 	}
-	self.alarm.coordinate = realCoordinate;
+	self.alarm.visualCoordinate = visualCoordinate;
 	self.alarm.position = address;
 	self.alarm.positionShort = addressShort;
     self.alarm.reserve1 = addressTitle; //做为addressTitle

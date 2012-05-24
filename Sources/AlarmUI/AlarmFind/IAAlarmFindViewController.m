@@ -353,22 +353,22 @@ cell使用后height竟然会加1。奇怪！
         [pointAnnotation release];
     }
     
-    CLLocationCoordinate2D coord = alarm.visualCoordinate;
+    CLLocationCoordinate2D visualCoordinate = alarm.visualCoordinate;
     CLLocationDistance radius = alarm.radius;
     
     //大头针
-    pointAnnotation = [[YCMapPointAnnotation alloc] initWithCoordinate:coord title:alarm.alarmName subTitle:nil];
+    pointAnnotation = [[YCMapPointAnnotation alloc] initWithCoordinate:visualCoordinate title:alarm.alarmName subTitle:nil];
     [self.mapView addAnnotation:pointAnnotation];
     [pointAnnotation setDistanceSubtitleWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];//距离
     
     //地图的显示region
     
     //先按老的坐标显示
-    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(coord, radius*2.5, radius*2.5);
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(visualCoordinate, radius*2.5, radius*2.5);
     MKCoordinateRegion regionFited =  [self.mapView regionThatFits:region];
     [self.mapView setRegion:regionFited animated:NO];
     
-    CGPoint oldPoint = [self.mapView convertCoordinate:coord toPointToView:self.mapView];
+    CGPoint oldPoint = [self.mapView convertCoordinate:visualCoordinate toPointToView:self.mapView];
     CGPoint newPoint = CGPointMake(oldPoint.x, oldPoint.y - 15.0); //下移,避免pin的callout到屏幕外
     CLLocationCoordinate2D newCoord = [self.mapView convertPoint:newPoint toCoordinateFromView:self.mapView];
     MKCoordinateRegion newRegion = MKCoordinateRegionMakeWithDistance(newCoord, radius*2.5, radius*2.5);
@@ -376,7 +376,7 @@ cell使用后height竟然会加1。奇怪！
     [self.mapView setRegion:newRegionFited animated:NO];
     
     //圈
-    circleOverlay = [[MKCircle circleWithCenterCoordinate:coord radius:radius] retain];
+    circleOverlay = [[MKCircle circleWithCenterCoordinate:visualCoordinate radius:radius] retain];
     [self.mapView addOverlay:circleOverlay];
     
     //选中大头针

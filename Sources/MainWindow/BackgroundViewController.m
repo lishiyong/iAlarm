@@ -6,6 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCLocation.h"
 #import "YCFunctions.h"
 #import "YCLocationManager.h"
 #import "UINavigationController+YC.h"
@@ -1174,25 +1175,85 @@
 
 - (NSArray*)searchController:(YCSearchController *)controller searchString:(NSString *)searchString
 {
-	// 开始搜    
-    MKMapRect bounds;
+    //当前地图可视范围的视口
+    MKMapRect visibleBounds = self.mapsViewController.mapView.visibleMapRect;
+    //当前位置的视口
+    MKMapRect curLoctionBounds = MKMapRectNull; 
     CLLocation *curLocation = self.mapsViewController.mapView.userLocation.location;
-    if (curLocation) { //使用当前位置的附近 作为查询优先
+    if (curLocation) { 
         MKMapPoint curPoint = MKMapPointForCoordinate(curLocation.coordinate);
-        bounds = MKMapRectMake(curPoint.x, curPoint.y, 6000, 6000); //取当前位置的x公里的范围
-    }else{ //当前地图可视范围 作为查询优先
-        bounds = self.mapsViewController.mapView.visibleMapRect;
+        curLoctionBounds = MKMapRectMake(curPoint.x, curPoint.y, 6000, 6000); //取当前位置的x公里的范围
     }
     
-    NSString *regionBiasing = nil;//@"cn";
+    MKMapRect searchBounds = !MKMapRectIsNull(curLoctionBounds) ? curLoctionBounds : visibleBounds;//当前位置有可能不可用
+    
+
 	
+    NSString *regionBiasing = nil;//@"cn";
+    
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    [self.forwardGeocoder forwardGeocodeWithQuery:searchString regionBiasing:regionBiasing viewportBiasing:bounds success:^(NSArray *results) {
+    [self.forwardGeocoder forwardGeocodeWithQuery:searchString regionBiasing:regionBiasing viewportBiasing:searchBounds success:^(NSArray *results1) 
+    {//第一次查询成功
+        NSLog(@"results1 = %@",[results1 debugDescription]);
+            
+        //开始第二次查询， 当前地图视口查询
+        if (MKMapRectEqualToRect(searchBounds, curLoctionBounds)) {
+            
+            MKMapRect newSearchBounds = visibleBounds;
+            
+            [self.forwardGeocoder forwardGeocodeWithQuery:searchString regionBiasing:regionBiasing viewportBiasing:newSearchBounds success:^(NSArray *results2) 
+            {//第二次查询成功
+                NSLog(@"results2 = %@",[results2 debugDescription]);
+                
+                NSMutableArray *results = nil;
+                if (results1.count > 0 && results2.count > 0) {//合并结果
+                    BOOL (^filterBlock)(id evaluatedObject, NSDictionary *bindings);
+                    
+                    filterBlock = ^(id evaluatedObject, NSDictionary *bindings){
+                        for (BSKmlResult *anResult in results2) {
+                            CLLocationCoordinate2D coordinateA = anResult.coordinate;
+                            CLLocationCoordinate2D coordinateB = [(BSKmlResult*) evaluatedObject coordinate];
+                            if (YCCLLocationCoordinate2DEqualToCoordinate(coordinateA, coordinateB)){
+                                return NO;
+                            }
+                        }
+                        return YES;
+                    };
+                    NSPredicate *pred = [NSPredicate predicateWithBlock: filterBlock];
+
+                    
+                    NSArray *resultsFilter1 = [results1 filteredArrayUsingPredicate:pred];
+                    results = [NSMutableArray arrayWithArray:results2];
+                    [results addObjectsFromArray:resultsFilter1];
+                    
+                    NSLog(@"resultsFilter1 = %@",[resultsFilter1 debugDescription]);
+                    NSLog(@"results = %@",[results debugDescription]);
+                    
+                    
+                }else{//第一次或第二次查询结果数量 == "0"
+                    results = (results1.count > 0) ? [NSMutableArray arrayWithArray:results1] : [NSMutableArray arrayWithArray:results2];
+                }
+                
+                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                [self forwardGeocodingDidSucceed:self.forwardGeocoder withResults:results];
+                
+                
+                
+            } failure:^(int status, NSString *errorMessage) 
+            {//第二次查询失败
+                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                [self forwardGeocodingDidSucceed:self.forwardGeocoder withResults:results1];
+            }];
+                
+            
+        }else{//不需要查第二次了
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            [self forwardGeocodingDidSucceed:self.forwardGeocoder withResults:results1];
+        }
         
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        [self forwardGeocodingDidSucceed:self.forwardGeocoder withResults:results];
         
-    } failure:^(int status, NSString *errorMessage) {
+    } failure:^(int status, NSString *errorMessage) 
+    {//第一次查询失败
         
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         if (status == G_GEO_NETWORK_ERROR) {

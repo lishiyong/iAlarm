@@ -238,10 +238,11 @@
         [confirmRateAlertView showWaitUntilBecomeKeyWindow:self.window afterDelay:4.0];
 	}
     
-    //检测定位服务状态。如果不可用或未授权，弹出对话框
-    if (application.applicationDidFinishLaunchNumber > 1) //第一次系统会提示的
-        [self.locationServicesUsableAlert showWaitUntilBecomeKeyWindow:self.window afterDelay:2.0];
-    
+    [self performBlock:^{
+        //第一次系统会提示的 && 如果系统正在提示(就当是在提示开启定位)
+        if (/*application.applicationDidFinishLaunchNumber > 1 &&*/ application.applicationState == UIApplicationStateActive) 
+            [self.locationServicesUsableAlert showWaitUntilBecomeKeyWindow:self.window afterDelay:0.0];//检测定位服务状态。如果不可用或未授权，弹出对话框
+    } afterDelay:2.0];
         
     //打开查看视图
     [self viewNotificationedAlarm:animatedView];

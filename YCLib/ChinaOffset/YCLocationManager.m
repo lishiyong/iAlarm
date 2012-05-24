@@ -62,6 +62,9 @@
 #define kMaxChinaLongitude 134.7
 
 - (BOOL)isInChinaWithCoordinate:(CLLocationCoordinate2D) coordinate{
+    if (!CLLocationCoordinate2DIsValid(coordinate)) 
+        return NO;
+    
     if (coordinate.latitude >= kMinChinaLatitude && coordinate.latitude <= kMaxChinaLatitude 
         && coordinate.longitude >= kMinChinaLongitude &&  coordinate.longitude <= kMaxChinaLongitude) {//先大概算一下
         return [self offsetDataWithCoordinate:coordinate] ? YES : NO;
@@ -74,6 +77,9 @@
  把“正常坐标”转换成“火星坐标”
  **/
 - (CLLocationCoordinate2D)convertToMarsCoordinateFromCoordinate:(CLLocationCoordinate2D)coordinate{
+    if (!CLLocationCoordinate2DIsValid(coordinate)) 
+        return coordinate;
+    
     OffsetData *offsetData = [self offsetDataWithCoordinate:coordinate];
     if (offsetData) {
         CLLocationCoordinate2D marsCoordinate = (CLLocationCoordinate2D){coordinate.latitude + offsetData.offsetLatitude, coordinate.longitude + offsetData.offsetLongitude};
@@ -87,6 +93,9 @@
  把“火星坐标”转换成“正常坐标”
  **/
 - (CLLocationCoordinate2D)convertToCoordinateFromMarsCoordinate:(CLLocationCoordinate2D)marsCoordinate{
+    if (!CLLocationCoordinate2DIsValid(marsCoordinate)) 
+        return marsCoordinate;
+    
     OffsetData *offsetData = [self offsetDataWithCoordinate:marsCoordinate];
     if (offsetData) {
         CLLocationCoordinate2D coordinate = (CLLocationCoordinate2D){marsCoordinate.latitude - offsetData.offsetLatitude, marsCoordinate.longitude - offsetData.offsetLongitude};

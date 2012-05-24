@@ -54,8 +54,8 @@
     
     if (curLocation && alarm) {
         
-        CLLocationDistance distance = [curLocation distanceFromCoordinate:alarm.coordinate];
-        NSString *distanceString = [curLocation distanceStringFromCoordinate:alarm.coordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
+        CLLocationDistance distance = [curLocation distanceFromCoordinate:alarm.realCoordinate];
+        NSString *distanceString = [curLocation distanceStringFromCoordinate:alarm.realCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
         
         //未设置过 或 与上次的距离超过100米
         //if (distanceFromCurrentLocation < 0.0 || fabs(distanceFromCurrentLocation - distance) > 100.0) 

@@ -22,6 +22,7 @@
     if (self) {
         alarm = [anAlarm retain];
         annotationType = alarm.enabled ? IAMapAnnotationTypeStandard:IAMapAnnotationTypeDisabled;
+        _realCoordinate = alarm.realCoordinate;
     }
     return self;
 }

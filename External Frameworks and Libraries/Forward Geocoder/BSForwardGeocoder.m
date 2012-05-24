@@ -204,6 +204,7 @@
     // search string to support spaces and international characters
     
     NSString *geocodeUrl = [NSString stringWithFormat:@"%@://maps.google.com/maps/api/geocode/xml?address=%@&sensor=false", self.useHTTP ? @"http" : @"https", [self URLEncodedString:searchQuery]];
+    //NSString *geocodeUrl = [NSString stringWithFormat:@"%@://ditu.google.cn/maps/api/geocode/xml?address=%@&sensor=false", self.useHTTP ? @"http" : @"https", [self URLEncodedString:searchQuery]];
     
     if (regionBiasing && ![regionBiasing isEqualToString:@""]) {
         geocodeUrl = [geocodeUrl stringByAppendingFormat:@"&region=%@", regionBiasing];

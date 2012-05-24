@@ -193,9 +193,10 @@
 
 ////是否有大头针在屏幕可视范围中
 -(BOOL)isHavePinVisible{
+    /*
 	BOOL b = NO;
 	for (IAAlarm* oneObj in self.alarms) {
-		CLLocationCoordinate2D coordinate =  oneObj.coordinate;
+		CLLocationCoordinate2D coordinate =  oneObj.realCoordinate;
 		MKMapPoint point = MKMapPointForCoordinate(coordinate);
 		b = MKMapRectContainsPoint(self.mapView.visibleMapRect,point);
 		
@@ -203,6 +204,17 @@
 	}
 	
 	return b;
+     */
+    
+    BOOL b = NO;
+	for (YCMapPointAnnotation* oneObj in [self.mapView mapPointAnnotations]) {
+		MKMapPoint point = MKMapPointForCoordinate(oneObj.coordinate);
+		b = MKMapRectContainsPoint(self.mapView.visibleMapRect,point);
+		if (b) break;
+	}
+	
+	return b;
+
 }
 
 
@@ -1500,7 +1512,7 @@
 #pragma mark -
 #pragma mark Utility - ReverseGeocoder
 
-#define kTimeOutForReverse 5.0
+#define kTimeOutForReverseUserLocation 30.0
 
 -(void)beginReverseWithCoordinate:(CLLocationCoordinate2D)coordinate
 {
@@ -1511,7 +1523,7 @@
 	//反转坐标
 	self.placemarkForUserLocation = nil; //先赋空相关数据
 	[reverseGeocoderForUserLocation start];
-	[self performSelector:@selector(endReverse) withObject:nil afterDelay:kTimeOutForReverse];
+	[self performSelector:@selector(endReverse) withObject:nil afterDelay:kTimeOutForReverseUserLocation];
 }
 
 //beginReverseWithCoordinate:的对象版本，供延时调用
@@ -1536,12 +1548,16 @@
 		
 		subtitle = YCGetAddressString(self.placemarkForUserLocation);
 		MKUserLocation *userLocationAnnotation = self.mapView.userLocation;     //当前地址
-		userLocationAnnotation.subtitle = subtitle;
-		
+        if (![userLocationAnnotation.title isEqualToString:subtitle]) 
+            userLocationAnnotation.subtitle = subtitle;
+        
+        //NSLog(@"self.placemarkForUserLocation = %@",self.placemarkForUserLocation);
+        		
 	}
 	
 }
 
+#define kTimeOutForReverse 5.0
 
 -(void)beginReverseWithAnnotation:(IAAnnotation*)annotation
 {	
@@ -1575,7 +1591,7 @@
 	
 	IAAlarm *alarm = [IAAlarm findForAlarmId:[(IAAnnotation*)annotation identifier]];
 	
-    CLLocationCoordinate2D coordinate = annotation.realCoordinate;
+    CLLocationCoordinate2D visualCoordinate = annotation.coordinate;
     
 	MKPlacemark *placemark = self.placemarkForPin;
 	NSString *addressTitle = nil;
@@ -1596,7 +1612,7 @@
 	}else {
 		//反转坐标 失败，使用坐标作为地址
 		addressTitle = KDefaultAlarmName;
-		address = [UIUtility convertCoordinate:coordinate];
+		address = [UIUtility convertCoordinate:visualCoordinate];
 		addressShort = address;
 		alarm.usedCoordinateAddress = YES;
 	}
@@ -1605,9 +1621,9 @@
 	addressTitle = (addressTitle != nil) ? addressTitle:KDefaultAlarmName;
 	if (addressShort == nil) {
 		alarm.usedCoordinateAddress = YES;
-		addressShort = (addressShort != nil) ? addressShort : [UIUtility convertCoordinate:coordinate];
+		addressShort = (addressShort != nil) ? addressShort : [UIUtility convertCoordinate:visualCoordinate];
 	}
-	address = (address != nil) ? address : [UIUtility convertCoordinate:coordinate];
+	address = (address != nil) ? address : [UIUtility convertCoordinate:visualCoordinate];
 	
 	
 	
@@ -1615,7 +1631,7 @@
 		[(IAAnnotation*)annotation setTitle:addressTitle];
 		alarm.alarmName = addressTitle;
 	}
-    alarm.coordinate = coordinate;
+    alarm.visualCoordinate = visualCoordinate;
 	alarm.position = address;
 	alarm.positionShort = addressShort;
     alarm.reserve1 = addressTitle;  //做为addressTitle
@@ -1940,7 +1956,7 @@
 				}
                 
                 //坐标改变了，保存
-                alarm.coordinate = annotation.realCoordinate;
+                alarm.visualCoordinate = annotation.coordinate;
                 [alarm saveFromSender:self];
                 
 				//反转坐标－地址

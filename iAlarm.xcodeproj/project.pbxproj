@@ -186,8 +186,20 @@
 		9C3E118614B944ED00A80FAF /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E116E14B944ED00A80FAF /* icon@2x.png */; };
 		9C3E118814B94E8100A80FAF /* IAMap@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E118714B94E8100A80FAF /* IAMap@2x.png */; };
 		9C3E118914B94E8100A80FAF /* IAMap@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E118714B94E8100A80FAF /* IAMap@2x.png */; };
+		9C410ED0156E5907007F3761 /* AlarmDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C410ECE156E5907007F3761 /* AlarmDetailTableViewController.m */; };
+		9C410ED1156E5907007F3761 /* AlarmDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C410ECE156E5907007F3761 /* AlarmDetailTableViewController.m */; };
+		9C410ED3156E594F007F3761 /* AlarmRadiusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C410ED2156E594F007F3761 /* AlarmRadiusViewController.m */; };
+		9C410ED4156E594F007F3761 /* AlarmRadiusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C410ED2156E594F007F3761 /* AlarmRadiusViewController.m */; };
 		9C4A29E614F2AE4700949794 /* IABasicLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4A29E514F2AE4700949794 /* IABasicLocationManager.m */; };
 		9C4A29E714F2AE4700949794 /* IABasicLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4A29E514F2AE4700949794 /* IABasicLocationManager.m */; };
+		9C50A5E8156DC99F00A4B7CC /* BSAddressComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C50A5E1156DC99F00A4B7CC /* BSAddressComponent.m */; };
+		9C50A5E9156DC99F00A4B7CC /* BSAddressComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C50A5E1156DC99F00A4B7CC /* BSAddressComponent.m */; };
+		9C50A5EA156DC99F00A4B7CC /* BSForwardGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C50A5E3156DC99F00A4B7CC /* BSForwardGeocoder.m */; };
+		9C50A5EB156DC99F00A4B7CC /* BSForwardGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C50A5E3156DC99F00A4B7CC /* BSForwardGeocoder.m */; };
+		9C50A5EC156DC99F00A4B7CC /* BSGoogleV3KmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C50A5E5156DC99F00A4B7CC /* BSGoogleV3KmlParser.m */; };
+		9C50A5ED156DC99F00A4B7CC /* BSGoogleV3KmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C50A5E5156DC99F00A4B7CC /* BSGoogleV3KmlParser.m */; };
+		9C50A5EE156DC99F00A4B7CC /* BSKmlResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C50A5E7156DC99F00A4B7CC /* BSKmlResult.m */; };
+		9C50A5EF156DC99F00A4B7CC /* BSKmlResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C50A5E7156DC99F00A4B7CC /* BSKmlResult.m */; };
 		9C5AF2AC134F38FB00547BB0 /* Harp.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C5AF2A7134F38FB00547BB0 /* Harp.caf */; };
 		9C5AF2AD134F38FB00547BB0 /* Old_Phone.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C5AF2A8134F38FB00547BB0 /* Old_Phone.caf */; };
 		9C5AF2AE134F38FB00547BB0 /* Marimba.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C5AF2A9134F38FB00547BB0 /* Marimba.caf */; };
@@ -201,14 +213,6 @@
 		9C5B1DBA154E582D009235DB /* YCClockAlarm20.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5B1DB7154E582D009235DB /* YCClockAlarm20.png */; };
 		9C5B1DBB154E582D009235DB /* YCClockAlarm20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5B1DB8154E582D009235DB /* YCClockAlarm20@2x.png */; };
 		9C5B1DBC154E582D009235DB /* YCClockAlarm20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5B1DB8154E582D009235DB /* YCClockAlarm20@2x.png */; };
-		9C66F3F615486CA400577C4F /* BSAddressComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C66F3EF15486CA400577C4F /* BSAddressComponent.m */; };
-		9C66F3F715486CA400577C4F /* BSAddressComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C66F3EF15486CA400577C4F /* BSAddressComponent.m */; };
-		9C66F3F815486CA400577C4F /* BSForwardGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C66F3F115486CA400577C4F /* BSForwardGeocoder.m */; };
-		9C66F3F915486CA400577C4F /* BSForwardGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C66F3F115486CA400577C4F /* BSForwardGeocoder.m */; };
-		9C66F3FA15486CA400577C4F /* BSGoogleV3KmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C66F3F315486CA400577C4F /* BSGoogleV3KmlParser.m */; };
-		9C66F3FB15486CA400577C4F /* BSGoogleV3KmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C66F3F315486CA400577C4F /* BSGoogleV3KmlParser.m */; };
-		9C66F3FC15486CA400577C4F /* BSKmlResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C66F3F515486CA400577C4F /* BSKmlResult.m */; };
-		9C66F3FD15486CA400577C4F /* BSKmlResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C66F3F515486CA400577C4F /* BSKmlResult.m */; };
 		9C6AE1E81563E0BA00F5A9CE /* BaseDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6AE1DE1563E0BA00F5A9CE /* BaseDao.m */; };
 		9C6AE1E91563E0BA00F5A9CE /* BaseDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6AE1DE1563E0BA00F5A9CE /* BaseDao.m */; };
 		9C6AE1EA1563E0BA00F5A9CE /* DB.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6AE1E01563E0BA00F5A9CE /* DB.m */; };
@@ -623,14 +627,12 @@
 		9C8AB26713B0C92100120AD5 /* IAFlagGray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD614E01369A8780029B7BC /* IAFlagGray@2x.png */; };
 		9C8AB26D13B0C92100120AD5 /* IAMap.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE0B51E13776F1F00D15BC7 /* IAMap.png */; };
 		9C8AB26F13B0C92100120AD5 /* iAlarmList_row@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C119006138CAEDA0091933E /* iAlarmList_row@2x.png */; };
-		9C8AB27113B0C92100120AD5 /* AlarmDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE894A612FFFFD2008FBD45 /* AlarmDetailTableViewController.m */; };
 		9C8AB27213B0C92100120AD5 /* TableViewCellDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE894A812FFFFD2008FBD45 /* TableViewCellDescription.m */; };
 		9C8AB27313B0C92100120AD5 /* AlarmLRepeatTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE894AB12FFFFD2008FBD45 /* AlarmLRepeatTypeViewController.m */; };
 		9C8AB27413B0C92100120AD5 /* AlarmLSoundViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE894AD12FFFFD2008FBD45 /* AlarmLSoundViewController.m */; };
 		9C8AB27513B0C92100120AD5 /* AlarmModifyTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE894B012FFFFD2008FBD45 /* AlarmModifyTableViewController.m */; };
 		9C8AB27613B0C92100120AD5 /* AlarmModifyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE894B212FFFFD2008FBD45 /* AlarmModifyViewController.m */; };
 		9C8AB27713B0C92100120AD5 /* AlarmNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE894B412FFFFD2008FBD45 /* AlarmNameViewController.m */; };
-		9C8AB27813B0C92100120AD5 /* AlarmRadiusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE894B712FFFFD2008FBD45 /* AlarmRadiusViewController.m */; };
 		9C8AB27913B0C92100120AD5 /* CustomPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE894BA12FFFFD2008FBD45 /* CustomPickerController.m */; };
 		9C8AB27A13B0C92100120AD5 /* AlarmsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE894BD12FFFFD2008FBD45 /* AlarmsListViewController.m */; };
 		9C8AB27B13B0C92100120AD5 /* AlarmsListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE894C112FFFFD2008FBD45 /* AlarmsListCell.m */; };
@@ -997,7 +999,6 @@
 		9CE895B412FFFFD2008FBD45 /* YCTableInnerShadowLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8949C12FFFFD2008FBD45 /* YCTableInnerShadowLeft.png */; };
 		9CE895B512FFFFD2008FBD45 /* YCTableInnerShadowRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8949D12FFFFD2008FBD45 /* YCTableInnerShadowRight.png */; };
 		9CE895B612FFFFD2008FBD45 /* YCTableInnerShadowTop.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8949E12FFFFD2008FBD45 /* YCTableInnerShadowTop.png */; };
-		9CE895B912FFFFD2008FBD45 /* AlarmDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE894A612FFFFD2008FBD45 /* AlarmDetailTableViewController.m */; };
 		9CE895BA12FFFFD2008FBD45 /* TableViewCellDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE894A812FFFFD2008FBD45 /* TableViewCellDescription.m */; };
 		9CE895BB12FFFFD2008FBD45 /* AlarmLRepeatTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE894AB12FFFFD2008FBD45 /* AlarmLRepeatTypeViewController.m */; };
 		9CE895BC12FFFFD2008FBD45 /* AlarmLSoundViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE894AD12FFFFD2008FBD45 /* AlarmLSoundViewController.m */; };
@@ -1005,7 +1006,6 @@
 		9CE895BE12FFFFD2008FBD45 /* AlarmModifyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE894B212FFFFD2008FBD45 /* AlarmModifyViewController.m */; };
 		9CE895BF12FFFFD2008FBD45 /* AlarmNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE894B412FFFFD2008FBD45 /* AlarmNameViewController.m */; };
 		9CE895C012FFFFD2008FBD45 /* AlarmNameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CE894B512FFFFD2008FBD45 /* AlarmNameViewController.xib */; };
-		9CE895C112FFFFD2008FBD45 /* AlarmRadiusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE894B712FFFFD2008FBD45 /* AlarmRadiusViewController.m */; };
 		9CE895C212FFFFD2008FBD45 /* AlarmRadiusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CE894B812FFFFD2008FBD45 /* AlarmRadiusViewController.xib */; };
 		9CE895C312FFFFD2008FBD45 /* CustomPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE894BA12FFFFD2008FBD45 /* CustomPickerController.m */; };
 		9CE895C412FFFFD2008FBD45 /* AlarmsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE894BD12FFFFD2008FBD45 /* AlarmsListViewController.m */; };
@@ -1282,8 +1282,20 @@
 		9C3E116D14B944ED00A80FAF /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		9C3E116E14B944ED00A80FAF /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		9C3E118714B94E8100A80FAF /* IAMap@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAMap@2x.png"; sourceTree = "<group>"; };
+		9C410ECE156E5907007F3761 /* AlarmDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmDetailTableViewController.m; sourceTree = "<group>"; };
+		9C410ECF156E5907007F3761 /* AlarmDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmDetailTableViewController.h; sourceTree = "<group>"; };
+		9C410ED2156E594F007F3761 /* AlarmRadiusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmRadiusViewController.m; sourceTree = "<group>"; };
 		9C4A29E414F2AE4700949794 /* IABasicLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IABasicLocationManager.h; sourceTree = "<group>"; };
 		9C4A29E514F2AE4700949794 /* IABasicLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IABasicLocationManager.m; sourceTree = "<group>"; };
+		9C50A5E0156DC99F00A4B7CC /* BSAddressComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSAddressComponent.h; sourceTree = "<group>"; };
+		9C50A5E1156DC99F00A4B7CC /* BSAddressComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSAddressComponent.m; sourceTree = "<group>"; };
+		9C50A5E2156DC99F00A4B7CC /* BSForwardGeocoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSForwardGeocoder.h; sourceTree = "<group>"; };
+		9C50A5E3156DC99F00A4B7CC /* BSForwardGeocoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSForwardGeocoder.m; sourceTree = "<group>"; };
+		9C50A5E4156DC99F00A4B7CC /* BSGoogleV3KmlParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSGoogleV3KmlParser.h; sourceTree = "<group>"; };
+		9C50A5E5156DC99F00A4B7CC /* BSGoogleV3KmlParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSGoogleV3KmlParser.m; sourceTree = "<group>"; };
+		9C50A5E6156DC99F00A4B7CC /* BSKmlResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSKmlResult.h; sourceTree = "<group>"; };
+		9C50A5E7156DC99F00A4B7CC /* BSKmlResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSKmlResult.m; sourceTree = "<group>"; };
+		9C50A5F0156DEAE400A4B7CC /* 家里 沈阳.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = "家里 沈阳.gpx"; path = "../backup/家里 沈阳.gpx"; sourceTree = "<group>"; };
 		9C5AF2A7134F38FB00547BB0 /* Harp.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Harp.caf; sourceTree = "<group>"; };
 		9C5AF2A8134F38FB00547BB0 /* Old_Phone.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Old_Phone.caf; sourceTree = "<group>"; };
 		9C5AF2A9134F38FB00547BB0 /* Marimba.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Marimba.caf; sourceTree = "<group>"; };
@@ -1293,14 +1305,6 @@
 		9C5B1DB2154E56A1009235DB /* YCClockAlarm@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCClockAlarm@2x.png"; sourceTree = "<group>"; };
 		9C5B1DB7154E582D009235DB /* YCClockAlarm20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCClockAlarm20.png; sourceTree = "<group>"; };
 		9C5B1DB8154E582D009235DB /* YCClockAlarm20@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCClockAlarm20@2x.png"; sourceTree = "<group>"; };
-		9C66F3EE15486CA400577C4F /* BSAddressComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSAddressComponent.h; sourceTree = "<group>"; };
-		9C66F3EF15486CA400577C4F /* BSAddressComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSAddressComponent.m; sourceTree = "<group>"; };
-		9C66F3F015486CA400577C4F /* BSForwardGeocoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSForwardGeocoder.h; sourceTree = "<group>"; };
-		9C66F3F115486CA400577C4F /* BSForwardGeocoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSForwardGeocoder.m; sourceTree = "<group>"; };
-		9C66F3F215486CA400577C4F /* BSGoogleV3KmlParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSGoogleV3KmlParser.h; sourceTree = "<group>"; };
-		9C66F3F315486CA400577C4F /* BSGoogleV3KmlParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSGoogleV3KmlParser.m; sourceTree = "<group>"; };
-		9C66F3F415486CA400577C4F /* BSKmlResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSKmlResult.h; sourceTree = "<group>"; };
-		9C66F3F515486CA400577C4F /* BSKmlResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSKmlResult.m; sourceTree = "<group>"; };
 		9C6AE1DD1563E0BA00F5A9CE /* BaseDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseDao.h; sourceTree = "<group>"; };
 		9C6AE1DE1563E0BA00F5A9CE /* BaseDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseDao.m; sourceTree = "<group>"; };
 		9C6AE1DF1563E0BA00F5A9CE /* DB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DB.h; sourceTree = "<group>"; };
@@ -1797,8 +1801,6 @@
 		9CE8949C12FFFFD2008FBD45 /* YCTableInnerShadowLeft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCTableInnerShadowLeft.png; sourceTree = "<group>"; };
 		9CE8949D12FFFFD2008FBD45 /* YCTableInnerShadowRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCTableInnerShadowRight.png; sourceTree = "<group>"; };
 		9CE8949E12FFFFD2008FBD45 /* YCTableInnerShadowTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCTableInnerShadowTop.png; sourceTree = "<group>"; };
-		9CE894A512FFFFD2008FBD45 /* AlarmDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmDetailTableViewController.h; sourceTree = "<group>"; };
-		9CE894A612FFFFD2008FBD45 /* AlarmDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmDetailTableViewController.m; sourceTree = "<group>"; };
 		9CE894A712FFFFD2008FBD45 /* TableViewCellDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCellDescription.h; sourceTree = "<group>"; };
 		9CE894A812FFFFD2008FBD45 /* TableViewCellDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewCellDescription.m; sourceTree = "<group>"; };
 		9CE894AA12FFFFD2008FBD45 /* AlarmLRepeatTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmLRepeatTypeViewController.h; sourceTree = "<group>"; };
@@ -1814,7 +1816,6 @@
 		9CE894B412FFFFD2008FBD45 /* AlarmNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmNameViewController.m; sourceTree = "<group>"; };
 		9CE894B512FFFFD2008FBD45 /* AlarmNameViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AlarmNameViewController.xib; sourceTree = "<group>"; };
 		9CE894B612FFFFD2008FBD45 /* AlarmRadiusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmRadiusViewController.h; sourceTree = "<group>"; };
-		9CE894B712FFFFD2008FBD45 /* AlarmRadiusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmRadiusViewController.m; sourceTree = "<group>"; };
 		9CE894B812FFFFD2008FBD45 /* AlarmRadiusViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AlarmRadiusViewController.xib; sourceTree = "<group>"; };
 		9CE894B912FFFFD2008FBD45 /* CustomPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomPickerController.h; sourceTree = "<group>"; };
 		9CE894BA12FFFFD2008FBD45 /* CustomPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomPickerController.m; sourceTree = "<group>"; };
@@ -1988,6 +1989,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				9C50A5F0156DEAE400A4B7CC /* 家里 沈阳.gpx */,
 				9CE894A212FFFFD2008FBD45 /* Sources */,
 				9CE8941F12FFFFD2008FBD45 /* Resources */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
@@ -2153,6 +2155,21 @@
 			path = Lite;
 			sourceTree = "<group>";
 		};
+		9C50A5DF156DC99F00A4B7CC /* Forward Geocoder */ = {
+			isa = PBXGroup;
+			children = (
+				9C50A5E0156DC99F00A4B7CC /* BSAddressComponent.h */,
+				9C50A5E1156DC99F00A4B7CC /* BSAddressComponent.m */,
+				9C50A5E2156DC99F00A4B7CC /* BSForwardGeocoder.h */,
+				9C50A5E3156DC99F00A4B7CC /* BSForwardGeocoder.m */,
+				9C50A5E4156DC99F00A4B7CC /* BSGoogleV3KmlParser.h */,
+				9C50A5E5156DC99F00A4B7CC /* BSGoogleV3KmlParser.m */,
+				9C50A5E6156DC99F00A4B7CC /* BSKmlResult.h */,
+				9C50A5E7156DC99F00A4B7CC /* BSKmlResult.m */,
+			);
+			path = "Forward Geocoder";
+			sourceTree = "<group>";
+		};
 		9C5AF2A6134F38FB00547BB0 /* Ring */ = {
 			isa = PBXGroup;
 			children = (
@@ -2163,21 +2180,6 @@
 				9C5AF2AB134F38FB00547BB0 /* Xylophone.caf */,
 			);
 			path = Ring;
-			sourceTree = "<group>";
-		};
-		9C66F3ED15486CA400577C4F /* Forward Geocoder */ = {
-			isa = PBXGroup;
-			children = (
-				9C66F3EE15486CA400577C4F /* BSAddressComponent.h */,
-				9C66F3EF15486CA400577C4F /* BSAddressComponent.m */,
-				9C66F3F015486CA400577C4F /* BSForwardGeocoder.h */,
-				9C66F3F115486CA400577C4F /* BSForwardGeocoder.m */,
-				9C66F3F215486CA400577C4F /* BSGoogleV3KmlParser.h */,
-				9C66F3F315486CA400577C4F /* BSGoogleV3KmlParser.m */,
-				9C66F3F415486CA400577C4F /* BSKmlResult.h */,
-				9C66F3F515486CA400577C4F /* BSKmlResult.m */,
-			);
-			path = "Forward Geocoder";
 			sourceTree = "<group>";
 		};
 		9C6AE1DC1563E0BA00F5A9CE /* ChinaOffset */ = {
@@ -2648,6 +2650,7 @@
 		9C7487011562989500486793 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				9C50A5DF156DC99F00A4B7CC /* Forward Geocoder */,
 				9C7487021562989500486793 /* FMDB */,
 				9C74870E1562989500486793 /* skpsmtpmessage */,
 			);
@@ -3423,7 +3426,6 @@
 		9CE894A212FFFFD2008FBD45 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				9C66F3ED15486CA400577C4F /* Forward Geocoder */,
 				9CA484191519AD6900B9C8D6 /* newShareApp */,
 				9C23012A150DB15D005E5E08 /* newAbout */,
 				9CE2D261138376FB006FD30C /* Global */,
@@ -3455,9 +3457,9 @@
 		9CE894A412FFFFD2008FBD45 /* AlarmDetail */ = {
 			isa = PBXGroup;
 			children = (
+				9C410ECF156E5907007F3761 /* AlarmDetailTableViewController.h */,
+				9C410ECE156E5907007F3761 /* AlarmDetailTableViewController.m */,
 				9CE145361411FFF3003A1D96 /* TableCell */,
-				9CE894A512FFFFD2008FBD45 /* AlarmDetailTableViewController.h */,
-				9CE894A612FFFFD2008FBD45 /* AlarmDetailTableViewController.m */,
 				9CE894A712FFFFD2008FBD45 /* TableViewCellDescription.h */,
 				9CE894A812FFFFD2008FBD45 /* TableViewCellDescription.m */,
 				9C022D50136697C9007C1555 /* AlarmDetailFooterView.xib */,
@@ -3484,7 +3486,7 @@
 				9CE894B412FFFFD2008FBD45 /* AlarmNameViewController.m */,
 				9CE894B512FFFFD2008FBD45 /* AlarmNameViewController.xib */,
 				9CE894B612FFFFD2008FBD45 /* AlarmRadiusViewController.h */,
-				9CE894B712FFFFD2008FBD45 /* AlarmRadiusViewController.m */,
+				9C410ED2156E594F007F3761 /* AlarmRadiusViewController.m */,
 				9CE894B812FFFFD2008FBD45 /* AlarmRadiusViewController.xib */,
 				9CE894B912FFFFD2008FBD45 /* CustomPickerController.h */,
 				9CE894BA12FFFFD2008FBD45 /* CustomPickerController.m */,
@@ -4555,14 +4557,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9CE895B912FFFFD2008FBD45 /* AlarmDetailTableViewController.m in Sources */,
 				9CE895BA12FFFFD2008FBD45 /* TableViewCellDescription.m in Sources */,
 				9CE895BB12FFFFD2008FBD45 /* AlarmLRepeatTypeViewController.m in Sources */,
 				9CE895BC12FFFFD2008FBD45 /* AlarmLSoundViewController.m in Sources */,
 				9CE895BD12FFFFD2008FBD45 /* AlarmModifyTableViewController.m in Sources */,
 				9CE895BE12FFFFD2008FBD45 /* AlarmModifyViewController.m in Sources */,
 				9CE895BF12FFFFD2008FBD45 /* AlarmNameViewController.m in Sources */,
-				9CE895C112FFFFD2008FBD45 /* AlarmRadiusViewController.m in Sources */,
 				9CE895C312FFFFD2008FBD45 /* CustomPickerController.m in Sources */,
 				9CE895C412FFFFD2008FBD45 /* AlarmsListViewController.m in Sources */,
 				9CE895C612FFFFD2008FBD45 /* AlarmsListCell.m in Sources */,
@@ -4675,10 +4675,6 @@
 				9C1446B7153C79090071EFF2 /* OAServiceTicket.m in Sources */,
 				9C1446BB153C79090071EFF2 /* OAToken.m in Sources */,
 				9C1446BD153C79090071EFF2 /* OATokenManager.m in Sources */,
-				9C66F3F615486CA400577C4F /* BSAddressComponent.m in Sources */,
-				9C66F3F815486CA400577C4F /* BSForwardGeocoder.m in Sources */,
-				9C66F3FA15486CA400577C4F /* BSGoogleV3KmlParser.m in Sources */,
-				9C66F3FC15486CA400577C4F /* BSKmlResult.m in Sources */,
 				9C7485B81562981F00486793 /* YCAlertTableView.m in Sources */,
 				9C7485BA1562981F00486793 /* YCShadowTableView.m in Sources */,
 				9C7485C21562981F00486793 /* YCMapPointAnnotation.m in Sources */,
@@ -4739,6 +4735,12 @@
 				9CF166A215693B4000281A33 /* IAPinAnnotationView.m in Sources */,
 				9CF166E615693B4000281A33 /* YCMapPointAnnotation+AlarmUI.m in Sources */,
 				9C6B1098156BE21600AB5BD4 /* UIAlertView+YC.m in Sources */,
+				9C50A5E8156DC99F00A4B7CC /* BSAddressComponent.m in Sources */,
+				9C50A5EA156DC99F00A4B7CC /* BSForwardGeocoder.m in Sources */,
+				9C50A5EC156DC99F00A4B7CC /* BSGoogleV3KmlParser.m in Sources */,
+				9C50A5EE156DC99F00A4B7CC /* BSKmlResult.m in Sources */,
+				9C410ED0156E5907007F3761 /* AlarmDetailTableViewController.m in Sources */,
+				9C410ED3156E594F007F3761 /* AlarmRadiusViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4746,14 +4748,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C8AB27113B0C92100120AD5 /* AlarmDetailTableViewController.m in Sources */,
 				9C8AB27213B0C92100120AD5 /* TableViewCellDescription.m in Sources */,
 				9C8AB27313B0C92100120AD5 /* AlarmLRepeatTypeViewController.m in Sources */,
 				9C8AB27413B0C92100120AD5 /* AlarmLSoundViewController.m in Sources */,
 				9C8AB27513B0C92100120AD5 /* AlarmModifyTableViewController.m in Sources */,
 				9C8AB27613B0C92100120AD5 /* AlarmModifyViewController.m in Sources */,
 				9C8AB27713B0C92100120AD5 /* AlarmNameViewController.m in Sources */,
-				9C8AB27813B0C92100120AD5 /* AlarmRadiusViewController.m in Sources */,
 				9C8AB27913B0C92100120AD5 /* CustomPickerController.m in Sources */,
 				9C8AB27A13B0C92100120AD5 /* AlarmsListViewController.m in Sources */,
 				9C8AB27B13B0C92100120AD5 /* AlarmsListCell.m in Sources */,
@@ -4866,10 +4866,6 @@
 				9C1446B8153C79090071EFF2 /* OAServiceTicket.m in Sources */,
 				9C1446BC153C79090071EFF2 /* OAToken.m in Sources */,
 				9C1446BE153C79090071EFF2 /* OATokenManager.m in Sources */,
-				9C66F3F715486CA400577C4F /* BSAddressComponent.m in Sources */,
-				9C66F3F915486CA400577C4F /* BSForwardGeocoder.m in Sources */,
-				9C66F3FB15486CA400577C4F /* BSGoogleV3KmlParser.m in Sources */,
-				9C66F3FD15486CA400577C4F /* BSKmlResult.m in Sources */,
 				9C7485B91562981F00486793 /* YCAlertTableView.m in Sources */,
 				9C7485BB1562981F00486793 /* YCShadowTableView.m in Sources */,
 				9C7485C31562981F00486793 /* YCMapPointAnnotation.m in Sources */,
@@ -4930,6 +4926,12 @@
 				9CF166A315693B4000281A33 /* IAPinAnnotationView.m in Sources */,
 				9CF166E715693B4000281A33 /* YCMapPointAnnotation+AlarmUI.m in Sources */,
 				9C6B1099156BE21600AB5BD4 /* UIAlertView+YC.m in Sources */,
+				9C50A5E9156DC99F00A4B7CC /* BSAddressComponent.m in Sources */,
+				9C50A5EB156DC99F00A4B7CC /* BSForwardGeocoder.m in Sources */,
+				9C50A5ED156DC99F00A4B7CC /* BSGoogleV3KmlParser.m in Sources */,
+				9C50A5EF156DC99F00A4B7CC /* BSKmlResult.m in Sources */,
+				9C410ED1156E5907007F3761 /* AlarmDetailTableViewController.m in Sources */,
+				9C410ED4156E594F007F3761 /* AlarmRadiusViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5004,7 +5006,9 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "97ADCFC9-B6C7-41CB-842B-F524A4DEA95C";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SDKROOT = iphoneos;
 			};
 			name = "Release FullVersion";
@@ -5066,7 +5070,9 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B0DACFB0-D312-4CA0-9EAC-D403715801CE";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SDKROOT = iphoneos;
 			};
 			name = "Distribution FullVersion";
@@ -5183,7 +5189,9 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "86C6133B-FF49-4369-A8BE-57703AEB5EA3";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SDKROOT = iphoneos;
 			};
 			name = Distribution;
@@ -5225,7 +5233,9 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "97ADCFC9-B6C7-41CB-842B-F524A4DEA95C";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SDKROOT = iphoneos;
 			};
 			name = "Debug FullVersion";
@@ -5287,7 +5297,9 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "24408D1E-F2CB-40B3-A02C-B496AD54BA5A";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SDKROOT = iphoneos;
 			};
 			name = Release;
@@ -5347,7 +5359,9 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "24408D1E-F2CB-40B3-A02C-B496AD54BA5A";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;

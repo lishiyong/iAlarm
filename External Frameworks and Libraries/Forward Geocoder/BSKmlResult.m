@@ -14,6 +14,7 @@
  
  **/
 
+#import "YCFunctions.h"
 #import "BSKmlResult.h"
 
 
@@ -95,6 +96,14 @@
 	}
 	
 	return [matchingComponents autorelease];
+}
+
+- (NSString *)description{
+    return [NSString stringWithFormat:@"%@ %@",NSStringFromCLLocationCoordinate2D(self.coordinate),self.address];
+}
+
+- (NSString *)debugDescription{
+    return [self description];
 }
 
 @end

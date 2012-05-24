@@ -23,4 +23,9 @@
 	[_types release];
 	[super dealloc];
 }
+
+- (NSString *)description{
+    return [NSString stringWithFormat:@"longName = %@ shortName = %@ types = ",_longName,_shortName,_types];
+}
+
 @end
