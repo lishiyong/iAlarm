@@ -8,6 +8,25 @@
 
 #import "YCFunctions.h"
 
+//转换经纬度
+NSString *convert(CLLocationDegrees value, NSUInteger accuracy,NSString *formateString);
+NSString *convert(CLLocationDegrees value, NSUInteger accuracy,NSString *formateString){
+    double lTemp =  fabs(value);
+	
+	NSInteger a= (NSInteger)lTemp;
+	double af = lTemp - a;
+	
+	NSInteger b= (NSInteger)(af*60);
+	double bf = af * 60 -b;
+	
+	NSInteger c= (NSInteger)(bf*60);
+	NSInteger cf = (NSInteger)((bf*60 - c) * pow(10,accuracy)) ;
+	
+    NSString *s = [NSString stringWithFormat:formateString,a,b,c,cf];
+	return s;
+}
+
+
 NSString* YCSerialCode(){
 	NSUInteger x = arc4random()/100;
 	NSString *s = [NSString stringWithFormat:@"%d", time(NULL)];
@@ -18,6 +37,26 @@ NSString* YCSerialCode(){
 
 NSString* NSStringFromCLLocationCoordinate2D(CLLocationCoordinate2D coord){
     return [NSString stringWithFormat:@"latitude = %.6f, longitude = %.6f",coord.latitude,coord.longitude];
+}
+
+NSString* NSLocalizedStringFromCLLocationCoordinate2D(CLLocationCoordinate2D coord, NSString *northLatitude, NSString *southLatitude, NSString *easeLongitude, NSString *westLongitude){
+    
+    NSString *latFString = nil;
+	if (coord.latitude>0)
+        latFString = northLatitude; //北纬
+	else 
+        latFString = southLatitude; //南纬
+    
+    NSString *lonFString = nil;
+    if (coord.longitude>0)
+        lonFString = easeLongitude; //东经
+	else 
+		lonFString = westLongitude; //西经
+    
+    
+	NSString *latstr = convert(coord.latitude, 0, latFString);
+	NSString *lonstr = convert(coord.latitude, 0, lonFString);
+    return [NSString stringWithFormat:@"%@,%@",latstr,lonstr];
 }
 
 BOOL YCCGPointEqualPoint(CGPoint src1,CGPoint src2){

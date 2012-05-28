@@ -23,7 +23,7 @@ typedef enum {
 @class CellHeaderView;
 @class YClocationServicesUsableAlert;
 @interface AlarmDetailTableViewController : UITableViewController
-<CLLocationManagerDelegate,MKReverseGeocoderDelegate,AVAudioPlayerDelegate,UIAlertViewDelegate>
+<CLLocationManagerDelegate,AVAudioPlayerDelegate,UIAlertViewDelegate>
 {
 	YClocationServicesUsableAlert *locationServicesUsableAlert;  //测定位服务用
 	
@@ -49,10 +49,7 @@ typedef enum {
 	
 
 	CLLocationManager *locationManager;
-	MKReverseGeocoder *reverseGeocoder;
 	CLLocation *bestEffortAtLocation;
-	MKPlacemark *placemarkForReverse;
-	CLLocationCoordinate2D coordinateForReverse;                  //
 	
 	IALocatingAndReversingStatus locatingAndReversingStatus;    
 	
@@ -92,7 +89,6 @@ typedef enum {
 
 @property (nonatomic,retain,readonly) CLLocationManager *locationManager;
 @property (nonatomic,retain) CLLocation *bestEffortAtLocation;
-@property (nonatomic,retain) MKPlacemark *placemarkForReverse;
 
 @property (nonatomic,retain) NSString  *titleForFooter;
 @property (nonatomic,retain) AlarmDetailFooterView *footerView;
@@ -107,8 +103,6 @@ typedef enum {
 -(IBAction)cancelButtonItemPressed:(id)sender;
 -(IBAction)saveButtonItemPressed:(id)sender;
 
--(void)beginReverse;
--(void)endReverse;
 -(void)beginLocation;
 -(void)endLocation;
 

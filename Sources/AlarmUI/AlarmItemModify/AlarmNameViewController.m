@@ -30,6 +30,7 @@
 		}
 		
 	}else {
+        /*
         if (!isNameTextFieldNullWhenAppear){ //手工删空了
             self.alarm.nameChanged = NO;
             if (!self.alarm.usedCoordinateAddress && self.alarm.reserve1 && [self.alarm.reserve1 length] > 0) { //能用addressTitle就用
@@ -40,6 +41,10 @@
         }else{
             //原来就是空
         }
+        */
+        
+        self.alarm.alarmName = nil;
+        self.alarm.nameChanged = NO;
 		
 	} 
 	

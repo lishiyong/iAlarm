@@ -317,6 +317,7 @@ void MyDrawWithShadows (CGContextRef myContext, // 1
 	
 	return [UIUtility convertgen:latitude decimal:decimal formateString:formateString];
 }
+
 +(NSString*)convertLongitude:(double)longitude decimal:(NSUInteger)decimal
 {
 	
@@ -333,7 +334,7 @@ void MyDrawWithShadows (CGContextRef myContext, // 1
 		else 
 			formateString = kCoordinateFrmStringWestLongitude; //西经
 	}
-	
+	  
 	return [UIUtility convertgen:longitude decimal:decimal formateString:formateString];
 }
 

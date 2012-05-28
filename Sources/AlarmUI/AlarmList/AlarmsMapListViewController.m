@@ -6,6 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCLib.h"
 #import "UIAlertView+YC.h"
 #import "UIColor+YC.h"
 #import "YCFunctions.h"
@@ -45,6 +46,7 @@
 @interface AlarmsMapListViewController (private) 
 
 - (void)setPinsEditing:(BOOL)theEditing;
+-(void)reverseGeocodeWithAnnotation:(IAAnnotation*)annotation;
 @property (nonatomic,retain,readonly) NSArray *alarms;
 
 @end
@@ -55,26 +57,7 @@
 
 @synthesize mapView, maskView, maskLabel, maskActivityIndicator;
 @synthesize mapPointAnnotations;
-@synthesize placemarkForUserLocation, placemarkForPin;
 @synthesize toolbarFloatingView, mapsTypeButton, satelliteTypeButton, hybridTypeButton;
-
-- (MKReverseGeocoder *)reverseGeocoder:(CLLocationCoordinate2D)coordinate
-{
-    if (reverseGeocoderForUserLocation) {
-		[reverseGeocoderForUserLocation release];
-	}
-	reverseGeocoderForUserLocation = [[MKReverseGeocoder alloc] initWithCoordinate:coordinate];
-	reverseGeocoderForUserLocation.delegate = self;
-	
-	return reverseGeocoderForUserLocation;
-}
-
-- (id)reverseGeocodersForPin{
-	if (reverseGeocodersForPin == nil) {
-		reverseGeocodersForPin = [[NSMutableDictionary dictionary] retain];
-	}
-	return reverseGeocodersForPin;
-}
 
 - (id)alarms{
 	return [IAAlarm alarmArray];
@@ -817,32 +800,6 @@
 
 }
 
-/*
-- (void)observeValueForKeyPath:(NSString *)keyPath
-                      ofObject:(id)object
-                        change:(NSDictionary *)change
-                       context:(void *)context
-{
-	//还没加载
-	if (![self isViewLoaded]) return;
-	
-	if (object == self.maskView && [keyPath isEqualToString:@"hidden"])
-	{		
-		BOOL isHidden = [(NSNumber*)[change valueForKey:NSKeyValueChangeNewKey] boolValue];
-		
-		//发覆盖通知
-		NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-		NSNotification *aNotification = [NSNotification notificationWithName:IAAlarmMapsMaskingDidChangeNotification 
-																	  object:self
-																	userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:!isHidden] forKey:IAAlarmMapsMaskingKey]];
-		[notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
-		
-	}
-	
-	
-}
- */
-
 - (void)registerNotifications {
 	
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -907,7 +864,6 @@
 							   name: IAMapTypeButtonPressedNotification
 							 object: nil];
 	
-	//[self.maskView addObserver:self forKeyPath:@"hidden" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)unRegisterNotifications{
@@ -924,8 +880,6 @@
 	[notificationCenter removeObserver:self	name: IACurrentLocationButtonPressedNotification object: nil];
 	[notificationCenter removeObserver:self	name: IAFocusButtonPressedNotification object: nil];
 	[notificationCenter removeObserver:self	name: IAMapTypeButtonPressedNotification object: nil];
-
-	//[self.maskView removeObserver:self forKeyPath:@"hidden"];
 
 }
 
@@ -1508,199 +1462,49 @@
             
 }
 
-
-#pragma mark -
-#pragma mark Utility - ReverseGeocoder
-
-#define kTimeOutForReverseUserLocation 30.0
-
--(void)beginReverseWithCoordinate:(CLLocationCoordinate2D)coordinate
-{
-	//初始化，reverseGeocoder对象必须根据特定坐标init。
-	reverseGeocoderForUserLocation = [self reverseGeocoder:coordinate];
-	reverseGeocoderForUserLocation.delegate = self;
-	
-	//反转坐标
-	self.placemarkForUserLocation = nil; //先赋空相关数据
-	[reverseGeocoderForUserLocation start];
-	[self performSelector:@selector(endReverse) withObject:nil afterDelay:kTimeOutForReverseUserLocation];
-}
-
-//beginReverseWithCoordinate:的对象版本，供延时调用
-- (void)beginReverseWithObj:(id/*CLLocationCoordinate2D*/)obj
-{   
-	CLLocationCoordinate2D target;
-	[obj getValue:&target];
-	
-	[self beginReverseWithCoordinate:target];
-}
-
--(void)endReverse
-{
-	
-	//如果超时了，反转还没结束，结束它
-	[reverseGeocoderForUserLocation cancel];
-	//取消掉另一个调用
-	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(endReverse) object:nil];
-	
-	NSString *subtitle = nil;
-	if (self.placemarkForUserLocation != nil) {
-		
-		subtitle = YCGetAddressString(self.placemarkForUserLocation);
-		MKUserLocation *userLocationAnnotation = self.mapView.userLocation;     //当前地址
-        if (![userLocationAnnotation.title isEqualToString:subtitle]) 
-            userLocationAnnotation.subtitle = subtitle;
-        
-        //NSLog(@"self.placemarkForUserLocation = %@",self.placemarkForUserLocation);
-        		
-	}
-	
-}
+#pragma mark - Utility
 
 #define kTimeOutForReverse 5.0
-
--(void)beginReverseWithAnnotation:(IAAnnotation*)annotation
+-(void)reverseGeocodeWithAnnotation:(IAAnnotation*)annotation
 {	
-	//如果原来的还在查询，就先结束它
-	MKReverseGeocoder *oldReverseGeocoderForPin = [self.reverseGeocodersForPin objectForKey:[(IAAnnotation*)annotation identifier]];
-	if (oldReverseGeocoderForPin && oldReverseGeocoderForPin.querying) {
-		[oldReverseGeocoderForPin cancel];
-		[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(endReverseWithAnnotation:) object:annotation];
-	}
-	
-	//初始化，reverseGeocoder对象必须根据特定坐标init。
-	MKReverseGeocoder *aReverseGeocoderForPin = [[[MKReverseGeocoder alloc] initWithCoordinate:annotation.coordinate] autorelease];
-	aReverseGeocoderForPin.delegate = self;
-	[self.reverseGeocodersForPin setObject:aReverseGeocoderForPin forKey:[(IAAnnotation*)annotation identifier]];//应该不需要释放老的，自动了
-
-	//反转坐标
-	self.placemarkForPin = nil; //先赋空相关数据
-	[aReverseGeocoderForPin start];
-	[self performSelector:@selector(endReverseWithAnnotation:) withObject:annotation afterDelay:kTimeOutForReverse];
-}
-
-
--(void)endReverseWithAnnotation:(IAAnnotation*)annotation
-{
-	MKReverseGeocoder *aReverseGeocoderForPin = [self.reverseGeocodersForPin objectForKey:[(IAAnnotation*)annotation identifier]];
-	//如果超时了，反转还没结束，结束它
-	if ([aReverseGeocoderForPin respondsToSelector:@selector(cancel)])
-		[aReverseGeocoderForPin cancel];
-	//取消掉另一个调用，如果有
-	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(endReverseWithAnnotation:) object:annotation];
-	
-	IAAlarm *alarm = [IAAlarm findForAlarmId:[(IAAnnotation*)annotation identifier]];
-	
+    YCGeocoder *geocoder = [[[YCGeocoder alloc] initWithTimeout:kTimeOutForReverse] autorelease];
     CLLocationCoordinate2D visualCoordinate = annotation.coordinate;
+    CLLocation *location = [[[CLLocation alloc] initWithLatitude:visualCoordinate.latitude longitude:visualCoordinate.longitude] autorelease];
     
-	MKPlacemark *placemark = self.placemarkForPin;
-	NSString *addressTitle = nil;
-	NSString *addressShort = nil;
-	NSString *address = nil;
-	
-	alarm.usedCoordinateAddress = NO;  
-	if (placemark != nil) {
-		address = YCGetAddressString(placemark);
-		
-		addressShort = YCGetAddressShortString(placemark);
-		addressShort = (addressShort != nil) ? addressShort : address;
-		
-		addressTitle = YCGetAddressTitleString(placemark);
-		addressTitle = (addressTitle != nil) ? addressTitle : addressShort;
-		
-		
-	}else {
-		//反转坐标 失败，使用坐标作为地址
-		addressTitle = KDefaultAlarmName;
-		address = [UIUtility convertCoordinate:visualCoordinate];
-		addressShort = address;
-		alarm.usedCoordinateAddress = YES;
-	}
-	
-	//最后的判空
-	addressTitle = (addressTitle != nil) ? addressTitle:KDefaultAlarmName;
-	if (addressShort == nil) {
-		alarm.usedCoordinateAddress = YES;
-		addressShort = (addressShort != nil) ? addressShort : [UIUtility convertCoordinate:visualCoordinate];
-	}
-	address = (address != nil) ? address : [UIUtility convertCoordinate:visualCoordinate];
-	
-	
-	
-	if (!alarm.nameChanged) {
-		[(IAAnnotation*)annotation setTitle:addressTitle];
-		alarm.alarmName = addressTitle;
-	}
-    alarm.visualCoordinate = visualCoordinate;
-	alarm.position = address;
-	alarm.positionShort = addressShort;
-    alarm.reserve1 = addressTitle;  //做为addressTitle
-	alarm.locationAccuracy = kCLLocationAccuracyBest;
-    
-	
-	[alarm saveFromSender:self];
-	
-}
-
-
-#pragma mark -
-#pragma mark MKReverseGeocoderDelegate
-
-- (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFindPlacemark:(MKPlacemark *)placemark
-{
-	
-
-	if (reverseGeocoderForUserLocation == geocoder) {//当前位置使用的反转
-		
-		self.placemarkForUserLocation = placemark;
-		[self performSelector:@selector(endReverse) withObject:nil afterDelay:0.0];  //数据更新后，等待x秒
-		
-	}else{
-		//通过reverseGeocoder找到Annotation
-		self.placemarkForPin = placemark;
-		NSArray *array = [self.reverseGeocodersForPin allKeysForObject:geocoder];
-		if (array.count >0) {
-            NSString *alarmId = [array objectAtIndex:0];
-            IAPinAnnotationView *anPinAnnotationView = (IAPinAnnotationView*)[mapPointAnnotationViews objectForKey:alarmId];
-            if (anPinAnnotationView) {
-                [self endReverseWithAnnotation:(IAAnnotation*)[anPinAnnotationView annotation]];
+    [geocoder reverseGeocodeLocation:location completionHandler:^(YCPlacemark *placemark, NSError *error) {
+        IAAlarm *alarm = [IAAlarm findForAlarmId:[(IAAnnotation*)annotation identifier]];
+        if (!error){
+           
+            if (!alarm.nameChanged) {
+                annotation.title = placemark.titleAddress;
             }
+            alarm.position = placemark.longAddress;
+            alarm.positionShort = placemark.shortAddress;
+            alarm.positionTitle = placemark.titleAddress;  
+            alarm.placemark = placemark;
+            alarm.usedCoordinateAddress = NO;
+            
+        }else{
+            
+            if (!alarm.nameChanged) {
+                annotation.title = KDefaultAlarmName;
+                alarm.alarmName = nil;//把以前版本生成的名称冲掉
+            }
+            NSString *coordinateString = NSLocalizedStringFromCLLocationCoordinate2D(visualCoordinate,kCoordinateFrmStringNorthLatitude,kCoordinateFrmStringSouthLatitude,kCoordinateFrmStringEastLongitude,kCoordinateFrmStringWestLongitude);
+            alarm.position = coordinateString;
+            alarm.positionShort = coordinateString;
+            alarm.positionTitle = KDefaultAlarmName;
+            alarm.placemark = nil;
+            alarm.usedCoordinateAddress = YES; //反转失败，用坐标做地址
             
         }
-		
-	}
-
-}
-
-- (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFailWithError:(NSError *)error
-{
-	
-	//无网络连接时候，收到失败数据，就结束反转
-	BOOL connectedToInternet = [[YCSystemStatus deviceStatusSingleInstance] connectedToInternet];
-	if (!connectedToInternet) {
-
-		if (reverseGeocoderForUserLocation == geocoder) {//当前位置使用的反转
-			
-			self.placemarkForUserLocation = nil;
-			[self performSelector:@selector(endReverse) withObject:nil afterDelay:0.0];  //等待x秒，结束
-			
-		}else {
-			//通过reverseGeocoder找到Annotation
-			self.placemarkForPin = nil;
-			NSArray *array = [self.reverseGeocodersForPin allKeysForObject:geocoder];
-            if (array.count >0) {
-                NSString *alarmId = [array objectAtIndex:0];
-                IAPinAnnotationView *anPinAnnotationView = (IAPinAnnotationView*)[mapPointAnnotationViews objectForKey:alarmId];
-                if (anPinAnnotationView) {
-                    [self endReverseWithAnnotation:(IAAnnotation*)[anPinAnnotationView annotation]];
-                }
+        
+        alarm.visualCoordinate = visualCoordinate;
+        alarm.locationAccuracy = kCLLocationAccuracyBest;
+        [alarm saveFromSender:self];
                 
-            }
-			
-		}
-	}
-	
-	
+    }];
+    
 }
 
 #pragma mark - MKMapViewDelegate
@@ -1729,6 +1533,7 @@
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)annotationView
 {	
+    
 	if ([annotationView.annotation isKindOfClass:[MKUserLocation class]])
 		return;
 	
@@ -1738,6 +1543,7 @@
         MKCircle *overlay = [self.circleOverlays objectForKey:annotation.identifier];
         [self.mapView addOverlay:overlay];
 	}
+     
 }
 
 - (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)annotationView{
@@ -1751,22 +1557,37 @@
         MKCircle *overlay = [self.circleOverlays objectForKey:annotation.identifier];
         [self.mapView removeOverlay:overlay];
 	}    
+     
 }
+ 
+
+#define kTimeOutForReverseUserLocation 30.0
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
     if (userLocation.location == nil) //ios5.0 没有取得用户位置的时候也回调这个方法
         return;
     
-    userLocation.subtitle = nil; //位置已经更新，地址需要用新的
+    YCGeocoder *geocoder = [[[YCGeocoder alloc] initWithTimeout:kTimeOutForReverse] autorelease];
+    CLLocationCoordinate2D visualCoordinate = userLocation.location.coordinate;
+    CLLocation *location = [[[CLLocation alloc] initWithLatitude:visualCoordinate.latitude longitude:visualCoordinate.longitude] autorelease];
     
-    CLLocationCoordinate2D coordinate = userLocation.location.coordinate;
-    NSValue *coordinateObj = [NSValue valueWithBytes:&coordinate objCType:@encode(CLLocationCoordinate2D)];
-    [self performSelector:@selector(beginReverseWithObj:) withObject:coordinateObj afterDelay:0.0]; //反转坐标－地址。延时调用
-		
-	//设置“回到当前位置按钮”的可用状态。
+    [geocoder reverseGeocodeLocation:location completionHandler:^(YCPlacemark *placemark, NSError *error) {
+        if (!error){
+            
+            NSString *subtitle = placemark.shortAddress;
+            if (![userLocation.subtitle isEqualToString:subtitle]) 
+                userLocation.subtitle = placemark.longAddress;
+            
+        }else{
+            userLocation.subtitle = nil;
+        }
+        
+    }];
+    
+    //设置“回到当前位置按钮”的可用状态。
 	BOOL isEnabled = NO;
-    isEnabled =  ![self.mapView isViewCenterForCoordinate:coordinate allowableOffset:3]; 
+    isEnabled =  ![self.mapView isViewCenterForCoordinate:visualCoordinate allowableOffset:3]; 
 	
 	NSDictionary *currentLocationDic = [NSDictionary dictionaryWithObjectsAndKeys:
 										[NSNumber numberWithInteger:1],IAControlIdKey
@@ -1775,6 +1596,7 @@
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	NSNotification *currentLocationNotification = [NSNotification notificationWithName:IAControlStatusShouldChangeNotification object:self userInfo:currentLocationDic];
 	[notificationCenter performSelector:@selector(postNotification:) withObject:currentLocationNotification afterDelay:0.0];
+
     
 }
 
@@ -1960,7 +1782,7 @@
                 [alarm saveFromSender:self];
                 
 				//反转坐标－地址
-				[self performSelector:@selector(beginReverseWithAnnotation:) withObject:annotation afterDelay:0.0];
+				[self performSelector:@selector(reverseGeocodeWithAnnotation:) withObject:annotation afterDelay:0.0];
 				
 			}
 			//////////////////////////////////////////
@@ -2045,11 +1867,6 @@
     [mapPointAnnotations release];                         
 	[mapPointAnnotationViews release];  
 	[circleOverlays release];
-    
-    [reverseGeocoderForUserLocation release];
-	[placemarkForUserLocation release];
-	[reverseGeocodersForPin release];
-	[placemarkForPin release];
 
 	[toolbarFloatingView release];
 	[mapsTypeButton release];

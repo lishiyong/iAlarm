@@ -13,6 +13,7 @@
 NSString* YCSerialCode();
 
 NSString* NSStringFromCLLocationCoordinate2D(CLLocationCoordinate2D coord);
+NSString* NSLocalizedStringFromCLLocationCoordinate2D(CLLocationCoordinate2D coord, NSString *northLatitude, NSString *southLatitude, NSString *easeLongitude, NSString *westLongitude);
 
 //比较2个 CGPoint；
 BOOL YCCGPointEqualPoint(CGPoint src1,CGPoint src2);

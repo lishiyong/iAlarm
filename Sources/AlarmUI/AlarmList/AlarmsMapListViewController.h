@@ -21,7 +21,7 @@
 @class YCAnimateRemoveFileView;
 @class IAAlarm;
 @interface AlarmsMapListViewController : UIViewController
-<MKMapViewDelegate,MKReverseGeocoderDelegate,CLLocationManagerDelegate,UIGestureRecognizerDelegate,IAAnnotationViewDelegete>{
+<MKMapViewDelegate,CLLocationManagerDelegate,UIGestureRecognizerDelegate,IAAnnotationViewDelegete>{
 	
 
     /////////////////////////////////////
@@ -35,12 +35,6 @@
 	NSMutableArray *mapPointAnnotations;                         //地图标签集合
 	NSMutableDictionary *mapPointAnnotationViews;                //地图标签集合
 	NSMutableDictionary *circleOverlays;                         //警示圈集合
-	/////////////////////////////////////
-	//地址反转
-	MKReverseGeocoder *reverseGeocoderForUserLocation;
-	NSMutableDictionary *reverseGeocodersForPin;
-	MKPlacemark *placemarkForUserLocation;
-	MKPlacemark *placemarkForPin;
 	/////////////////////////////////////
     //浮动工具条
 	YCCalloutBar *toolbarFloatingView;                      
@@ -78,10 +72,6 @@
 @property (nonatomic,retain,readonly) NSMutableArray *mapPointAnnotations;
 @property (nonatomic,retain,readonly) NSMutableDictionary *mapPointAnnotationViews;
 @property (nonatomic,retain,readonly) NSMutableDictionary *circleOverlays;
-
-@property (nonatomic,retain)            MKPlacemark *placemarkForUserLocation;
-@property (nonatomic,retain)            MKPlacemark *placemarkForPin;
-@property (nonatomic,retain,readonly) NSMutableDictionary *reverseGeocodersForPin;
 
 @property (nonatomic,retain)            IBOutlet YCCalloutBar *toolbarFloatingView;
 @property (nonatomic,retain)            IBOutlet UIButton *mapsTypeButton;                

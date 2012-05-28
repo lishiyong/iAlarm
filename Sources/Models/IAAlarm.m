@@ -36,6 +36,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 
 @synthesize position;
 @synthesize positionShort;
+@synthesize positionTitle;
 @synthesize usedCoordinateAddress;
 @synthesize realCoordinate;
 @synthesize visualCoordinate;
@@ -50,7 +51,6 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 @synthesize alarmRadiusTypeId;
 @synthesize radius;
 
-
 @synthesize sortId;
 @synthesize vibrate;
 @synthesize ring;
@@ -62,6 +62,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 @synthesize reserve2;
 @synthesize reserve3;
 
+@synthesize placemark;
 
 - (id)init
 {
@@ -69,11 +70,12 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	if (self) 
 	{
 		alarmId = [YCSerialCode() copy];
-		alarmName = [KDefaultAlarmName copy];
+		alarmName = nil;
 		nameChanged = NO;
 		
 		position = nil;
 		positionShort = nil;
+        positionTitle = [KDefaultAlarmName copy];
 		usedCoordinateAddress = YES;
 		realCoordinate = kCLLocationCoordinate2DInvalid;
         visualCoordinate = kCLLocationCoordinate2DInvalid;
@@ -99,6 +101,8 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 		reserve1 = nil;
 		reserve2 = nil;
 		reserve3 = nil;
+        
+        placemark = nil;
 	}
 	return self;
 }
@@ -116,6 +120,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	
 	[encoder encodeObject:position forKey:kposition];
 	[encoder encodeObject:positionShort forKey:kpositionShort];
+    [encoder encodeObject:positionTitle forKey:kpositionTitle];
 	[encoder encodeBool:usedCoordinateAddress forKey:kusedCoordinateAddress];
 	[encoder encodeCLLocationCoordinate2D:self.realCoordinate forKey:kcoordinate];
     [encoder encodeCLLocationCoordinate2D:self.visualCoordinate forKey:kvisualCoordinate];
@@ -137,6 +142,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	[encoder encodeObject:reserve2 forKey:kreserve2];
 	[encoder encodeObject:reserve3 forKey:kreserve3];
 	
+    [encoder encodeObject:placemark forKey:kplacemark];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
@@ -150,6 +156,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 
 		position = [[decoder decodeObjectForKey:kposition] retain];
 		positionShort = [[decoder decodeObjectForKey:kpositionShort] retain];
+        positionTitle = [[decoder decodeObjectForKey:kpositionTitle] retain];
 		usedCoordinateAddress = [decoder decodeBoolForKey:kusedCoordinateAddress];
 		realCoordinate = [decoder decodeCLLocationCoordinate2DForKey:kcoordinate];
         visualCoordinate = [decoder decodeCLLocationCoordinate2DForKey:kvisualCoordinate];
@@ -177,7 +184,10 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 		reserve2 = [[decoder decodeObjectForKey:kreserve2] retain];
 		reserve3 = [[decoder decodeObjectForKey:kreserve3] retain];
         
+        placemark = [[decoder decodeObjectForKey:kplacemark] retain];
         
+        //////////////////////////
+        //为了兼容以前版本的数据
         if (YCCompareDouble(realCoordinate.latitude, 0.0) == NSOrderedSame || YCCompareDouble(realCoordinate.longitude, 0.0) == NSOrderedSame ) {
             realCoordinate = [decoder oldDecodeCLLocationCoordinate2DForKey:kcoordinate];
         }
@@ -185,6 +195,21 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
             visualCoordinate = kCLLocationCoordinate2DInvalid;
         }
         
+        if (!positionTitle) {
+            positionTitle = [reserve1 copy];
+            if (!positionTitle) {
+                positionTitle = [alarmName copy];
+                if (!positionTitle || positionTitle.length == 0) {
+                    positionTitle = [KDefaultAlarmName copy];
+                    
+                }
+            }
+        } 
+        
+        if (!nameChanged) {
+            [alarmName release];
+            alarmName = nil;
+        }        
 		
     }
     return self;
@@ -204,6 +229,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 
     copy.position = self.position;
 	copy.positionShort = self.positionShort;
+    copy.positionTitle = self.positionTitle;
 	copy.usedCoordinateAddress = self.usedCoordinateAddress;
 	copy.realCoordinate = self.realCoordinate;
     copy.visualCoordinate = self.visualCoordinate;
@@ -230,6 +256,8 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	copy.reserve2 = self.reserve2;
 	copy.reserve3 = self.reserve3;
     
+    copy.placemark = self.placemark;
+    
     return copy;
 }
 
@@ -239,6 +267,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	
 	[position release];
 	[positionShort release];
+    [positionTitle release];
 	
 	[sound release];
 	[repeatType release];
@@ -255,6 +284,8 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	[reserve1 release];
 	[reserve2 release];
 	[reserve3 release];
+    
+    [placemark release];
 	
     [super dealloc];
 }

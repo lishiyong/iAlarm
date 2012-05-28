@@ -42,7 +42,7 @@
     [alarm release];
     alarm = theAlarm;
     
-    alarmTitleLabel.text = self.alarm.alarmName;
+    alarmTitleLabel.text = self.alarm.alarmName ? self.alarm.alarmName : self.alarm.positionTitle;
     self.enabled = alarm.enabled;
     if (self.enabled) {
         NSString *imageName = self.alarm.alarmRadiusType.alarmRadiusTypeImageName;

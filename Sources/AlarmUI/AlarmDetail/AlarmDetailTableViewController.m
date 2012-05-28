@@ -6,6 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCLib.h"
 #import "YCLocationManager.h"
 #import "CLLocation+YC.h"
 #import "IAAlarmNotificationCenter.h"
@@ -58,7 +59,6 @@
 @synthesize alarm;
 @synthesize alarmTemp;
 @synthesize bestEffortAtLocation;
-@synthesize placemarkForReverse;
 
 @synthesize cellDescriptions;   
 @synthesize enabledCellDescription;
@@ -102,11 +102,10 @@
 		alarmTemp = [self.alarm copy];
 		//if (!self.newAlarm) {
 			[alarmTemp addObserver:self forKeyPath:@"alarmName" options:0 context:nil];
-			[alarmTemp addObserver:self forKeyPath:@"position" options:0 context:nil];
-			[alarmTemp addObserver:self forKeyPath:@"positionShort" options:0 context:nil];
-			//[alarmTemp addObserver:self forKeyPath:@"notes" options:0 context:nil];
+			[alarmTemp addObserver:self forKeyPath:@"placemark" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"enabled" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"realCoordinate" options:0 context:nil];
+            [alarmTemp addObserver:self forKeyPath:@"visualCoordinate" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"vibrate" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"sound" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"repeatType" options:0 context:nil];
@@ -144,16 +143,6 @@
 	[locationManager setDelegate:self];
 	
 	return locationManager;
-}
-
-- (MKReverseGeocoder *)reverseGeocoder:(CLLocationCoordinate2D)coordinate
-{
-    if (reverseGeocoder) {
-		[reverseGeocoder release];
-	}
-	reverseGeocoder = [[MKReverseGeocoder alloc] initWithCoordinate:coordinate];
-	
-	return reverseGeocoder;
 }
 
 - (id)cancelButtonItem{
@@ -429,7 +418,7 @@
 	}
     
     
-    if (self.alarmTemp.nameChanged) {
+    if (self.alarmTemp.alarmName) {
         self->nameCellDescription.tableViewCell.detailTextLabel.textColor = [UIColor colorWithRed:56.0/255.0 green:84.0/255.0 blue:135.0/255.0 alpha:1.0];
         self->nameCellDescription.tableViewCell.detailTextLabel.text = self.alarmTemp.alarmName;
     }else{
@@ -492,8 +481,8 @@
 
 			break;
 		case IALocatingAndReversingStatusReversing:
-			self.placemarkForReverse = nil;
-			[self endReverse];
+			//self.placemarkForReverse = nil;
+			//[self endReverse]; 有没有必要改进
 			//界面提示 : 定位失败
 			if (!CLLocationCoordinate2DIsValid(self.alarmTemp.realCoordinate)) //在这里 不用也可以吧
             {
@@ -897,6 +886,7 @@
 	self.alarm.alarmName = self.alarmTemp.alarmName;
 	self.alarm.position = self.alarmTemp.position;
 	self.alarm.positionShort = self.alarmTemp.positionShort;
+    self.alarm.positionTitle = self.alarmTemp.positionTitle;
 	self.alarm.usedCoordinateAddress = self.alarmTemp.usedCoordinateAddress;
 	self.alarm.nameChanged = self.alarmTemp.nameChanged;
 	self.alarm.sound = self.alarmTemp.sound;
@@ -976,11 +966,12 @@
 
 #define kTimeOutForReverse 8.0
 
--(void)beginReverse
+-(void)reverseGeocode
 {	
-	self->endingManual = NO;
-	self->locatingAndReversingStatus = IALocatingAndReversingStatusReversing;
-	
+    CLLocationCoordinate2D coordinate = self.alarmTemp.visualCoordinate;
+    if (!CLLocationCoordinate2DIsValid(coordinate)) 
+        return;
+    
 	// 显示等待指示控件
     [UIView transitionWithView:self.destionationCellDescription.tableViewCell 
                       duration:0.25
@@ -991,124 +982,53 @@
                         [cell setWaiting:YES andWaitText:KTextPromptWhenReversing];     
                     }
                     completion:NULL];
-
-	
-	//初始化，reverseGeocoder对象必须根据特定坐标init。
-	reverseGeocoder = [self reverseGeocoder:self->coordinateForReverse];
-	reverseGeocoder.delegate = self;
-	
-	//界面提示 :
+    
+    //界面提示 :
 	self.titleForFooter = nil;
     self.footerView = nil;
-	
-	//反转坐标
-	self.placemarkForReverse = nil; //先赋空相关数据
-	[reverseGeocoder start];
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	[self performSelector:@selector(endReverse) withObject:nil afterDelay:kTimeOutForReverse];
-}
- 
 
+    
+    
+    self->endingManual = NO;
+	self->locatingAndReversingStatus = IALocatingAndReversingStatusReversing;
 
+    YCGeocoder *geocoder = [[[YCGeocoder alloc] initWithTimeout:kTimeOutForReverse] autorelease];
+    CLLocation *location = [[[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude] autorelease];
+    [geocoder reverseGeocodeLocation:location completionHandler:^(YCPlacemark *placemark, NSError *error) {
+        IAAlarm *theAlarm = self.alarmTemp;
+        if (!error){
 
--(void)endReverse
-{
-	///////////////////////////////////
-	//已经被释放了
-	if (![self isKindOfClass:[AlarmDetailTableViewController class]])
-		return;
-	if (![reverseGeocoder respondsToSelector:@selector(cancel)])
-		return;
-	///////////////////////////////////
-	
-	//如果超时了，反转还没结束，结束它
-	[reverseGeocoder cancel];
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	//取消掉另一个调用
-	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(endReverse) object:nil];
-	
-	
-	if (self->endingManual) {//手工结束，不处理数据
-		self.cellDescriptions = nil;
-        [(IADestinationCell*)self.destionationCellDescription.tableViewCell setWaiting:NO andWaitText:nil];
+            theAlarm.position = placemark.longAddress;
+            theAlarm.positionShort = placemark.shortAddress;
+            theAlarm.positionTitle = placemark.titleAddress;
+            theAlarm.usedCoordinateAddress = NO;
+            
+        }else{            
+            if (!theAlarm.nameChanged) {
+                theAlarm.alarmName = nil;//把以前版本生成的名称冲掉
+            }
+            NSString *coordinateString = NSLocalizedStringFromCLLocationCoordinate2D(coordinate,kCoordinateFrmStringNorthLatitude,kCoordinateFrmStringSouthLatitude,kCoordinateFrmStringEastLongitude,kCoordinateFrmStringWestLongitude);
+            theAlarm.position = coordinateString;
+            theAlarm.positionShort = coordinateString;
+            theAlarm.positionTitle = KDefaultAlarmName;
+            theAlarm.usedCoordinateAddress = YES; //反转失败，用坐标做地址
+            
+        }
         
-		[self.tableView reloadData]; //刷新界面，使用原来的数据
-		self->locatingAndReversingStatus = IALocatingAndReversingStatusNone;
-		return;
-	}
-	
-	
-	CLLocationCoordinate2D visualCoordinate = self.alarmTemp.visualCoordinate;
-	self.alarmTemp.usedCoordinateAddress = NO;  
-	//闹钟位置、名称赋值
-	if (self.placemarkForReverse == nil) {
-		//反转坐标 失败，使用坐标作为地址；名称不改变
-		if (CLLocationCoordinate2DIsValid(visualCoordinate)) {
-			self.alarmTemp.position = [UIUtility convertCoordinate:visualCoordinate];
-			self.alarmTemp.positionShort = [UIUtility convertCoordinate:visualCoordinate];
-            self.alarmTemp.reserve1 = self.alarmTemp.positionShort;  //做为addressTitle
-		}
-		self.alarmTemp.usedCoordinateAddress = YES; 
-		
-        BOOL connectedToInternet = [[YCSystemStatus deviceStatusSingleInstance] connectedToInternet];
-        if (!connectedToInternet) 
-            self.titleForFooter = KTextPromptNeedInternetToReversing;//界面提示 : 反转地址失败,需要网络
+        self.cellDescriptions = nil;
+        
+        [UIView transitionWithView:self.destionationCellDescription.tableViewCell 
+                          duration:0.25
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{ [(IADestinationCell*)self.destionationCellDescription.tableViewCell setWaiting:NO andWaitText:nil]; }
+                        completion:^(BOOL flag){[self.tableView reloadData];}];
 
-	}else {
-
-		MKPlacemark *placemark = self.placemarkForReverse;
-		NSString *addressTitle = nil;
-		NSString *addressShort = nil;
-		NSString *address = nil;
-		
-		address = YCGetAddressString(placemark);
-		
-		addressShort = YCGetAddressShortString(placemark);
-		addressShort = (addressShort != nil) ? addressShort : address;
-		
-		addressTitle = YCGetAddressTitleString(placemark);
-		addressTitle = (addressTitle != nil) ? addressTitle : addressShort;
-		
-		//最后的判空
-		addressTitle = (addressTitle != nil) ? addressTitle:KDefaultAlarmName;
-		if (addressShort == nil) {
-			self.alarmTemp.usedCoordinateAddress = YES;
-			addressShort = (addressShort != nil) ? addressShort : [UIUtility convertCoordinate:visualCoordinate];
-		}
-		address = (address != nil) ? address : [UIUtility convertCoordinate:visualCoordinate];
-		
-		
-		self.alarmTemp.position = address;
-		self.alarmTemp.positionShort = addressShort;
-        self.alarmTemp.reserve1 = addressTitle;  //做为addressTitle
-		if (!self.alarmTemp.nameChanged) 
-			self.alarmTemp.alarmName = addressTitle;
-		
-	}
-	
-	self.cellDescriptions = nil;
+        
+        self->locatingAndReversingStatus = IALocatingAndReversingStatusNone;
+                
+    }];
     
-    [UIView transitionWithView:self.destionationCellDescription.tableViewCell 
-                      duration:0.25
-                       options:UIViewAnimationOptionTransitionCrossDissolve
-                    animations:^{ [(IADestinationCell*)self.destionationCellDescription.tableViewCell setWaiting:NO andWaitText:nil]; }
-                    completion:^(BOOL flag){[self.tableView reloadData];}];
-     
-                        
-    
-	
-/*
-    //重新生成footer中的距离label
-    self.footerView = nil;
-    if (CLLocationCoordinate2DIsValid(self.alarmTemp.coordinate) && [YCSystemStatus deviceStatusSingleInstance].lastLocation) {
-        [self setDistanceLabelVisibleInFooterViewWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];
-    }
- */
-    
-
-	self->locatingAndReversingStatus = IALocatingAndReversingStatusNone;
 }
-
 
 #define kTimeOutForLocation 10.0
 -(void)beginLocation
@@ -1184,6 +1104,8 @@
 		self.alarmTemp.realCoordinate = kCLLocationCoordinate2DInvalid;
 		self.alarmTemp.position = nil;
 		self.alarmTemp.positionShort = nil;
+        self.alarmTemp.positionTitle = nil;
+        self.alarmTemp.placemark = nil;
 		[self.tableView reloadData]; //失败了，刷新界面，赋空数据
 		
 		
@@ -1206,8 +1128,7 @@
         self.alarmTemp.locationAccuracy = self.bestEffortAtLocation.horizontalAccuracy;
         
 		//开始 反转坐标
-        self->coordinateForReverse = self.alarmTemp.visualCoordinate;
-        [self beginReverse]; 
+        [self reverseGeocode]; 
         
 	}
 	
@@ -1240,31 +1161,10 @@
 	self.navigationItem.leftBarButtonItem = self.cancelButtonItem;
 	self.navigationItem.rightBarButtonItem = self.saveButtonItem;
 	
-	/*
-    if (self.newAlarm) //新增加的闹钟，当前位置作为默认的闹钟地址
-	{
-		if(CLLocationCoordinate2DIsValid(self.alarmTemp.coordinate)){
-			if (self.alarmTemp.usedCoordinateAddress){ //使用的是坐标地址
-				self->coordinateForReverse = self.alarmTemp.coordinate;
-				[self performSelector:@selector(beginReverse) withObject:nil afterDelay:0.1];
-			}
-		}else 
-			[self performSelector:@selector(beginLocation) withObject:nil afterDelay:0.5];
-	
-	}else if (self.alarmTemp.usedCoordinateAddress){ //使用的是坐标地址
-		if(CLLocationCoordinate2DIsValid(self.alarmTemp.coordinate)){
-			self->coordinateForReverse = self.alarmTemp.coordinate;
-			[self performSelector:@selector(beginReverse) withObject:nil afterDelay:0.1];
-		}
-	}
-     
-     
-     */
     
     if (CLLocationCoordinate2DIsValid(self.alarmTemp.visualCoordinate)){ //坐标有效
         if (self.alarmTemp.usedCoordinateAddress){ //使用的是坐标地址
-            self->coordinateForReverse = self.alarmTemp.visualCoordinate;
-            [self performSelector:@selector(beginReverse) withObject:nil afterDelay:0.1];
+            [self performSelector:@selector(reverseGeocode) withObject:nil afterDelay:0.1];
         }
     }else{
         [self performSelector:@selector(beginLocation) withObject:nil afterDelay:0.5];
@@ -1282,7 +1182,6 @@
     self.tableView.tableFooterView = viewp;    
     [viewp release];
 
-		
 }
 
 
@@ -1488,29 +1387,6 @@
 }
 
 #pragma mark -
-#pragma mark MKReverseGeocoderDelegate
-- (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFindPlacemark:(MKPlacemark *)placemark
-{
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	self.placemarkForReverse = placemark;
-	[self performSelector:@selector(endReverse) withObject:nil afterDelay:0.1];  //数据更新后，等待x秒
-}
-
-- (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFailWithError:(NSError *)error
-{	
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	//无网络连接时候，收到失败数据，就结束反转
-	BOOL connectedToInternet = [[YCSystemStatus deviceStatusSingleInstance] connectedToInternet];
-	if (!connectedToInternet) {
-		self.placemarkForReverse = nil;
-		[self performSelector:@selector(endReverse) withObject:nil afterDelay:0.1];  
-	}else{
-        self.placemarkForReverse = nil;
-		[self performSelector:@selector(endReverse) withObject:nil afterDelay:2.0];  //虽然有网络，查询稍等一下就结束
-    }
-}
-
-#pragma mark -
 #pragma mark Memory management
 
 //释放资源，在viewDidLoad或能按要求重新创建的
@@ -1520,9 +1396,7 @@
 	
 	[locationManager stopUpdatingLocation];
 	[locationManager release]; locationManager = nil;
-	[reverseGeocoder release]; reverseGeocoder = nil;
 	[bestEffortAtLocation release]; bestEffortAtLocation = nil;
-	[placemarkForReverse release]; placemarkForReverse = nil;
 }
 
 - (void)viewDidUnload {
@@ -1535,15 +1409,12 @@
 	
 	[self freeResouceRecreated];
 	//取消所有定时执行的函数
-	[reverseGeocoder cancel];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
 	
     [lastUpdateDistanceTimestamp release];
 	[locationManager release];
-	[reverseGeocoder release];
 	[bestEffortAtLocation release];
-	[placemarkForReverse release];
 	
 	[locationServicesUsableAlert release];
 	[cancelButtonItem release];
@@ -1571,11 +1442,10 @@
 	if (alarmTemp) {
 		//if (!self.newAlarm) {
 			[alarmTemp removeObserver:self forKeyPath:@"alarmName"];
-			[alarmTemp removeObserver:self forKeyPath:@"position"];
-			[alarmTemp removeObserver:self forKeyPath:@"positionShort"];
-			//[alarmTemp removeObserver:self forKeyPath:@"notes"];
+			[alarmTemp removeObserver:self forKeyPath:@"placemark"];
 			[alarmTemp removeObserver:self forKeyPath:@"enabled"];
 			[alarmTemp removeObserver:self forKeyPath:@"realCoordinate"];
+            [alarmTemp removeObserver:self forKeyPath:@"visualCoordinate"];
 			[alarmTemp removeObserver:self forKeyPath:@"vibrate"];
 			[alarmTemp removeObserver:self forKeyPath:@"sound"];
 			[alarmTemp removeObserver:self forKeyPath:@"repeatType"];

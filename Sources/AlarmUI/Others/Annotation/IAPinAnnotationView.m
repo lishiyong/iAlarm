@@ -117,8 +117,10 @@
 
 //为了让setSelected:animated中延时调用：下一次消息中calloutView才能生成
 - (void)whenPinViewSelected{
-	
+	//反射查找到的对象
+    
 	//找到callout
+    UIView *calloutView = nil;
 	NSArray *subArray =[self subviews];
 	for (UIView *subView in subArray) {
 		NSString *className = NSStringFromClass([subView class]) ;
@@ -129,6 +131,7 @@
 	}
 	
 	//找到titleLabel
+    UILabel *titleLabel = nil;
 	NSArray *array =  [calloutView subviews];
 	for (UIView *aView in array) {
 		CGRect aViewFrame = aView.frame;

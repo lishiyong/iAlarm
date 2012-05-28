@@ -14,7 +14,6 @@
 
 -(NSString*)trim{
 
-	
 	NSString* des = [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	if([des length] == 0) return nil; 
 	return des;

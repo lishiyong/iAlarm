@@ -13,6 +13,7 @@
 		28D801B40F44B63D00FB423F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D801B30F44B63D00FB423F /* CoreData.framework */; };
 		9C022D51136697C9007C1555 /* AlarmDetailFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C022D50136697C9007C1555 /* AlarmDetailFooterView.xib */; };
 		9C022D541366994C007C1555 /* AlarmDetailFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C022D531366994B007C1555 /* AlarmDetailFooterView.m */; };
+		9C02E507157310B6007D2A98 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C02E506157310B6007D2A98 /* AddressBookUI.framework */; };
 		9C04958014F902AF00A89996 /* IARedButtonNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C04957C14F902AF00A89996 /* IARedButtonNormal.png */; };
 		9C04958114F902AF00A89996 /* IARedButtonNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C04957C14F902AF00A89996 /* IARedButtonNormal.png */; };
 		9C04958214F902AF00A89996 /* IARedButtonNormal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C04957D14F902AF00A89996 /* IARedButtonNormal@2x.png */; };
@@ -213,6 +214,16 @@
 		9C5B1DBA154E582D009235DB /* YCClockAlarm20.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5B1DB7154E582D009235DB /* YCClockAlarm20.png */; };
 		9C5B1DBB154E582D009235DB /* YCClockAlarm20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5B1DB8154E582D009235DB /* YCClockAlarm20@2x.png */; };
 		9C5B1DBC154E582D009235DB /* YCClockAlarm20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5B1DB8154E582D009235DB /* YCClockAlarm20@2x.png */; };
+		9C67A1E61572625700E53116 /* YCGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C67A1E51572625700E53116 /* YCGeocoder.m */; };
+		9C67A1E71572625700E53116 /* YCGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C67A1E51572625700E53116 /* YCGeocoder.m */; };
+		9C67A1EB1572638000E53116 /* YCPlacemark.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C67A1EA1572638000E53116 /* YCPlacemark.m */; };
+		9C67A1EC1572638000E53116 /* YCPlacemark.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C67A1EA1572638000E53116 /* YCPlacemark.m */; };
+		9C67A1EF1572651700E53116 /* YCPlacehoderGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C67A1EE1572651700E53116 /* YCPlacehoderGeocoder.m */; };
+		9C67A1F01572651700E53116 /* YCPlacehoderGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C67A1EE1572651700E53116 /* YCPlacehoderGeocoder.m */; };
+		9C67A1F41572657700E53116 /* YCGeocoderBefore5.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C67A1F31572657700E53116 /* YCGeocoderBefore5.m */; };
+		9C67A1F51572657700E53116 /* YCGeocoderBefore5.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C67A1F31572657700E53116 /* YCGeocoderBefore5.m */; };
+		9C67A1F81572659500E53116 /* YCGeocoderAfter5.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C67A1F71572659500E53116 /* YCGeocoderAfter5.m */; };
+		9C67A1F91572659500E53116 /* YCGeocoderAfter5.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C67A1F71572659500E53116 /* YCGeocoderAfter5.m */; };
 		9C6AE1E81563E0BA00F5A9CE /* BaseDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6AE1DE1563E0BA00F5A9CE /* BaseDao.m */; };
 		9C6AE1E91563E0BA00F5A9CE /* BaseDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6AE1DE1563E0BA00F5A9CE /* BaseDao.m */; };
 		9C6AE1EA1563E0BA00F5A9CE /* DB.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6AE1E01563E0BA00F5A9CE /* DB.m */; };
@@ -227,6 +238,8 @@
 		9C6AE1F31563E0BA00F5A9CE /* YCLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6AE1E71563E0BA00F5A9CE /* YCLocationManager.m */; };
 		9C6B1098156BE21600AB5BD4 /* UIAlertView+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6B1097156BE21600AB5BD4 /* UIAlertView+YC.m */; };
 		9C6B1099156BE21600AB5BD4 /* UIAlertView+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6B1097156BE21600AB5BD4 /* UIAlertView+YC.m */; };
+		9C6DD23815710D8600976B6C /* CLPlacemark+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6DD23715710D8600976B6C /* CLPlacemark+YC.m */; };
+		9C6DD23915710D8600976B6C /* CLPlacemark+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6DD23715710D8600976B6C /* CLPlacemark+YC.m */; };
 		9C7485B81562981F00486793 /* YCAlertTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484CB1562981F00486793 /* YCAlertTableView.m */; };
 		9C7485B91562981F00486793 /* YCAlertTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484CB1562981F00486793 /* YCAlertTableView.m */; };
 		9C7485BA1562981F00486793 /* YCShadowTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7484CD1562981F00486793 /* YCShadowTableView.m */; };
@@ -887,6 +900,7 @@
 		9CC472231564F76F00F79985 /* YCTexturedButtonTextGradientSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CC472211564F76F00F79985 /* YCTexturedButtonTextGradientSmall.png */; };
 		9CCDAE771312BB4800774FD7 /* IAButtonBarFlag@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CCDAE761312BB4800774FD7 /* IAButtonBarFlag@2x.png */; };
 		9CCEABBB13386CF3001457A6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9CCEABB913386CF3001457A6 /* Localizable.strings */; };
+		9CCF8797157228C6007C7680 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CCF8796157228C6007C7680 /* AddressBook.framework */; };
 		9CD2791813470C0B00A7EAAB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CD2791713470C0B00A7EAAB /* AVFoundation.framework */; };
 		9CD3E35A13666BC40032321A /* IANotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD3E35913666BC40032321A /* IANotifications.m */; };
 		9CD5618B135840D100FE6EA1 /* YCDistanceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5618A135840D100FE6EA1 /* YCDistanceManager.m */; };
@@ -1122,6 +1136,12 @@
 		9CF50EFE14999D8B00C814AB /* IAGlassMask@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF50EFC14999D8B00C814AB /* IAGlassMask@2x.png */; };
 		9CF8D03F14FDE13400E87446 /* horizontal_etched_line.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF8D03E14FDE13400E87446 /* horizontal_etched_line.png */; };
 		9CF8D04014FDE13400E87446 /* horizontal_etched_line.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF8D03E14FDE13400E87446 /* horizontal_etched_line.png */; };
+		9CFBF98C1571C46E003DDE65 /* NSDictionary+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CFBF98B1571C46E003DDE65 /* NSDictionary+YC.m */; };
+		9CFBF98D1571C46E003DDE65 /* NSDictionary+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CFBF98B1571C46E003DDE65 /* NSDictionary+YC.m */; };
+		9CFBF9901571CFDE003DDE65 /* NSArray+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CFBF98F1571CFDE003DDE65 /* NSArray+YC.m */; };
+		9CFBF9911571CFDE003DDE65 /* NSArray+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CFBF98F1571CFDE003DDE65 /* NSArray+YC.m */; };
+		9CFBF9941571D434003DDE65 /* NSSet+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CFBF9931571D434003DDE65 /* NSSet+YC.m */; };
+		9CFBF9951571D434003DDE65 /* NSSet+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CFBF9931571D434003DDE65 /* NSSet+YC.m */; };
 		9CFD5D52131DF41700C01B38 /* IARegion.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CFD5D51131DF41700C01B38 /* IARegion.m */; };
 		9CFE83FF14683056004A4BF1 /* IAMoveArrow0.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFE83FE14683056004A4BF1 /* IAMoveArrow0.png */; };
 		9CFE840014683056004A4BF1 /* IAMoveArrow0.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFE83FE14683056004A4BF1 /* IAMoveArrow0.png */; };
@@ -1159,6 +1179,7 @@
 		9C022D50136697C9007C1555 /* AlarmDetailFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlarmDetailFooterView.xib; sourceTree = "<group>"; };
 		9C022D521366994B007C1555 /* AlarmDetailFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmDetailFooterView.h; sourceTree = "<group>"; };
 		9C022D531366994B007C1555 /* AlarmDetailFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmDetailFooterView.m; sourceTree = "<group>"; };
+		9C02E506157310B6007D2A98 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		9C04957C14F902AF00A89996 /* IARedButtonNormal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IARedButtonNormal.png; sourceTree = "<group>"; };
 		9C04957D14F902AF00A89996 /* IARedButtonNormal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IARedButtonNormal@2x.png"; sourceTree = "<group>"; };
 		9C04957F14F902AF00A89996 /* IAWhiteButtonNormal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAWhiteButtonNormal@2x.png"; sourceTree = "<group>"; };
@@ -1305,6 +1326,16 @@
 		9C5B1DB2154E56A1009235DB /* YCClockAlarm@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCClockAlarm@2x.png"; sourceTree = "<group>"; };
 		9C5B1DB7154E582D009235DB /* YCClockAlarm20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCClockAlarm20.png; sourceTree = "<group>"; };
 		9C5B1DB8154E582D009235DB /* YCClockAlarm20@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCClockAlarm20@2x.png"; sourceTree = "<group>"; };
+		9C67A1E41572625700E53116 /* YCGeocoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCGeocoder.h; path = YCGeocoder/YCGeocoder.h; sourceTree = "<group>"; };
+		9C67A1E51572625700E53116 /* YCGeocoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCGeocoder.m; path = YCGeocoder/YCGeocoder.m; sourceTree = "<group>"; };
+		9C67A1E91572638000E53116 /* YCPlacemark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCPlacemark.h; path = YCGeocoder/YCPlacemark.h; sourceTree = "<group>"; };
+		9C67A1EA1572638000E53116 /* YCPlacemark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCPlacemark.m; path = YCGeocoder/YCPlacemark.m; sourceTree = "<group>"; };
+		9C67A1ED1572651700E53116 /* YCPlacehoderGeocoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCPlacehoderGeocoder.h; path = YCGeocoder/Inner/YCPlacehoderGeocoder.h; sourceTree = "<group>"; };
+		9C67A1EE1572651700E53116 /* YCPlacehoderGeocoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCPlacehoderGeocoder.m; path = YCGeocoder/Inner/YCPlacehoderGeocoder.m; sourceTree = "<group>"; };
+		9C67A1F21572657700E53116 /* YCGeocoderBefore5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCGeocoderBefore5.h; path = YCGeocoder/Inner/YCGeocoderBefore5.h; sourceTree = "<group>"; };
+		9C67A1F31572657700E53116 /* YCGeocoderBefore5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCGeocoderBefore5.m; path = YCGeocoder/Inner/YCGeocoderBefore5.m; sourceTree = "<group>"; };
+		9C67A1F61572659500E53116 /* YCGeocoderAfter5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCGeocoderAfter5.h; path = YCGeocoder/Inner/YCGeocoderAfter5.h; sourceTree = "<group>"; };
+		9C67A1F71572659500E53116 /* YCGeocoderAfter5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCGeocoderAfter5.m; path = YCGeocoder/Inner/YCGeocoderAfter5.m; sourceTree = "<group>"; };
 		9C6AE1DD1563E0BA00F5A9CE /* BaseDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseDao.h; sourceTree = "<group>"; };
 		9C6AE1DE1563E0BA00F5A9CE /* BaseDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseDao.m; sourceTree = "<group>"; };
 		9C6AE1DF1563E0BA00F5A9CE /* DB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DB.h; sourceTree = "<group>"; };
@@ -1318,6 +1349,9 @@
 		9C6AE1E71563E0BA00F5A9CE /* YCLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCLocationManager.m; sourceTree = "<group>"; };
 		9C6B1096156BE21600AB5BD4 /* UIAlertView+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+YC.h"; sourceTree = "<group>"; };
 		9C6B1097156BE21600AB5BD4 /* UIAlertView+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+YC.m"; sourceTree = "<group>"; };
+		9C6DD23115710B6400976B6C /* YCLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCLib.h; sourceTree = "<group>"; };
+		9C6DD23615710D8600976B6C /* CLPlacemark+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CLPlacemark+YC.h"; sourceTree = "<group>"; };
+		9C6DD23715710D8600976B6C /* CLPlacemark+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CLPlacemark+YC.m"; sourceTree = "<group>"; };
 		9C7484CA1562981F00486793 /* YCAlertTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCAlertTableView.h; sourceTree = "<group>"; };
 		9C7484CB1562981F00486793 /* YCAlertTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCAlertTableView.m; sourceTree = "<group>"; };
 		9C7484CC1562981F00486793 /* YCShadowTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCShadowTableView.h; sourceTree = "<group>"; };
@@ -1706,6 +1740,7 @@
 		9CCEABC813386D44001457A6 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9CCEABCB13386D99001457A6 /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Japanese; path = Japanese.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9CCEABCC13386D9F001457A6 /* zh_TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_TW; path = zh_TW.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9CCF8796157228C6007C7680 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		9CD2791713470C0B00A7EAAB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		9CD3E35813666BC40032321A /* IANotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IANotifications.h; sourceTree = "<group>"; };
 		9CD3E35913666BC40032321A /* IANotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IANotifications.m; sourceTree = "<group>"; };
@@ -1917,6 +1952,12 @@
 		9CF50EF71499801800C814AB /* TrackingDotYellow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TrackingDotYellow@2x.png"; sourceTree = "<group>"; };
 		9CF50EFC14999D8B00C814AB /* IAGlassMask@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAGlassMask@2x.png"; sourceTree = "<group>"; };
 		9CF8D03E14FDE13400E87446 /* horizontal_etched_line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = horizontal_etched_line.png; sourceTree = "<group>"; };
+		9CFBF98A1571C46E003DDE65 /* NSDictionary+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+YC.h"; sourceTree = "<group>"; };
+		9CFBF98B1571C46E003DDE65 /* NSDictionary+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+YC.m"; sourceTree = "<group>"; };
+		9CFBF98E1571CFDE003DDE65 /* NSArray+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+YC.h"; sourceTree = "<group>"; };
+		9CFBF98F1571CFDE003DDE65 /* NSArray+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+YC.m"; sourceTree = "<group>"; };
+		9CFBF9921571D433003DDE65 /* NSSet+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSSet+YC.h"; sourceTree = "<group>"; };
+		9CFBF9931571D434003DDE65 /* NSSet+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSSet+YC.m"; sourceTree = "<group>"; };
 		9CFD5D50131DF41700C01B38 /* IARegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IARegion.h; sourceTree = "<group>"; };
 		9CFD5D51131DF41700C01B38 /* IARegion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IARegion.m; sourceTree = "<group>"; };
 		9CFE83FE14683056004A4BF1 /* IAMoveArrow0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IAMoveArrow0.png; sourceTree = "<group>"; };
@@ -1953,6 +1994,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C02E507157310B6007D2A98 /* AddressBookUI.framework in Frameworks */,
+				9CCF8797157228C6007C7680 /* AddressBook.framework in Frameworks */,
 				9C748732156298D100486793 /* libsqlite3.dylib in Frameworks */,
 				9C90A1391522BD4400695881 /* Twitter.framework in Frameworks */,
 				9C90A1371522BD3A00695881 /* Accounts.framework in Frameworks */,
@@ -2020,6 +2063,8 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9C02E506157310B6007D2A98 /* AddressBookUI.framework */,
+				9CCF8796157228C6007C7680 /* AddressBook.framework */,
 				9C90A1381522BD4400695881 /* Twitter.framework */,
 				9C90A1361522BD3A00695881 /* Accounts.framework */,
 				9CA485DF1519D86000B9C8D6 /* CFNetwork.framework */,
@@ -2182,6 +2227,31 @@
 			path = Ring;
 			sourceTree = "<group>";
 		};
+		9C67A1E81572625F00E53116 /* YCGeocoder */ = {
+			isa = PBXGroup;
+			children = (
+				9C67A1F11572651E00E53116 /* Inner */,
+				9C67A1E41572625700E53116 /* YCGeocoder.h */,
+				9C67A1E51572625700E53116 /* YCGeocoder.m */,
+				9C67A1E91572638000E53116 /* YCPlacemark.h */,
+				9C67A1EA1572638000E53116 /* YCPlacemark.m */,
+			);
+			name = YCGeocoder;
+			sourceTree = "<group>";
+		};
+		9C67A1F11572651E00E53116 /* Inner */ = {
+			isa = PBXGroup;
+			children = (
+				9C67A1ED1572651700E53116 /* YCPlacehoderGeocoder.h */,
+				9C67A1EE1572651700E53116 /* YCPlacehoderGeocoder.m */,
+				9C67A1F21572657700E53116 /* YCGeocoderBefore5.h */,
+				9C67A1F31572657700E53116 /* YCGeocoderBefore5.m */,
+				9C67A1F61572659500E53116 /* YCGeocoderAfter5.h */,
+				9C67A1F71572659500E53116 /* YCGeocoderAfter5.m */,
+			);
+			name = Inner;
+			sourceTree = "<group>";
+		};
 		9C6AE1DC1563E0BA00F5A9CE /* ChinaOffset */ = {
 			isa = PBXGroup;
 			children = (
@@ -2203,6 +2273,7 @@
 		9C7484BE1562981F00486793 /* YCLib */ = {
 			isa = PBXGroup;
 			children = (
+				9C67A1E81572625F00E53116 /* YCGeocoder */,
 				9C767F031564BC5F00A4F397 /* YCUI */,
 				9C767EE21564AB8E00A4F397 /* YCFunctions */,
 				9C6AE1DC1563E0BA00F5A9CE /* ChinaOffset */,
@@ -2217,6 +2288,7 @@
 				9C74859E1562981F00486793 /* YCTapHideBar */,
 				9C7485A11562981F00486793 /* YCUtilities */,
 				9C7485AA1562981F00486793 /* YCViewController */,
+				9C6DD23115710B6400976B6C /* YCLib.h */,
 			);
 			path = YCLib;
 			sourceTree = "<group>";
@@ -2274,6 +2346,14 @@
 				9CF1662915691A9200281A33 /* UIViewController+YC.m */,
 				9C6B1096156BE21600AB5BD4 /* UIAlertView+YC.h */,
 				9C6B1097156BE21600AB5BD4 /* UIAlertView+YC.m */,
+				9C6DD23615710D8600976B6C /* CLPlacemark+YC.h */,
+				9C6DD23715710D8600976B6C /* CLPlacemark+YC.m */,
+				9CFBF98A1571C46E003DDE65 /* NSDictionary+YC.h */,
+				9CFBF98B1571C46E003DDE65 /* NSDictionary+YC.m */,
+				9CFBF98E1571CFDE003DDE65 /* NSArray+YC.h */,
+				9CFBF98F1571CFDE003DDE65 /* NSArray+YC.m */,
+				9CFBF9921571D433003DDE65 /* NSSet+YC.h */,
+				9CFBF9931571D434003DDE65 /* NSSet+YC.m */,
 			);
 			path = YCCategories;
 			sourceTree = "<group>";
@@ -4741,6 +4821,15 @@
 				9C50A5EE156DC99F00A4B7CC /* BSKmlResult.m in Sources */,
 				9C410ED0156E5907007F3761 /* AlarmDetailTableViewController.m in Sources */,
 				9C410ED3156E594F007F3761 /* AlarmRadiusViewController.m in Sources */,
+				9C6DD23815710D8600976B6C /* CLPlacemark+YC.m in Sources */,
+				9CFBF98C1571C46E003DDE65 /* NSDictionary+YC.m in Sources */,
+				9CFBF9901571CFDE003DDE65 /* NSArray+YC.m in Sources */,
+				9CFBF9941571D434003DDE65 /* NSSet+YC.m in Sources */,
+				9C67A1E61572625700E53116 /* YCGeocoder.m in Sources */,
+				9C67A1EB1572638000E53116 /* YCPlacemark.m in Sources */,
+				9C67A1EF1572651700E53116 /* YCPlacehoderGeocoder.m in Sources */,
+				9C67A1F41572657700E53116 /* YCGeocoderBefore5.m in Sources */,
+				9C67A1F81572659500E53116 /* YCGeocoderAfter5.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4932,6 +5021,15 @@
 				9C50A5EF156DC99F00A4B7CC /* BSKmlResult.m in Sources */,
 				9C410ED1156E5907007F3761 /* AlarmDetailTableViewController.m in Sources */,
 				9C410ED4156E594F007F3761 /* AlarmRadiusViewController.m in Sources */,
+				9C6DD23915710D8600976B6C /* CLPlacemark+YC.m in Sources */,
+				9CFBF98D1571C46E003DDE65 /* NSDictionary+YC.m in Sources */,
+				9CFBF9911571CFDE003DDE65 /* NSArray+YC.m in Sources */,
+				9CFBF9951571D434003DDE65 /* NSSet+YC.m in Sources */,
+				9C67A1E71572625700E53116 /* YCGeocoder.m in Sources */,
+				9C67A1EC1572638000E53116 /* YCPlacemark.m in Sources */,
+				9C67A1F01572651700E53116 /* YCPlacehoderGeocoder.m in Sources */,
+				9C67A1F51572657700E53116 /* YCGeocoderBefore5.m in Sources */,
+				9C67A1F91572659500E53116 /* YCGeocoderAfter5.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -6,6 +6,7 @@
 //  Copyright __MyCompanyName__ 2010. All rights reserved.
 //
 
+#import "YCLib.h"
 #import "UIAlertView+YC.h"
 #import "NSString+YC.h"
 #import "IAAlarmFindViewController.h"
@@ -155,6 +156,7 @@
  
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {  
+    
 	[application registerNotifications];
 	[YCSystemStatus deviceStatusSingleInstance]; //一定要有这个初始化
     

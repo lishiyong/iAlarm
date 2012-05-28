@@ -46,6 +46,11 @@
 	[super dealloc];
 }
 
+- (id)init{
+    self = [self initWithDelegate:nil];
+	return self;
+}
+
 - (id)initWithDelegate:(id<BSForwardGeocoderDelegate>)aDelegate
 {
 	if ((self = [super init])) {

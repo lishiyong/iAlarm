@@ -256,7 +256,7 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 -(void)updateAnnotationAlarmEditing
 {
 	IAAlarm *temp = self.alarm;
-	self.annotationAlarmEditing.title = temp.alarmName;
+	self.annotationAlarmEditing.title = temp.alarmName ? temp.alarmName : temp.positionTitle;
 	self.annotationAlarmEditing.subtitle = temp.position;
 	self.annotationAlarmEditing.annotationType = IAMapAnnotationTypeLocating;
 	self.annotationAlarmEditing.title = KLabelMapNewAnnotationTitle;

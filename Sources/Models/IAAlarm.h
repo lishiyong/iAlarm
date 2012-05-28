@@ -20,6 +20,7 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 
 #define    kposition                @"kposition"
 #define    kpositionShort           @"kpositionShort"
+#define    kpositionTitle           @"kpositionTitle"
 #define    kusedCoordinateAddress   @"kusedCoordinateAddress"
 #define    kcoordinate              @"kcoordinate"
 #define    kvisualCoordinate        @"kvisualCoordinate"
@@ -42,11 +43,11 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 #define    kreserve2                @"kreserve2"
 #define    kreserve3                @"kreserve3"
 
+#define    kplacemark               @"kplacemark"
+
 @class IASaveInfo;
-@class YCSound;
-@class YCRepeatType;
-//@class IAAlarmRadiusType;
-@class YCPositionType;
+@class YCSound, YCRepeatType, YCPositionType;
+@class YCPlacemark;
 @interface IAAlarm : NSObject <NSCoding, NSCopying> {
 	
 	NSString *alarmId;         
@@ -55,6 +56,7 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 
 	NSString *position;                      //地点
 	NSString *positionShort;                 //短地点
+    NSString *positionTitle;                 //地点标题，2012-5-28添加
 	BOOL      usedCoordinateAddress;         //使用的是坐标地址：没有反转成功
 	CLLocationCoordinate2D realCoordinate;       //坐标
     CLLocationCoordinate2D visualCoordinate;
@@ -80,6 +82,8 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 	NSString *reserve1;                      //作为addressTitle，为alarmName临时存储
 	NSString *reserve2;
 	NSString *reserve3;
+    
+    YCPlacemark *placemark;                  //地点标题，2012-5-28添加
 
 }
 
@@ -89,6 +93,7 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 
 @property (nonatomic,copy) NSString *position;
 @property (nonatomic,copy) NSString *positionShort;
+@property (nonatomic,copy) NSString *positionTitle;
 @property (nonatomic,assign) BOOL      usedCoordinateAddress;
 @property (nonatomic,assign) CLLocationCoordinate2D realCoordinate;
 @property (nonatomic,assign) CLLocationCoordinate2D visualCoordinate;
@@ -114,6 +119,8 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 @property (nonatomic,copy) NSString *reserve1;
 @property (nonatomic,copy) NSString *reserve2;
 @property (nonatomic,copy) NSString *reserve3;
+
+@property (nonatomic,retain) YCPlacemark *placemark;
 
 
 - (void)setRealCoordinateWithVisualCoordinate:(CLLocationCoordinate2D)theVisualCoordinate;

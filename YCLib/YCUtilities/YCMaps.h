@@ -6,6 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCLib.h"
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
 

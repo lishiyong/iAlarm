@@ -18,7 +18,9 @@
 }
 
 - (id)initWithAlarm:(IAAlarm*)anAlarm{
-    self = [super initWithCoordinate:anAlarm.visualCoordinate title:anAlarm.alarmName subTitle:alarm.position addressDictionary:nil];
+    BOOL nameIsNull = anAlarm.alarmName ? NO : YES;
+    self = [super initWithCoordinate:anAlarm.visualCoordinate title:nameIsNull?anAlarm.positionTitle:anAlarm.alarmName  subTitle:alarm.positionShort addressDictionary:nil];
+    
     if (self) {
         alarm = [anAlarm retain];
         annotationType = alarm.enabled ? IAMapAnnotationTypeStandard:IAMapAnnotationTypeDisabled;
