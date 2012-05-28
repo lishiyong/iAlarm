@@ -129,6 +129,8 @@
 			break;
 		}
 	}
+    if (calloutView == nil) 
+        return;
 	
 	//找到titleLabel
     UILabel *titleLabel = nil;

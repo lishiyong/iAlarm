@@ -10,8 +10,10 @@
 #import <Mapkit/Mapkit.h>
 #import <Foundation/Foundation.h>
 
-@interface YCPlacemark : NSObject<NSCopying, NSCoding>{
-    CLPlacemark *placemark;
+@interface YCPlacemark : NSObject<NSCoding>{
+    CLPlacemark *_placemark;
+    NSMutableDictionary *_addressDictionary; //CLPlacemark中的不能修改
+    NSString *_separater;//地址中间的分隔
 }
 /*
 - (id)initWithCLPlacemark:(CLPlacemark*)aPlacemark;

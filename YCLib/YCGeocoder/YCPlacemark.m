@@ -15,38 +15,70 @@
 - (id)initWithPlacemark:(id)aPlacemark{
     self = [super init];
     if (self) {
-        placemark = [aPlacemark retain];
-        NSLog(@"placemark = %@",placemark);
+        _placemark = [aPlacemark retain];
+        _addressDictionary = [[NSMutableDictionary dictionaryWithDictionary:_placemark.addressDictionary] retain];
+        
+        //系统bug，街道信息不全。这里补上。
+        if (![_addressDictionary objectForKey:(NSString *) kABPersonAddressStreetKey]) {
+            NSString *subLocality = [_addressDictionary objectForKey:@"SubLocality"];//区。用区代替街
+            NSString *subThoroughfare = [_addressDictionary objectForKey:@"SubThoroughfare"];//门牌
+            subLocality = subLocality ? subLocality : @"";
+            subThoroughfare = subThoroughfare ? subThoroughfare : @"";
+            
+            NSString *street = [NSString stringWithFormat:@"%@ %@",subLocality,subThoroughfare];
+            [_addressDictionary setObject:street forKey:(NSString *) kABPersonAddressStreetKey];
+        }
+        
+        //地址数据分隔
+        NSString *countryCode = [_addressDictionary objectForKey:(NSString *)kABPersonAddressCountryCodeKey];
+        countryCode = [countryCode uppercaseString];
+        if ([countryCode isEqualToString:@"JP"] 
+            || [countryCode isEqualToString:@"CN"]
+            || [countryCode isEqualToString:@"TW"]
+            || [countryCode isEqualToString:@"HK"]) 
+        {//中国，日本用
+            
+            _separater = [[NSString stringWithFormat:@" "] retain];
+        }else{//其他国家用
+            _separater = [[NSString stringWithFormat:@","] retain];
+        }
+         
+        //NSLog(@"placemark = %@",[_placemark description]);
+        //[self fullAddress];
     }
     return self;
 }
 
 - (void)dealloc{
-    [placemark release];
+    [_placemark release];
+    [_addressDictionary release];
+    [_separater release];
     [super dealloc];
 }
 
 - (NSString *)fullAddress{
-    NSString *address = ABCreateStringWithAddressDictionary([(CLPlacemark*)placemark addressDictionary],NO);
+    NSString *address = ABCreateStringWithAddressDictionary(_addressDictionary,NO);
     NSString *address1 = [address stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    address1 = [address1 stringByReplacingOccurrencesOfString:@"\n" withString:@","];
+    //NSLog(@"替换前 address1 = %@",address1);
+    address1 = [address1 stringByReplacingOccurrencesOfString:@"\n" withString:_separater];
+    //NSLog(@"替换后 address1 = %@",address1);
     return address1;
 }
 
 
 - (NSString *)longAddress{
-    NSMutableDictionary *newDic = [NSMutableDictionary dictionaryWithDictionary:placemark.addressDictionary];
+    NSMutableDictionary *newDic = [NSMutableDictionary dictionaryWithDictionary:_addressDictionary];
     if (newDic.count > 1) {//除了邮编至少还有一个
         [newDic removeObjectForKey:(NSString*)kABPersonAddressZIPKey];
     }
     NSString *address = ABCreateStringWithAddressDictionary(newDic,NO);
     address = [address stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    address = [address stringByReplacingOccurrencesOfString:@"\n" withString:@","];
+    address = [address stringByReplacingOccurrencesOfString:@"\n" withString:_separater];
     return address;
 }
 
 - (NSString *)shortAddress{
-    NSMutableDictionary *newDic = [NSMutableDictionary dictionaryWithDictionary:placemark.addressDictionary];
+    NSMutableDictionary *newDic = [NSMutableDictionary dictionaryWithDictionary:_addressDictionary];
     if (newDic.count > 1) {//除了邮编至少还有一个
         [newDic removeObjectForKey:(NSString*)kABPersonAddressZIPKey];
         
@@ -61,12 +93,12 @@
     
     NSString *address = ABCreateStringWithAddressDictionary(newDic,NO);
     address = [address stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    address = [address stringByReplacingOccurrencesOfString:@"\n" withString:@","];
+    address = [address stringByReplacingOccurrencesOfString:@"\n" withString:_separater];
     return address;
 }
 
 - (NSString *)titleAddress{
-    NSMutableDictionary *newDic = [NSMutableDictionary dictionaryWithDictionary:placemark.addressDictionary];
+    NSMutableDictionary *newDic = [NSMutableDictionary dictionaryWithDictionary:_addressDictionary];
     if (newDic.count > 1) {//除了邮编至少还有一个
         [newDic removeObjectForKey:(NSString*)kABPersonAddressZIPKey];
         
@@ -90,33 +122,44 @@
 }
 
 - (NSString *)description{
-    return [placemark description];
+    return [_placemark description];
 }
 
 
-#pragma mark NSCoding
+#pragma mark - NSCoding
 
-#define    kmyPlacemark               @"kmyPlacemark"
+#define    kmyPlacemark                                 @"kmyPlacemark"
+#define    kmyaddressDictionary                         @"kmyaddressDictionary"
+#define    kseparater                                   @"kseparater"
 - (void)encodeWithCoder:(NSCoder *)encoder {
-    [encoder encodeObject:placemark forKey:kmyPlacemark];
+    
+    if ([_placemark conformsToProtocol: @protocol(NSCoding)])
+        [encoder encodeObject:_placemark forKey:kmyPlacemark];
+    [encoder encodeObject:_addressDictionary forKey:kmyaddressDictionary];
+    [encoder encodeObject:_separater forKey:kseparater];
+    
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
     self = [super init];
     if (self) {	
-        placemark = [[decoder decodeObjectForKey:kmyPlacemark] retain];
+
+        _separater = [[decoder decodeObjectForKey:kseparater] retain];
+        _addressDictionary = [[decoder decodeObjectForKey:kmyaddressDictionary] retain];
+        
+        if ([_placemark conformsToProtocol: @protocol(NSCoding)]) {            
+            _placemark = [[decoder decodeObjectForKey:kmyPlacemark] retain];
+            
+            if (_placemark == nil) {//从4.x的代码升级过来的情况
+                _placemark = [[MKPlacemark alloc] initWithCoordinate:kCLLocationCoordinate2DInvalid addressDictionary:_addressDictionary];
+            }            
+        }else{//兼容4.x的代码
+            _placemark = [[MKPlacemark alloc] initWithCoordinate:kCLLocationCoordinate2DInvalid addressDictionary:_addressDictionary];
+        }
+        
     }
+    
     return self;
 }
-
-/*
-#pragma mark -
-#pragma mark NSCopying
-
-- (id)copyWithZone:(NSZone *)zone {
-	YCPlacemark *copy = [[[self class] allocWithZone: zone] initWithPlacemark:placemark];    
-    return copy;
-}
- */
 
 @end
