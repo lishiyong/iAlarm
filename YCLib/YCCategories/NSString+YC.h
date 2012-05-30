@@ -11,11 +11,7 @@
 
 @interface NSString (YC)
 
--(NSString*)trim;
-//-(NSString*)ltrim;
-//-(NSString*)rtrim;
-
-
+-(NSString*)stringByTrim;
 
 //拆分文件名
 -(NSString*)nameInFullFileName;

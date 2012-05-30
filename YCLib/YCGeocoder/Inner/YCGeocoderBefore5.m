@@ -28,9 +28,8 @@
 }
 
 - (id)initWithTimeout:(NSTimeInterval)timeout{
-    self = [super init];
+    self = [super initWithTimeout:timeout];
     if (self) {
-        _timeout = timeout;
         _forwardGeocoder = [[BSForwardGeocoder alloc] init];
         //resverseGeocoder;
     }
@@ -45,8 +44,6 @@
 }
 
 #pragma mark - Implement Abstract Super Method
-
-@synthesize timeout = _timeout;
 
 - (void)cancel{
     [self cancelForwardGeocode];

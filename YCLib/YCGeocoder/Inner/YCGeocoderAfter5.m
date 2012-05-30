@@ -10,16 +10,14 @@
 #import "YCGeocoderAfter5.h"
 
 @implementation YCGeocoderAfter5
-@synthesize timeout = _timeout;
 
 + (id)allocWithZone:(NSZone *)zone{
     return NSAllocateObject([self class], 0, zone);
 }
 
 - (id)initWithTimeout:(NSTimeInterval)timeout{
-    self = [super init];
+    self = [super initWithTimeout:timeout];
     if (self) {
-        _timeout = timeout;
         geocoder = [[CLGeocoder alloc] init];
     }
     return self;

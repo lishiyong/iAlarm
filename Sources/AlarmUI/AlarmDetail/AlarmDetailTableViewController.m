@@ -448,7 +448,7 @@
 		
 	}
     
-    if (self.alarmTemp.notes && [[self.alarmTemp.notes trim] length] >0) {
+    if (self.alarmTemp.notes && [[self.alarmTemp.notes stringByTrim] length] >0) {
         self->notesCellDescription.tableViewCell.detailTextLabel.textColor = [UIColor textColor];
         self->notesCellDescription.tableViewCell.detailTextLabel.text = self.alarmTemp.notes;
     }else{
@@ -922,7 +922,7 @@
     NSString *promptTemple = arrived?kAlertFrmStringArrived:kAlertFrmStringLeaved;
     
     NSString *alertTitle = [[[NSString alloc] initWithFormat:promptTemple,alarmForNotif.alarmName,0.0] autorelease];
-    NSString *alarmMessage = [alarmForNotif.notes trim];
+    NSString *alarmMessage = [alarmForNotif.notes stringByTrim];
 
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObject:alarmNotification.notificationId forKey:@"knotificationId"];
     [userInfo setObject:alertTitle forKey:@"kTitleStringKey"];

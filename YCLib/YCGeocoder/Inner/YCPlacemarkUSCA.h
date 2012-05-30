@@ -8,6 +8,8 @@
 
 #import "YCPlacemark.h"
 
-@interface YCPlacemarkUS : YCPlacemark
+@interface YCPlacemarkUSCA : YCPlacemark{
+    NSMutableArray *_addressArray; //从街道->国名，有效的地址。除了门牌、邮编
+}
 
 @end

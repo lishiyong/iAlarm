@@ -584,14 +584,14 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 
 	}else if (place != nil) {
 		address = place.address;
-		address = [address trim];
+		address = [address stringByTrim];
 		
 		addressShort = place.address;
-		addressShort = [addressShort trim];
+		addressShort = [addressShort stringByTrim];
 		addressShort = (addressShort != nil) ? addressShort : address;
 		
 		addressTitle = place.searchString;
-		addressTitle = [addressTitle trim];
+		addressTitle = [addressTitle stringByTrim];
 		addressTitle = (addressTitle != nil) ? addressTitle : addressShort;
 
 	}else {
@@ -1596,14 +1596,14 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 	NSString *addressTitle = nil;
 	
 	address = place.address;
-	address = [address trim];
+	address = [address stringByTrim];
 	
 	addressShort = place.address;
-	addressShort = [addressShort trim];
+	addressShort = [addressShort stringByTrim];
 	addressShort = (addressShort != nil) ? addressShort : address;
 	
 	addressTitle = self.forwardGeocoder.searchQuery;;
-	addressTitle = [addressTitle trim];
+	addressTitle = [addressTitle stringByTrim];
 	addressTitle = (addressTitle != nil) ? addressTitle : addressShort;
 	
 	//最后的判空

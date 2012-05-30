@@ -11,6 +11,14 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		28D801B40F44B63D00FB423F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D801B30F44B63D00FB423F /* CoreData.framework */; };
+		9C00848D1575BB6F002434CC /* YCPlaceholderPlacemark.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C00848B1575BB6F002434CC /* YCPlaceholderPlacemark.m */; };
+		9C00848E1575BB6F002434CC /* YCPlaceholderPlacemark.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C00848B1575BB6F002434CC /* YCPlaceholderPlacemark.m */; };
+		9C0084991575BBE2002434CC /* YCPlacemarkUSCA.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0084981575BBE2002434CC /* YCPlacemarkUSCA.m */; };
+		9C00849A1575BBE2002434CC /* YCPlacemarkUSCA.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0084981575BBE2002434CC /* YCPlacemarkUSCA.m */; };
+		9C00849D1575BBF6002434CC /* YCPlacemarkOthers.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C00849C1575BBF5002434CC /* YCPlacemarkOthers.m */; };
+		9C00849E1575BBF6002434CC /* YCPlacemarkOthers.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C00849C1575BBF5002434CC /* YCPlacemarkOthers.m */; };
+		9C0084A11575BC27002434CC /* YCPlacemarkJPCN.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C00849F1575BC26002434CC /* YCPlacemarkJPCN.m */; };
+		9C0084A21575BC27002434CC /* YCPlacemarkJPCN.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C00849F1575BC26002434CC /* YCPlacemarkJPCN.m */; };
 		9C022D51136697C9007C1555 /* AlarmDetailFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C022D50136697C9007C1555 /* AlarmDetailFooterView.xib */; };
 		9C022D541366994C007C1555 /* AlarmDetailFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C022D531366994B007C1555 /* AlarmDetailFooterView.m */; };
 		9C02E507157310B6007D2A98 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C02E506157310B6007D2A98 /* AddressBookUI.framework */; };
@@ -218,8 +226,8 @@
 		9C67A1E71572625700E53116 /* YCGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C67A1E51572625700E53116 /* YCGeocoder.m */; };
 		9C67A1EB1572638000E53116 /* YCPlacemark.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C67A1EA1572638000E53116 /* YCPlacemark.m */; };
 		9C67A1EC1572638000E53116 /* YCPlacemark.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C67A1EA1572638000E53116 /* YCPlacemark.m */; };
-		9C67A1EF1572651700E53116 /* YCPlacehoderGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C67A1EE1572651700E53116 /* YCPlacehoderGeocoder.m */; };
-		9C67A1F01572651700E53116 /* YCPlacehoderGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C67A1EE1572651700E53116 /* YCPlacehoderGeocoder.m */; };
+		9C67A1EF1572651700E53116 /* YCPlaceholderGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C67A1EE1572651700E53116 /* YCPlaceholderGeocoder.m */; };
+		9C67A1F01572651700E53116 /* YCPlaceholderGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C67A1EE1572651700E53116 /* YCPlaceholderGeocoder.m */; };
 		9C67A1F41572657700E53116 /* YCGeocoderBefore5.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C67A1F31572657700E53116 /* YCGeocoderBefore5.m */; };
 		9C67A1F51572657700E53116 /* YCGeocoderBefore5.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C67A1F31572657700E53116 /* YCGeocoderBefore5.m */; };
 		9C67A1F81572659500E53116 /* YCGeocoderAfter5.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C67A1F71572659500E53116 /* YCGeocoderAfter5.m */; };
@@ -1176,6 +1184,14 @@
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		28D801B30F44B63D00FB423F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* iAlarm-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "iAlarm-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		9C00848B1575BB6F002434CC /* YCPlaceholderPlacemark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCPlaceholderPlacemark.m; path = YCGeocoder/Inner/YCPlaceholderPlacemark.m; sourceTree = "<group>"; };
+		9C00848C1575BB6F002434CC /* YCPlaceholderPlacemark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCPlaceholderPlacemark.h; path = YCGeocoder/Inner/YCPlaceholderPlacemark.h; sourceTree = "<group>"; };
+		9C0084971575BBE2002434CC /* YCPlacemarkUSCA.h */ = {isa = PBXFileReference; fileEncoding = 4; name = YCPlacemarkUSCA.h; path = YCGeocoder/Inner/YCPlacemarkUSCA.h; sourceTree = "<group>"; };
+		9C0084981575BBE2002434CC /* YCPlacemarkUSCA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCPlacemarkUSCA.m; path = YCGeocoder/Inner/YCPlacemarkUSCA.m; sourceTree = "<group>"; };
+		9C00849B1575BBF5002434CC /* YCPlacemarkOthers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCPlacemarkOthers.h; path = YCGeocoder/Inner/YCPlacemarkOthers.h; sourceTree = "<group>"; };
+		9C00849C1575BBF5002434CC /* YCPlacemarkOthers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCPlacemarkOthers.m; path = YCGeocoder/Inner/YCPlacemarkOthers.m; sourceTree = "<group>"; };
+		9C00849F1575BC26002434CC /* YCPlacemarkJPCN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCPlacemarkJPCN.m; path = YCGeocoder/Inner/YCPlacemarkJPCN.m; sourceTree = "<group>"; };
+		9C0084A01575BC26002434CC /* YCPlacemarkJPCN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCPlacemarkJPCN.h; path = YCGeocoder/Inner/YCPlacemarkJPCN.h; sourceTree = "<group>"; };
 		9C022D50136697C9007C1555 /* AlarmDetailFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlarmDetailFooterView.xib; sourceTree = "<group>"; };
 		9C022D521366994B007C1555 /* AlarmDetailFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmDetailFooterView.h; sourceTree = "<group>"; };
 		9C022D531366994B007C1555 /* AlarmDetailFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmDetailFooterView.m; sourceTree = "<group>"; };
@@ -1330,8 +1346,8 @@
 		9C67A1E51572625700E53116 /* YCGeocoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCGeocoder.m; path = YCGeocoder/YCGeocoder.m; sourceTree = "<group>"; };
 		9C67A1E91572638000E53116 /* YCPlacemark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCPlacemark.h; path = YCGeocoder/YCPlacemark.h; sourceTree = "<group>"; };
 		9C67A1EA1572638000E53116 /* YCPlacemark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCPlacemark.m; path = YCGeocoder/YCPlacemark.m; sourceTree = "<group>"; };
-		9C67A1ED1572651700E53116 /* YCPlacehoderGeocoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCPlacehoderGeocoder.h; path = YCGeocoder/Inner/YCPlacehoderGeocoder.h; sourceTree = "<group>"; };
-		9C67A1EE1572651700E53116 /* YCPlacehoderGeocoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCPlacehoderGeocoder.m; path = YCGeocoder/Inner/YCPlacehoderGeocoder.m; sourceTree = "<group>"; };
+		9C67A1ED1572651700E53116 /* YCPlaceholderGeocoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCPlaceholderGeocoder.h; path = YCGeocoder/Inner/YCPlaceholderGeocoder.h; sourceTree = "<group>"; };
+		9C67A1EE1572651700E53116 /* YCPlaceholderGeocoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCPlaceholderGeocoder.m; path = YCGeocoder/Inner/YCPlaceholderGeocoder.m; sourceTree = "<group>"; };
 		9C67A1F21572657700E53116 /* YCGeocoderBefore5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCGeocoderBefore5.h; path = YCGeocoder/Inner/YCGeocoderBefore5.h; sourceTree = "<group>"; };
 		9C67A1F31572657700E53116 /* YCGeocoderBefore5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCGeocoderBefore5.m; path = YCGeocoder/Inner/YCGeocoderBefore5.m; sourceTree = "<group>"; };
 		9C67A1F61572659500E53116 /* YCGeocoderAfter5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCGeocoderAfter5.h; path = YCGeocoder/Inner/YCGeocoderAfter5.h; sourceTree = "<group>"; };
@@ -2242,12 +2258,20 @@
 		9C67A1F11572651E00E53116 /* Inner */ = {
 			isa = PBXGroup;
 			children = (
-				9C67A1ED1572651700E53116 /* YCPlacehoderGeocoder.h */,
-				9C67A1EE1572651700E53116 /* YCPlacehoderGeocoder.m */,
+				9C67A1ED1572651700E53116 /* YCPlaceholderGeocoder.h */,
+				9C67A1EE1572651700E53116 /* YCPlaceholderGeocoder.m */,
 				9C67A1F21572657700E53116 /* YCGeocoderBefore5.h */,
 				9C67A1F31572657700E53116 /* YCGeocoderBefore5.m */,
 				9C67A1F61572659500E53116 /* YCGeocoderAfter5.h */,
 				9C67A1F71572659500E53116 /* YCGeocoderAfter5.m */,
+				9C00848C1575BB6F002434CC /* YCPlaceholderPlacemark.h */,
+				9C00848B1575BB6F002434CC /* YCPlaceholderPlacemark.m */,
+				9C0084A01575BC26002434CC /* YCPlacemarkJPCN.h */,
+				9C00849F1575BC26002434CC /* YCPlacemarkJPCN.m */,
+				9C0084971575BBE2002434CC /* YCPlacemarkUSCA.h */,
+				9C0084981575BBE2002434CC /* YCPlacemarkUSCA.m */,
+				9C00849B1575BBF5002434CC /* YCPlacemarkOthers.h */,
+				9C00849C1575BBF5002434CC /* YCPlacemarkOthers.m */,
 			);
 			name = Inner;
 			sourceTree = "<group>";
@@ -4827,9 +4851,13 @@
 				9CFBF9941571D434003DDE65 /* NSSet+YC.m in Sources */,
 				9C67A1E61572625700E53116 /* YCGeocoder.m in Sources */,
 				9C67A1EB1572638000E53116 /* YCPlacemark.m in Sources */,
-				9C67A1EF1572651700E53116 /* YCPlacehoderGeocoder.m in Sources */,
+				9C67A1EF1572651700E53116 /* YCPlaceholderGeocoder.m in Sources */,
 				9C67A1F41572657700E53116 /* YCGeocoderBefore5.m in Sources */,
 				9C67A1F81572659500E53116 /* YCGeocoderAfter5.m in Sources */,
+				9C00848D1575BB6F002434CC /* YCPlaceholderPlacemark.m in Sources */,
+				9C0084991575BBE2002434CC /* YCPlacemarkUSCA.m in Sources */,
+				9C00849D1575BBF6002434CC /* YCPlacemarkOthers.m in Sources */,
+				9C0084A11575BC27002434CC /* YCPlacemarkJPCN.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5027,9 +5055,13 @@
 				9CFBF9951571D434003DDE65 /* NSSet+YC.m in Sources */,
 				9C67A1E71572625700E53116 /* YCGeocoder.m in Sources */,
 				9C67A1EC1572638000E53116 /* YCPlacemark.m in Sources */,
-				9C67A1F01572651700E53116 /* YCPlacehoderGeocoder.m in Sources */,
+				9C67A1F01572651700E53116 /* YCPlaceholderGeocoder.m in Sources */,
 				9C67A1F51572657700E53116 /* YCGeocoderBefore5.m in Sources */,
 				9C67A1F91572659500E53116 /* YCGeocoderAfter5.m in Sources */,
+				9C00848E1575BB6F002434CC /* YCPlaceholderPlacemark.m in Sources */,
+				9C00849A1575BBE2002434CC /* YCPlacemarkUSCA.m in Sources */,
+				9C00849E1575BBF6002434CC /* YCPlacemarkOthers.m in Sources */,
+				9C0084A21575BC27002434CC /* YCPlacemarkJPCN.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

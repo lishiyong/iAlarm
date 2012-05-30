@@ -7,7 +7,6 @@
 //
 
 #import "NSString+YC.h"
-#import <AddressBookUI/AddressBookUI.h>
 #import "YCPlacemarkJPCN.h"
 
 @implementation YCPlacemarkJPCN
@@ -19,7 +18,13 @@
 - (id)initWithPlacemark:(id)aPlacemark{
     self = [super initWithPlacemark:aPlacemark];
     if (self) {
-        _separater = [[NSString stringWithFormat:@"−"] retain]; 
+        [_separater release];
+        if ([_countryCode isEqualToString:@"JP"]) { 
+            _separater = [[NSString stringWithFormat:@"−"] retain]; 
+        }else{
+            _separater = [[NSString stringWithFormat:@""] retain]; 
+        }
+        
     }
     return self;
 }
@@ -28,9 +33,12 @@
  千叶县松户市 五香西３丁目−２７−３４
  **/
 - (NSString *)longAddress{
+    //没有省，替代:国名
+    NSString * state = self.state ? self.state : self.country; 
+    state = state ? state : @"";
     
     NSMutableString *address = [NSMutableString string];
-    [address appendString:(self.state ? self.state : @"")];
+    [address appendString:(state ? state : @"")];
     [address appendString:(self.subState ? self.subState : @"")];
     [address appendString:(self.city ? self.city : @"")];
     [address appendString:@" "];
@@ -49,9 +57,11 @@
  松户市 五香西３丁目−２７−３４
  **/
 - (NSString *)shortAddress{
-    //没有城市，替代:先副省，再省
+    //没有城市，替代:先副省，再省，再国名
     NSString * city = self.city ? self.city : self.subState; 
     city = city ? city : self.state;
+    city = city ? city : self.country;
+    city = city ? city : @"";
     
     NSMutableString *address = [NSMutableString string];
     [address appendString:city];
@@ -75,6 +85,7 @@
     NSString * subCity = self.subCity ? self.subCity : self.city; 
     subCity = subCity ? subCity : self.subState;
     subCity = subCity ? subCity : self.state;
+    subCity = subCity ? subCity : @"";
     
     NSMutableString *address = [NSMutableString string];
     [address appendString:(subCity ? subCity : @"")];

@@ -6,19 +6,27 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
-#import "YCPlacehoderGeocoder.h"
+#import "YCPlaceholderGeocoder.h"
 #import "YCGeocoder.h"
 
 @implementation YCGeocoder
-@synthesize geocoding, timeout;
+@synthesize geocoding, timeout = _timeout;
 
 + (id)allocWithZone:(NSZone *)zone{
-    //return [YCPlacehoderGeocoder sharedInstance];
-    return [YCPlacehoderGeocoder allocWithZone:zone];
+    return [YCPlaceholderGeocoder allocWithZone:zone];
+}
+
+- (id)init{
+    self = [self initWithTimeout:10];
+    return self;
 }
 
 - (id)initWithTimeout:(NSTimeInterval)timeout{
-    return nil; //永远也不会到这里
+    self = [super init];
+    if (self) {
+        _timeout = timeout;
+    }
+    return self;
 }
 
 - (void)cancel{

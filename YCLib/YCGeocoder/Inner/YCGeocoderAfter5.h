@@ -10,7 +10,6 @@
 #import <CoreLocation/CoreLocation.h>
 
 @interface YCGeocoderAfter5 : YCGeocoder{
-    NSTimeInterval _timeout;
     CLGeocoder *geocoder;
 }
 

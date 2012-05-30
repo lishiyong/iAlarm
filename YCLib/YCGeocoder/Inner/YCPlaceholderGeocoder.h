@@ -8,7 +8,7 @@
 
 #import "YCGeocoder.h"
 
-@interface YCPlacehoderGeocoder : YCGeocoder
+@interface YCPlaceholderGeocoder : YCGeocoder
 
 
 @end

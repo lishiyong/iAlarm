@@ -8,16 +8,12 @@
 
 #import "YCGeocoderBefore5.h"
 #import "YCGeocoderAfter5.h"
-#import "YCPlacehoderGeocoder.h"
+#import "YCPlaceholderGeocoder.h"
 #import <CoreLocation/CoreLocation.h>
 #import <Mapkit/Mapkit.h>
 
-@implementation YCPlacehoderGeocoder
+@implementation YCPlaceholderGeocoder
 
-- (id)init{
-    self = [self initWithTimeout:10];
-    return self;
-}
 
 - (id)initWithTimeout:(NSTimeInterval)timeout{
     
@@ -32,7 +28,7 @@
 
 }
 
-static YCPlacehoderGeocoder *single = nil;
+static YCPlaceholderGeocoder *single = nil;
 + (id)allocWithZone:(NSZone *)zone
 {
     if (single == nil) {

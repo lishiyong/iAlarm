@@ -11,7 +11,6 @@
 #import "YCGeocoder.h"
 
 @interface YCGeocoderBefore5 : YCGeocoder<MKReverseGeocoderDelegate>{
-    NSTimeInterval _timeout;
     BSForwardGeocoder *_forwardGeocoder;
     MKReverseGeocoder *_resverseGeocoder;
     YCReverseGeocodeCompletionHandler _reverseGeocodeCompletionHandler;

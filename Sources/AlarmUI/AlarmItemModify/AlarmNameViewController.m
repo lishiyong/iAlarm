@@ -108,7 +108,7 @@
     
     
     //存储alarmNameTextField的初始情况
-    NSString *s = [self.alarmNameTextField.text trim];
+    NSString *s = [self.alarmNameTextField.text stringByTrim];
     isNameTextFieldNullWhenAppear = (s==nil || [s length]<=0);
      
     

@@ -57,11 +57,11 @@ NSString* YCGetAddressString(MKPlacemark* placemark){
 	
 	///////////////
 	//去空格
-	thoroughfare = [thoroughfare trim];	
-	subthoroughfare = [subthoroughfare trim];
-	locality = [locality trim];
-	administrativeArea = [administrativeArea trim];
-	country = [country trim];
+	thoroughfare = [thoroughfare stringByTrim];	
+	subthoroughfare = [subthoroughfare stringByTrim];
+	locality = [locality stringByTrim];
+	administrativeArea = [administrativeArea stringByTrim];
+	country = [country stringByTrim];
 	///////////////
 	
 	if(locality == nil && thoroughfare == nil && subthoroughfare == nil  
@@ -76,7 +76,7 @@ NSString* YCGetAddressString(MKPlacemark* placemark){
 	
 	//NSString *string = [[[NSString alloc] initWithFormat:@"%@ %@ %@ %@ %@",thoroughfare,subthoroughfare,locality,administrativeArea,country] autorelease];
 	NSString *string = [NSString stringWithFormat:@"%@ %@ %@ %@ %@",thoroughfare,subthoroughfare,locality,administrativeArea,country];
-	NSString *stringTrim = [string trim];
+	NSString *stringTrim = [string stringByTrim];
 	
 	if ([stringTrim length] == 0) {
 		 return nil;
@@ -92,9 +92,9 @@ NSString* YCGetAddressShortString(MKPlacemark* placemark){
 	
 	///////////////
 	//去空格
-	thoroughfare = [thoroughfare trim];	
-	subthoroughfare = [subthoroughfare trim];
-	locality = [locality trim];
+	thoroughfare = [thoroughfare stringByTrim];	
+	subthoroughfare = [subthoroughfare stringByTrim];
+	locality = [locality stringByTrim];
 	///////////////
 	
 	if(thoroughfare == nil && subthoroughfare == nil && locality) return nil;
@@ -104,7 +104,7 @@ NSString* YCGetAddressShortString(MKPlacemark* placemark){
 	if (locality ==nil) locality=@"";
 	
 	NSString *string = [[[NSString alloc] initWithFormat:@"%@ %@ %@",thoroughfare,subthoroughfare,locality] autorelease];
-	NSString *stringTrim = [string trim];
+	NSString *stringTrim = [string stringByTrim];
 	if ([stringTrim length] == 0) {
 		stringTrim = YCGetAddressString(placemark); //短地址为空，使用长地址
 	}
@@ -117,7 +117,7 @@ NSString* YCGetAddressTitleString(MKPlacemark* placemark){
 	
 	///////////////
 	//去空格
-	thoroughfare = [thoroughfare trim];	
+	thoroughfare = [thoroughfare stringByTrim];	
 	///////////////
 	
 	if([thoroughfare length] == 0) thoroughfare = YCGetAddressShortString(placemark);

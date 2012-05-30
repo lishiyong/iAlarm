@@ -1464,7 +1464,7 @@
 
 #pragma mark - Utility
 
-#define kTimeOutForReverse 5.0
+#define kTimeOutForReverse 30.0
 -(void)reverseGeocodeWithAnnotation:(IAAnnotation*)annotation
 {	
     YCGeocoder *geocoder = [[[YCGeocoder alloc] initWithTimeout:kTimeOutForReverse] autorelease];
