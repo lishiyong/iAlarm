@@ -97,11 +97,14 @@
 }
 
 - (id)alarmTemp{
-	
+
 	if (alarmTemp == nil) {
 		alarmTemp = [self.alarm copy];
 		//if (!self.newAlarm) {
 			[alarmTemp addObserver:self forKeyPath:@"alarmName" options:0 context:nil];
+            [alarmTemp addObserver:self forKeyPath:@"positionTitle" options:0 context:nil];
+            [alarmTemp addObserver:self forKeyPath:@"positionShort" options:0 context:nil];
+            [alarmTemp addObserver:self forKeyPath:@"position" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"placemark" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"enabled" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"realCoordinate" options:0 context:nil];
@@ -995,22 +998,30 @@
     YCGeocoder *geocoder = [[[YCGeocoder alloc] initWithTimeout:kTimeOutForReverse] autorelease];
     CLLocation *location = [[[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude] autorelease];
     [geocoder reverseGeocodeLocation:location completionHandler:^(YCPlacemark *placemark, NSError *error) {
+        NSString *coordinateString = NSLocalizedStringFromCLLocationCoordinate2D(coordinate,kCoordinateFrmStringNorthLatitude,kCoordinateFrmStringSouthLatitude,kCoordinateFrmStringEastLongitude,kCoordinateFrmStringWestLongitude);
+        
         IAAlarm *theAlarm = self.alarmTemp;
         if (!error){
 
-            theAlarm.position = placemark.longAddress;
-            theAlarm.positionShort = placemark.shortAddress;
-            theAlarm.positionTitle = placemark.titleAddress;
+            NSString *titleAddress = placemark.titleAddress ? placemark.titleAddress : KDefaultAlarmName;
+            NSString *shortAddress = placemark.shortAddress ? placemark.shortAddress : coordinateString;
+            NSString *longAddress = placemark.longAddress ? placemark.longAddress : coordinateString;
+            
+            theAlarm.position = longAddress;
+            theAlarm.positionShort = shortAddress;
+            theAlarm.positionTitle = titleAddress;
+            theAlarm.placemark = placemark;
             theAlarm.usedCoordinateAddress = NO;
             
         }else{            
             if (!theAlarm.nameChanged) {
                 theAlarm.alarmName = nil;//把以前版本生成的名称冲掉
             }
-            NSString *coordinateString = NSLocalizedStringFromCLLocationCoordinate2D(coordinate,kCoordinateFrmStringNorthLatitude,kCoordinateFrmStringSouthLatitude,kCoordinateFrmStringEastLongitude,kCoordinateFrmStringWestLongitude);
+            
             theAlarm.position = coordinateString;
             theAlarm.positionShort = coordinateString;
             theAlarm.positionTitle = KDefaultAlarmName;
+            theAlarm.placemark = nil;
             theAlarm.usedCoordinateAddress = YES; //反转失败，用坐标做地址
             
         }
@@ -1442,6 +1453,9 @@
 	if (alarmTemp) {
 		//if (!self.newAlarm) {
 			[alarmTemp removeObserver:self forKeyPath:@"alarmName"];
+            [alarmTemp removeObserver:self forKeyPath:@"positionTitle"];
+            [alarmTemp removeObserver:self forKeyPath:@"positionShort"];
+            [alarmTemp removeObserver:self forKeyPath:@"position"];
 			[alarmTemp removeObserver:self forKeyPath:@"placemark"];
 			[alarmTemp removeObserver:self forKeyPath:@"enabled"];
 			[alarmTemp removeObserver:self forKeyPath:@"realCoordinate"];

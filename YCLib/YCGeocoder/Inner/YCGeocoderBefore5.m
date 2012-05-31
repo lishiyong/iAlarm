@@ -11,11 +11,17 @@
 
 @interface YCGeocoderBefore5 (private) 
 
-- (void)haltForwardGeocode;
-- (void)haltReverseGeocode;
+/**
+ 用超时错误回调
+ **/
+- (void)_doFailForwardGeocodeWithTimeoutError;
+- (void)_doFailReverseGeocodeWithTimeoutError;
 
-- (void)cancelForwardGeocode;
-- (void)cancelReverseGeocode;
+/**
+ 结束查询，并释放相关资源
+ **/
+- (void)_cancelForwardGeocode;
+- (void)_cancelReverseGeocode;
 
 @end
 
@@ -38,16 +44,16 @@
 
 - (void)dealloc{
     [_forwardGeocoder release];
-    [_resverseGeocoder cancel];
-    [_resverseGeocoder release];
+    [_resverseGeocoder cancel];[_resverseGeocoder release];
+    [_reverseGeocodeCompletionHandler release];
     [super dealloc];
 }
 
 #pragma mark - Implement Abstract Super Method
 
 - (void)cancel{
-    [self cancelForwardGeocode];
-    [self cancelReverseGeocode];
+    [self _cancelForwardGeocode];
+    [self _cancelReverseGeocode];
 }
 
 - (void)geocodeAddressDictionary:(NSDictionary *)addressDictionary completionHandler:(YCGeocodeCompletionHandler)completionHandler{
@@ -64,13 +70,13 @@
 
 - (void)reverseGeocodeLocation:(CLLocation *)location completionHandler:(YCReverseGeocodeCompletionHandler)completionHandler{
     //先取消，不论有没有
-    [self cancelReverseGeocode];
+    [self _cancelReverseGeocode];
     
     _reverseGeocodeCompletionHandler = [completionHandler copy] ;
     _resverseGeocoder = [[MKReverseGeocoder alloc] initWithCoordinate:location.coordinate];
     _resverseGeocoder.delegate = self;
     [_resverseGeocoder start];
-    [self performSelector:@selector(haltReverseGeocode) withObject:nil afterDelay:_timeout]; //
+    [self performSelector:@selector(_doFailReverseGeocodeWithTimeoutError) withObject:nil afterDelay:_timeout]; //
     
 }
 
@@ -78,39 +84,41 @@
 
 - (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFindPlacemark:(MKPlacemark *)placemark{
     _reverseGeocodeCompletionHandler([[YCPlacemark alloc] initWithPlacemark:placemark],nil);
-    [self cancelReverseGeocode];
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(haltReverseGeocode) object:nil];
+    [self _cancelReverseGeocode];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_doFailReverseGeocodeWithTimeoutError) object:nil];
 }
 
 - (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFailWithError:(NSError *)error{
     _reverseGeocodeCompletionHandler(nil,error);
-    [self cancelReverseGeocode];
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(haltReverseGeocode) object:nil];
+    [self _cancelReverseGeocode];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_doFailReverseGeocodeWithTimeoutError) object:nil];
 }
 
 #pragma mark - 工具
 
-- (void)haltForwardGeocode{
+- (void)_doFailForwardGeocodeWithTimeoutError{
     
 }
 
-- (void)cancelForwardGeocode{
+- (void)_cancelForwardGeocode{
     
 }
 
-- (void)haltReverseGeocode{
-    
-    [_resverseGeocoder.delegate reverseGeocoder:_resverseGeocoder didFailWithError:[NSError errorWithDomain:NSOSStatusErrorDomain code:-100 userInfo:nil] ];
-    
+- (void)_doFailReverseGeocodeWithTimeoutError{
+    if (_resverseGeocoder.querying) {
+        [_resverseGeocoder.delegate reverseGeocoder:_resverseGeocoder didFailWithError:[NSError errorWithDomain:NSOSStatusErrorDomain code:-100 userInfo:nil] ];
+    }
 }
 
-- (void)cancelReverseGeocode{
-    if (_resverseGeocoder && _resverseGeocoder.querying) {
-        [_resverseGeocoder cancel];
+- (void)_cancelReverseGeocode{
+    if (_resverseGeocoder) {
+        if (_resverseGeocoder.querying) {
+            [_resverseGeocoder cancel];
+        }
         [_resverseGeocoder release];
         _resverseGeocoder = nil;
     }
-    
+
     if (_reverseGeocodeCompletionHandler) {
         [_reverseGeocodeCompletionHandler release];
         _reverseGeocodeCompletionHandler = nil;

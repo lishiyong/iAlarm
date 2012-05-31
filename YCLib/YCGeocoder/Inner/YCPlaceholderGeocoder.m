@@ -6,6 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCDouble.h"
 #import "YCGeocoderBefore5.h"
 #import "YCGeocoderAfter5.h"
 #import "YCPlaceholderGeocoder.h"
@@ -17,8 +18,12 @@
 
 - (id)initWithTimeout:(NSTimeInterval)timeout{
     
+    //5.0版本才支持 CLGeocoder 这个类
+    double systeVersion = [[UIDevice currentDevice].systemVersion doubleValue];
+    NSComparisonResult result = YCCompareDouble(systeVersion, 5.0);
+    
     id obj = nil;
-    if (NO) {
+    if (result == NSOrderedDescending || result == NSOrderedSame)  {
         obj = [[YCGeocoderAfter5 alloc] initWithTimeout:timeout];
     }else{
         obj = [[YCGeocoderBefore5 alloc] initWithTimeout:timeout];

@@ -352,7 +352,7 @@
 		aAnnotationView.draggable = theEditing;
 		
 		//更改标题
-		NSString *newTitle = theEditing ? KLabelMapNewAnnotationTitle : alarm.alarmName;
+		NSString *newTitle = theEditing ? KLabelMapNewAnnotationTitle : (alarm.alarmName ? alarm.alarmName : alarm.positionTitle);
 		aAnnotation.title = newTitle;
 	}
 
@@ -1464,33 +1464,49 @@
 
 #pragma mark - Utility
 
-#define kTimeOutForReverse 30.0
+#define kTimeOutForReverse 8.0
 -(void)reverseGeocodeWithAnnotation:(IAAnnotation*)annotation
 {	
     YCGeocoder *geocoder = [[[YCGeocoder alloc] initWithTimeout:kTimeOutForReverse] autorelease];
     CLLocationCoordinate2D visualCoordinate = annotation.coordinate;
     CLLocation *location = [[[CLLocation alloc] initWithLatitude:visualCoordinate.latitude longitude:visualCoordinate.longitude] autorelease];
     
-    [geocoder reverseGeocodeLocation:location completionHandler:^(YCPlacemark *placemark, NSError *error) {
+    [geocoder reverseGeocodeLocation:location completionHandler:^(YCPlacemark *placemark, NSError *error) {        
+        NSString *coordinateString = NSLocalizedStringFromCLLocationCoordinate2D(visualCoordinate,kCoordinateFrmStringNorthLatitude,kCoordinateFrmStringSouthLatitude,kCoordinateFrmStringEastLongitude,kCoordinateFrmStringWestLongitude);
+        
         IAAlarm *alarm = [IAAlarm findForAlarmId:[(IAAnnotation*)annotation identifier]];
-        if (!error){
+        if (!error && placemark){
+            
+            NSString *titleAddress = placemark.titleAddress ? placemark.titleAddress : KDefaultAlarmName;
+            NSString *shortAddress = placemark.shortAddress ? placemark.shortAddress : coordinateString;
+            NSString *longAddress = placemark.longAddress ? placemark.longAddress : coordinateString;
            
             if (!alarm.nameChanged) {
-                annotation.title = placemark.titleAddress;
+                /*不灵
+                annotation.title = nil;
+                [annotation performSelector:@selector(setTitle:) withObject:titleAddress afterDelay:0.2];//先赋空，再赋值，为了拉伸view
+                 */
+                annotation.title = titleAddress;
             }
-            alarm.position = placemark.longAddress;
-            alarm.positionShort = placemark.shortAddress;
-            alarm.positionTitle = placemark.titleAddress;  
+            alarm.position = longAddress;
+            alarm.positionShort = shortAddress;
+            alarm.positionTitle = titleAddress;  
             alarm.placemark = placemark;
             alarm.usedCoordinateAddress = NO;
+            
+            //test
+            [placemark debug];
             
         }else{
             
             if (!alarm.nameChanged) {
-                annotation.title = KDefaultAlarmName;
+                /*不灵annotation.title = nil; 
+                [annotation performSelector:@selector(setTitle:) withObject:KDefaultAlarmName afterDelay:0.2];//先赋空，再赋值，为了拉伸view
+                 */
+                annotation.title = KDefaultAlarmName; 
                 alarm.alarmName = nil;//把以前版本生成的名称冲掉
             }
-            NSString *coordinateString = NSLocalizedStringFromCLLocationCoordinate2D(visualCoordinate,kCoordinateFrmStringNorthLatitude,kCoordinateFrmStringSouthLatitude,kCoordinateFrmStringEastLongitude,kCoordinateFrmStringWestLongitude);
+            
             alarm.position = coordinateString;
             alarm.positionShort = coordinateString;
             alarm.positionTitle = KDefaultAlarmName;

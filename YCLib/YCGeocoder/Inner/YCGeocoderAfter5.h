@@ -10,7 +10,8 @@
 #import <CoreLocation/CoreLocation.h>
 
 @interface YCGeocoderAfter5 : YCGeocoder{
-    CLGeocoder *geocoder;
+    CLGeocoder *_geocoder;
+    CLGeocodeCompletionHandler _reverseGeocodeCompletionHandler;
 }
 
 @end

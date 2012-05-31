@@ -20,7 +20,7 @@
     if (self) {
         [_separater release];
         if ([_countryCode isEqualToString:@"JP"]) { 
-            _separater = [[NSString stringWithFormat:@"−"] retain]; 
+            _separater = [[NSString stringWithFormat:@""] retain]; 
         }else{
             _separater = [[NSString stringWithFormat:@""] retain]; 
         }

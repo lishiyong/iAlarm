@@ -12,7 +12,10 @@
 
 @interface YCPlacemarkOthers (private)
 
-- (NSInteger)_validItemCount;
+/**
+ _addressDictionary中有效的项目数
+ **/
+- (NSInteger)_validItemCount; 
 
 @end
 

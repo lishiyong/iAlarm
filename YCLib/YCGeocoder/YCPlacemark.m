@@ -86,10 +86,17 @@
                 [_addressDictionary setObject:state forKey:(NSString *) kABPersonAddressStateKey];
 
         }
+        
+        //去掉_addressDictionary中重复的数据
+        NSString *city = [[_addressDictionary objectForKey:(NSString *) kABPersonAddressCityKey] stringByTrim];
+        NSString *state = [[_addressDictionary objectForKey:(NSString *) kABPersonAddressStateKey] stringByTrim];
+        if (city && state) {
+            if ([city isEqualToString:state]) 
+                [_addressDictionary removeObjectForKey:(NSString *) kABPersonAddressStateKey];
+        }
     
     }
      
- 
     return self;
 }
 
@@ -150,8 +157,21 @@
 #pragma mark - 
 
 - (NSString *)formattedFullAddressLines{
-    //return ABCreateStringWithAddressDictionary(_addressDictionary,NO);
-    return nil;
+    NSString *address = [ABCreateStringWithAddressDictionary(_addressDictionary,NO) stringByTrim];
+    address = (address.length > 0) ? address : nil;
+    if (!address) {
+        if ([_placemark respondsToSelector:@selector(name)]) {
+            address = _placemark.name;
+        }
+        if ([_placemark respondsToSelector:@selector(ocean)]) {
+            address = _placemark.ocean;
+        }
+        if ([_placemark respondsToSelector:@selector(inlandWater)]) {
+            address = _placemark.name;
+        }
+    }
+    address = [address stringByTrim];
+    return (address.length > 0) ? address : nil ;
 }
 
 - (NSString *)longAddress{
@@ -189,7 +209,15 @@
 }
 
 - (NSString *)street{
-    return [_placemark.thoroughfare stringByTrim];
+    NSString *street = [_placemark.thoroughfare stringByTrim];
+    NSString *subCity = self.subCity;
+    
+    //排除街道中包含区的名字
+    if ([street hasPrefix:subCity] || [street hasSuffix:subCity]) {
+        [street stringByReplacingOccurrencesOfString:subCity withString:@""];
+    }
+    
+    return street;
 }
 
 - (NSString *)subStreet{
@@ -202,6 +230,31 @@
 
 - (NSString *)countryCode{
     return _countryCode;
+}
+
+- (void)debug{
+    
+        NSLog(@"_placemark = %@",_placemark);
+        NSLog(@"formattedFullAddressLines = %@",[self formattedFullAddressLines]);
+    
+        NSLog(@"====================");
+    
+        NSLog(@"longAddress = %@",[self longAddress]);
+        NSLog(@"shortAddress = %@",[self shortAddress]);
+        NSLog(@"titleAddress = %@",[self titleAddress]);
+        
+        NSLog(@"====================");
+
+        NSLog(@"country = %@",[self country]);
+        NSLog(@"state = %@",[self state]);
+        NSLog(@"subState = %@",[self subState]);
+        NSLog(@"city = %@",[self city]); 
+        NSLog(@"subCity = %@",[self subCity]);
+        NSLog(@"street = %@",[self street]);
+        NSLog(@"subStreet = %@",[self subStreet]);
+        NSLog(@"zip = %@",[self zip]);
+        NSLog(@"countryCode = %@",[self countryCode]);
+        
 }
 
 @end

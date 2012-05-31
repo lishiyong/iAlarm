@@ -43,6 +43,7 @@
     alarm = theAlarm;
     
     alarmTitleLabel.text = self.alarm.alarmName ? self.alarm.alarmName : self.alarm.positionTitle;
+    alarmDetailLabel.text = self.alarm.position;
     self.enabled = alarm.enabled;
     if (self.enabled) {
         NSString *imageName = self.alarm.alarmRadiusType.alarmRadiusTypeImageName;
@@ -93,13 +94,13 @@
                 self.userInteractionEnabled = NO;
                 [UIView transitionWithView:self.alarmDetailLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^()
                  {
-                     self.alarmDetailLabel.text = self.alarm.positionShort;
+                     self.alarmDetailLabel.text = self.alarm.position;
                  } completion:^(BOOL finished)
                  {
                      self.userInteractionEnabled = YES;
                  }];
             }else{
-               self.alarmDetailLabel.text = self.alarm.positionShort; 
+               self.alarmDetailLabel.text = self.alarm.position; 
             }
 
         }
