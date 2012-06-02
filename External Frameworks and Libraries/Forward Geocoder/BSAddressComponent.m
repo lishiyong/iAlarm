@@ -25,7 +25,7 @@
 }
 
 - (NSString *)description{
-    return [NSString stringWithFormat:@"longName = %@ shortName = %@ types = ",_longName,_shortName,_types];
+    return [NSString stringWithFormat:@"longName = %@ shortName = %@ types = %@",_longName,_shortName,_types];
 }
 
 @end

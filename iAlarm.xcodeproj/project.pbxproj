@@ -888,6 +888,8 @@
 		9CA9932513025ADC00298E5D /* AnnotationSubtitleTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA9931413025ADC00298E5D /* AnnotationSubtitleTableCell.xib */; };
 		9CA9932613025ADC00298E5D /* AnnotationTitleTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA9931613025ADC00298E5D /* AnnotationTitleTableCell.m */; };
 		9CA9932713025ADC00298E5D /* AnnotationTitleTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA9931713025ADC00298E5D /* AnnotationTitleTableCell.xib */; };
+		9CB19B4D1578DF9000C3DD7E /* NSError+YCGeocode.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB19B4C1578DF9000C3DD7E /* NSError+YCGeocode.m */; };
+		9CB19B4E1578DF9000C3DD7E /* NSError+YCGeocode.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB19B4C1578DF9000C3DD7E /* NSError+YCGeocode.m */; };
 		9CC011EF13C6E3ED0042D744 /* BackgroundViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC011EC13C6E3ED0042D744 /* BackgroundViewController.m */; };
 		9CC011F013C6E3ED0042D744 /* BackgroundViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CC011ED13C6E3ED0042D744 /* BackgroundViewController.xib */; };
 		9CC011F113C6E3ED0042D744 /* BackgroundViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC011EC13C6E3ED0042D744 /* BackgroundViewController.m */; };
@@ -1186,7 +1188,7 @@
 		8D1107310486CEB800E47090 /* iAlarm-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "iAlarm-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		9C00848B1575BB6F002434CC /* YCPlaceholderPlacemark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCPlaceholderPlacemark.m; path = YCGeocoder/Inner/YCPlaceholderPlacemark.m; sourceTree = "<group>"; };
 		9C00848C1575BB6F002434CC /* YCPlaceholderPlacemark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCPlaceholderPlacemark.h; path = YCGeocoder/Inner/YCPlaceholderPlacemark.h; sourceTree = "<group>"; };
-		9C0084971575BBE2002434CC /* YCPlacemarkUSCA.h */ = {isa = PBXFileReference; fileEncoding = 4; name = YCPlacemarkUSCA.h; path = YCGeocoder/Inner/YCPlacemarkUSCA.h; sourceTree = "<group>"; };
+		9C0084971575BBE2002434CC /* YCPlacemarkUSCA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCPlacemarkUSCA.h; path = YCGeocoder/Inner/YCPlacemarkUSCA.h; sourceTree = "<group>"; };
 		9C0084981575BBE2002434CC /* YCPlacemarkUSCA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCPlacemarkUSCA.m; path = YCGeocoder/Inner/YCPlacemarkUSCA.m; sourceTree = "<group>"; };
 		9C00849B1575BBF5002434CC /* YCPlacemarkOthers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCPlacemarkOthers.h; path = YCGeocoder/Inner/YCPlacemarkOthers.h; sourceTree = "<group>"; };
 		9C00849C1575BBF5002434CC /* YCPlacemarkOthers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCPlacemarkOthers.m; path = YCGeocoder/Inner/YCPlacemarkOthers.m; sourceTree = "<group>"; };
@@ -1736,6 +1738,8 @@
 		9CA9931513025ADC00298E5D /* AnnotationTitleTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnnotationTitleTableCell.h; sourceTree = "<group>"; };
 		9CA9931613025ADC00298E5D /* AnnotationTitleTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnnotationTitleTableCell.m; sourceTree = "<group>"; };
 		9CA9931713025ADC00298E5D /* AnnotationTitleTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AnnotationTitleTableCell.xib; sourceTree = "<group>"; };
+		9CB19B4B1578DF9000C3DD7E /* NSError+YCGeocode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSError+YCGeocode.h"; path = "YCGeocoder/Inner/NSError+YCGeocode.h"; sourceTree = "<group>"; };
+		9CB19B4C1578DF9000C3DD7E /* NSError+YCGeocode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSError+YCGeocode.m"; path = "YCGeocoder/Inner/NSError+YCGeocode.m"; sourceTree = "<group>"; };
 		9CC011EC13C6E3ED0042D744 /* BackgroundViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackgroundViewController.m; sourceTree = "<group>"; };
 		9CC011ED13C6E3ED0042D744 /* BackgroundViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BackgroundViewController.xib; sourceTree = "<group>"; };
 		9CC011EE13C6E3ED0042D744 /* BackgroundViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundViewController.h; sourceTree = "<group>"; };
@@ -2272,6 +2276,8 @@
 				9C0084981575BBE2002434CC /* YCPlacemarkUSCA.m */,
 				9C00849B1575BBF5002434CC /* YCPlacemarkOthers.h */,
 				9C00849C1575BBF5002434CC /* YCPlacemarkOthers.m */,
+				9CB19B4B1578DF9000C3DD7E /* NSError+YCGeocode.h */,
+				9CB19B4C1578DF9000C3DD7E /* NSError+YCGeocode.m */,
 			);
 			name = Inner;
 			sourceTree = "<group>";
@@ -4858,6 +4864,7 @@
 				9C0084991575BBE2002434CC /* YCPlacemarkUSCA.m in Sources */,
 				9C00849D1575BBF6002434CC /* YCPlacemarkOthers.m in Sources */,
 				9C0084A11575BC27002434CC /* YCPlacemarkJPCN.m in Sources */,
+				9CB19B4D1578DF9000C3DD7E /* NSError+YCGeocode.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5062,6 +5069,7 @@
 				9C00849A1575BBE2002434CC /* YCPlacemarkUSCA.m in Sources */,
 				9C00849E1575BBF6002434CC /* YCPlacemarkOthers.m in Sources */,
 				9C0084A21575BC27002434CC /* YCPlacemarkJPCN.m in Sources */,
+				9CB19B4E1578DF9000C3DD7E /* NSError+YCGeocode.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

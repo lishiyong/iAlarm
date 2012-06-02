@@ -30,7 +30,7 @@
 }
 
 /**
- 千叶县松户市 五香西３丁目−２７−３４
+ 千叶县松户市 五香西３丁目２７−３４
  **/
 - (NSString *)longAddress{
     //没有省，替代:国名
@@ -54,7 +54,7 @@
 }
 
 /**
- 松户市 五香西３丁目−２７−３４
+ 松户市 五香西３丁目２７−３４
  **/
 - (NSString *)shortAddress{
     //没有城市，替代:先副省，再省，再国名
@@ -78,7 +78,7 @@
 }
 
 /**
- 五香西３丁目−２７−３４
+ 五香西 ３丁目２７−３４
  **/
 - (NSString *)titleAddress{
     //没有区，替代:先市，再副省，再省
@@ -89,6 +89,7 @@
     
     NSMutableString *address = [NSMutableString string];
     [address appendString:(subCity ? subCity : @"")];
+    [address appendString:@" "]; //中间的空格
     [address appendString:(self.street ? self.street : @"")];
     if (self.subStreet) {
         [address appendString:_separater];

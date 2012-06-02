@@ -214,7 +214,8 @@
     
     //排除街道中包含区的名字
     if ([street hasPrefix:subCity] || [street hasSuffix:subCity]) {
-        [street stringByReplacingOccurrencesOfString:subCity withString:@""];
+        street = [street stringByReplacingOccurrencesOfString:subCity withString:@""];
+        street = [street stringByTrim];
     }
     
     return street;

@@ -218,7 +218,7 @@
 	else if ([elementName isEqualToString:@"short_name"] && currentAddressComponent != nil) {
 		currentAddressComponent.shortName = elementValue;
     }
-	else if ([elementName isEqualToString:@"type"]) {
+    else if ([elementName isEqualToString:@"type"]) {
 		[typesArray addObject:elementValue];
     }
 	else if ([elementName isEqualToString:@"formatted_address"]) {

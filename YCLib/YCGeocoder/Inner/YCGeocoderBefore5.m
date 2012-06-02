@@ -6,6 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "NSError+YCGeocode.h"
 #import "YCPlacemark.h"
 #import "YCGeocoderBefore5.h"
 
@@ -37,7 +38,7 @@
     self = [super initWithTimeout:timeout];
     if (self) {
         _forwardGeocoder = [[BSForwardGeocoder alloc] init];
-        //resverseGeocoder;
+         _forwardGeocoder.useHTTP = YES;
     }
     return self;
 }
@@ -65,6 +66,32 @@
 }
 
 - (void)geocodeAddressString:(NSString *)addressString inRegion:(CLRegion *)region completionHandler:(YCGeocodeCompletionHandler)completionHandler{
+    
+    MKMapRect mapRect = MKMapRectNull;
+    if (region) {
+        MKMapPoint origin = MKMapPointForCoordinate(region.center);
+        double width = MKMapPointsPerMeterAtLatitude(region.center.latitude) * region.radius * 2;
+        double height = region.radius * 2; //长、宽距离与MKMapSize的转换原理，来源于墨卡托投影的原理。
+        mapRect = (MKMapRect){origin,{width,height}};
+        
+        //如果mapRect跨越了180度经线
+        if (MKMapRectSpans180thMeridian(mapRect)) {
+            mapRect = MKMapRectRemainder(mapRect);
+        }
+    }
+   
+    
+    [_forwardGeocoder forwardGeocodeWithQuery:addressString regionBiasing:nil viewportBiasing:mapRect 
+                                      success: ^(NSArray *results)
+    {
+        NSLog(@"results = %@",[results description]);
+        completionHandler(nil,nil);                                  
+    } 
+                                      failure:^(int status, NSString *errorMessage)
+    {
+        NSLog(@"status = %d,errorMessage = %@",status,errorMessage);
+        completionHandler(nil,[NSError errorWithBSForwardGeocodeStatus:status]);                              
+    }];
     
 }
 

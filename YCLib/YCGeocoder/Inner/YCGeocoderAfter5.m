@@ -55,6 +55,11 @@
 
 - (void)geocodeAddressString:(NSString *)addressString inRegion:(CLRegion *)region completionHandler:(YCGeocodeCompletionHandler)completionHandler{
     
+    NSLog(@"start...."); 
+    [_geocoder geocodeAddressString:addressString inRegion:region completionHandler:^(NSArray *placemarks, NSError *error){
+        NSLog(@"error = %@",error); 
+        NSLog(@"placemarks = %@",[placemarks description]); 
+    }];
 }
 
 - (void)reverseGeocodeLocation:(CLLocation *)location completionHandler:(YCReverseGeocodeCompletionHandler)completionHandler{

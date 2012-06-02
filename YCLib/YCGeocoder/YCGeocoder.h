@@ -6,13 +6,26 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
-//#import <CoreLocation/CoreLocation.h>
 #import <Foundation/Foundation.h>
+
+extern NSString *YCGeocodeErrorDomain ;
+
+// 错误编号
+enum YCGeocodeErrorCode {
+    YCGeocodeErrorUnknown = 1,
+    YCGeocodeErrorServerFailure,
+    YCGeocodeErrorNetworkError,
+    YCGeocodeErrorUnKnownAddress,
+    YCGeocodeErrorUnAvailableAddress,
+    YCGeocodeErrorTooManyQueries,
+};
+ 
+
 
 @class CLLocation, CLRegion;
 @class YCPlacemark;
 
-typedef void (^YCGeocodeCompletionHandler)(NSArray *placemark, NSError *error);
+typedef void (^YCGeocodeCompletionHandler)(NSArray *placemarks, NSError *error);
 typedef void (^YCReverseGeocodeCompletionHandler)(YCPlacemark *placemark, NSError *error);
 
 @interface YCGeocoder : NSObject{

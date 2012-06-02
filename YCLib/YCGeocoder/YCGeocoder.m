@@ -9,6 +9,8 @@
 #import "YCPlaceholderGeocoder.h"
 #import "YCGeocoder.h"
 
+NSString *YCGeocodeErrorDomain = @"YCGeocodeErrorDomain";
+
 @implementation YCGeocoder
 @synthesize geocoding, timeout = _timeout;
 

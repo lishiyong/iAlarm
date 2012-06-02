@@ -6,6 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCLib.h"
 #import "YCLocation.h"
 #import "YCFunctions.h"
 #import "YCLocationManager.h"
@@ -1175,6 +1176,19 @@
 
 - (NSArray*)searchController:(YCSearchController *)controller searchString:(NSString *)searchString
 {
+    CLLocationCoordinate2D centerCoordinate = self.mapsViewController.mapView.centerCoordinate;
+    CLRegion *curLoctionRegion = [[[CLRegion alloc] initCircularRegionWithCenter:centerCoordinate radius:6000.0 identifier:@"Maps Center Region"] autorelease];
+    
+    YCGeocoder *aforwardGeocoder = [[YCGeocoder alloc] initWithTimeout:30.0];
+    [aforwardGeocoder geocodeAddressString:searchString inRegion:curLoctionRegion completionHandler:
+     ^(NSArray *placemarks, NSError *error){
+         ;
+     }];
+    
+    
+    return nil;
+    
+    ///////////////////////////////
     //当前地图可视范围的视口
     MKMapRect visibleBounds = self.mapsViewController.mapView.visibleMapRect;
     //当前位置的视口

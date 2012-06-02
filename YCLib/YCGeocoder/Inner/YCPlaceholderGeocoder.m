@@ -24,7 +24,8 @@
     
     id obj = nil;
     if (result == NSOrderedDescending || result == NSOrderedSame)  {
-        obj = [[YCGeocoderAfter5 alloc] initWithTimeout:timeout];
+        obj = [[YCGeocoderBefore5 alloc] initWithTimeout:timeout];
+        //obj = [[YCGeocoderAfter5 alloc] initWithTimeout:timeout];
     }else{
         obj = [[YCGeocoderBefore5 alloc] initWithTimeout:timeout];
     }

@@ -99,7 +99,7 @@
 }
 
 - (NSString *)description{
-    return [NSString stringWithFormat:@"%@ %@",NSStringFromCLLocationCoordinate2D(self.coordinate),self.address];
+    return [NSString stringWithFormat:@"%@ %@ \n %@",NSStringFromCLLocationCoordinate2D(self.coordinate),self.address,[self.addressComponents description]];
 }
 
 - (NSString *)debugDescription{
