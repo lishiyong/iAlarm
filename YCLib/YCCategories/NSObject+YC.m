@@ -21,6 +21,9 @@
 + (void)_removeBlockOperationsWithBlockOperation:(id)aBlockOperation;
 + (NSArray*)_blockOperationsForTarget:(id)aTarget;
 
+//做这个方法，是为了在主线程中调用 _removeBlockOperationsWithBlockOperation:
+- (void)_instanceRemoveBlockOperationsWithBlockOperation:(id)aBlockOperation;
+
 @end
 
 
@@ -60,6 +63,10 @@
         }
     }
     [[NSObject _blockOperationPairs] removeObject:removingDic];
+}
+
+- (void)_instanceRemoveBlockOperationsWithBlockOperation:(id)aBlockOperation{
+    [NSObject _removeBlockOperationsWithBlockOperation:aBlockOperation];
 }
 
 + (NSArray*)_blockOperationsForTarget:(id)aTarget{
@@ -201,8 +208,10 @@ static NSTimer *gTimer = nil;
     
     //执行完成就删除。
     blockOperation.completionBlock = 
-    ^{
-        [NSObject _removeBlockOperationsWithBlockOperation:blockOperation];
+    ^{ //这个块竟会放到其他线程中来执行，所以...
+        [self performSelectorOnMainThread:@selector(_instanceRemoveBlockOperationsWithBlockOperation:) withObject:blockOperation waitUntilDone:NO];
+        
+        //[NSObject _removeBlockOperationsWithBlockOperation:blockOperation];
     };
 }
 

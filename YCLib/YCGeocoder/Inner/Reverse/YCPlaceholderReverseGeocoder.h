@@ -6,9 +6,9 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
-#import "YCGeocoder.h"
+#import "YCReverseGeocoder.h"
 
-@interface YCPlaceholderGeocoder : YCGeocoder
+@interface YCPlaceholderReverseGeocoder : YCReverseGeocoder
 
 
 @end

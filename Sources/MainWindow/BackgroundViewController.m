@@ -40,16 +40,6 @@
 @synthesize toolbar;
 @synthesize animationBackgroundView;
 
--(id)forwardGeocoder{
-	if (forwardGeocoder == nil) {
-		forwardGeocoder = [[BSForwardGeocoder alloc] initWithDelegate:self];
-        forwardGeocoder.timeoutInterval = 20.0;
-        forwardGeocoder.useHTTP = YES;
-	}
-	return forwardGeocoder;
-}
-
-
 - (id)editButtonItem{
 	
 	if (!self->editButtonItem) {
@@ -683,7 +673,7 @@
     [searchResultsAlert dismissWithClickedButtonIndex:searchResultsAlert.cancelButtonIndex animated:NO];
     [searchAlert dismissWithClickedButtonIndex:searchAlert.cancelButtonIndex animated:NO];
     [self.searchController setActive:NO animated:NO];
-    [self.forwardGeocoder cancel];
+    [forwardGeocoderManager cancel];
 }
 
 - (void)registerNotifications {
@@ -1014,6 +1004,48 @@
 
 #pragma mark -
 #pragma mark Utility - ForwardGeocoder
+-(void)resetAnnotationWithPlacemark:(YCPlacemark*)placemark{
+    
+    CLLocationCoordinate2D visualCoordinate = placemark.region.center;
+    
+    ////////////////////////
+	//Zoom into the location
+    
+    CLLocationDistance latitudinalMeters = placemark.region.radius*2; 
+    CLLocationDistance longitudinalMeters = MKMetersPerMapPointAtLatitude(placemark.region.center.latitude) * placemark.region.radius *2;
+	MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(visualCoordinate, latitudinalMeters,longitudinalMeters);
+    region = [self.mapsViewController.mapView regionThatFits:region];
+    
+    
+	if (!YCMKCoordinateRegionIsValid(region))
+		region = self.mapsViewController.mapView.region;
+	
+	
+	double delay = [self.mapsViewController.mapView setRegion:region FromWorld:YES animatedToWorld:YES animatedToPlace:YES];
+	//Zoom into the location
+	////////////////////////
+    
+    NSString *coordinateString = NSLocalizedStringFromCLLocationCoordinate2D(visualCoordinate,kCoordinateFrmStringNorthLatitude,kCoordinateFrmStringSouthLatitude,kCoordinateFrmStringEastLongitude,kCoordinateFrmStringWestLongitude);
+    
+    //优先使用name，其次titleAddress，最后KDefaultAlarmName
+    NSString *titleAddress = placemark.name ? placemark.name :(placemark.titleAddress ? placemark.titleAddress : KDefaultAlarmName);
+    NSString *shortAddress = placemark.shortAddress ? placemark.shortAddress : coordinateString;
+    NSString *longAddress = placemark.longAddress ? placemark.longAddress : coordinateString;
+    
+    
+	IAAlarm *alarm = [[[IAAlarm alloc] init] autorelease];
+	alarm.visualCoordinate = visualCoordinate;
+	alarm.positionTitle = titleAddress;
+	alarm.positionShort = shortAddress;
+	alarm.position = longAddress;
+	alarm.usedCoordinateAddress = NO;
+	
+	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    NSNotification *aNotification = [NSNotification notificationWithName:IAAddIAlarmButtonPressedNotification 
+                                                                  object:self
+                                                                userInfo:[NSDictionary dictionaryWithObject:alarm forKey:IAAlarmAddedKey]];
+    [notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:delay+1.75];
+}
 
 -(void)resetAnnotationWithPlace:(BSKmlResult*)place{
     
@@ -1031,7 +1063,7 @@
 
 	IAAlarm *alarm = [[[IAAlarm alloc] init] autorelease];
 	alarm.visualCoordinate = place.coordinate;
-	alarm.alarmName = self.forwardGeocoder.searchQuery;
+	//alarm.alarmName = self.forwardGeocoder.searchQuery;
 	alarm.positionShort = place.address;
 	alarm.position = place.address;
 	alarm.usedCoordinateAddress = NO;
@@ -1170,122 +1202,159 @@
     [self.searchController setActive:NO animated:YES];   //search取消
 }
 
+- (void)_forwardGeocodingDidCompleteWithPlacemarks:(NSArray*)placemarks error:(NSError*)error{
+    
+    if (searchAlert) {
+        [searchAlert release];
+        searchAlert = nil;
+    }
+    
+    if (error) {
+        
+        switch (error.code) {
+            case kCLErrorGeocodeFoundNoResult:
+            case kCLErrorGeocodeFoundPartialResult:
+                searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleNoResults
+                                                         message:kAlertSearchBodyTryAgain 
+                                                        delegate:self
+                                               cancelButtonTitle:kAlertBtnCancel
+                                               otherButtonTitles:kAlertBtnRetry,nil];
+                
+                break;
+            default:
+                searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleDefaultError
+                                                         message:kAlertSearchBodyTryAgain 
+                                                        delegate:self
+                                               cancelButtonTitle:kAlertBtnCancel
+                                               otherButtonTitles:kAlertBtnRetry,nil];
+                break;
+        }
+        
+        [searchAlert show];
+        
+    }else if (placemarks.count == 0){
+        searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleNoResults
+                                                 message:kAlertSearchBodyTryAgain 
+                                                delegate:self
+                                       cancelButtonTitle:kAlertBtnCancel
+                                       otherButtonTitles:kAlertBtnRetry,nil];
+
+        [searchAlert show];
+    }else{
+        //加到最近查询list中
+        [self.searchController addListContentWithString:forwardGeocoderManager.addressString]; 
+        //保存查询结果，以后还要用
+        [searchResults release]; searchResults = nil;
+        searchResults = [placemarks retain];
+        
+        if (placemarks.count == 1) {            
+            
+            [self resetAnnotationWithPlacemark:[placemarks objectAtIndex:0]];
+        }else if (placemarks.count > 1){
+            
+            if (searchResultsAlert) {
+                [searchResultsAlert release];
+                searchResultsAlert = nil;
+            }
+            
+            NSMutableArray *addresses = [NSMutableArray arrayWithCapacity:placemarks.count];
+            for(id oneObject in placemarks)
+                [addresses addObject:((YCPlacemark *)oneObject).formattedAddress];
+            
+            searchResultsAlert = [[YCAlertTableView alloc] 
+                                  initWithTitle:kAlertSearchTitleResults delegate:self tableCellContents:addresses cancelButtonTitle:kAlertBtnCancel];
+            [searchResultsAlert performSelector:@selector(show) withObject:nil afterDelay:0.1];
+            
+            
+        }
+    }
+            
+    [self.searchController setActive:NO animated:YES];   //search取消
+}
 
 #pragma mark -
 #pragma mark YCSearchControllerDelegete methods
 
 - (NSArray*)searchController:(YCSearchController *)controller searchString:(NSString *)searchString
 {
-    CLLocationCoordinate2D centerCoordinate = self.mapsViewController.mapView.centerCoordinate;
-    CLRegion *curLoctionRegion = [[[CLRegion alloc] initCircularRegionWithCenter:centerCoordinate radius:6000.0 identifier:@"Maps Center Region"] autorelease];
     
-    YCGeocoder *aforwardGeocoder = [[YCGeocoder alloc] initWithTimeout:30.0];
-    [aforwardGeocoder geocodeAddressString:searchString inRegion:curLoctionRegion completionHandler:
-     ^(NSArray *placemarks, NSError *error){
-         ;
-     }];
-    
-    
-    return nil;
+    NSMutableArray *viewports = [NSMutableArray array];
+    NSMutableArray *reservedViewports = [NSMutableArray array];
     
     ///////////////////////////////
     //当前地图可视范围的视口
     MKMapRect visibleBounds = self.mapsViewController.mapView.visibleMapRect;
+    MKMapRect visibleBounds1 = MKMapRectInset(visibleBounds, visibleBounds.size.width*0.25, visibleBounds.size.height*0.25);//减掉一半
+    MKMapRect visibleBounds2 = MKMapRectInset(visibleBounds, -visibleBounds.size.width*0.25, -visibleBounds.size.height*0.25);//加1半
+    MKMapRect visibleBounds3 = MKMapRectInset(visibleBounds, -visibleBounds.size.width*0.5, -visibleBounds.size.height*0.5);//加1倍
+    [viewports addObject:[NSValue valueWithMapRect:visibleBounds]];
+    [viewports addObject:[NSValue valueWithMapRect:visibleBounds1]];
+    [viewports addObject:[NSValue valueWithMapRect:visibleBounds2]];
+    [viewports addObject:[NSValue valueWithMapRect:visibleBounds3]];
+    
+    MKMapRect visibleBoundsB1 = MKMapRectInset(visibleBounds, visibleBounds.size.width*0.1, visibleBounds.size.height*0.1);//减掉
+    MKMapRect visibleBoundsB2 = MKMapRectInset(visibleBounds, visibleBounds.size.width*0.4, visibleBounds.size.height*0.4);//减掉
+    MKMapRect visibleBoundsB3 = MKMapRectInset(visibleBounds, -visibleBounds.size.width, -visibleBounds.size.height);//加2倍
+    MKMapRect visibleBoundsB4 = MKMapRectInset(visibleBounds, -visibleBounds.size.width*1.5, -visibleBounds.size.height*1.5);//加3倍
+    
+    [reservedViewports addObject:[NSValue valueWithMapRect:visibleBoundsB1]];
+    [reservedViewports addObject:[NSValue valueWithMapRect:visibleBoundsB2]];
+    [reservedViewports addObject:[NSValue valueWithMapRect:visibleBoundsB3]];
+    [reservedViewports addObject:[NSValue valueWithMapRect:visibleBoundsB4]];
+    
     //当前位置的视口
-    MKMapRect curLoctionBounds = MKMapRectNull; 
-    CLLocation *curLocation = self.mapsViewController.mapView.userLocation.location;
-    if (curLocation) { 
-        MKMapPoint curPoint = MKMapPointForCoordinate(curLocation.coordinate);
-        curLoctionBounds = MKMapRectMake(curPoint.x, curPoint.y, 6000, 6000); //取当前位置的x公里的范围
+    CLLocation *curLoc = self.mapsViewController.mapView.userLocation.location;
+    if (curLoc) { 
+        CLLocationCoordinate2D curCoor = curLoc.coordinate;
+        CLLocationDistance radius0 = 0.25;
+        CLLocationDistance radius1 = radius0*2;
+        CLLocationDistance radius2 = radius0*4;
+        CLLocationDistance radius3 = radius0*8;
+        CLLocationDistance radius4 = radius0*10;
+        CLLocationDistance radius5 = radius0*16;
+        CLLocationDistance radius6 = radius0*20;
+        CLLocationDistance radius7 = radius0*30;
+        CLLocationDistance radius8 = radius0*50;
+        CLLocationDistance radius9 = radius0*100;
+        CLLocationDistance radius10 = radius0*200;
+        
+        CLRegion *region0 = [[[CLRegion alloc] initCircularRegionWithCenter:curCoor radius:radius0 identifier:@"radius0"] autorelease];
+        CLRegion *region1 = [[[CLRegion alloc] initCircularRegionWithCenter:curCoor radius:radius1 identifier:@"radius1"] autorelease];
+        CLRegion *region2 = [[[CLRegion alloc] initCircularRegionWithCenter:curCoor radius:radius2 identifier:@"radius2"] autorelease];
+        CLRegion *region3 = [[[CLRegion alloc] initCircularRegionWithCenter:curCoor radius:radius3 identifier:@"radius3"] autorelease];
+        CLRegion *region4 = [[[CLRegion alloc] initCircularRegionWithCenter:curCoor radius:radius4 identifier:@"radius4"] autorelease];
+        CLRegion *region5 = [[[CLRegion alloc] initCircularRegionWithCenter:curCoor radius:radius5 identifier:@"radius5"] autorelease];
+        CLRegion *region6 = [[[CLRegion alloc] initCircularRegionWithCenter:curCoor radius:radius6 identifier:@"radius6"] autorelease];
+        CLRegion *region7 = [[[CLRegion alloc] initCircularRegionWithCenter:curCoor radius:radius7 identifier:@"radius7"] autorelease];
+        CLRegion *region8 = [[[CLRegion alloc] initCircularRegionWithCenter:curCoor radius:radius8 identifier:@"radius8"] autorelease];
+        CLRegion *region9 = [[[CLRegion alloc] initCircularRegionWithCenter:curCoor radius:radius9 identifier:@"radius9"] autorelease];
+        CLRegion *region10 = [[[CLRegion alloc] initCircularRegionWithCenter:curCoor radius:radius10 identifier:@"radius10"] autorelease];
+        
+        [viewports addObject:region0];
+        [viewports addObject:region1];
+        [viewports addObject:region2];
+        [viewports addObject:region3];
+        [viewports addObject:region4];
+        [viewports addObject:region5];
+        [viewports addObject:region6];
+        [viewports addObject:region7];
+        [viewports addObject:region8];
+        [viewports addObject:region9];
+        [viewports addObject:region10];
     }
-    
-    MKMapRect searchBounds = !MKMapRectIsNull(curLoctionBounds) ? curLoctionBounds : visibleBounds;//当前位置有可能不可用
-    
-
-	
-    NSString *regionBiasing = nil;//@"cn";
-    
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    [self.forwardGeocoder forwardGeocodeWithQuery:searchString regionBiasing:regionBiasing viewportBiasing:searchBounds success:^(NSArray *results1) 
-    {//第一次查询成功
-        NSLog(@"results1 = %@",[results1 debugDescription]);
-            
-        //开始第二次查询， 当前地图视口查询
-        if (MKMapRectEqualToRect(searchBounds, curLoctionBounds)) {
-            
-            MKMapRect newSearchBounds = visibleBounds;
-            
-            [self.forwardGeocoder forwardGeocodeWithQuery:searchString regionBiasing:regionBiasing viewportBiasing:newSearchBounds success:^(NSArray *results2) 
-            {//第二次查询成功
-                NSLog(@"results2 = %@",[results2 debugDescription]);
-                
-                NSMutableArray *results = nil;
-                if (results1.count > 0 && results2.count > 0) {//合并结果
-                    BOOL (^filterBlock)(id evaluatedObject, NSDictionary *bindings);
-                    
-                    filterBlock = ^(id evaluatedObject, NSDictionary *bindings){
-                        for (BSKmlResult *anResult in results2) {
-                            CLLocationCoordinate2D coordinateA = anResult.coordinate;
-                            CLLocationCoordinate2D coordinateB = [(BSKmlResult*) evaluatedObject coordinate];
-                            if (YCCLLocationCoordinate2DEqualToCoordinate(coordinateA, coordinateB)){
-                                return NO;
-                            }
-                        }
-                        return YES;
-                    };
-                    NSPredicate *pred = [NSPredicate predicateWithBlock: filterBlock];
-
-                    
-                    NSArray *resultsFilter1 = [results1 filteredArrayUsingPredicate:pred];
-                    results = [NSMutableArray arrayWithArray:results2];
-                    [results addObjectsFromArray:resultsFilter1];
-                    
-                    NSLog(@"resultsFilter1 = %@",[resultsFilter1 debugDescription]);
-                    NSLog(@"results = %@",[results debugDescription]);
-                    
-                    
-                }else{//第一次或第二次查询结果数量 == "0"
-                    results = (results1.count > 0) ? [NSMutableArray arrayWithArray:results1] : [NSMutableArray arrayWithArray:results2];
-                }
-                
-                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                [self forwardGeocodingDidSucceed:self.forwardGeocoder withResults:results];
-                
-                
-                
-            } failure:^(int status, NSString *errorMessage) 
-            {//第二次查询失败
-                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                [self forwardGeocodingDidSucceed:self.forwardGeocoder withResults:results1];
-            }];
-                
-            
-        }else{//不需要查第二次了
-            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-            [self forwardGeocodingDidSucceed:self.forwardGeocoder withResults:results1];
-        }
-        
-        
-    } failure:^(int status, NSString *errorMessage) 
-    {//第一次查询失败
-        
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        if (status == G_GEO_NETWORK_ERROR) {
-            [self forwardGeocoderConnectionDidFail:self.forwardGeocoder withErrorMessage:errorMessage];
-        }
-        else {
-            [self forwardGeocodingDidFail:self.forwardGeocoder withErrorCode:status andErrorMessage:errorMessage];
-        }
-        
+    if (!forwardGeocoderManager) 
+        forwardGeocoderManager = [[YCForwardGeocoderManager alloc] init];
+    [forwardGeocoderManager forwardGeocodeAddressString:searchString viewportBiasings:viewports reservedViewportBiasings:reservedViewports completionHandler:^(NSArray *placemarks, NSError *error){
+            [self _forwardGeocodingDidCompleteWithPlacemarks:placemarks error:error];
     }];
-		
-	return nil;
+    
+    return nil;
 }
 
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{		 
 	 //取消了，还没结束，结束它
-    [self.forwardGeocoder cancel]; 
+    [forwardGeocoderManager cancel]; 
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
@@ -1293,8 +1362,8 @@
 
 - (void)alertTableView:(YCAlertTableView *)alertTableView didSelectRow:(NSInteger)row{
 	if (searchResultsAlert == alertTableView) {
-        BSKmlResult *place = [searchResults objectAtIndex:row];
-        [self resetAnnotationWithPlace:place];
+        YCPlacemark *placemark = [searchResults objectAtIndex:row];
+        [self resetAnnotationWithPlacemark:placemark];
     }
 }
 
@@ -1337,11 +1406,12 @@
 	
     [navBar release];
 	[searchBar release];
-	[forwardGeocoder release];
 	[searchController release];
     [searchResultsAlert release];
     [searchAlert release];
     [searchResults release];
+    [forwardGeocoderManager release];
+    
 	
 	[toolbar release];
 	[infoBarButtonItem release];

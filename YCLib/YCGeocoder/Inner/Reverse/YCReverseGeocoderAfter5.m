@@ -7,19 +7,18 @@
 //
 
 #import "YCPlacemark.h"
-#import "YCGeocoderAfter5.h"
+#import "YCReverseGeocoderAfter5.h"
 
-@interface YCGeocoderAfter5 (private) 
+@interface YCReverseGeocoderAfter5 (private) 
 
 /**
  用超时错误来回调
  **/
-- (void)_doFailForwardGeocodeWithTimeoutError;
 - (void)_doFailReverseGeocodeWithTimeoutError;
 
 @end
 
-@implementation YCGeocoderAfter5
+@implementation YCReverseGeocoderAfter5
 
 + (id)allocWithZone:(NSZone *)zone{
     return NSAllocateObject([self class], 0, zone);
@@ -34,7 +33,10 @@
 }
 
 - (void)dealloc{
+    if (_geocoder.geocoding) 
+        [_geocoder cancelGeocode];
     [_geocoder release];
+    
     [_reverseGeocodeCompletionHandler release];
     [super dealloc];
 }
@@ -43,23 +45,6 @@
     if (_geocoder.geocoding) {
         [_geocoder cancelGeocode];
     }
-}
-
-- (void)geocodeAddressDictionary:(NSDictionary *)addressDictionary completionHandler:(YCGeocodeCompletionHandler)completionHandler{
-    
-}
-
-- (void)geocodeAddressString:(NSString *)addressString completionHandler:(YCGeocodeCompletionHandler)completionHandler{
-    
-}
-
-- (void)geocodeAddressString:(NSString *)addressString inRegion:(CLRegion *)region completionHandler:(YCGeocodeCompletionHandler)completionHandler{
-    
-    NSLog(@"start...."); 
-    [_geocoder geocodeAddressString:addressString inRegion:region completionHandler:^(NSArray *placemarks, NSError *error){
-        NSLog(@"error = %@",error); 
-        NSLog(@"placemarks = %@",[placemarks description]); 
-    }];
 }
 
 - (void)reverseGeocodeLocation:(CLLocation *)location completionHandler:(YCReverseGeocodeCompletionHandler)completionHandler{
@@ -85,13 +70,9 @@
     }
     _reverseGeocodeCompletionHandler = [handler copy];
     
-    [_geocoder reverseGeocodeLocation:location completionHandler:handler];
+    [_geocoder reverseGeocodeLocation:location completionHandler:_reverseGeocodeCompletionHandler];
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_doFailReverseGeocodeWithTimeoutError) object:nil];
     [self performSelector:@selector(_doFailReverseGeocodeWithTimeoutError) withObject:nil afterDelay:_timeout]; //超时调用
-}
-
-- (void)_doFailForwardGeocodeWithTimeoutError{
-    
 }
 
 - (void)_doFailReverseGeocodeWithTimeoutError{

@@ -62,6 +62,7 @@
  qualifiedName:(NSString *)qName 
 	attributes:(NSDictionary *)attributeDict
 {
+    
 	if (qName) {
         elementName = qName;
     }
@@ -142,6 +143,7 @@
   namespaceURI:(NSString *)namespaceURI 
  qualifiedName:(NSString *)qName
 { 
+
 	if (qName) {
         elementName = qName;
     }
@@ -220,6 +222,14 @@
     }
     else if ([elementName isEqualToString:@"type"]) {
 		[typesArray addObject:elementValue];
+        
+        //lishiyong 2012-6-2添加
+        if (currentResult.address == nil) { //还没解析到 formatted_address
+            if (!currentResult.types)
+                currentResult.types = [NSMutableArray array];
+            [currentResult.types addObject:elementValue];
+        }
+        
     }
 	else if ([elementName isEqualToString:@"formatted_address"]) {
 		currentResult.address = elementValue;
@@ -293,6 +303,10 @@
 {
     [results release];
 	[super dealloc];
+}
+
+- (void)parserDidStartDocument:(NSXMLParser *)parser{
+    
 }
 
 

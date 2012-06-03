@@ -6,6 +6,8 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCFunctions.h"
+#import "YCLocation.h"
 #import "NSObject+YC.h"
 #import "NSString+YC.h"
 #import "YCPlaceholderPlacemark.h"
@@ -47,6 +49,14 @@
         }
         _countryCode = [[[_countryCode uppercaseString] stringByTrim] retain];
     
+        //MKPlacemark在4.x不支持方法：name,region
+        //if (![_placemark respondsToSelector:@selector(name)])
+            _name = [[_addressDictionary objectForKey:@"Name"] retain];
+        //if (![_placemark respondsToSelector:@selector(region)])
+            _region = [[_addressDictionary objectForKey:@"Region"] retain];
+        
+        //BS查询会得到一个格式化地址（formatted_address），它不与MKPlacemark和CLPlacemark对应方法。
+        _formattedAddress = [[_addressDictionary objectForKey:@"FormattedAddress"] retain];
         
         //系统bug，无街道。先找一次，如果没找到，替代：区。
         if (![_placemark.addressDictionary objectForKey:(NSString *) kABPersonAddressStreetKey]) {
@@ -100,11 +110,14 @@
     return self;
 }
 
-- (void)dealloc{
+- (void)dealloc{    
     [_placemark release];
     [_addressDictionary release];
     [_separater release];
     [_countryCode release];
+    [_name release];
+    [_region release];
+    [_formattedAddress release];
     [super dealloc];
 }
 
@@ -114,6 +127,10 @@
 #define    kmyaddressDictionary                         @"kmyaddressDictionary"
 #define    kseparater                                   @"kseparater"
 #define    kmyCountryCode                               @"kmyCountryCode"
+#define    kmyName                                      @"kmyName"
+#define    kmyRegion                                    @"kmyRegion"
+#define    kmyFormattedAddress                          @"kmyFormattedAddress"
+
 - (void)encodeWithCoder:(NSCoder *)encoder {
     
     if ([_placemark conformsToProtocol: @protocol(NSCoding)])
@@ -121,6 +138,9 @@
     [encoder encodeObject:_addressDictionary forKey:kmyaddressDictionary];
     [encoder encodeObject:_separater forKey:kseparater];
     [encoder encodeObject:_countryCode forKey:kmyCountryCode];
+    [encoder encodeObject:_name forKey:kmyName];
+    [encoder encodeObject:_region forKey:kmyRegion];
+    [encoder encodeObject:_formattedAddress forKey:kmyFormattedAddress];
     
 }
 
@@ -131,6 +151,9 @@
         _separater = [[decoder decodeObjectForKey:kseparater] retain];
         _addressDictionary = [[decoder decodeObjectForKey:kmyaddressDictionary] retain];
         _countryCode = [[decoder decodeObjectForKey:kmyCountryCode] retain];
+        _name = [[decoder decodeObjectForKey:kmyName] retain];
+        _region = [[decoder decodeObjectForKey:kmyRegion] retain];
+        _formattedAddress = [[decoder decodeObjectForKey:kmyFormattedAddress] retain];
         
         if ([_placemark conformsToProtocol: @protocol(NSCoding)]) {            
             _placemark = [[decoder decodeObjectForKey:kmyPlacemark] retain];
@@ -156,22 +179,33 @@
 
 #pragma mark - 
 
-- (NSString *)formattedFullAddressLines{
+- (NSString *)formattedAddressLines{
     NSString *address = [ABCreateStringWithAddressDictionary(_addressDictionary,NO) stringByTrim];
     address = (address.length > 0) ? address : nil;
-    if (!address) {
-        if ([_placemark respondsToSelector:@selector(name)]) {
-            address = _placemark.name;
-        }
-        if ([_placemark respondsToSelector:@selector(ocean)]) {
-            address = _placemark.ocean;
-        }
-        if ([_placemark respondsToSelector:@selector(inlandWater)]) {
-            address = _placemark.name;
-        }
+
+    if (!address && [_placemark respondsToSelector:@selector(name)]) {
+        address = _placemark.name;
     }
+    if (!address && [_placemark respondsToSelector:@selector(ocean)]) {
+        address = _placemark.ocean;
+    }
+    if (!address && [_placemark respondsToSelector:@selector(inlandWater)]) {
+        address = _placemark.name;
+    }
+    
     address = [address stringByTrim];
     return (address.length > 0) ? address : nil ;
+}
+
+- (NSString *)formattedAddress{
+    if (_formattedAddress) 
+        return _formattedAddress;
+    else {
+        NSString *address = [self formattedAddressLines];
+        address = [address stringByReplacingOccurrencesOfString:@"\n" withString:_separater];
+        address = [address stringByTrim];
+        return address;
+    }
 }
 
 - (NSString *)longAddress{
@@ -233,10 +267,25 @@
     return _countryCode;
 }
 
+- (NSString *)name{
+    if ([_placemark respondsToSelector:@selector(name)] && _placemark.name)
+        return _placemark.name;
+    else
+        return _name;
+}
+
+- (CLRegion *)region{
+    if ([_placemark respondsToSelector:@selector(region)] && _placemark.region)
+        return _placemark.region;
+    else
+        return _region;
+}
+
+
 - (void)debug{
     
         NSLog(@"_placemark = %@",_placemark);
-        NSLog(@"formattedFullAddressLines = %@",[self formattedFullAddressLines]);
+        NSLog(@"formattedFullAddressLines = %@",[self formattedAddressLines]);
     
         NSLog(@"====================");
     
@@ -256,6 +305,28 @@
         NSLog(@"zip = %@",[self zip]);
         NSLog(@"countryCode = %@",[self countryCode]);
         
+}
+
+#pragma mark - Override Super
+/**
+ 坐标相同，就相等
+ **/
+- (BOOL)isEqual:(id)object{
+    
+    BOOL isEqual = NO;
+    if ([object isKindOfClass:[YCPlacemark class]] ) {
+        isEqual = YCCLLocationCoordinate2DEqualToCoordinate(self.region.center, [(YCPlacemark*)object region].center);
+    }
+    return isEqual;
+     
+    return YES;
+}
+
+- (NSUInteger)hash{
+    CLLocationDegrees lat = self.region.center.latitude;
+    CLLocationDegrees lng = self.region.center.longitude;
+    NSUInteger hashValue = (NSUInteger)((lat + lng)*10000);
+    return hashValue;
 }
 
 @end

@@ -1467,7 +1467,7 @@
 #define kTimeOutForReverse 8.0
 -(void)reverseGeocodeWithAnnotation:(IAAnnotation*)annotation
 {	
-    YCGeocoder *geocoder = [[[YCGeocoder alloc] initWithTimeout:kTimeOutForReverse] autorelease];
+    YCReverseGeocoder *geocoder = [[[YCReverseGeocoder alloc] initWithTimeout:kTimeOutForReverse] autorelease];
     CLLocationCoordinate2D visualCoordinate = annotation.coordinate;
     CLLocation *location = [[[CLLocation alloc] initWithLatitude:visualCoordinate.latitude longitude:visualCoordinate.longitude] autorelease];
     
@@ -1477,7 +1477,8 @@
         IAAlarm *alarm = [IAAlarm findForAlarmId:[(IAAnnotation*)annotation identifier]];
         if (!error && placemark){
             
-            NSString *titleAddress = placemark.titleAddress ? placemark.titleAddress : KDefaultAlarmName;
+            //优先使用name，其次titleAddress，最后KDefaultAlarmName
+            NSString *titleAddress = placemark.name ? placemark.name :(placemark.titleAddress ? placemark.titleAddress : KDefaultAlarmName);
             NSString *shortAddress = placemark.shortAddress ? placemark.shortAddress : coordinateString;
             NSString *longAddress = placemark.longAddress ? placemark.longAddress : coordinateString;
            
@@ -1495,7 +1496,7 @@
             alarm.usedCoordinateAddress = NO;
             
             //test
-            [placemark debug];
+            //[placemark debug];
             
         }else{
             
@@ -1584,7 +1585,7 @@
     if (userLocation.location == nil) //ios5.0 没有取得用户位置的时候也回调这个方法
         return;
     
-    YCGeocoder *geocoder = [[[YCGeocoder alloc] initWithTimeout:kTimeOutForReverse] autorelease];
+    YCReverseGeocoder *geocoder = [[[YCReverseGeocoder alloc] initWithTimeout:kTimeOutForReverse] autorelease];
     CLLocationCoordinate2D visualCoordinate = userLocation.location.coordinate;
     CLLocation *location = [[[CLLocation alloc] initWithLatitude:visualCoordinate.latitude longitude:visualCoordinate.longitude] autorelease];
     

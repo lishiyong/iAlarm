@@ -19,31 +19,22 @@ enum YCGeocodeErrorCode {
     YCGeocodeErrorUnAvailableAddress,
     YCGeocodeErrorTooManyQueries,
 };
- 
 
-
-@class CLLocation, CLRegion;
+@class CLLocation;
 @class YCPlacemark;
 
-typedef void (^YCGeocodeCompletionHandler)(NSArray *placemarks, NSError *error);
 typedef void (^YCReverseGeocodeCompletionHandler)(YCPlacemark *placemark, NSError *error);
 
-@interface YCGeocoder : NSObject{
+@interface YCReverseGeocoder : NSObject{
 @package
     NSTimeInterval _timeout;
 }
-
+@property (nonatomic) NSTimeInterval timeout;
 - (id)initWithTimeout:(NSTimeInterval)timeout;
 
-- (void)geocodeAddressDictionary:(NSDictionary *)addressDictionary completionHandler:(YCGeocodeCompletionHandler)completionHandler;
-- (void)geocodeAddressString:(NSString *)addressString completionHandler:(YCGeocodeCompletionHandler)completionHandler;
-- (void)geocodeAddressString:(NSString *)addressString inRegion:(CLRegion *)region completionHandler:(YCGeocodeCompletionHandler)completionHandler;
-- (void)reverseGeocodeLocation:(CLLocation *)location completionHandler:(YCReverseGeocodeCompletionHandler)completionHandler;
-    
 @property (nonatomic, readonly, getter=isGeocoding) BOOL geocoding;
-@property (nonatomic) NSTimeInterval timeout;
+- (void)reverseGeocodeLocation:(CLLocation *)location completionHandler:(YCReverseGeocodeCompletionHandler)completionHandler;
 - (void)cancel;
-
 
 
 @end

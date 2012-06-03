@@ -35,8 +35,13 @@
 @property (readonly) MKCoordinateSpan coordinateSpan;
 @property (readonly) MKCoordinateRegion coordinateRegion;
 
+
 @property (nonatomic, retain) NSString *searchString; //lishiyong 2011-1-16添加
 
 - (NSArray*)findAddressComponent:(NSString*)typeName;
+
+@property (nonatomic,retain) NSMutableArray *types; //lishiyong 2012-6-2添加
+- (NSString *)name;//lishiyong 2012-6-2添加
+
 
 @end

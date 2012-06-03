@@ -17,6 +17,9 @@
     NSMutableDictionary *_addressDictionary; //CLPlacemark中的不能修改
     NSString *_separater;//地址中间的分隔
     NSString *_countryCode;
+    NSString *_name;
+    CLRegion *_region;
+    NSString *_formattedAddress;
 }
 
 - (id)initWithPlacemark:(id/*CLPlacemark MKPlacemark*/)aPlacemark;
@@ -32,7 +35,7 @@
  使用 addressDictionary中的 FormattedAddressLines
  或 ABCreateStringWithAddressDictionary函数格式化
  **/
-- (NSString *)formattedFullAddressLines;
+- (NSString *)formattedAddressLines;
 
 /**
  辽宁省沈阳市和平区和平南大街96巷1号
@@ -64,5 +67,8 @@
 - (NSString *)subStreet;
 - (NSString *)zip;
 - (NSString *)countryCode;
+- (NSString *)name;
+- (CLRegion *)region;
+- (NSString *)formattedAddress;
 
 @end

@@ -60,4 +60,6 @@ typedef void (^BSForwardGeocoderFailed) (int status, NSString* errorMessage);
 @property (nonatomic, assign) NSTimeInterval timeoutInterval; //2012-04-26 lishiyong 添加
 @property (nonatomic, copy) NSString *searchQuery; //2012-04-26 lishiyong 添加
 
+@property (nonatomic, readonly, getter=isGeocoding) BOOL geocoding;//2012-06-03 lishiyong 添加
+
 @end

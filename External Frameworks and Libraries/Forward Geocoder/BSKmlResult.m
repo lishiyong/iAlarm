@@ -38,6 +38,7 @@
 @synthesize latitude = _latitude;
 @synthesize longitude = _longitude;
 @synthesize searchString =_searchString;
+@synthesize types = _types;
 
 - (void)dealloc
 {	
@@ -79,7 +80,8 @@
 
 - (NSArray*)findAddressComponent:(NSString*)typeName
 {
-	NSMutableArray *matchingComponents = [[NSMutableArray alloc] init];
+    //2012-06-02修改 lishiyong
+	NSMutableArray *matchingComponents = [[[NSMutableArray alloc] init] autorelease];
 	
 	for (int i = 0, components = [self.addressComponents count]; i < components; i++) {
 		BSAddressComponent *component = [self.addressComponents objectAtIndex:i];
@@ -95,15 +97,39 @@
 		
 	}
 	
-	return [matchingComponents autorelease];
+	return matchingComponents.count > 0 ? matchingComponents : nil;
 }
 
 - (NSString *)description{
-    return [NSString stringWithFormat:@"%@ %@ \n %@",NSStringFromCLLocationCoordinate2D(self.coordinate),self.address,[self.addressComponents description]];
+    NSMutableString *string = [NSMutableString string];
+    [string appendFormat:@"coordinate = %@",NSStringFromCLLocationCoordinate2D(self.coordinate)];
+    [string appendFormat:@"\naddress = %@",self.address];
+    [string appendFormat:@"\ncountryName = %@",self.countryName];
+    [string appendFormat:@"\nlocalityName = %@",self.localityName];
+    [string appendFormat:@"\naddressComponents = %@",[self.addressComponents description]];
+    return string;
 }
 
 - (NSString *)debugDescription{
     return [self description];
+}
+
+//lishiyong 2012-6-2添加
+- (NSString *)name{
+    
+    if (NSNotFound != [self.types indexOfObject:@"political"]) { //不能是行政区域
+        return nil;
+    }
+    
+    NSString *name = nil;
+    for (BSAddressComponent *aComponent in self.addressComponents) {
+        if ([self.types isEqualToArray:aComponent.types]) {//找到类型相等的，就是name
+            name = aComponent.longName;
+            break;
+        }
+    }
+    
+    return name;
 }
 
 @end

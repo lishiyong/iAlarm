@@ -26,7 +26,7 @@ BOOL YCCLLocationCoordinate2DEqualToCoordinateWithAccuracy(CLLocationCoordinate2
 }
 
 BOOL YCCLLocationCoordinate2DEqualToCoordinate(CLLocationCoordinate2D src1,CLLocationCoordinate2D src2){
-	return YCCLLocationCoordinate2DEqualToCoordinateWithAccuracy(src1,src2,6);
+	return YCCLLocationCoordinate2DEqualToCoordinateWithAccuracy(src1,src2,4);
 }
 
 CLLocationDistance distanceBetweenCoordinates(CLLocationCoordinate2D aCoordinate,CLLocationCoordinate2D anotherCoordinate){

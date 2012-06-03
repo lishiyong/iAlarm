@@ -26,6 +26,7 @@
 	BOOL isViewPort;
 	BOOL isBounds;
 	BOOL isSouthWest;
+    
 }
 
 @property (nonatomic, readonly) int statusCode;

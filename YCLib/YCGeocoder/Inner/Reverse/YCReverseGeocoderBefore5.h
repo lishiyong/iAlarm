@@ -6,12 +6,10 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
-#import "BSForwardGeocoder.h"
 #import <Mapkit/Mapkit.h>
-#import "YCGeocoder.h"
+#import "YCReverseGeocoder.h"
 
-@interface YCGeocoderBefore5 : YCGeocoder<MKReverseGeocoderDelegate>{
-    BSForwardGeocoder *_forwardGeocoder;
+@interface YCReverseGeocoderBefore5 : YCReverseGeocoder<MKReverseGeocoderDelegate>{
     MKReverseGeocoder *_resverseGeocoder;
     YCReverseGeocodeCompletionHandler _reverseGeocodeCompletionHandler;
 }

@@ -6,16 +6,16 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
-#import "YCPlaceholderGeocoder.h"
-#import "YCGeocoder.h"
+#import "YCPlaceholderReverseGeocoder.h"
+#import "YCReverseGeocoder.h"
 
 NSString *YCGeocodeErrorDomain = @"YCGeocodeErrorDomain";
 
-@implementation YCGeocoder
-@synthesize geocoding, timeout = _timeout;
+@implementation YCReverseGeocoder
+@synthesize timeout = _timeout;
 
 + (id)allocWithZone:(NSZone *)zone{
-    return [YCPlaceholderGeocoder allocWithZone:zone];
+    return [YCPlaceholderReverseGeocoder allocWithZone:zone];
 }
 
 - (id)init{
@@ -31,24 +31,8 @@ NSString *YCGeocodeErrorDomain = @"YCGeocodeErrorDomain";
     return self;
 }
 
-- (void)cancel{
-    
-}
-
-- (void)geocodeAddressDictionary:(NSDictionary *)addressDictionary completionHandler:(YCGeocodeCompletionHandler)completionHandler{
-    
-}
-
-- (void)geocodeAddressString:(NSString *)addressString completionHandler:(YCGeocodeCompletionHandler)completionHandler{
-    
-}
-
-- (void)geocodeAddressString:(NSString *)addressString inRegion:(CLRegion *)region completionHandler:(YCGeocodeCompletionHandler)completionHandler{
-    
-}
-
-- (void)reverseGeocodeLocation:(CLLocation *)location completionHandler:(YCReverseGeocodeCompletionHandler)completionHandler{
-    
-}
+- (BOOL)isGeocoding{return NO;};
+- (void)cancel{}
+- (void)reverseGeocodeLocation:(CLLocation *)location completionHandler:(YCReverseGeocodeCompletionHandler)completionHandler{}
 
 @end

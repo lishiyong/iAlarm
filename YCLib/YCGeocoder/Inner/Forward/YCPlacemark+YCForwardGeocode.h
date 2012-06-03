@@ -8,6 +8,12 @@
 
 #import "YCPlacemark.h"
 
+@class BSKmlResult;
 @interface YCPlacemark (YCForwardGeocode)
+
+- (id)initWithBSKmlResult:(BSKmlResult*)kmlResult;
+
++ (NSArray *)placemarksWithBSKmlResults:(NSArray*)kmlResults;
++ (NSArray *)placemarksWithCLPacemarks:(NSArray*)pacemarks;
 
 @end

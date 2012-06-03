@@ -6,10 +6,10 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
-#import "YCGeocoder.h"
+#import "YCReverseGeocoder.h"
 #import <CoreLocation/CoreLocation.h>
 
-@interface YCGeocoderAfter5 : YCGeocoder{
+@interface YCReverseGeocoderAfter5 : YCReverseGeocoder{
     CLGeocoder *_geocoder;
     CLGeocodeCompletionHandler _reverseGeocodeCompletionHandler;
 }

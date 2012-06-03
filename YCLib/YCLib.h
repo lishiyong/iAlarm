@@ -7,11 +7,14 @@
 //
 
 #import "YCPlacemark.h"
-#import "YCGeocoder.h"
+#import "YCReverseGeocoder.h"
+#import "YCForwardGeocoder.h"
+#import "YCForwardGeocoderManager.h"
 
 #import "CLPlacemark+YC.h"
 #import "NSSet+YC.h"
 #import "NSDictionary+YC.h"
 #import "NSArray+YC.h"
+#import "NSValue+YC.h"
 
 #import "YCFunctions.h"

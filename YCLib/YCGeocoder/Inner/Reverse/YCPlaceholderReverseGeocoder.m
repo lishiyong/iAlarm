@@ -7,13 +7,13 @@
 //
 
 #import "YCDouble.h"
-#import "YCGeocoderBefore5.h"
-#import "YCGeocoderAfter5.h"
-#import "YCPlaceholderGeocoder.h"
+#import "YCReverseGeocoderBefore5.h"
+#import "YCReverseGeocoderAfter5.h"
+#import "YCPlaceholderReverseGeocoder.h"
 #import <CoreLocation/CoreLocation.h>
 #import <Mapkit/Mapkit.h>
 
-@implementation YCPlaceholderGeocoder
+@implementation YCPlaceholderReverseGeocoder
 
 
 - (id)initWithTimeout:(NSTimeInterval)timeout{
@@ -24,17 +24,17 @@
     
     id obj = nil;
     if (result == NSOrderedDescending || result == NSOrderedSame)  {
-        obj = [[YCGeocoderBefore5 alloc] initWithTimeout:timeout];
+        obj = [[YCReverseGeocoderBefore5 alloc] initWithTimeout:timeout];
         //obj = [[YCGeocoderAfter5 alloc] initWithTimeout:timeout];
     }else{
-        obj = [[YCGeocoderBefore5 alloc] initWithTimeout:timeout];
+        obj = [[YCReverseGeocoderBefore5 alloc] initWithTimeout:timeout];
     }
     
     return obj;
 
 }
 
-static YCPlaceholderGeocoder *single = nil;
+static YCPlaceholderReverseGeocoder *single = nil;
 + (id)allocWithZone:(NSZone *)zone
 {
     if (single == nil) {

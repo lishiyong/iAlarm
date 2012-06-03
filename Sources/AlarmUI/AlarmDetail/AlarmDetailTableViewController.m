@@ -995,7 +995,7 @@
     self->endingManual = NO;
 	self->locatingAndReversingStatus = IALocatingAndReversingStatusReversing;
 
-    YCGeocoder *geocoder = [[[YCGeocoder alloc] initWithTimeout:kTimeOutForReverse] autorelease];
+    YCReverseGeocoder *geocoder = [[[YCReverseGeocoder alloc] initWithTimeout:kTimeOutForReverse] autorelease];
     CLLocation *location = [[[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude] autorelease];
     [geocoder reverseGeocodeLocation:location completionHandler:^(YCPlacemark *placemark, NSError *error) {
         NSString *coordinateString = NSLocalizedStringFromCLLocationCoordinate2D(coordinate,kCoordinateFrmStringNorthLatitude,kCoordinateFrmStringSouthLatitude,kCoordinateFrmStringEastLongitude,kCoordinateFrmStringWestLongitude);
@@ -1003,7 +1003,8 @@
         IAAlarm *theAlarm = self.alarmTemp;
         if (!error){
 
-            NSString *titleAddress = placemark.titleAddress ? placemark.titleAddress : KDefaultAlarmName;
+            //优先使用name，其次titleAddress，最后KDefaultAlarmName
+            NSString *titleAddress = placemark.name ? placemark.name :(placemark.titleAddress ? placemark.titleAddress : KDefaultAlarmName);
             NSString *shortAddress = placemark.shortAddress ? placemark.shortAddress : coordinateString;
             NSString *longAddress = placemark.longAddress ? placemark.longAddress : coordinateString;
             

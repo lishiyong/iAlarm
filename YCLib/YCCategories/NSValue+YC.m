@@ -10,4 +10,14 @@
 
 @implementation NSValue (YC)
 
++ (NSValue *)valueWithMapRect:(MKMapRect)mapRect{
+    return [NSValue valueWithBytes:&mapRect objCType:@encode(MKMapRect)];
+}
+
+- (MKMapRect)mapRectValue{
+    MKMapRect mapRect;
+    [self getValue:&mapRect];
+    return mapRect;
+}
+
 @end

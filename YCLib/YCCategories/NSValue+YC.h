@@ -6,8 +6,12 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import <MapKit/MapKit.h>
 #import <Foundation/Foundation.h>
 
 @interface NSValue (YC)
+
++ (NSValue *)valueWithMapRect:(MKMapRect)mapRect;
+- (MKMapRect)mapRectValue;
 
 @end

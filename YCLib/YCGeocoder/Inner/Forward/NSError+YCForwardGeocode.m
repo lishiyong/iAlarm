@@ -8,7 +8,7 @@
 
 #import "BSForwardGeocoder.h"
 #import <CoreLocation/CoreLocation.h>
-#import "NSError+YCGeocode.h"
+#import "NSError+YCForwardGeocode.h"
 
 /*
 // Enum for geocoding status responses

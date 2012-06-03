@@ -21,6 +21,7 @@ typedef enum {
 @class AlarmsListViewController;
 @class AlarmsMapListViewController;
 @class YCSearchBar;
+@class YCForwardGeocoderManager;
 
 @interface BackgroundViewController : UIViewController
 <UIAlertViewDelegate,BSForwardGeocoderDelegate,YCSearchControllerDelegete,YCAlertTableViewDelegete> {
@@ -35,11 +36,11 @@ typedef enum {
 	UIBarButtonItem *addButtonItem;
 	
 	IBOutlet YCSearchBar *searchBar;
-	BSForwardGeocoder *forwardGeocoder;
 	YCSearchController *searchController;
     YCAlertTableView *searchResultsAlert;
     UIAlertView *searchAlert;
     NSArray *searchResults;
+    YCForwardGeocoderManager *forwardGeocoderManager;
     
 	UIToolbar *toolbar;
 	UIBarButtonItem *infoBarButtonItem;
@@ -64,7 +65,6 @@ typedef enum {
 
 @property (nonatomic, retain) IBOutlet UINavigationBar *navBar;
 @property (nonatomic, retain) IBOutlet YCSearchBar *searchBar;
-@property (nonatomic, retain,readonly) BSForwardGeocoder *forwardGeocoder;
 @property (nonatomic, retain) YCSearchController *searchController;
 
 
