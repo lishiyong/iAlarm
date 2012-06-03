@@ -36,7 +36,7 @@ typedef enum {
  */
 
 
-@implementation NSError (YCGeocode)
+@implementation NSError (YCForwardGeocode)
 
 + (id)errorWithBSForwardGeocodeStatus:(NSInteger)status{
     

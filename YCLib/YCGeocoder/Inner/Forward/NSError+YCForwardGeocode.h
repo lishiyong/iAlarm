@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSError (YCGeocode)
+@interface NSError (YCForwardGeocode)
 
 /**
  BSForwardGeocoder 的status 转换 CLError 的code
