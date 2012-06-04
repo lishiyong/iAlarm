@@ -6,6 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "NSMutableString+YC.h"
 #import <AddressBookUI/AddressBookUI.h>
 #import "NSString+YC.h"
 #import "YCPlacemarkOthers.h"
@@ -42,6 +43,22 @@
     return count;
 }
 
+- (NSString *)fullAddress{
+    NSMutableDictionary *newDic = [NSMutableDictionary dictionaryWithDictionary:_addressDictionary];
+    /*
+    NSString *address = ABCreateStringWithAddressDictionary(newDic,NO);
+    address = [address stringByReplacingOccurrencesOfString:@"\n" withString:_separater];
+    address = [address stringByTrim];
+    address = (address.length > 0) ? address :nil;
+    return address ? address : self.formattedAddress;
+     */
+    
+    NSString *address = ABCreateStringWithAddressDictionary(newDic,NO);
+    
+    address = [self _addressForAddressLines:address];
+    return (address.length > 0) ? address : self.formattedAddress;
+}
+
 - (NSString *)longAddress{
     NSMutableDictionary *newDic = [NSMutableDictionary dictionaryWithDictionary:_addressDictionary];
     if ([self _validItemCount] > 2) {//除了邮编至少还有2个
@@ -52,11 +69,18 @@
         [newDic removeObjectForKey:(NSString*)kABPersonAddressCountryKey];
     }
     
+    /*
     NSString *address = ABCreateStringWithAddressDictionary(newDic,NO);
     address = [address stringByReplacingOccurrencesOfString:@"\n" withString:_separater];
     address = [address stringByTrim];
     address = (address.length > 0) ? address :nil;
-    return address ? address : self.formattedAddress;
+    return address ? address : self.fullAddress;
+     */
+    
+    NSString *address = ABCreateStringWithAddressDictionary(newDic,NO);
+    
+    address = [self _addressForAddressLines:address];
+    return (address.length > 0) ? address : self.fullAddress ;
 }
 
 - (NSString *)shortAddress{
@@ -67,11 +91,18 @@
     [newDic removeObjectForKey:(NSString*)kABPersonAddressCountryKey];
     [newDic removeObjectForKey:(NSString*)kABPersonAddressStateKey];
     
+    /*
     NSString *address = ABCreateStringWithAddressDictionary(newDic,NO);
     address = [address stringByReplacingOccurrencesOfString:@"\n" withString:_separater];
     address = [address stringByTrim];
     address = (address.length > 0) ? address :nil;
-    return address ? address : self.longAddress;
+     return address ? address : self.longAddress;
+     */
+    NSString *address = ABCreateStringWithAddressDictionary(newDic,NO);
+    
+    address = [self _addressForAddressLines:address];
+    return (address.length > 0) ? address : self.longAddress ;
+    
 }
 
 - (NSString *)titleAddress{
@@ -83,11 +114,18 @@
     [newDic removeObjectForKey:(NSString*)kABPersonAddressStateKey];
     [newDic removeObjectForKey:(NSString*)kABPersonAddressCityKey];
     
+    /*
     NSString *address = ABCreateStringWithAddressDictionary(newDic,NO);
     address = [address stringByReplacingOccurrencesOfString:@"\n" withString:_separater];
     address = [address stringByTrim];
     address = (address.length > 0) ? address :nil;
     return address ? address : self.shortAddress;
+     */
+    
+    NSString *address = ABCreateStringWithAddressDictionary(newDic,NO);
+    
+    address = [self _addressForAddressLines:address];
+    return (address.length > 0) ? address : self.shortAddress ;
 }
 
 

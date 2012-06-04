@@ -357,7 +357,8 @@ cell使用后height竟然会加1。奇怪！
     CLLocationDistance radius = alarm.radius;
     
     //大头针
-    pointAnnotation = [[YCMapPointAnnotation alloc] initWithCoordinate:visualCoordinate title:alarm.alarmName subTitle:nil];
+    NSString *alarmName = alarm.alarmName ? alarm.alarmName : alarm.positionTitle;
+    pointAnnotation = [[YCMapPointAnnotation alloc] initWithCoordinate:visualCoordinate title:alarmName subTitle:nil];
     [self.mapView addAnnotation:pointAnnotation];
     [pointAnnotation setDistanceSubtitleWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];//距离
     

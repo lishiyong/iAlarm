@@ -69,7 +69,8 @@
 #pragma mark - MKReverseGeocoderDelegate
 
 - (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFindPlacemark:(MKPlacemark *)placemark{
-    _reverseGeocodeCompletionHandler([[YCPlacemark alloc] initWithPlacemark:placemark],nil);
+    YCPlacemark *ycplacemark = [[[YCPlacemark alloc] initWithPlacemark:placemark] autorelease];
+    _reverseGeocodeCompletionHandler(ycplacemark,nil);
     [self _cancelReverseGeocode];
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_doFailReverseGeocodeWithTimeoutError) object:nil];
 }

@@ -596,7 +596,10 @@
 	}
 	
 	IADestinationCell *theCell = (IADestinationCell*)self->destionationCellDescription.tableViewCell;
-	theCell.addressLabel.text = self.alarmTemp.positionShort;
+    NSString *placemarkName = self.alarmTemp.placemark.name ? self.alarmTemp.placemark.name : @"";
+    NSString *addressLabelText = [NSString stringWithFormat:@"%@ %@",placemarkName,self.alarmTemp.positionShort]; 
+    addressLabelText = [addressLabelText stringByTrim];
+	theCell.addressLabel.text = addressLabelText;
 
     CLLocationCoordinate2D realCoordinate = self.alarmTemp.realCoordinate;
 	if (CLLocationCoordinate2DIsValid(realCoordinate) && [YCSystemStatus deviceStatusSingleInstance].lastLocation) {
@@ -924,7 +927,8 @@
     BOOL arrived = [alarmForNotif.positionType.positionTypeId isEqualToString:@"p002"];//是 “到达时候”提醒
     NSString *promptTemple = arrived?kAlertFrmStringArrived:kAlertFrmStringLeaved;
     
-    NSString *alertTitle = [[[NSString alloc] initWithFormat:promptTemple,alarmForNotif.alarmName,0.0] autorelease];
+    NSString *alarmName = alarmForNotif.alarmName ? alarmForNotif.alarmName : alarmForNotif.positionTitle;
+    NSString *alertTitle = [[[NSString alloc] initWithFormat:promptTemple,alarmName,0.0] autorelease];
     NSString *alarmMessage = [alarmForNotif.notes stringByTrim];
 
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObject:alarmNotification.notificationId forKey:@"knotificationId"];

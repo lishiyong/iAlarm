@@ -13,6 +13,7 @@
 
 - (NSString *)_titleAddress;
 - (NSString *)_shortAddress;
+- (NSString *)_longAddress;
 
 @end
 
@@ -67,9 +68,29 @@
 }
 
 /**
+ 37 Gramercy Park E,Manhattan,纽约州 10003 美国(不要区的这个级别，要邮编)
+ **/
+- (NSString *)fullAddress{
+    NSMutableString *address = [NSMutableString string];
+    NSString *longAddress = [self _longAddress];
+    [address appendString:(longAddress ? longAddress : @"")];
+    
+    //加上国名：如果地址上不包含国名
+    NSString *country = [self.country stringByTrim];
+    country = country ? country : @"";
+    if (country && [address rangeOfString:country].location == NSNotFound) {
+        [address appendString:@" "];
+        [address appendString:country];
+    }
+        
+    NSString *address1 = [address stringByTrim];
+    return (address1.length > 0 ) ? address1 : self.formattedAddress;
+}
+
+/**
  37 Gramercy Park E,Manhattan,纽约州 10003 (不要区的这个级别，要邮编)
  **/
-- (NSString *)longAddress{
+- (NSString *)_longAddress{
     NSMutableString *address = [NSMutableString string];
     NSString *shortAddress = [self _shortAddress];
     
@@ -85,7 +106,12 @@
     }
     
     NSString *address1 = [address stringByTrim];
-    return (address1.length > 0 ) ? address1 : self.formattedAddress;
+    return (address1.length > 0 ) ? address1 : nil;
+}
+
+- (NSString *)longAddress{
+    NSString *address = [self _longAddress];
+    return address ? address : self.fullAddress;
 }
 
 /**

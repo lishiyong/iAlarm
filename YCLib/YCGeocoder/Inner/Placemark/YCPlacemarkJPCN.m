@@ -6,6 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "NSMutableString+YC.h"
 #import "NSString+YC.h"
 #import "YCPlacemarkJPCN.h"
 
@@ -30,6 +31,28 @@
 }
 
 /**
+ 日本千叶县松户市 五香西３丁目２７−３４
+ **/
+- (NSString *)fullAddress{
+    
+    NSMutableString *address = [NSMutableString string];
+    [address appendAddress:(self.country ? self.country : @"")];
+    [address appendAddress:(self.state ? self.state : @"")];
+    [address appendAddress:(self.subState ? self.subState : @"")];
+    [address appendAddress:(self.city ? self.city : @"")];
+    [address appendString:@" "];
+    [address appendAddress:(self.subCity ? self.subCity : @"")];
+    [address appendAddress:(self.street ? self.street : @"")];
+    if (self.subStreet) {
+        [address appendString:_separater];
+        [address appendAddress:(self.subStreet ? self.subStreet : @"")];
+    }
+    
+    NSString *address1 = [address stringByTrim];
+    return (address1.length > 0 ) ? address1 : self.formattedAddress;
+}
+
+/**
  千叶县松户市 五香西３丁目２７−３４
  **/
 - (NSString *)longAddress{
@@ -38,19 +61,19 @@
     state = state ? state : @"";
     
     NSMutableString *address = [NSMutableString string];
-    [address appendString:(state ? state : @"")];
-    [address appendString:(self.subState ? self.subState : @"")];
-    [address appendString:(self.city ? self.city : @"")];
+    [address appendAddress:(state ? state : @"")];
+    [address appendAddress:(self.subState ? self.subState : @"")];
+    [address appendAddress:(self.city ? self.city : @"")];
     [address appendString:@" "];
-    [address appendString:(self.subCity ? self.subCity : @"")];
-    [address appendString:(self.street ? self.street : @"")];
+    [address appendAddress:(self.subCity ? self.subCity : @"")];
+    [address appendAddress:(self.street ? self.street : @"")];
     if (self.subStreet) {
         [address appendString:_separater];
-        [address appendString:(self.subStreet ? self.subStreet : @"")];
+        [address appendAddress:(self.subStreet ? self.subStreet : @"")];
     }
     
     NSString *address1 = [address stringByTrim];
-    return (address1.length > 0 ) ? address1 : self.formattedAddress;
+    return (address1.length > 0 ) ? address1 : self.fullAddress;
 }
 
 /**
@@ -64,13 +87,13 @@
     city = city ? city : @"";
     
     NSMutableString *address = [NSMutableString string];
-    [address appendString:city];
+    [address appendAddress:city];
     [address appendString:@" "];
-    [address appendString:(self.subCity ? self.subCity : @"")];
-    [address appendString:(self.street ? self.street : @"")];
+    [address appendAddress:(self.subCity ? self.subCity : @"")];
+    [address appendAddress:(self.street ? self.street : @"")];
     if (self.subStreet) {
         [address appendString:_separater];
-        [address appendString:(self.subStreet ? self.subStreet : @"")];
+        [address appendAddress:(self.subStreet ? self.subStreet : @"")];
     }
     
     NSString *address1 = [address stringByTrim];
@@ -88,12 +111,12 @@
     subCity = subCity ? subCity : @"";
     
     NSMutableString *address = [NSMutableString string];
-    [address appendString:(subCity ? subCity : @"")];
+    [address appendAddress:(subCity ? subCity : @"")];
     [address appendString:@" "]; //中间的空格
-    [address appendString:(self.street ? self.street : @"")];
+    [address appendAddress:(self.street ? self.street : @"")];
     if (self.subStreet) {
         [address appendString:_separater];
-        [address appendString:(self.subStreet ? self.subStreet : @"")];
+        [address appendAddress:(self.subStreet ? self.subStreet : @"")];
     }
     
     NSString *address1 = [address stringByTrim];

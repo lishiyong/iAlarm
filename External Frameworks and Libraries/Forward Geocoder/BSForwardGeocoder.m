@@ -234,7 +234,7 @@
     //NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:geocodeUrl] cachePolicy:NSURLCacheStorageAllowed timeoutInterval:_timeoutInterval];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:geocodeUrl] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:_timeoutInterval];
     self.geocodeConnection = [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
-    //NSLog(@"%@",geocodeUrl);
+    NSLog(@"%@",geocodeUrl);
 }
 
 - (void)forwardGeocodeWithQuery:(NSString *)location regionBiasing:(NSString *)regionBiasing viewportBiasing:(MKMapRect)bounds success:(BSForwardGeocoderSuccess)success failure:(BSForwardGeocoderFailed)failure{

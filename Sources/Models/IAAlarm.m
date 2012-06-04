@@ -230,6 +230,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
     copy.position = self.position;
 	copy.positionShort = self.positionShort;
     copy.positionTitle = self.positionTitle;
+    copy.placemark = self.placemark;
 	copy.usedCoordinateAddress = self.usedCoordinateAddress;
 	copy.realCoordinate = self.realCoordinate;
     copy.visualCoordinate = self.visualCoordinate;
@@ -255,9 +256,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	copy.reserve1 = self.reserve1;
 	copy.reserve2 = self.reserve2;
 	copy.reserve3 = self.reserve3;
-    
-    copy.placemark = self.placemark;
-    
+        
     return copy;
 }
 

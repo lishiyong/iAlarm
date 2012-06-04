@@ -117,16 +117,22 @@
 //lishiyong 2012-6-2添加
 - (NSString *)name{
     
-    if (NSNotFound != [self.types indexOfObject:@"political"]) { //不能是行政区域
+    NSArray *array = [NSArray arrayWithObjects:@"political",@"route",@"street_address",@"floor",@"room",nil];
+    
+    BOOL isPolitical = NO;
+    isPolitical = [self.types firstObjectCommonWithArray:array] ? YES : NO;
+    
+    //不能是行政区域
+    if (isPolitical) 
         return nil;
-    }
     
     NSString *name = nil;
-    for (BSAddressComponent *aComponent in self.addressComponents) {
-        if ([self.types isEqualToArray:aComponent.types]) {//找到类型相等的，就是name
-            name = aComponent.longName;
-            break;
-        }
+    //用第一个元素
+    if (self.addressComponents.count > 0) {
+        BSAddressComponent *firstComponent = [self.addressComponents objectAtIndex:0];
+        isPolitical = [firstComponent.types firstObjectCommonWithArray:array] ? YES : NO;
+        if (!isPolitical) 
+            name = firstComponent.longName;
     }
     
     return name;

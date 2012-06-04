@@ -6,6 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "NSMutableString+YC.h"
 #import "YCFunctions.h"
 #import "YCLocation.h"
 #import "NSObject+YC.h"
@@ -54,6 +55,9 @@
             _name = [[_addressDictionary objectForKey:@"Name"] retain];
         //if (![_placemark respondsToSelector:@selector(region)])
             _region = [[_addressDictionary objectForKey:@"Region"] retain];
+        //if (![_placemark respondsToSelector:@selector(Location)])
+        _location = [[_addressDictionary objectForKey:@"Location"] retain];
+        
         
         //BS查询会得到一个格式化地址（formatted_address），它不与MKPlacemark和CLPlacemark对应方法。
         _formattedAddress = [[_addressDictionary objectForKey:@"FormattedAddress"] retain];
@@ -106,7 +110,12 @@
         }
     
     }
-     
+    /*
+    [self performBlock:^{
+        [self debug];
+    } afterDelay:0.1];
+     */
+    
     return self;
 }
 
@@ -117,6 +126,7 @@
     [_countryCode release];
     [_name release];
     [_region release];
+    [_location release];
     [_formattedAddress release];
     [super dealloc];
 }
@@ -129,6 +139,7 @@
 #define    kmyCountryCode                               @"kmyCountryCode"
 #define    kmyName                                      @"kmyName"
 #define    kmyRegion                                    @"kmyRegion"
+#define    kmyLocation                                  @"kmyLocation"
 #define    kmyFormattedAddress                          @"kmyFormattedAddress"
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
@@ -140,6 +151,7 @@
     [encoder encodeObject:_countryCode forKey:kmyCountryCode];
     [encoder encodeObject:_name forKey:kmyName];
     [encoder encodeObject:_region forKey:kmyRegion];
+    [encoder encodeObject:_location forKey:kmyLocation];
     [encoder encodeObject:_formattedAddress forKey:kmyFormattedAddress];
     
 }
@@ -153,6 +165,7 @@
         _countryCode = [[decoder decodeObjectForKey:kmyCountryCode] retain];
         _name = [[decoder decodeObjectForKey:kmyName] retain];
         _region = [[decoder decodeObjectForKey:kmyRegion] retain];
+        _location = [[decoder decodeObjectForKey:kmyLocation] retain];
         _formattedAddress = [[decoder decodeObjectForKey:kmyFormattedAddress] retain];
         
         if ([_placemark conformsToProtocol: @protocol(NSCoding)]) {            
@@ -201,11 +214,13 @@
     if (_formattedAddress) 
         return _formattedAddress;
     else {
-        NSString *address = [self formattedAddressLines];
-        address = [address stringByReplacingOccurrencesOfString:@"\n" withString:_separater];
-        address = [address stringByTrim];
-        return address;
+        NSString *address = [self formattedAddressLines]; 
+        return [self _addressForAddressLines:address];
     }
+}
+
+- (NSString *)fullAddress{
+    return nil;
 }
 
 - (NSString *)longAddress{
@@ -244,10 +259,10 @@
 
 - (NSString *)street{
     NSString *street = [_placemark.thoroughfare stringByTrim];
-    NSString *subCity = self.subCity;
+    NSString *subCity = [self.subCity stringByTrim];
     
     //排除街道中包含区的名字
-    if ([street hasPrefix:subCity] || [street hasSuffix:subCity]) {
+    if (subCity && ([street hasPrefix:subCity] || [street hasSuffix:subCity])) {
         street = [street stringByReplacingOccurrencesOfString:subCity withString:@""];
         street = [street stringByTrim];
     }
@@ -281,30 +296,11 @@
         return _region;
 }
 
-
-- (void)debug{
-    
-        NSLog(@"_placemark = %@",_placemark);
-        NSLog(@"formattedFullAddressLines = %@",[self formattedAddressLines]);
-    
-        NSLog(@"====================");
-    
-        NSLog(@"longAddress = %@",[self longAddress]);
-        NSLog(@"shortAddress = %@",[self shortAddress]);
-        NSLog(@"titleAddress = %@",[self titleAddress]);
-        
-        NSLog(@"====================");
-
-        NSLog(@"country = %@",[self country]);
-        NSLog(@"state = %@",[self state]);
-        NSLog(@"subState = %@",[self subState]);
-        NSLog(@"city = %@",[self city]); 
-        NSLog(@"subCity = %@",[self subCity]);
-        NSLog(@"street = %@",[self street]);
-        NSLog(@"subStreet = %@",[self subStreet]);
-        NSLog(@"zip = %@",[self zip]);
-        NSLog(@"countryCode = %@",[self countryCode]);
-        
+- (CLLocation *)location{
+    if ([_placemark respondsToSelector:@selector(location)] && _placemark.location)
+        return _placemark.location;
+    else
+        return _location;
 }
 
 #pragma mark - Override Super
@@ -328,5 +324,51 @@
     NSUInteger hashValue = (NSUInteger)((lat + lng)*10000);
     return hashValue;
 }
+
+#pragma mark - 
+
+- (NSString*)_addressForAddressLines:(NSString*)addressLines{
+    //先分解成Array，然后在逐个添加
+    NSArray *addresses = [addressLines componentsSeparatedByString:@"\n"];
+    NSMutableString *address = [NSMutableString stringWithCapacity:10];
+    for (NSString *anAddress in addresses) {
+        [address appendAddress:anAddress separater:_separater];
+    }
+    
+    NSString *address1 = [address stringByTrim];
+    return address1;
+}
+
+#pragma mark - Test
+
+- (void)debug{
+    
+    NSLog(@"_placemark = %@",_placemark);
+    
+    NSLog(@"formattedFullAddressLines = %@",[self formattedAddressLines]);
+    NSLog(@"formattedAddress = %@",[self formattedAddress]);
+    
+    NSLog(@"====================");
+    
+    NSLog(@"fullAddress = %@",[self fullAddress]);
+    NSLog(@"longAddress = %@",[self longAddress]);
+    NSLog(@"shortAddress = %@",[self shortAddress]);
+    NSLog(@"titleAddress = %@",[self titleAddress]);
+    
+    NSLog(@"====================");
+    
+    NSLog(@"country = %@",[self country]);
+    NSLog(@"state = %@",[self state]);
+    NSLog(@"subState = %@",[self subState]);
+    NSLog(@"city = %@",[self city]); 
+    NSLog(@"subCity = %@",[self subCity]);
+    NSLog(@"street = %@",[self street]);
+    NSLog(@"subStreet = %@",[self subStreet]);
+    NSLog(@"zip = %@",[self zip]);
+    NSLog(@"countryCode = %@",[self countryCode]);
+    NSLog(@"name = %@",[self name]);
+    
+}
+
 
 @end

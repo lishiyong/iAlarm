@@ -24,7 +24,7 @@ typedef enum {
 @class YCForwardGeocoderManager;
 
 @interface BackgroundViewController : UIViewController
-<UIAlertViewDelegate,BSForwardGeocoderDelegate,YCSearchControllerDelegete,YCAlertTableViewDelegete> {
+<UIAlertViewDelegate,YCSearchControllerDelegete,YCAlertTableViewDelegete> {
 
 	AlarmsListViewController *listViewController;
 	AlarmsMapListViewController *mapsViewController;

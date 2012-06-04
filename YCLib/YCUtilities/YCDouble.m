@@ -16,7 +16,7 @@ NSComparisonResult YCCompareDouble(double anDouble, double anotherDouble){
 NSComparisonResult YCCompareDoubleWithAccuracy(double anDouble, double anotherDouble,NSUInteger accuracy){
     if (fabs(anDouble - anotherDouble) < pow(0.1,accuracy)) {
         return NSOrderedSame;
-    }else if(anotherDouble >anotherDouble){
+    }else if(anDouble >anotherDouble){
         return NSOrderedDescending;
     }else{
         return NSOrderedAscending;

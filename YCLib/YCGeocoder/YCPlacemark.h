@@ -19,23 +19,29 @@
     NSString *_countryCode;
     NSString *_name;
     CLRegion *_region;
+    CLLocation *_location;
     NSString *_formattedAddress;
 }
 
 - (id)initWithPlacemark:(id/*CLPlacemark MKPlacemark*/)aPlacemark;
 
 /**
- 中国辽宁省沈阳市和平区和平南大街96巷1号 邮编:110010
- 日本千叶县松户市 五香西３丁目−２７−３４
- 37 Gramercy Park E,Manhattan,纽约州 10003,美国
- **/
-//- (NSString *)fullAddress;
-
-/**
  使用 addressDictionary中的 FormattedAddressLines
  或 ABCreateStringWithAddressDictionary函数格式化
  **/
 - (NSString *)formattedAddressLines;
+
+/**
+ 使用 google地址解析结果中的第一个formatted_address
+ **/
+- (NSString *)formattedAddress;
+
+/**
+ 中国辽宁省沈阳市和平区和平南大街96巷1号
+ 日本千叶县松户市 五香西３丁目−２７−３４
+ 37 Gramercy Park E,Manhattan,纽约州 10003 美国 (不要区的这个级别，要邮编)
+ **/
+- (NSString *)fullAddress;
 
 /**
  辽宁省沈阳市和平区和平南大街96巷1号
@@ -53,7 +59,7 @@
 
 /**
  和平南大街96巷1号
- 五香西３丁目−２７−３４
+ 五香西 ３丁目−２７−３４
  37 Gramercy Park E
  **/
 - (NSString *)titleAddress;
@@ -69,6 +75,11 @@
 - (NSString *)countryCode;
 - (NSString *)name;
 - (CLRegion *)region;
-- (NSString *)formattedAddress;
+- (CLLocation *)location;
+
+/**
+ 把带换行的地址格式化成一行
+ **/
+- (NSString*)_addressForAddressLines:(NSString*)addressLines;
 
 @end

@@ -6,6 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCDouble.h"
 #import "NSObject+YC.h"
 #import "NSValue+YC.h"
 #import "YCForwardGeocoderManager.h"
@@ -46,6 +47,7 @@
             [(YCForwardGeocoder*) anObj cancel];
     }
     [_geocoders removeAllObjects];
+    [_results removeAllObjects];
 }
 
 - (void)_handleGeocodeCompletionWithError:(NSError*)error{
@@ -61,7 +63,7 @@
     
     if (_results.count > 0) {//有一个结果，就不返回错误
         _forwardGeocodeCompletionHandler(_results.allObjects,nil);
-        //[_results removeAllObjects];
+        [_results removeAllObjects];
     }else if (_reservedViewportBiasings && _reservedViewportBiasings.count > 0){
         //无结果，用备用视口再查询一遍
         NSArray *viewports = [_reservedViewportBiasings retain];
@@ -131,16 +133,25 @@
     _addressString = [addressString retain];
     
     for (id anObj in viewportBiasings) {
-        YCForwardGeocoder *geocoderA = [[[YCForwardGeocoder alloc] initWithTimeout:3.0 forwardGeocoderType:YCForwardGeocoderTypeApple] autorelease];
+        
+        
         YCForwardGeocoder *geocoderB = [[[YCForwardGeocoder alloc] initWithTimeout:20.0 forwardGeocoderType:YCForwardGeocoderTypeBS] autorelease];
-        
-        //
-        [_geocoders addObject:geocoderA];
         [_geocoders addObject:geocoderB];
-        
-        
-        [self _forwardGeocode:geocoderA addressString:addressString viewportBiasing:anObj];
         [self _forwardGeocode:geocoderB addressString:addressString viewportBiasing:anObj];
+
+
+        
+        //5.0版本才支持 CLGeocoder 这个类
+        double systeVersion = [[UIDevice currentDevice].systemVersion doubleValue];
+        NSComparisonResult result = YCCompareDouble(systeVersion, 5.0);
+        if (result == NSOrderedDescending || result == NSOrderedSame)  {
+            
+            YCForwardGeocoder *geocoderA = [[[YCForwardGeocoder alloc] initWithTimeout:3.0 forwardGeocoderType:YCForwardGeocoderTypeApple] autorelease];
+            [_geocoders addObject:geocoderA];
+                [self _forwardGeocode:geocoderA addressString:addressString viewportBiasing:anObj];
+            
+        }
+        
         
     }
     

@@ -1038,6 +1038,7 @@
 	alarm.positionTitle = titleAddress;
 	alarm.positionShort = shortAddress;
 	alarm.position = longAddress;
+    alarm.placemark = placemark;
 	alarm.usedCoordinateAddress = NO;
 	
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -1047,160 +1048,6 @@
     [notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:delay+1.75];
 }
 
--(void)resetAnnotationWithPlace:(BSKmlResult*)place{
-    
-	////////////////////////
-	//Zoom into the location
-	MKCoordinateRegion region = place.coordinateRegion;
-    
-	if (!YCMKCoordinateRegionIsValid(region))
-		region = self.mapsViewController.mapView.region;
-	
-	
-	double delay = [self.mapsViewController.mapView setRegion:region FromWorld:YES animatedToWorld:YES animatedToPlace:YES];
-	//Zoom into the location
-	////////////////////////
-
-	IAAlarm *alarm = [[[IAAlarm alloc] init] autorelease];
-	alarm.visualCoordinate = place.coordinate;
-	//alarm.alarmName = self.forwardGeocoder.searchQuery;
-	alarm.positionShort = place.address;
-	alarm.position = place.address;
-	alarm.usedCoordinateAddress = NO;
-	
-	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-    NSNotification *aNotification = [NSNotification notificationWithName:IAAddIAlarmButtonPressedNotification 
-                                                                  object:self
-                                                                userInfo:[NSDictionary dictionaryWithObject:alarm forKey:IAAlarmAddedKey]];
-    [notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:delay+1.75];
-	
-	
-}
-
-#pragma mark -
-#pragma mark BSForwardGeocoderDelegate
-
-- (void)forwardGeocoderConnectionDidFail:(BSForwardGeocoder *)geocoder withErrorMessage:(NSString *)errorMessage
-{
-    if (searchAlert) {
-        [searchAlert release];
-        searchAlert = nil;
-    }
-    
-    searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleDefaultError
-                                             message:kAlertSearchBodyTryAgain 
-                                            delegate:self
-                                   cancelButtonTitle:kAlertBtnCancel
-                                   otherButtonTitles:kAlertBtnRetry,nil];
-    [searchAlert show];
-    
-    [self.searchController setActive:NO animated:YES];   //search取消
-}
-
-
-- (void)forwardGeocodingDidSucceed:(BSForwardGeocoder *)geocoder withResults:(NSArray *)results
-{
-    //加到最近查询list中
-    [self.searchController addListContentWithString:geocoder.searchQuery];
-    //保存查询结果，以后还要用
-    [searchResults release]; searchResults = nil;
-    searchResults = [results retain];
-    
-    
-    NSInteger searchResultsCount = results.count;
-    if (searchResultsCount == 1) {
-        
-        BSKmlResult *place = [results objectAtIndex:0];
-        [self resetAnnotationWithPlace:place];
-        
-    }else if (searchResultsCount > 1){
-        
-        NSMutableArray *places = [NSMutableArray arrayWithCapacity:results.count];
-        for(id oneObject in results)
-            [places addObject:((BSKmlResult *)oneObject).address];
-        
-        if (searchResultsAlert) {
-            [searchResultsAlert release];
-            searchResultsAlert = nil;
-        }
-        searchResultsAlert = [[YCAlertTableView alloc] 
-                              initWithTitle:kAlertSearchTitleResults delegate:self tableCellContents:places cancelButtonTitle:kAlertBtnCancel];
-        [searchResultsAlert show];
-        
-        
-    }else { //==0
-        if (searchAlert) {
-            [searchAlert release];
-            searchAlert = nil;
-        }
-        searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleNoResults
-                                                 message:kAlertSearchBodyTryAgain 
-                                                delegate:self
-                                       cancelButtonTitle:kAlertBtnCancel
-                                       otherButtonTitles:kAlertBtnRetry,nil];
-        [searchAlert show];
-        
-    }
-    
-    [self.searchController setActive:NO animated:YES];   //search取消
-}
-
-- (void)forwardGeocodingDidFail:(BSForwardGeocoder *)geocoder withErrorCode:(int)errorCode andErrorMessage:(NSString *)errorMessage
-{
-    if (searchAlert) {
-        [searchAlert release];
-        searchAlert = nil;
-    }
-    
-    switch (errorCode) {
-        case G_GEO_BAD_KEY:
-            searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleDefaultError
-                                                     message:kAlertSearchBodyTryAgain 
-                                                    delegate:self
-                                           cancelButtonTitle:kAlertBtnCancel
-                                           otherButtonTitles:kAlertBtnRetry,nil];
-            break;
-            
-        case G_GEO_UNKNOWN_ADDRESS:
-            searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleNoResults
-                                                     message:kAlertSearchBodyTryAgain 
-                                                    delegate:self
-                                           cancelButtonTitle:kAlertBtnCancel
-                                           otherButtonTitles:kAlertBtnRetry,nil];
-            
-            break;
-            
-        case G_GEO_TOO_MANY_QUERIES:
-            searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleTooManyQueries
-                                                     message:kAlertSearchBodyTryTomorrow 
-                                                    delegate:self
-                                           cancelButtonTitle:kAlertBtnOK
-                                           otherButtonTitles:nil];//只用1个按钮，而且不用retry
-            
-            break;
-            
-        case G_GEO_SERVER_ERROR:
-            searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleDefaultError
-                                                     message:kAlertSearchBodyTryAgain 
-                                                    delegate:self
-                                           cancelButtonTitle:kAlertBtnCancel
-                                           otherButtonTitles:kAlertBtnRetry,nil];
-            break;
-            
-            
-        default:
-            searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleDefaultError
-                                                     message:kAlertSearchBodyTryAgain 
-                                                    delegate:self
-                                           cancelButtonTitle:kAlertBtnCancel
-                                           otherButtonTitles:kAlertBtnRetry,nil];
-            break;
-    }
-    
-    [searchAlert show];
-    
-    [self.searchController setActive:NO animated:YES];   //search取消
-}
 
 - (void)_forwardGeocodingDidCompleteWithPlacemarks:(NSArray*)placemarks error:(NSError*)error{
     
@@ -1242,10 +1089,25 @@
         [searchAlert show];
     }else{
         //加到最近查询list中
-        [self.searchController addListContentWithString:forwardGeocoderManager.addressString]; 
+        [self.searchController addListContentWithString:forwardGeocoderManager.addressString];
+        
+        //排序，优先使用当前位置坐标
+        CLLocationCoordinate2D coordinateForSort = kCLLocationCoordinate2DInvalid;
+        if (self.mapsViewController.mapView.userLocation.location) {
+            coordinateForSort = self.mapsViewController.mapView.userLocation.location.coordinate;
+        }else{
+            coordinateForSort = self.mapsViewController.mapView.centerCoordinate;
+        }
+        
+        NSArray *sortedPlacemarks = [placemarks sortedArrayUsingComparator:^(YCPlacemark *obj1, YCPlacemark *obj2){
+            CLLocationDistance distance1 = [obj1.location distanceFromCoordinate:coordinateForSort];
+            CLLocationDistance distance2 = [obj2.location distanceFromCoordinate:coordinateForSort];
+            return YCCompareDouble(distance1, distance2);
+        }];
+        
         //保存查询结果，以后还要用
         [searchResults release]; searchResults = nil;
-        searchResults = [placemarks retain];
+        searchResults = [sortedPlacemarks retain];
         
         if (placemarks.count == 1) {            
             
@@ -1257,8 +1119,9 @@
                 searchResultsAlert = nil;
             }
             
-            NSMutableArray *addresses = [NSMutableArray arrayWithCapacity:placemarks.count];
-            for(id oneObject in placemarks)
+            
+            NSMutableArray *addresses = [NSMutableArray arrayWithCapacity:searchResults.count];
+            for(id oneObject in searchResults)
                 [addresses addObject:((YCPlacemark *)oneObject).formattedAddress];
             
             searchResultsAlert = [[YCAlertTableView alloc] 

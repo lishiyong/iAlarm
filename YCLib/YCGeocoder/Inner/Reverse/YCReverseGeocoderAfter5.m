@@ -58,7 +58,7 @@
         
         YCPlacemark *aYCplacemark = nil;
         if ([placemarks count] > 0) 
-            aYCplacemark = [[YCPlacemark alloc] initWithPlacemark:[placemarks objectAtIndex:0]];
+            aYCplacemark = [[[YCPlacemark alloc] initWithPlacemark:[placemarks objectAtIndex:0]] autorelease];
         
          completionHandler(aYCplacemark,error);
     };

@@ -24,8 +24,8 @@
     
     id obj = nil;
     if (result == NSOrderedDescending || result == NSOrderedSame)  {
-        obj = [[YCReverseGeocoderBefore5 alloc] initWithTimeout:timeout];
-        //obj = [[YCGeocoderAfter5 alloc] initWithTimeout:timeout];
+        //obj = [[YCReverseGeocoderBefore5 alloc] initWithTimeout:timeout];
+        obj = [[YCReverseGeocoderAfter5 alloc] initWithTimeout:timeout];
     }else{
         obj = [[YCReverseGeocoderBefore5 alloc] initWithTimeout:timeout];
     }
