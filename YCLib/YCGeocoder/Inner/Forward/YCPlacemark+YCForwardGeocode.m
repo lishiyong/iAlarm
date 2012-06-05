@@ -6,6 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCMaps.h"
 #import "YCFunctions.h"
 #import <AddressBook/AddressBook.h>
 #import "BSKmlResult.h"
@@ -67,8 +68,7 @@
     
     /////
     name = kmlResult.name;
-    CLLocationDistance radius = kmlResult.coordinateSpan.latitudeDelta * 111000;//每纬度111公里
-    region = [[[CLRegion alloc] initCircularRegionWithCenter:coordinate radius:radius identifier:@"RegionForYCPlacemark"] autorelease];
+    region = YCRegionForCoordinateRegion(kmlResult.coordinateRegion);
     location = [[[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude] autorelease];
     formattedAddress = kmlResult.address;
     

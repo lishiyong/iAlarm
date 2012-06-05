@@ -35,11 +35,11 @@ NSString* YCSerialCode(){
 	return ss;
 }
 
-NSString* NSStringFromCLLocationCoordinate2D(CLLocationCoordinate2D coord){
-    return [NSString stringWithFormat:@"latitude = %.6f, longitude = %.6f",coord.latitude,coord.longitude];
+NSString* YCStringFromCLLocationCoordinate2D(CLLocationCoordinate2D coord){
+    return [NSString stringWithFormat:@"{%.6f, %.6f}",coord.latitude,coord.longitude];
 }
 
-NSString* NSLocalizedStringFromCLLocationCoordinate2D(CLLocationCoordinate2D coord, NSString *northLatitude, NSString *southLatitude, NSString *easeLongitude, NSString *westLongitude){
+NSString* YCLocalizedStringFromCLLocationCoordinate2D(CLLocationCoordinate2D coord, NSString *northLatitude, NSString *southLatitude, NSString *easeLongitude, NSString *westLongitude){
     
     NSString *latFString = nil;
 	if (coord.latitude>0)

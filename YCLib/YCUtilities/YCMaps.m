@@ -40,6 +40,68 @@ BOOL YCMKCoordinateRegionEqualToRegion(MKCoordinateRegion src1,MKCoordinateRegio
 	return YCMKCoordinateSpanEqualToSpan(src1.span,src2.span);
 }
 
+MKMapRect YCMapRectForRegion(CLRegion *region){
+    MKMapRect mapRect = MKMapRectNull;
+    
+    if (region) {
+        double width = (region.radius * 2) * MKMapPointsPerMeterAtLatitude(region.center.latitude);
+        double height = (region.radius * 2) * MKMapPointsPerMeterAtLatitude(0); 
+        //长、宽距离与MKMapSize的转换原理，来源于墨卡托投影的原理。
+        
+        MKMapPoint center = MKMapPointForCoordinate(region.center);
+        MKMapPoint origin = (MKMapPoint){center.x - width/2, center.y - height/2};
+        
+        mapRect = (MKMapRect){origin,{width,height}};
+    }
+    
+    return mapRect;
+}
+
+CLLocationCoordinate2D YCCoordinateForMapPoint(MKMapPoint mapPoint){
+    
+    CLLocationCoordinate2D coord = MKCoordinateForMapPoint(mapPoint);
+    CLLocationDegrees latitude = coord.latitude; 
+    CLLocationDegrees longitude = coord.longitude;
+    if (latitude  >  85.0)  latitude  =  85.0;
+    if (latitude  < -85.0)  latitude  = -85.0;
+    if (longitude >  180.0) longitude = longitude - 360.0;
+    if (longitude < -180.0) longitude = longitude + 360.0;
+    
+    return (CLLocationCoordinate2D){latitude,longitude};
+}
+
+MKMapPoint YCMapRectCenter(MKMapRect mapRect){
+    //算出中心点
+    MKMapPoint origin = mapRect.origin;
+    double width = MKMapRectGetWidth(mapRect);
+    double height = MKMapRectGetHeight(mapRect);
+    MKMapPoint center = (MKMapPoint){origin.x + width/2, origin.y + height/2};
+    return center;
+}
+
+CLRegion* YCRegionForMapRect(MKMapRect mapRect){
+    if (MKMapRectIsNull(mapRect) || MKMapRectIsEmpty(mapRect)) {
+        return nil;
+    }
+    
+    MKMapPoint center = YCMapRectCenter(mapRect);
+    CLLocationCoordinate2D coordinate = MKCoordinateForMapPoint(center);
+    CLLocationDistance radius = (MKMetersPerMapPointAtLatitude(0.0)*mapRect.size.height)/2; //墨卡托投影:地图点高度代表的实际距离不变化
+    CLRegion *region = [[[CLRegion alloc] initCircularRegionWithCenter:coordinate radius:radius identifier:@"RegionForMapRect"] autorelease];
+    
+    return region;
+}
+
+CLRegion* YCRegionForCoordinateRegion(MKCoordinateRegion coordinateRegion){
+    if (!YCMKCoordinateRegionIsValid(coordinateRegion)) {
+        return nil;
+    }
+    
+    CLLocationDistance radius = coordinateRegion.span.latitudeDelta * 111000;//每纬度111公里
+    CLRegion *region = [[[CLRegion alloc] initCircularRegionWithCenter:coordinateRegion.center radius:radius identifier:@"RegionForCoordinateRegion"] autorelease];
+    return region;
+}
+
 
 NSString* YCGetAddressString(MKPlacemark* placemark){
     

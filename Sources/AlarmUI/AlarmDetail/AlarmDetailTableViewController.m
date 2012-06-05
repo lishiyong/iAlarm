@@ -596,8 +596,12 @@
 	}
 	
 	IADestinationCell *theCell = (IADestinationCell*)self->destionationCellDescription.tableViewCell;
+    
     NSString *placemarkName = self.alarmTemp.placemark.name ? self.alarmTemp.placemark.name : @"";
-    NSString *addressLabelText = [NSString stringWithFormat:@"%@ %@",placemarkName,self.alarmTemp.positionShort]; 
+    NSString *shortAddress = self.alarmTemp.positionShort;
+    if ([shortAddress rangeOfString:placemarkName].location != NSNotFound) //如果名字已经在地址中
+        placemarkName = @"";
+    NSString *addressLabelText = [NSString stringWithFormat:@"%@ %@",placemarkName,shortAddress]; 
     addressLabelText = [addressLabelText stringByTrim];
 	theCell.addressLabel.text = addressLabelText;
 
@@ -1002,7 +1006,7 @@
     YCReverseGeocoder *geocoder = [[[YCReverseGeocoder alloc] initWithTimeout:kTimeOutForReverse] autorelease];
     CLLocation *location = [[[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude] autorelease];
     [geocoder reverseGeocodeLocation:location completionHandler:^(YCPlacemark *placemark, NSError *error) {
-        NSString *coordinateString = NSLocalizedStringFromCLLocationCoordinate2D(coordinate,kCoordinateFrmStringNorthLatitude,kCoordinateFrmStringSouthLatitude,kCoordinateFrmStringEastLongitude,kCoordinateFrmStringWestLongitude);
+        NSString *coordinateString = YCLocalizedStringFromCLLocationCoordinate2D(coordinate,kCoordinateFrmStringNorthLatitude,kCoordinateFrmStringSouthLatitude,kCoordinateFrmStringEastLongitude,kCoordinateFrmStringWestLongitude);
         
         IAAlarm *theAlarm = self.alarmTemp;
         if (!error){

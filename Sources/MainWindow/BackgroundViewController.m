@@ -1025,7 +1025,7 @@
 	//Zoom into the location
 	////////////////////////
     
-    NSString *coordinateString = NSLocalizedStringFromCLLocationCoordinate2D(visualCoordinate,kCoordinateFrmStringNorthLatitude,kCoordinateFrmStringSouthLatitude,kCoordinateFrmStringEastLongitude,kCoordinateFrmStringWestLongitude);
+    NSString *coordinateString = YCLocalizedStringFromCLLocationCoordinate2D(visualCoordinate,kCoordinateFrmStringNorthLatitude,kCoordinateFrmStringSouthLatitude,kCoordinateFrmStringEastLongitude,kCoordinateFrmStringWestLongitude);
     
     //优先使用name，其次titleAddress，最后KDefaultAlarmName
     NSString *titleAddress = placemark.name ? placemark.name :(placemark.titleAddress ? placemark.titleAddress : KDefaultAlarmName);
@@ -1121,8 +1121,15 @@
             
             
             NSMutableArray *addresses = [NSMutableArray arrayWithCapacity:searchResults.count];
-            for(id oneObject in searchResults)
-                [addresses addObject:((YCPlacemark *)oneObject).formattedAddress];
+            for(id oneObject in searchResults){
+                NSString *formattedAddress = ((YCPlacemark *)oneObject).formattedAddress;
+                NSString *placemarkName = ((YCPlacemark *)oneObject).name;
+                if (placemarkName && [formattedAddress rangeOfString:placemarkName].location == NSNotFound) {
+                    formattedAddress = [NSString stringWithFormat:@"%@ (%@)",formattedAddress,placemarkName];
+                }//把name加到末尾，如果名字不包含的话
+                
+                [addresses addObject:formattedAddress];
+            }
             
             searchResultsAlert = [[YCAlertTableView alloc] 
                                   initWithTitle:kAlertSearchTitleResults delegate:self tableCellContents:addresses cancelButtonTitle:kAlertBtnCancel];
@@ -1140,71 +1147,107 @@
 
 - (NSArray*)searchController:(YCSearchController *)controller searchString:(NSString *)searchString
 {
-    
+    /*
     NSMutableArray *viewports = [NSMutableArray array];
     NSMutableArray *reservedViewports = [NSMutableArray array];
     
+    
     ///////////////////////////////
+    
     //当前地图可视范围的视口
     MKMapRect visibleBounds = self.mapsViewController.mapView.visibleMapRect;
-    MKMapRect visibleBounds1 = MKMapRectInset(visibleBounds, visibleBounds.size.width*0.25, visibleBounds.size.height*0.25);//减掉一半
-    MKMapRect visibleBounds2 = MKMapRectInset(visibleBounds, -visibleBounds.size.width*0.25, -visibleBounds.size.height*0.25);//加1半
-    MKMapRect visibleBounds3 = MKMapRectInset(visibleBounds, -visibleBounds.size.width*0.5, -visibleBounds.size.height*0.5);//加1倍
     [viewports addObject:[NSValue valueWithMapRect:visibleBounds]];
-    [viewports addObject:[NSValue valueWithMapRect:visibleBounds1]];
-    [viewports addObject:[NSValue valueWithMapRect:visibleBounds2]];
-    [viewports addObject:[NSValue valueWithMapRect:visibleBounds3]];
     
-    MKMapRect visibleBoundsB1 = MKMapRectInset(visibleBounds, visibleBounds.size.width*0.1, visibleBounds.size.height*0.1);//减掉
-    MKMapRect visibleBoundsB2 = MKMapRectInset(visibleBounds, visibleBounds.size.width*0.4, visibleBounds.size.height*0.4);//减掉
-    MKMapRect visibleBoundsB3 = MKMapRectInset(visibleBounds, -visibleBounds.size.width, -visibleBounds.size.height);//加2倍
-    MKMapRect visibleBoundsB4 = MKMapRectInset(visibleBounds, -visibleBounds.size.width*1.5, -visibleBounds.size.height*1.5);//加3倍
+    CLLocationCoordinate2D visCoordinate = YCCoordinateForMapPoint(YCMapRectCenter(visibleBounds));
+    CLLocationDistance visRadius = 250.0;
+
+    NSArray *visLocRadiuses = [NSArray arrayWithObjects:
+                                [NSNumber numberWithDouble:visRadius*2]
+                               ,[NSNumber numberWithDouble:visRadius*4] //1km
+                               ,[NSNumber numberWithDouble:visRadius*4*2]
+                               ,[NSNumber numberWithDouble:visRadius*4*5]
+                               ,[NSNumber numberWithDouble:visRadius*4*8]
+                               ,[NSNumber numberWithDouble:visRadius*4*20]
+                               ,[NSNumber numberWithDouble:visRadius*4*50]
+                               ,[NSNumber numberWithDouble:visRadius*4*90]
+                               , nil];
     
-    [reservedViewports addObject:[NSValue valueWithMapRect:visibleBoundsB1]];
-    [reservedViewports addObject:[NSValue valueWithMapRect:visibleBoundsB2]];
-    [reservedViewports addObject:[NSValue valueWithMapRect:visibleBoundsB3]];
-    [reservedViewports addObject:[NSValue valueWithMapRect:visibleBoundsB4]];
+     
+    
+    NSArray *visLocReservedRadiuses = [NSArray arrayWithObjects:
+                                        [NSNumber numberWithDouble:visRadius*4*16]
+                                       ,[NSNumber numberWithDouble:visRadius*4*30]
+                                       ,[NSNumber numberWithDouble:visRadius*4*80]
+                                       ,[NSNumber numberWithDouble:visRadius*4*100]
+                                       ,[NSNumber numberWithDouble:visRadius*4*200]
+                                       ,[NSNumber numberWithDouble:visRadius*4*500]
+                                       ,[NSNumber numberWithDouble:visRadius*4*2000]
+                                       , nil];
+    
+    for (NSInteger i = 0; i < visLocRadiuses.count; i++) {
+        NSString * identifier = [NSString stringWithFormat:@"visLocRegions%d",i];
+        CLLocationDistance aRadius = [(NSNumber*)[visLocRadiuses objectAtIndex:i] doubleValue];
+        CLRegion *aRegion = [[[CLRegion alloc] initCircularRegionWithCenter:visCoordinate radius:aRadius identifier:identifier] autorelease];
+        [viewports addObject:aRegion];
+    }
+    
+    for (NSInteger i = 0; i < visLocReservedRadiuses.count; i++) {
+        NSString * identifier = [NSString stringWithFormat:@"visLocReservedRegion%d",i];
+        CLLocationDistance aRadius = [(NSNumber*)[visLocReservedRadiuses objectAtIndex:i] doubleValue];
+        CLRegion *aRegion = [[[CLRegion alloc] initCircularRegionWithCenter:visCoordinate radius:aRadius identifier:identifier] autorelease];
+        [reservedViewports addObject:aRegion];
+    }
+     
+    
     
     //当前位置的视口
     CLLocation *curLoc = self.mapsViewController.mapView.userLocation.location;
+    if (!curLoc) 
+        curLoc = [YCSystemStatus deviceStatusSingleInstance].lastLocation;
+    curLoc = nil;
     if (curLoc) { 
-        CLLocationCoordinate2D curCoor = curLoc.coordinate;
-        CLLocationDistance radius0 = 0.25;
-        CLLocationDistance radius1 = radius0*2;
-        CLLocationDistance radius2 = radius0*4;
-        CLLocationDistance radius3 = radius0*8;
-        CLLocationDistance radius4 = radius0*10;
-        CLLocationDistance radius5 = radius0*16;
-        CLLocationDistance radius6 = radius0*20;
-        CLLocationDistance radius7 = radius0*30;
-        CLLocationDistance radius8 = radius0*50;
-        CLLocationDistance radius9 = radius0*100;
-        CLLocationDistance radius10 = radius0*200;
+        CLLocationCoordinate2D curCoordinate = curLoc.coordinate;
+        CLLocationDistance curRadius = 250.0;
         
-        CLRegion *region0 = [[[CLRegion alloc] initCircularRegionWithCenter:curCoor radius:radius0 identifier:@"radius0"] autorelease];
-        CLRegion *region1 = [[[CLRegion alloc] initCircularRegionWithCenter:curCoor radius:radius1 identifier:@"radius1"] autorelease];
-        CLRegion *region2 = [[[CLRegion alloc] initCircularRegionWithCenter:curCoor radius:radius2 identifier:@"radius2"] autorelease];
-        CLRegion *region3 = [[[CLRegion alloc] initCircularRegionWithCenter:curCoor radius:radius3 identifier:@"radius3"] autorelease];
-        CLRegion *region4 = [[[CLRegion alloc] initCircularRegionWithCenter:curCoor radius:radius4 identifier:@"radius4"] autorelease];
-        CLRegion *region5 = [[[CLRegion alloc] initCircularRegionWithCenter:curCoor radius:radius5 identifier:@"radius5"] autorelease];
-        CLRegion *region6 = [[[CLRegion alloc] initCircularRegionWithCenter:curCoor radius:radius6 identifier:@"radius6"] autorelease];
-        CLRegion *region7 = [[[CLRegion alloc] initCircularRegionWithCenter:curCoor radius:radius7 identifier:@"radius7"] autorelease];
-        CLRegion *region8 = [[[CLRegion alloc] initCircularRegionWithCenter:curCoor radius:radius8 identifier:@"radius8"] autorelease];
-        CLRegion *region9 = [[[CLRegion alloc] initCircularRegionWithCenter:curCoor radius:radius9 identifier:@"radius9"] autorelease];
-        CLRegion *region10 = [[[CLRegion alloc] initCircularRegionWithCenter:curCoor radius:radius10 identifier:@"radius10"] autorelease];
+        NSArray *curLocRadiuses = [NSArray arrayWithObjects:
+                                    [NSNumber numberWithDouble:curRadius*2] 
+                                   ,[NSNumber numberWithDouble:curRadius*4] //1km
+                                   ,[NSNumber numberWithDouble:curRadius*4*2]
+                                   ,[NSNumber numberWithDouble:curRadius*4*5]
+                                   ,[NSNumber numberWithDouble:curRadius*4*8]
+                                   ,[NSNumber numberWithDouble:curRadius*4*20]
+                                   ,[NSNumber numberWithDouble:curRadius*4*50]
+                                   ,[NSNumber numberWithDouble:curRadius*4*90]
+                                   , nil];
+         
+                
+        NSArray *curLocReservedRadiuses = [NSArray arrayWithObjects:[NSNumber numberWithDouble:curRadius]
+                                    ,[NSNumber numberWithDouble:curRadius*4*16]
+                                    ,[NSNumber numberWithDouble:curRadius*4*30]
+                                    ,[NSNumber numberWithDouble:curRadius*4*80]
+                                    ,[NSNumber numberWithDouble:curRadius*4*100]
+                                    ,[NSNumber numberWithDouble:curRadius*4*200]
+                                    ,[NSNumber numberWithDouble:curRadius*4*500]
+                                    ,[NSNumber numberWithDouble:curRadius*4*2000]
+                                    , nil];
         
-        [viewports addObject:region0];
-        [viewports addObject:region1];
-        [viewports addObject:region2];
-        [viewports addObject:region3];
-        [viewports addObject:region4];
-        [viewports addObject:region5];
-        [viewports addObject:region6];
-        [viewports addObject:region7];
-        [viewports addObject:region8];
-        [viewports addObject:region9];
-        [viewports addObject:region10];
+        for (NSInteger i = 0; i < curLocRadiuses.count; i++) {
+            NSString * identifier = [NSString stringWithFormat:@"curLocRegions%d",i];
+            CLLocationDistance aRadius = [(NSNumber*)[curLocRadiuses objectAtIndex:i] doubleValue];
+            CLRegion *aRegion = [[[CLRegion alloc] initCircularRegionWithCenter:curCoordinate radius:aRadius identifier:identifier] autorelease];
+            [viewports addObject:aRegion];
+        }
+        
+        for (NSInteger i = 0; i < curLocReservedRadiuses.count; i++) {
+            NSString * identifier = [NSString stringWithFormat:@"curLocReservedRegion%d",i];
+            CLLocationDistance aRadius = [(NSNumber*)[curLocReservedRadiuses objectAtIndex:i] doubleValue];
+            CLRegion *aRegion = [[[CLRegion alloc] initCircularRegionWithCenter:curCoordinate radius:aRadius identifier:identifier] autorelease];
+            [reservedViewports addObject:aRegion];
+        }
+        
     }
+
+    
     if (!forwardGeocoderManager) 
         forwardGeocoderManager = [[YCForwardGeocoderManager alloc] init];
     [forwardGeocoderManager forwardGeocodeAddressString:searchString viewportBiasings:viewports reservedViewportBiasings:reservedViewports completionHandler:^(NSArray *placemarks, NSError *error){
@@ -1212,6 +1255,24 @@
     }];
     
     return nil;
+     */
+    
+    //当前地图可视范围的视口
+    MKMapRect visibleBounds = self.mapsViewController.mapView.visibleMapRect;
+    //当前位置的视口
+    CLLocation *curLocation = self.mapsViewController.mapView.userLocation.location;
+    if (!curLocation) 
+        curLocation = [YCSystemStatus deviceStatusSingleInstance].lastLocation;
+    
+    if (!forwardGeocoderManager) 
+        forwardGeocoderManager = [[YCForwardGeocoderManager alloc] init];
+    
+    [forwardGeocoderManager forwardGeocodeAddressString:searchString visibleMapRect:visibleBounds currentLocation:curLocation completionHandler:^(NSArray *placemarks, NSError *error){
+        [self _forwardGeocodingDidCompleteWithPlacemarks:placemarks error:error];
+    }];
+
+    return nil;
+    
 }
 
 

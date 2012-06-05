@@ -8,6 +8,7 @@
 //  Read my blog @ http://blog.sallarp.com
 //
 
+#import "YCLib.h"
 #import "BSForwardGeocoder.h"
 
 @interface BSForwardGeocoder ()
@@ -217,24 +218,32 @@
     
     if (!MKMapRectIsNull(bounds) && !MKMapRectIsEmpty(bounds)) {//2012-04-26 lishiyong 添加
         //换成坐标边距
-        MKMapPoint pointSouth_west = MKMapPointMake(MKMapRectGetMinX(bounds), MKMapRectGetMaxY(bounds)); //西南
-        CLLocationCoordinate2D coordinateSouth_west = MKCoordinateForMapPoint(pointSouth_west);
+        MKMapPoint pSouthWest = MKMapPointMake(MKMapRectGetMinX(bounds), MKMapRectGetMaxY(bounds)); //西南
+        CLLocationCoordinate2D cSouthWest = YCCoordinateForMapPoint(pSouthWest);
         
-        MKMapPoint pointNorth_east = MKMapPointMake(MKMapRectGetMaxX(bounds), MKMapRectGetMinY(bounds)); //东北
-        CLLocationCoordinate2D coordinateNorth_east = MKCoordinateForMapPoint(pointNorth_east);
+        MKMapPoint pNorthEast = MKMapPointMake(MKMapRectGetMaxX(bounds), MKMapRectGetMinY(bounds)); //东北
+        CLLocationCoordinate2D cNorthEast = YCCoordinateForMapPoint(pNorthEast);
         
         NSString *boundsString = @"&bounds=";
-        NSString *boundsString1 = [NSString stringWithFormat:@"%.6f,%.6f|%.6f,%.6f",coordinateSouth_west.latitude,coordinateSouth_west.longitude,coordinateNorth_east.latitude,coordinateNorth_east.longitude];
+        NSString *boundsString1 = [NSString stringWithFormat:@"%.6f,%.6f|%.6f,%.6f",cSouthWest.latitude,cSouthWest.longitude,cNorthEast.latitude,cNorthEast.longitude];
         boundsString = [boundsString stringByAppendingFormat:@"%@",[self URLEncodedString:boundsString1]];
     
         geocodeUrl = [geocodeUrl stringByAppendingFormat:@"%@", boundsString];
+        
+        
+        /*
+        NSLog(@"当前坐标 = %@",YCStringFromCLLocationCoordinate2D(MKCoordinateForMapPoint(bounds.origin)));
+        NSLog(@"西南坐标 = %@",YCStringFromCLLocationCoordinate2D(cSouthWest));
+        NSLog(@"东北坐标 = %@",YCStringFromCLLocationCoordinate2D(cNorthEast));
+        NSLog(@"===================================");
+         */
         
     }
     
     //NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:geocodeUrl] cachePolicy:NSURLCacheStorageAllowed timeoutInterval:_timeoutInterval];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:geocodeUrl] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:_timeoutInterval];
     self.geocodeConnection = [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
-    NSLog(@"%@",geocodeUrl);
+    //NSLog(@"%@",geocodeUrl);
 }
 
 - (void)forwardGeocodeWithQuery:(NSString *)location regionBiasing:(NSString *)regionBiasing viewportBiasing:(MKMapRect)bounds success:(BSForwardGeocoderSuccess)success failure:(BSForwardGeocoderFailed)failure{

@@ -156,6 +156,8 @@
 
 	
     cell.textLabel.text = [self.tableCellContents objectAtIndex:indexPath.row];
+    
+    cell.textLabel.lineBreakMode = UILineBreakModeMiddleTruncation;//中间省略方式
 
 	
 	

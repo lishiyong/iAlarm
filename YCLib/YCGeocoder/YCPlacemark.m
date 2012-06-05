@@ -50,12 +50,8 @@
         }
         _countryCode = [[[_countryCode uppercaseString] stringByTrim] retain];
     
-        //MKPlacemark在4.x不支持方法：name,region
-        //if (![_placemark respondsToSelector:@selector(name)])
-            _name = [[_addressDictionary objectForKey:@"Name"] retain];
-        //if (![_placemark respondsToSelector:@selector(region)])
-            _region = [[_addressDictionary objectForKey:@"Region"] retain];
-        //if (![_placemark respondsToSelector:@selector(Location)])
+        _name = [[_addressDictionary objectForKey:@"Name"] retain];
+        _region = [[_addressDictionary objectForKey:@"Region"] retain];
         _location = [[_addressDictionary objectForKey:@"Location"] retain];
         
         
@@ -108,6 +104,51 @@
             if ([city isEqualToString:state]) 
                 [_addressDictionary removeObjectForKey:(NSString *) kABPersonAddressStateKey];
         }
+        
+        //_placemark.name有可能是完全的地址
+        if ([_placemark respondsToSelector:@selector(name)]){ //MKPlacemark在4.x不支持方法：name
+            NSString *placemarkName = _placemark.name;
+            if (placemarkName) {
+                
+                BOOL isContainingCountry = NO;
+                if (self.country) 
+                    isContainingCountry = ([placemarkName rangeOfString:self.country].location != NSNotFound);
+                
+                BOOL isContainingState = NO;
+                if (self.state) 
+                    isContainingState = ([placemarkName rangeOfString:self.state].location != NSNotFound);
+                
+                BOOL isContainingCity = NO;
+                if (self.city) 
+                    isContainingCity = ([placemarkName rangeOfString:self.city].location != NSNotFound);
+                
+                BOOL isContainingSubCity = NO;
+                if (self.subCity) 
+                    isContainingSubCity = ([placemarkName rangeOfString:self.subCity].location != NSNotFound);
+                
+                BOOL isStreet = NO;
+                if (self.street) 
+                    isStreet = [[placemarkName stringByTrim] isEqualToString:self.street];
+                
+                _internalPlacemarkNameIsName = YES;
+                //如果name中包含其中的任意3个，就认为name是_formattedAddress,不能做为name使用了。是街道也不行。
+                if ((isContainingCountry && isContainingState && isContainingCity)    || 
+                    (isContainingCountry && isContainingState && isContainingSubCity) || 
+                    (isContainingCountry && isContainingCity  && isContainingSubCity) || 
+                    (isContainingState   && isContainingCity  && isContainingSubCity) ||
+                    (isStreet)
+                    ) {
+                    
+                    _internalPlacemarkNameIsName = NO;
+                    [_name release];
+                    _name = nil;
+                    
+                    if (!_formattedAddress && !isStreet) //如果不是街道，赋给就是_formattedAddress
+                        _formattedAddress = [placemarkName retain];
+                    
+                }
+            }
+        }//处理_placemark.name结束
     
     }
     /*
@@ -115,7 +156,7 @@
         [self debug];
     } afterDelay:0.1];
      */
-    
+     
     return self;
 }
 
@@ -141,6 +182,8 @@
 #define    kmyRegion                                    @"kmyRegion"
 #define    kmyLocation                                  @"kmyLocation"
 #define    kmyFormattedAddress                          @"kmyFormattedAddress"
+#define    kmyInternalPlacemarkNameIsName               @"kmyInternalPlacemarkNameIsName"
+
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
     
@@ -153,6 +196,7 @@
     [encoder encodeObject:_region forKey:kmyRegion];
     [encoder encodeObject:_location forKey:kmyLocation];
     [encoder encodeObject:_formattedAddress forKey:kmyFormattedAddress];
+    [encoder encodeBool:_internalPlacemarkNameIsName forKey:kmyInternalPlacemarkNameIsName];
     
 }
 
@@ -167,6 +211,7 @@
         _region = [[decoder decodeObjectForKey:kmyRegion] retain];
         _location = [[decoder decodeObjectForKey:kmyLocation] retain];
         _formattedAddress = [[decoder decodeObjectForKey:kmyFormattedAddress] retain];
+        _internalPlacemarkNameIsName = [decoder decodeBoolForKey:kmyInternalPlacemarkNameIsName];
         
         if ([_placemark conformsToProtocol: @protocol(NSCoding)]) {            
             _placemark = [[decoder decodeObjectForKey:kmyPlacemark] retain];
@@ -283,13 +328,15 @@
 }
 
 - (NSString *)name{
-    if ([_placemark respondsToSelector:@selector(name)] && _placemark.name)
+    //MKPlacemark在4.x不支持方法：name
+    if ([_placemark respondsToSelector:@selector(name)] && _placemark.name && _internalPlacemarkNameIsName)
         return _placemark.name;
     else
         return _name;
 }
 
 - (CLRegion *)region{
+    //MKPlacemark在4.x不支持方法：region
     if ([_placemark respondsToSelector:@selector(region)] && _placemark.region)
         return _placemark.region;
     else
@@ -297,6 +344,7 @@
 }
 
 - (CLLocation *)location{
+    //MKPlacemark在4.x不支持方法：location
     if ([_placemark respondsToSelector:@selector(location)] && _placemark.location)
         return _placemark.location;
     else
@@ -367,6 +415,8 @@
     NSLog(@"zip = %@",[self zip]);
     NSLog(@"countryCode = %@",[self countryCode]);
     NSLog(@"name = %@",[self name]);
+    
+    NSLog(@"_placemarkNameIsFormattedAddress = %@",_internalPlacemarkNameIsName ? @"YES":@"NO");
     
 }
 

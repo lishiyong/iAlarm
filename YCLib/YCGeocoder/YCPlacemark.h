@@ -21,6 +21,7 @@
     CLRegion *_region;
     CLLocation *_location;
     NSString *_formattedAddress;
+    BOOL _internalPlacemarkNameIsName; //_placemark.name是否可以当作name使用
 }
 
 - (id)initWithPlacemark:(id/*CLPlacemark MKPlacemark*/)aPlacemark;

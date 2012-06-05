@@ -1464,7 +1464,7 @@
 
 #pragma mark - Utility
 
-#define kTimeOutForReverse 8.0
+#define kTimeOutForReverse 15.0
 -(void)reverseGeocodeWithAnnotation:(IAAnnotation*)annotation
 {	
     YCReverseGeocoder *geocoder = [[[YCReverseGeocoder alloc] initWithTimeout:kTimeOutForReverse] autorelease];
@@ -1472,7 +1472,7 @@
     CLLocation *location = [[[CLLocation alloc] initWithLatitude:visualCoordinate.latitude longitude:visualCoordinate.longitude] autorelease];
     
     [geocoder reverseGeocodeLocation:location completionHandler:^(YCPlacemark *placemark, NSError *error) {        
-        NSString *coordinateString = NSLocalizedStringFromCLLocationCoordinate2D(visualCoordinate,kCoordinateFrmStringNorthLatitude,kCoordinateFrmStringSouthLatitude,kCoordinateFrmStringEastLongitude,kCoordinateFrmStringWestLongitude);
+        NSString *coordinateString = YCLocalizedStringFromCLLocationCoordinate2D(visualCoordinate,kCoordinateFrmStringNorthLatitude,kCoordinateFrmStringSouthLatitude,kCoordinateFrmStringEastLongitude,kCoordinateFrmStringWestLongitude);
         
         IAAlarm *alarm = [IAAlarm findForAlarmId:[(IAAnnotation*)annotation identifier]];
         if (!error && placemark){
@@ -1481,7 +1481,7 @@
             NSString *titleAddress = placemark.name ? placemark.name :(placemark.titleAddress ? placemark.titleAddress : KDefaultAlarmName);
             NSString *shortAddress = placemark.shortAddress ? placemark.shortAddress : coordinateString;
             NSString *longAddress = placemark.longAddress ? placemark.longAddress : coordinateString;
-           
+                       
             if (!alarm.nameChanged) {
                 /*不灵
                 annotation.title = nil;
@@ -1787,7 +1787,7 @@
 			if ([annotation isKindOfClass:[IAAnnotation class]])
 			{
 				if (!alarm.nameChanged)
-					annotation.title = @" . . .             ";
+                    annotation.title = @" . . .                         ";
 				
 				//显示距离当前位置XX公里
 				if ([YCSystemStatus deviceStatusSingleInstance].lastLocation) {

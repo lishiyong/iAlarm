@@ -27,6 +27,8 @@
  **/
 - (void)forwardGeocodeAddressString:(NSString *)addressString viewportBiasings:(NSArray*)viewportBiasings reservedViewportBiasings:(NSArray*)reservedViewportBiasings  completionHandler:(YCforwardGeocodeCompletionHandler)completionHandler;
 
+- (void)forwardGeocodeAddressString:(NSString *)addressString visibleMapRect:(MKMapRect)mapRect currentLocation:(CLLocation*)currentLocation completionHandler:(YCforwardGeocodeCompletionHandler)completionHandler;
+
 - (void)cancel;
 - (NSString *)addressString;
 

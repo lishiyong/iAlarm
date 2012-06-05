@@ -6,6 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCMaps.h"
 #import "YCPlacemark+YCForwardGeocode.h"
 #import "NSObject+YC.h"
 #import "YCForwardGeocoderApple.h"
@@ -67,10 +68,7 @@
 
 - (void)forwardGeocodeAddressString:(NSString *)addressString inMapRect:(MKMapRect)mapRect completionHandler:(YCforwardGeocodeCompletionHandler)completionHandler{
     
-    CLLocationCoordinate2D coordinate = MKCoordinateForMapPoint(mapRect.origin);
-    CLLocationDistance radius = (MKMetersPerMapPointAtLatitude(0.0)*mapRect.size.height)/2; //墨卡托投影:地图点高度代表的实际距离不变化
-    CLRegion *region = [[CLRegion alloc] initCircularRegionWithCenter:coordinate radius:radius identifier:@"regionForGeocode"];
-    
+    CLRegion *region = YCRegionForMapRect(mapRect);
     [self _forwardGeocodeAddressString:addressString inRegion:region completionHandler:completionHandler];
 }
 

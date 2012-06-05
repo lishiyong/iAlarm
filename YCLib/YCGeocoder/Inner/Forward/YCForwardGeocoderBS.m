@@ -6,6 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCMaps.h"
 #import <AddressBookUI/AddressBookUI.h>
 #import "NSObject+YC.h"
 #import "YCPlacemark+YCForwardGeocode.h"
@@ -61,22 +62,8 @@
 
 - (void)forwardGeocodeAddressString:(NSString *)addressString inRegion:(CLRegion *)region completionHandler:(YCforwardGeocodeCompletionHandler)completionHandler{
 
-    MKMapRect mapRect = MKMapRectNull;
-    if (region) {
-        MKMapPoint origin = MKMapPointForCoordinate(region.center);
-        double width = (region.radius * 2) * MKMapPointsPerMeterAtLatitude(region.center.latitude);
-        double height = (region.radius * 2) * MKMapPointsPerMeterAtLatitude(0); 
-                //长、宽距离与MKMapSize的转换原理，来源于墨卡托投影的原理。
-        mapRect = (MKMapRect){origin,{width,height}};
-        
-        //如果mapRect跨越了180度经线
-        if (MKMapRectSpans180thMeridian(mapRect)) {
-            mapRect = MKMapRectRemainder(mapRect);
-        }
-    }
-    
+    MKMapRect mapRect = YCMapRectForRegion(region);
     [self forwardGeocodeAddressString:addressString inMapRect:mapRect completionHandler:completionHandler];
-
 }
 
 - (void)forwardGeocodeAddressString:(NSString *)addressString inMapRect:(MKMapRect)mapRect completionHandler:(YCforwardGeocodeCompletionHandler)completionHandler{

@@ -102,7 +102,7 @@
 
 - (NSString *)description{
     NSMutableString *string = [NSMutableString string];
-    [string appendFormat:@"coordinate = %@",NSStringFromCLLocationCoordinate2D(self.coordinate)];
+    [string appendFormat:@"coordinate = %@",YCStringFromCLLocationCoordinate2D(self.coordinate)];
     [string appendFormat:@"\naddress = %@",self.address];
     [string appendFormat:@"\ncountryName = %@",self.countryName];
     [string appendFormat:@"\nlocalityName = %@",self.localityName];
