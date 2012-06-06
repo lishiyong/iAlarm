@@ -150,11 +150,13 @@
     	
 }
 
+/*
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated{
 	[super setSelected:selected animated:animated];
     if (selected)
 		[self performSelector:@selector(whenPinViewSelected) withObject:nil afterDelay:0.1];
 }
+ */
 
 /**
  在这里使用灰色的pin
