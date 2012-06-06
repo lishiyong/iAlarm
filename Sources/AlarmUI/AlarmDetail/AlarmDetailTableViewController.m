@@ -598,7 +598,7 @@
 	IADestinationCell *theCell = (IADestinationCell*)self->destionationCellDescription.tableViewCell;
     
     NSString *placemarkName = self.alarmTemp.placemark.name ? self.alarmTemp.placemark.name : @"";
-    NSString *shortAddress = self.alarmTemp.positionShort;
+    NSString *shortAddress = self.alarmTemp.positionShort ? self.alarmTemp.positionShort : @"";
     if ([shortAddress rangeOfString:placemarkName].location != NSNotFound) //如果名字已经在地址中
         placemarkName = @"";
     NSString *addressLabelText = [NSString stringWithFormat:@"%@ %@",placemarkName,shortAddress]; 

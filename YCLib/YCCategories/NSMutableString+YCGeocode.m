@@ -6,9 +6,9 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
-#import "NSMutableString+YC.h"
+#import "NSMutableString+YCGeocode.h"
 
-@implementation NSMutableString (YC)
+@implementation NSMutableString (YCGeocode)
 
 /**
  anAddress是西文(单字节)，而且self又不是以“空格”或“,”或separater结束的，那么anAddress前加 separater
@@ -19,24 +19,24 @@
     //anAddress =  [anAddress stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     //判断是否是单字节
-    BOOL anAddressIsSimple = [anAddress canBeConvertedToEncoding:NSNEXTSTEPStringEncoding];
+    BOOL anAddressIsSingle = [anAddress canBeConvertedToEncoding:NSNEXTSTEPStringEncoding];
     
     //self最后一个字是否是单字节
-    BOOL selfIsSimple = NO;
+    BOOL selfIsSingle = NO;
     if (self.length > 0) {
         NSString *lastString = [self substringFromIndex:self.length-1];
-        selfIsSimple = [lastString canBeConvertedToEncoding:NSNEXTSTEPStringEncoding];
+        selfIsSingle = [lastString canBeConvertedToEncoding:NSNEXTSTEPStringEncoding];
     }
     
     //self不是以“空格”或“,”或separater结束的
     if (self.length > 0) {
-        if (anAddressIsSimple || selfIsSimple) {
+        if (anAddressIsSingle || selfIsSingle) {
             if (!([self hasSuffix:@" "] || [self hasSuffix:@","] || [self hasSuffix:separater])) {
                 [self appendString:separater];
             }
         }
     }
-    
+
     
     [self appendString:anAddress];
 }

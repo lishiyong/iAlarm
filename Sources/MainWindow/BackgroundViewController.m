@@ -1061,6 +1061,7 @@
         switch (error.code) {
             case kCLErrorGeocodeFoundNoResult:
             case kCLErrorGeocodeFoundPartialResult:
+            case kCLErrorGeocodeCanceled:
                 searchAlert = [[UIAlertView alloc] initWithTitle:kAlertSearchTitleNoResults
                                                          message:kAlertSearchBodyTryAgain 
                                                         delegate:self
@@ -1119,16 +1120,44 @@
                 searchResultsAlert = nil;
             }
             
-            
+            //生成地址列表
             NSMutableArray *addresses = [NSMutableArray arrayWithCapacity:searchResults.count];
             for(id oneObject in searchResults){
                 NSString *formattedAddress = ((YCPlacemark *)oneObject).formattedAddress;
                 NSString *placemarkName = ((YCPlacemark *)oneObject).name;
-                if (placemarkName && [formattedAddress rangeOfString:placemarkName].location == NSNotFound) {
-                    formattedAddress = [NSString stringWithFormat:@"%@ (%@)",formattedAddress,placemarkName];
+                if (placemarkName && [formattedAddress rangeOfString:placemarkName].location == NSNotFound) 
+                {
+                    //判断是否是单字节
+                    BOOL isSingle = [placemarkName canBeConvertedToEncoding:NSNEXTSTEPStringEncoding];
+                    if (isSingle) //全角括号
+                        formattedAddress = [NSString stringWithFormat:@"%@ (%@)",formattedAddress,placemarkName];
+                    else
+                        formattedAddress = [NSString stringWithFormat:@"%@ （%@）",formattedAddress,placemarkName];
                 }//把name加到末尾，如果名字不包含的话
                 
                 [addresses addObject:formattedAddress];
+            }
+            
+            //解决列表中地址名称重复问题 在末尾加[1],[2]...
+            NSCountedSet *countedSet= [NSCountedSet setWithArray:addresses]; //为了得到重复的数量
+            
+            for (NSUInteger i = 0; i < addresses.count; i++) {
+                
+                NSString *anAddress = [addresses objectAtIndex:i];
+                [anAddress retain]; //下面的replaceObjectAtIndex后，anAddress会release。
+                                
+                NSUInteger sameNameIdx = 1;
+                NSUInteger count = [countedSet countForObject:anAddress];
+                NSUInteger idx = [addresses indexOfObject:anAddress];
+                
+                while (NSNotFound != idx && count > 1) {
+                    NSString *newAnAddress = [anAddress stringByAppendingFormat:@" [%d]",sameNameIdx];
+                    [addresses replaceObjectAtIndex:idx withObject:newAnAddress];
+                    idx = [addresses indexOfObject:anAddress];
+                    sameNameIdx++;
+                }
+                
+                [anAddress release];
             }
             
             searchResultsAlert = [[YCAlertTableView alloc] 

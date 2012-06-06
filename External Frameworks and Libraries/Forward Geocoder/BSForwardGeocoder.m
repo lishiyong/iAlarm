@@ -232,11 +232,12 @@
         
         
         /*
-        NSLog(@"当前坐标 = %@",YCStringFromCLLocationCoordinate2D(MKCoordinateForMapPoint(bounds.origin)));
+        NSLog(@"西北坐标 = %@",YCStringFromCLLocationCoordinate2D(MKCoordinateForMapPoint(bounds.origin)));
         NSLog(@"西南坐标 = %@",YCStringFromCLLocationCoordinate2D(cSouthWest));
         NSLog(@"东北坐标 = %@",YCStringFromCLLocationCoordinate2D(cNorthEast));
         NSLog(@"===================================");
          */
+         
         
     }
     

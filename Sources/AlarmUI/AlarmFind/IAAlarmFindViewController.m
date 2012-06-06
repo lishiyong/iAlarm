@@ -238,7 +238,8 @@ cell使用后height竟然会加1。奇怪！
         BOOL arrived = [alarmForNotif.positionType.positionTypeId isEqualToString:@"p002"];//是 “到达时候”提醒
         NSString *promptTemple = arrived?kAlertFrmStringArrived:kAlertFrmStringLeaved;
         
-        NSString *alertTitle = [[[NSString alloc] initWithFormat:promptTemple,alarmForNotif.alarmName,0.0] autorelease];
+        NSString *alarmName = alarmForNotif.alarmName ? alarmForNotif.alarmName : alarmForNotif.positionTitle;
+        NSString *alertTitle = [[[NSString alloc] initWithFormat:promptTemple,alarmName,0.0] autorelease];
         NSString *alarmMessage = [alarmForNotif.notes stringByTrim];
         
         NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObject:alarmNotification.notificationId forKey:@"knotificationId"];

@@ -25,6 +25,7 @@
     self = [super initWithTimeout:timeout forwardGeocoderType:type];
     if (self) {
         _forwardGeocoder = [[BSForwardGeocoder alloc] init];
+        _forwardGeocoder.timeoutInterval = timeout +1;
         _forwardGeocoder.useHTTP = YES;
         _geocoding = NO;
     }

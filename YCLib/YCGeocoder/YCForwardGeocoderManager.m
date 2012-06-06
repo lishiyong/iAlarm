@@ -151,6 +151,7 @@
                 [self _forwardGeocode:geocoderA addressString:addressString viewportBiasing:anObj];
             
         }
+         
         
     }
     
@@ -162,10 +163,15 @@
 
 - (void)forwardGeocodeAddressString:(NSString *)addressString visibleMapRect:(MKMapRect)visibleMapRect currentLocation:(CLLocation*)currentLocation completionHandler:(YCforwardGeocodeCompletionHandler)completionHandler{
     
+    //正在查询中
+    if (_geocoders.count > 0) 
+        return;
+    
+    
     NSMutableArray *viewports = [NSMutableArray array];
     NSMutableArray *reservedViewports = [NSMutableArray array];
     
-        
+    //visibleMapRect = MKMapRectNull;
     //当前地图可视范围的视口
     if (!MKMapRectIsNull(visibleMapRect) && !MKMapRectIsEmpty(visibleMapRect)) {
         [viewports addObject:[NSValue valueWithMapRect:visibleMapRect]];
@@ -173,17 +179,17 @@
         CLLocationCoordinate2D visCoordinate = YCCoordinateForMapPoint(YCMapRectCenter(visibleMapRect));
         CLLocationDistance visRadius = 250.0;
         
+        
         NSArray *visLocRadiuses = [NSArray arrayWithObjects:
                                     [NSNumber numberWithDouble:visRadius*4] //1km
                                    ,[NSNumber numberWithDouble:visRadius*4*2]
                                    ,[NSNumber numberWithDouble:visRadius*4*5]
                                    ,[NSNumber numberWithDouble:visRadius*4*8]
-                                   ,[NSNumber numberWithDouble:visRadius*4*20]
                                    ,[NSNumber numberWithDouble:visRadius*4*50]
                                    ,[NSNumber numberWithDouble:visRadius*4*90]
+                                   ,[NSNumber numberWithDouble:visRadius*4*300]
                                    , nil];
-        
-        
+         
         
         NSArray *visLocReservedRadiuses = [NSArray arrayWithObjects:
                                             [NSNumber numberWithDouble:visRadius*2]
@@ -191,7 +197,6 @@
                                            ,[NSNumber numberWithDouble:visRadius*4*30]
                                            ,[NSNumber numberWithDouble:visRadius*4*80]
                                            ,[NSNumber numberWithDouble:visRadius*4*100]
-                                           ,[NSNumber numberWithDouble:visRadius*4*200]
                                            ,[NSNumber numberWithDouble:visRadius*4*500]
                                            ,[NSNumber numberWithDouble:visRadius*4*2000]
                                            , nil];
@@ -212,7 +217,7 @@
 
     }
     
-        
+            
     //当前位置的视口
     if (currentLocation) { 
         CLLocationCoordinate2D curCoordinate = currentLocation.coordinate;
@@ -223,19 +228,18 @@
                                    ,[NSNumber numberWithDouble:curRadius*4*2]
                                    ,[NSNumber numberWithDouble:curRadius*4*5]
                                    ,[NSNumber numberWithDouble:curRadius*4*8]
-                                   ,[NSNumber numberWithDouble:curRadius*4*20]
+                                   ,[NSNumber numberWithDouble:curRadius*4*30]
                                    ,[NSNumber numberWithDouble:curRadius*4*50]
                                    ,[NSNumber numberWithDouble:curRadius*4*90]
+                                   ,[NSNumber numberWithDouble:curRadius*4*180]
+                                   ,[NSNumber numberWithDouble:curRadius*4*300]
                                    , nil];
         
         
         NSArray *curLocReservedRadiuses = [NSArray arrayWithObjects:
                                             [NSNumber numberWithDouble:curRadius*2]
                                            ,[NSNumber numberWithDouble:curRadius*4*16]
-                                           ,[NSNumber numberWithDouble:curRadius*4*30]
-                                           ,[NSNumber numberWithDouble:curRadius*4*80]
                                            ,[NSNumber numberWithDouble:curRadius*4*100]
-                                           ,[NSNumber numberWithDouble:curRadius*4*200]
                                            ,[NSNumber numberWithDouble:curRadius*4*500]
                                            ,[NSNumber numberWithDouble:curRadius*4*2000]
                                            , nil];

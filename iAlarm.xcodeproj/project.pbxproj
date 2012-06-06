@@ -1052,8 +1052,8 @@
 		9CE8970813000275008FBD45 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CE8970713000275008FBD45 /* AudioToolbox.framework */; };
 		9CE8972C130003DF008FBD45 /* iAlarm.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8972B130003DF008FBD45 /* iAlarm.xcdatamodeld */; };
 		9CE8973A13000454008FBD45 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8973813000454008FBD45 /* main.m */; };
-		9CEC579A157C689A007C1BAE /* NSMutableString+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEC5799157C689A007C1BAE /* NSMutableString+YC.m */; };
-		9CEC579B157C689A007C1BAE /* NSMutableString+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEC5799157C689A007C1BAE /* NSMutableString+YC.m */; };
+		9CEC579A157C689A007C1BAE /* NSMutableString+YCGeocode.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEC5799157C689A007C1BAE /* NSMutableString+YCGeocode.m */; };
+		9CEC579B157C689A007C1BAE /* NSMutableString+YCGeocode.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEC5799157C689A007C1BAE /* NSMutableString+YCGeocode.m */; };
 		9CED14741579B7B300E0DD2E /* YCForwardGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CED14731579B7B300E0DD2E /* YCForwardGeocoder.m */; };
 		9CED14751579B7B300E0DD2E /* YCForwardGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CED14731579B7B300E0DD2E /* YCForwardGeocoder.m */; };
 		9CED149B1579D0E900E0DD2E /* NSError+YCForwardGeocode.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CED14841579D0E900E0DD2E /* NSError+YCForwardGeocode.m */; };
@@ -1931,8 +1931,8 @@
 		9CE8970713000275008FBD45 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		9CE8972A130003DF008FBD45 /* iAlarm_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iAlarm_Prefix.pch; sourceTree = "<group>"; };
 		9CE8973813000454008FBD45 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		9CEC5798157C689A007C1BAE /* NSMutableString+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableString+YC.h"; sourceTree = "<group>"; };
-		9CEC5799157C689A007C1BAE /* NSMutableString+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableString+YC.m"; sourceTree = "<group>"; };
+		9CEC5798157C689A007C1BAE /* NSMutableString+YCGeocode.h */ = {isa = PBXFileReference; fileEncoding = 4; path = "NSMutableString+YCGeocode.h"; sourceTree = "<group>"; };
+		9CEC5799157C689A007C1BAE /* NSMutableString+YCGeocode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableString+YCGeocode.m"; sourceTree = "<group>"; };
 		9CED14721579B7B300E0DD2E /* YCForwardGeocoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCForwardGeocoder.h; path = YCGeocoder/YCForwardGeocoder.h; sourceTree = "<group>"; };
 		9CED14731579B7B300E0DD2E /* YCForwardGeocoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCForwardGeocoder.m; path = YCGeocoder/YCForwardGeocoder.m; sourceTree = "<group>"; };
 		9CED14831579D0E900E0DD2E /* NSError+YCForwardGeocode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+YCForwardGeocode.h"; sourceTree = "<group>"; };
@@ -2409,8 +2409,8 @@
 				9CFBF9931571D434003DDE65 /* NSSet+YC.m */,
 				9C54AD32157B12B400105BA8 /* NSValue+YC.h */,
 				9C54AD33157B12B400105BA8 /* NSValue+YC.m */,
-				9CEC5798157C689A007C1BAE /* NSMutableString+YC.h */,
-				9CEC5799157C689A007C1BAE /* NSMutableString+YC.m */,
+				9CEC5798157C689A007C1BAE /* NSMutableString+YCGeocode.h */,
+				9CEC5799157C689A007C1BAE /* NSMutableString+YCGeocode.m */,
 			);
 			path = YCCategories;
 			sourceTree = "<group>";
@@ -4947,7 +4947,7 @@
 				9CED14B31579E64600E0DD2E /* YCPlacemark+YCForwardGeocode.m in Sources */,
 				9C54AD22157B00EB00105BA8 /* YCForwardGeocoderManager.m in Sources */,
 				9C54AD34157B12B400105BA8 /* NSValue+YC.m in Sources */,
-				9CEC579A157C689A007C1BAE /* NSMutableString+YC.m in Sources */,
+				9CEC579A157C689A007C1BAE /* NSMutableString+YCGeocode.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5160,7 +5160,7 @@
 				9CED14B41579E64600E0DD2E /* YCPlacemark+YCForwardGeocode.m in Sources */,
 				9C54AD23157B00EB00105BA8 /* YCForwardGeocoderManager.m in Sources */,
 				9C54AD35157B12B400105BA8 /* NSValue+YC.m in Sources */,
-				9CEC579B157C689A007C1BAE /* NSMutableString+YC.m in Sources */,
+				9CEC579B157C689A007C1BAE /* NSMutableString+YCGeocode.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

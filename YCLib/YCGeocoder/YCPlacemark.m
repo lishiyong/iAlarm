@@ -6,7 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
-#import "NSMutableString+YC.h"
+#import "NSMutableString+YCGeocode.h"
 #import "YCFunctions.h"
 #import "YCLocation.h"
 #import "NSObject+YC.h"

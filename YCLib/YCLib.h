@@ -16,7 +16,7 @@
 #import "NSDictionary+YC.h"
 #import "NSArray+YC.h"
 #import "NSValue+YC.h"
-#import "NSMutableString+YC.h"
+#import "NSMutableString+YCGeocode.h"
 #import "CLLocation+YC.h"
 
 #import "YCFunctions.h"
