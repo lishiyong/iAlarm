@@ -897,6 +897,7 @@
 	self.alarm.position = self.alarmTemp.position;
 	self.alarm.positionShort = self.alarmTemp.positionShort;
     self.alarm.positionTitle = self.alarmTemp.positionTitle;
+    self.alarm.placemark = self.alarmTemp.placemark;
 	self.alarm.usedCoordinateAddress = self.alarmTemp.usedCoordinateAddress;
 	self.alarm.nameChanged = self.alarmTemp.nameChanged;
 	self.alarm.sound = self.alarmTemp.sound;
