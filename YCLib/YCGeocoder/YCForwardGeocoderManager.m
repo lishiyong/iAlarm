@@ -133,10 +133,20 @@
     _reservedViewportBiasings = [reservedViewportBiasings retain];
     _addressString = [addressString retain];
     
+    NSTimeInterval timeoutA = 0;
+    NSTimeInterval timeoutB = 0;
+    if (reservedViewportBiasings && reservedViewportBiasings.count >0) {//用备用视口来判断是不是第一次搜索
+        timeoutA = 5.0;
+        timeoutB = 10.0; //第一次时间短点
+    }else{
+        timeoutA = 12;
+        timeoutB = 30.0;
+    }
+    
     for (id anObj in viewportBiasings) {
         
         
-        YCForwardGeocoder *geocoderB = [[[YCForwardGeocoder alloc] initWithTimeout:20.0 forwardGeocoderType:YCForwardGeocoderTypeBS] autorelease];
+        YCForwardGeocoder *geocoderB = [[[YCForwardGeocoder alloc] initWithTimeout:timeoutB forwardGeocoderType:YCForwardGeocoderTypeBS] autorelease];
         [_geocoders addObject:geocoderB];
         [self _forwardGeocode:geocoderB addressString:addressString viewportBiasing:anObj];
          
@@ -146,7 +156,7 @@
         NSComparisonResult result = YCCompareDouble(systeVersion, 5.0);
         if (result == NSOrderedDescending || result == NSOrderedSame)  {
             
-            YCForwardGeocoder *geocoderA = [[[YCForwardGeocoder alloc] initWithTimeout:3.0 forwardGeocoderType:YCForwardGeocoderTypeApple] autorelease];
+            YCForwardGeocoder *geocoderA = [[[YCForwardGeocoder alloc] initWithTimeout:timeoutA forwardGeocoderType:YCForwardGeocoderTypeApple] autorelease];
             [_geocoders addObject:geocoderA];
                 [self _forwardGeocode:geocoderA addressString:addressString viewportBiasing:anObj];
             

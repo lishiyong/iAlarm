@@ -599,6 +599,11 @@
     
     NSString *placemarkName = self.alarmTemp.placemark.name ? self.alarmTemp.placemark.name : @"";
     NSString *shortAddress = self.alarmTemp.positionShort ? self.alarmTemp.positionShort : @"";
+    placemarkName = [placemarkName stringByReplacingOccurrencesOfString:@" " withString:@""]; //空格个逗号都替掉
+    placemarkName = [placemarkName stringByReplacingOccurrencesOfString:@"," withString:@""];
+    shortAddress = [shortAddress stringByReplacingOccurrencesOfString:@" " withString:@""];
+    shortAddress = [shortAddress stringByReplacingOccurrencesOfString:@"," withString:@""];
+    
     if ([shortAddress rangeOfString:placemarkName].location != NSNotFound) //如果名字已经在地址中
         placemarkName = @"";
     NSString *addressLabelText = [NSString stringWithFormat:@"%@ %@",placemarkName,shortAddress]; 

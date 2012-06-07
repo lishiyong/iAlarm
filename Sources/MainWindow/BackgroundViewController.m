@@ -1006,8 +1006,10 @@
 #pragma mark Utility - ForwardGeocoder
 -(void)resetAnnotationWithPlacemark:(YCPlacemark*)placemark{
     
-    CLLocationCoordinate2D visualCoordinate = placemark.region.center;
+    //地图缩放期间，不允许其他事件（尤其是searchbar获得焦点）。
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     
+    CLLocationCoordinate2D visualCoordinate = placemark.region.center;
     ////////////////////////
 	//Zoom into the location
     
@@ -1024,6 +1026,9 @@
 	double delay = [self.mapsViewController.mapView setRegion:region FromWorld:YES animatedToWorld:YES animatedToPlace:YES];
 	//Zoom into the location
 	////////////////////////
+    
+    [[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:delay+2.0];
+    
     
     NSString *coordinateString = YCLocalizedStringFromCLLocationCoordinate2D(visualCoordinate,kCoordinateFrmStringNorthLatitude,kCoordinateFrmStringSouthLatitude,kCoordinateFrmStringEastLongitude,kCoordinateFrmStringWestLongitude);
     
@@ -1296,7 +1301,9 @@
     if (!forwardGeocoderManager) 
         forwardGeocoderManager = [[YCForwardGeocoderManager alloc] init];
     
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     [forwardGeocoderManager forwardGeocodeAddressString:searchString visibleMapRect:visibleBounds currentLocation:curLocation completionHandler:^(NSArray *placemarks, NSError *error){
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         [self _forwardGeocodingDidCompleteWithPlacemarks:placemarks error:error];
     }];
 
