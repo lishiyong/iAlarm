@@ -132,20 +132,21 @@
     NSString *addressString = nil;
     if ([value isKindOfClass: [NSString class]]) {
         titleString = @"搜索：";
-        addressString = [key stringByAppendingFormat:@"(%@)",value];
+        addressString = [key stringByAppendingFormat:@" (%@)",value];
     }else{
         titleString = @"联系人：";
         NSString *stringValue = [ABCreateStringWithAddressDictionary(value,NO) stringByTrim];
-        addressString = [key stringByAppendingFormat:@"(%@)",stringValue];
+        addressString = [key stringByAppendingFormat:@" (%@)",stringValue];
     }
     
-    //cell.textLabel.textColor = [UIColor lightGrayColor];
-    cell.textLabel.font = [UIFont systemFontOfSize:14];
+    cell.textLabel.textColor = [UIColor darkGrayColor];
+    cell.textLabel.font = [UIFont boldSystemFontOfSize:14];
     cell.textLabel.text = titleString;
+    NSLog(@"cell.textLabel.bounds = %@",NSStringFromCGRect(cell.textLabel.bounds));
     
     cell.detailTextLabel.text = addressString;
-    //cell.detailTextLabel.textColor = [UIColor darkTextColor];
-    cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:14];
+    cell.detailTextLabel.textColor = [UIColor darkTextColor];
+    cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:15];
     cell.detailTextLabel.lineBreakMode = UILineBreakModeMiddleTruncation;
     
     return cell;
@@ -160,6 +161,10 @@
         NSDictionary *dic = [[IARecentAddressManager sharedManager].all objectAtIndex:indexPath.row];
         [_delegate recentAddressPickerNavigationController:self shouldContinueAfterSelectingRecentAddressData:dic];
     }
+}
+
+- (NSInteger)tableView:(UITableView *)tableView indentationLevelForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return -3;
 }
 
 @end

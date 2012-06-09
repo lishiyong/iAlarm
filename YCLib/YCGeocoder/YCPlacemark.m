@@ -331,8 +331,6 @@
 
 - (NSString *)name{
     //MKPlacemark在4.x不支持方法：name
-    NSLog(@"_placemark.name = '%@'",_placemark.name);
-    NSLog(@"_name = '%@'",_name);
     if ([_placemark respondsToSelector:@selector(name)] && _placemark.name 
         &&[_placemark.name stringByTrim].length > 0 && _internalPlacemarkNameIsName)
         return _placemark.name;

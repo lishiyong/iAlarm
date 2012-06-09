@@ -52,7 +52,7 @@
     
     
     
-    
+    /*
     NSLog(@"view0 = %@ %@",NSStringFromClass([viewSelected class]),viewSelected);
     [viewSelected.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSLog(@"UILayoutContainerView's subview = %@ %@",NSStringFromClass([obj class]),obj);
@@ -69,6 +69,7 @@
             NSLog(@"UIViewControllerWrapperView's subview = %@ %@",NSStringFromClass([obj class]),obj);
         }];
     }
+     */
 }
 
 #pragma mark - View lifecycle
