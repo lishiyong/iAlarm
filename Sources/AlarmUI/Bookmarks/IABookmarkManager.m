@@ -49,7 +49,7 @@
     }];
     
     if (!_recentAddressNav) {
-        IARecentAddressViewController *recentAddressVC = [[[IARecentAddressViewController alloc] initWithNibName:@"IARecentAddressViewController" bundle:nil] autorelease];
+        IARecentAddressViewController *recentAddressVC = [[[IARecentAddressViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
         recentAddressVC.delegate = self;
         recentAddressVC.navigationItem.prompt = @"选择最近搜索";
         _recentAddressNav = [[UINavigationController alloc] initWithRootViewController:recentAddressVC];
@@ -95,7 +95,7 @@
     
     if (addressDic) {
         
-        //做搜索
+        //做搜索状
         NSString *searchString = ABCreateStringWithAddressDictionary(addressDic,NO);
         self.searchController.searchDisplayController.searchBar.text = searchString;
         
@@ -173,6 +173,47 @@
         [self.currentViewController dismissViewControllerAnimated:YES completion:NULL];
     }else{
         [self.currentViewController dismissModalViewControllerAnimated:YES];
+    }
+    
+    return NO;
+}
+
+- (BOOL)recentAddressPickerNavigationController:(IARecentAddressViewController *)recentAddressPicker shouldContinueAfterSelectingRecentAddressData:(NSDictionary*)anRecentAddressData{
+    
+    NSString *key = [[anRecentAddressData allKeys] objectAtIndex:0]; //查询串或人名
+    id value = [[anRecentAddressData allValues] objectAtIndex:0]; //查询结果，字符串或dic
+    
+    //做搜索状
+    NSString *searchString = nil;
+    if ([value isKindOfClass: [NSString class]]) 
+        searchString = key;
+    else
+        searchString = ABCreateStringWithAddressDictionary(value,NO);
+    self.searchController.searchDisplayController.searchBar.text = searchString;
+    [self.searchController setActive:YES animated:NO];
+    [self.searchController setSearchWaiting:YES];
+    
+    //关闭本视图控制器
+    if ([self.currentViewController respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]) {
+        [self.currentViewController dismissViewControllerAnimated:YES completion:NULL];
+    }else{
+        [self.currentViewController dismissModalViewControllerAnimated:YES];
+    }
+    
+    if ([value isKindOfClass: [NSString class]]) {
+        
+        [self performBlock:^{
+            if ([self.searchController.delegate respondsToSelector:@selector(searchController:searchString:)]) {
+                [self.searchController.delegate searchController:self.searchController searchString:key];
+            }
+        } afterDelay:0.1];
+        
+    }else{
+        [self performBlock:^{
+            if ([self.searchController.delegate respondsToSelector:@selector(searchController:addressDictionary:addressTitle:)]) {
+                [self.searchController.delegate searchController:self.searchController addressDictionary:value addressTitle:key];
+            }
+        } afterDelay:0.1];
     }
     
     return NO;

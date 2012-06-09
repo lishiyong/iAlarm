@@ -1113,7 +1113,7 @@
                 theObject = @"...";
         }
         
-        [[IARecentAddressManager sharedManager] addObject:theKey forKey:theObject];
+        [[IARecentAddressManager sharedManager] addObject:theObject forKey:theKey];
         
         
         //排序，优先使用当前位置坐标

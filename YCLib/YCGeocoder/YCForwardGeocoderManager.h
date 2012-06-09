@@ -36,6 +36,6 @@
 - (void)cancel;
 - (NSString *)addressString;
 - (NSString *)addressTitle;
-- (NSString *)addressDictionary;
+- (NSDictionary *)addressDictionary;
 
 @end

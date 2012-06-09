@@ -21,7 +21,19 @@
 }
 
 - (void)clearButtonItemPressed:(id)sender{
+    UIActionSheet *sheet = [[[UIActionSheet alloc] initWithTitle:@"清除么？" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"清楚" otherButtonTitles:nil] autorelease];
+    [sheet showInView:self.tableView];
+}
+
+#pragma mark - UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     
+    if ([actionSheet cancelButtonIndex] == buttonIndex) {
+        return;
+    }
+    
+    [[IARecentAddressManager sharedManager] removeAll];
+    [self.tableView reloadData];
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -67,6 +79,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.tableView reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -84,23 +97,22 @@
     [super viewDidDisappear:animated];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    
-    return [IARecentAddressManager sharedManager].allCount;
+    NSUInteger rowCount = [IARecentAddressManager sharedManager].allCount;
+    if (rowCount > 0) {
+        self.navigationItem.leftBarButtonItem.enabled = YES;
+    }else{
+        self.navigationItem.leftBarButtonItem.enabled = NO;
+    }
+    return rowCount;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -109,12 +121,12 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier] autorelease];
     }
     
-    NSDictionary *dic = [[IARecentAddressManager sharedManager].all objectAtIndex:0];
-    NSString *key = [[dic allKeys] objectAtIndex:0];
-    id value = [[dic allValues] objectAtIndex:0];
+    NSDictionary *dic = [[IARecentAddressManager sharedManager].all objectAtIndex:indexPath.row];
+    NSString *key = [[dic allKeys] objectAtIndex:0]; //查询串或人名
+    id value = [[dic allValues] objectAtIndex:0]; //查询结果，字符串或dic
     
     NSString *titleString = nil;
     NSString *addressString = nil;
@@ -127,8 +139,14 @@
         addressString = [key stringByAppendingFormat:@"(%@)",stringValue];
     }
     
+    //cell.textLabel.textColor = [UIColor lightGrayColor];
+    cell.textLabel.font = [UIFont systemFontOfSize:14];
     cell.textLabel.text = titleString;
+    
     cell.detailTextLabel.text = addressString;
+    //cell.detailTextLabel.textColor = [UIColor darkTextColor];
+    cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:14];
+    cell.detailTextLabel.lineBreakMode = UILineBreakModeMiddleTruncation;
     
     return cell;
 }
@@ -138,14 +156,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     [detailViewController release];
-     */
+    if ([_delegate respondsToSelector:@selector(recentAddressPickerNavigationController:shouldContinueAfterSelectingRecentAddressData:)]) {
+        NSDictionary *dic = [[IARecentAddressManager sharedManager].all objectAtIndex:indexPath.row];
+        [_delegate recentAddressPickerNavigationController:self shouldContinueAfterSelectingRecentAddressData:dic];
+    }
 }
 
 @end

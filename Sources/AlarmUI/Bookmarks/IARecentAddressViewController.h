@@ -12,11 +12,11 @@
 @protocol IARecentAddressViewControllerDelegate <NSObject>
 
 - (void)recentAddressPickerNavigationControllerDidCancel:(IARecentAddressViewController *)recentAddressPicker;
-- (BOOL)recentAddressPickerNavigationController:(IARecentAddressViewController *)recentAddressPicker shouldContinueAfterSelectingPerson:(YCPlacemark*)placemark;
+- (BOOL)recentAddressPickerNavigationController:(IARecentAddressViewController *)recentAddressPicker shouldContinueAfterSelectingRecentAddressData:(NSDictionary*)anRecentAddressData;
 
 @end
 
-@interface IARecentAddressViewController : UITableViewController
+@interface IARecentAddressViewController : UITableViewController <UIActionSheetDelegate>
 
 @property (nonatomic, assign) id<IARecentAddressViewControllerDelegate> delegate;
 

@@ -120,6 +120,18 @@
     
 }
 
+- (NSString *)addressString;{
+    return _addressString;
+}
+
+- (NSString *)addressTitle{
+    return _addressTitle;
+}
+
+- (NSDictionary *)addressDictionary{
+    return _addressDictionary;
+}
+
 - (void)_prepare{
     //先都停止解析,再清空结果集
     [_geocoders enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
@@ -189,18 +201,6 @@
         
     }
     
-}
-
-- (NSString *)addressString;{
-    return _addressString;
-}
-
-- (NSString *)addressTitle{
-    return _addressTitle;
-}
-
-- (NSString *)addressDictionary{
-    return _addressDictionary;
 }
 
 - (void)forwardGeocodeAddressString:(NSString *)addressString visibleMapRect:(MKMapRect)visibleMapRect currentLocation:(CLLocation*)currentLocation completionHandler:(YCforwardGeocodeCompletionHandler)completionHandler{
