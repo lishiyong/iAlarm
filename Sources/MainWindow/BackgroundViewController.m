@@ -6,6 +6,8 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import "IARecentAddressManager.h"
+#import "IABookmarkManager.h"
 #import "YCLib.h"
 #import "YCLocation.h"
 #import "YCFunctions.h"
@@ -37,6 +39,7 @@
 @synthesize navBar;
 @synthesize searchBar;
 @synthesize searchController;
+@synthesize bookmarkManager;
 @synthesize toolbar;
 @synthesize animationBackgroundView;
 
@@ -932,6 +935,7 @@
 	self.searchController = [[YCSearchController alloc] initWithDelegate:self
 												 searchDisplayController:self.searchDisplayController];
 	self.searchController.originalSearchBarHidden = NO;//不自动隐藏
+    self.bookmarkManager.searchController = self.searchController;
     
 
     //当前控制器、 Nav的标题、searchBar
@@ -1040,12 +1044,12 @@
     
 	IAAlarm *alarm = [[[IAAlarm alloc] init] autorelease];
 	alarm.visualCoordinate = visualCoordinate;
-	alarm.positionTitle = titleAddress;
+	alarm.positionTitle = (forwardGeocoderManager.addressTitle.length > 0) ? forwardGeocoderManager.addressTitle : titleAddress; //如果是从联系人搜索来的
 	alarm.positionShort = shortAddress;
 	alarm.position = longAddress;
     alarm.placemark = placemark;
 	alarm.usedCoordinateAddress = NO;
-	
+    	
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     NSNotification *aNotification = [NSNotification notificationWithName:IAAddIAlarmButtonPressedNotification 
                                                                   object:self
@@ -1094,8 +1098,23 @@
 
         [searchAlert show];
     }else{
-        //加到最近查询list中
-        [self.searchController addListContentWithString:forwardGeocoderManager.addressString];
+        
+        //加入最近搜索
+        NSString *theKey = nil;
+        id theObject = nil;
+        if (forwardGeocoderManager.addressTitle) {
+            theKey = forwardGeocoderManager.addressTitle;
+            theObject = forwardGeocoderManager.addressDictionary;
+        }else{
+            theKey = forwardGeocoderManager.addressString;
+            if (placemarks.count == 0) 
+                 theObject = [(YCPlacemark*)[placemarks objectAtIndex:0] formattedAddress];
+            else
+                theObject = @"...";
+        }
+        
+        [[IARecentAddressManager sharedManager] addObject:theKey forKey:theObject];
+        
         
         //排序，优先使用当前位置坐标
         CLLocationCoordinate2D coordinateForSort = kCLLocationCoordinate2DInvalid;
@@ -1179,117 +1198,13 @@
 #pragma mark -
 #pragma mark YCSearchControllerDelegete methods
 
-- (NSArray*)searchController:(YCSearchController *)controller searchString:(NSString *)searchString
+- (void)searchController:(YCSearchController *)controller searchString:(NSString *)searchString
 {
-    /*
-    NSMutableArray *viewports = [NSMutableArray array];
-    NSMutableArray *reservedViewports = [NSMutableArray array];
+    searchString = [searchString stringByTrim];
     
-    
-    ///////////////////////////////
-    
-    //当前地图可视范围的视口
-    MKMapRect visibleBounds = self.mapsViewController.mapView.visibleMapRect;
-    [viewports addObject:[NSValue valueWithMapRect:visibleBounds]];
-    
-    CLLocationCoordinate2D visCoordinate = YCCoordinateForMapPoint(YCMapRectCenter(visibleBounds));
-    CLLocationDistance visRadius = 250.0;
-
-    NSArray *visLocRadiuses = [NSArray arrayWithObjects:
-                                [NSNumber numberWithDouble:visRadius*2]
-                               ,[NSNumber numberWithDouble:visRadius*4] //1km
-                               ,[NSNumber numberWithDouble:visRadius*4*2]
-                               ,[NSNumber numberWithDouble:visRadius*4*5]
-                               ,[NSNumber numberWithDouble:visRadius*4*8]
-                               ,[NSNumber numberWithDouble:visRadius*4*20]
-                               ,[NSNumber numberWithDouble:visRadius*4*50]
-                               ,[NSNumber numberWithDouble:visRadius*4*90]
-                               , nil];
-    
-     
-    
-    NSArray *visLocReservedRadiuses = [NSArray arrayWithObjects:
-                                        [NSNumber numberWithDouble:visRadius*4*16]
-                                       ,[NSNumber numberWithDouble:visRadius*4*30]
-                                       ,[NSNumber numberWithDouble:visRadius*4*80]
-                                       ,[NSNumber numberWithDouble:visRadius*4*100]
-                                       ,[NSNumber numberWithDouble:visRadius*4*200]
-                                       ,[NSNumber numberWithDouble:visRadius*4*500]
-                                       ,[NSNumber numberWithDouble:visRadius*4*2000]
-                                       , nil];
-    
-    for (NSInteger i = 0; i < visLocRadiuses.count; i++) {
-        NSString * identifier = [NSString stringWithFormat:@"visLocRegions%d",i];
-        CLLocationDistance aRadius = [(NSNumber*)[visLocRadiuses objectAtIndex:i] doubleValue];
-        CLRegion *aRegion = [[[CLRegion alloc] initCircularRegionWithCenter:visCoordinate radius:aRadius identifier:identifier] autorelease];
-        [viewports addObject:aRegion];
-    }
-    
-    for (NSInteger i = 0; i < visLocReservedRadiuses.count; i++) {
-        NSString * identifier = [NSString stringWithFormat:@"visLocReservedRegion%d",i];
-        CLLocationDistance aRadius = [(NSNumber*)[visLocReservedRadiuses objectAtIndex:i] doubleValue];
-        CLRegion *aRegion = [[[CLRegion alloc] initCircularRegionWithCenter:visCoordinate radius:aRadius identifier:identifier] autorelease];
-        [reservedViewports addObject:aRegion];
-    }
-     
-    
-    
-    //当前位置的视口
-    CLLocation *curLoc = self.mapsViewController.mapView.userLocation.location;
-    if (!curLoc) 
-        curLoc = [YCSystemStatus deviceStatusSingleInstance].lastLocation;
-    curLoc = nil;
-    if (curLoc) { 
-        CLLocationCoordinate2D curCoordinate = curLoc.coordinate;
-        CLLocationDistance curRadius = 250.0;
-        
-        NSArray *curLocRadiuses = [NSArray arrayWithObjects:
-                                    [NSNumber numberWithDouble:curRadius*2] 
-                                   ,[NSNumber numberWithDouble:curRadius*4] //1km
-                                   ,[NSNumber numberWithDouble:curRadius*4*2]
-                                   ,[NSNumber numberWithDouble:curRadius*4*5]
-                                   ,[NSNumber numberWithDouble:curRadius*4*8]
-                                   ,[NSNumber numberWithDouble:curRadius*4*20]
-                                   ,[NSNumber numberWithDouble:curRadius*4*50]
-                                   ,[NSNumber numberWithDouble:curRadius*4*90]
-                                   , nil];
-         
-                
-        NSArray *curLocReservedRadiuses = [NSArray arrayWithObjects:[NSNumber numberWithDouble:curRadius]
-                                    ,[NSNumber numberWithDouble:curRadius*4*16]
-                                    ,[NSNumber numberWithDouble:curRadius*4*30]
-                                    ,[NSNumber numberWithDouble:curRadius*4*80]
-                                    ,[NSNumber numberWithDouble:curRadius*4*100]
-                                    ,[NSNumber numberWithDouble:curRadius*4*200]
-                                    ,[NSNumber numberWithDouble:curRadius*4*500]
-                                    ,[NSNumber numberWithDouble:curRadius*4*2000]
-                                    , nil];
-        
-        for (NSInteger i = 0; i < curLocRadiuses.count; i++) {
-            NSString * identifier = [NSString stringWithFormat:@"curLocRegions%d",i];
-            CLLocationDistance aRadius = [(NSNumber*)[curLocRadiuses objectAtIndex:i] doubleValue];
-            CLRegion *aRegion = [[[CLRegion alloc] initCircularRegionWithCenter:curCoordinate radius:aRadius identifier:identifier] autorelease];
-            [viewports addObject:aRegion];
-        }
-        
-        for (NSInteger i = 0; i < curLocReservedRadiuses.count; i++) {
-            NSString * identifier = [NSString stringWithFormat:@"curLocReservedRegion%d",i];
-            CLLocationDistance aRadius = [(NSNumber*)[curLocReservedRadiuses objectAtIndex:i] doubleValue];
-            CLRegion *aRegion = [[[CLRegion alloc] initCircularRegionWithCenter:curCoordinate radius:aRadius identifier:identifier] autorelease];
-            [reservedViewports addObject:aRegion];
-        }
-        
-    }
-
-    
-    if (!forwardGeocoderManager) 
-        forwardGeocoderManager = [[YCForwardGeocoderManager alloc] init];
-    [forwardGeocoderManager forwardGeocodeAddressString:searchString viewportBiasings:viewports reservedViewportBiasings:reservedViewports completionHandler:^(NSArray *placemarks, NSError *error){
-            [self _forwardGeocodingDidCompleteWithPlacemarks:placemarks error:error];
-    }];
-    
-    return nil;
-     */
+    //加到最近查询list中
+    if (searchString && searchString.length > 0) 
+        [self.searchController addListContentWithString:searchString];
     
     //当前地图可视范围的视口
     MKMapRect visibleBounds = self.mapsViewController.mapView.visibleMapRect;
@@ -1306,8 +1221,20 @@
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         [self _forwardGeocodingDidCompleteWithPlacemarks:placemarks error:error];
     }];
+    
+    
+}
 
-    return nil;
+- (void)searchController:(YCSearchController *)controller addressDictionary:(NSDictionary *)addressDictionary addressTitle:(NSString *) addressTitle{
+    
+    if (!forwardGeocoderManager) 
+        forwardGeocoderManager = [[YCForwardGeocoderManager alloc] init];
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    [forwardGeocoderManager forwardGeocodeAddressDictionary:addressDictionary addressTitle:addressTitle completionHandler:^(NSArray *placemarks, NSError *error){
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        [self _forwardGeocodingDidCompleteWithPlacemarks:placemarks error:error];
+    }];
     
 }
 
@@ -1316,6 +1243,10 @@
 	 //取消了，还没结束，结束它
     [forwardGeocoderManager cancel]; 
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+}
+
+- (void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar{
+    [self.bookmarkManager presentBookmarViewController];
 }
 
 #pragma mark - UIAlertViewDelegate YCAlertTableViewDelegete
@@ -1351,6 +1282,7 @@
 	self.mapsViewController = nil;
     self.navBar = nil;
 	self.searchBar = nil;
+    self.bookmarkManager = nil;
 	self.toolbar = nil;
 	self.animationBackgroundView = nil;
 }
@@ -1371,7 +1303,7 @@
     [searchAlert release];
     [searchResults release];
     [forwardGeocoderManager release];
-    
+    [bookmarkManager release];
 	
 	[toolbar release];
 	[infoBarButtonItem release];

@@ -18,7 +18,12 @@
 #import "NSValue+YC.h"
 #import "NSMutableString+YCGeocode.h"
 #import "CLLocation+YC.h"
+#import "NSString+YC.h"
+#import "NSObject+YC.h"
+#import "UIApplication+YC.h"
 
 #import "YCFunctions.h"
 #import "YCDouble.h"
 #import "YCMaps.h"
+
+#import "YCTabToolbarController.h"

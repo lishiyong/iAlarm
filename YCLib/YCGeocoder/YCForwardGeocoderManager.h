@@ -16,6 +16,8 @@
     NSMutableArray *_geocoders;
     NSArray *_reservedViewportBiasings;
     NSString *_addressString;
+    NSDictionary *_addressDictionary;
+    NSString *_addressTitle;
     BOOL _canceled;
 }
 
@@ -29,7 +31,11 @@
 
 - (void)forwardGeocodeAddressString:(NSString *)addressString visibleMapRect:(MKMapRect)mapRect currentLocation:(CLLocation*)currentLocation completionHandler:(YCforwardGeocodeCompletionHandler)completionHandler;
 
+- (void)forwardGeocodeAddressDictionary:(NSDictionary *)addressDictionary addressTitle:(NSString*)addressTitle completionHandler:(YCforwardGeocodeCompletionHandler)completionHandler;
+
 - (void)cancel;
 - (NSString *)addressString;
+- (NSString *)addressTitle;
+- (NSString *)addressDictionary;
 
 @end

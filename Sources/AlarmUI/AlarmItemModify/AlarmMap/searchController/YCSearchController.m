@@ -24,7 +24,7 @@
 @synthesize originalSearchBarHidden;
 
 #define kListContentFileName     @"listContent.plist"
-#define kMaxNumberOfListContent  100
+#define kMaxNumberOfListContent  200
 
 - (id)listContent
 {
@@ -100,7 +100,7 @@ searchDisplayController:(UISearchDisplayController*) theSearchDisplayController
 		theSearchDisplayController.searchResultsDataSource = self;
 		theSearchDisplayController.searchResultsDelegate = self;
 		
-		self.searchDisplayController.originalPlaceholderString = theSearchDisplayController.searchBar.placeholder;
+		((YCSearchBar*)self.searchDisplayController.searchBar).originalPlaceholderString = theSearchDisplayController.searchBar.placeholder;
 		self->originalSearchBarHidden = theSearchDisplayController.searchBar.hidden;
 	}
 	return self;
@@ -160,7 +160,11 @@ searchDisplayController:(UISearchDisplayController*) theSearchDisplayController
 }
 
 - (void)setSearchWaiting:(BOOL)Waiting{
-	[(YCSearchBar*)self.searchDisplayController.searchBar setSearchWaiting:Waiting];
+    [(YCSearchBar*)self.searchDisplayController.searchBar setSearchWaiting:Waiting];
+}
+
+- (BOOL)isWaiting{
+    return [(YCSearchBar*)self.searchDisplayController.searchBar isWaiting];
 }
 
 #pragma mark -
@@ -248,7 +252,7 @@ searchDisplayController:(UISearchDisplayController*) theSearchDisplayController
 		//反选
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 		
-		[(YCSearchBar*)self.searchDisplayController.searchBar setSearchWaiting:YES]; //搜索状态-激活等待指示
+		[self setSearchWaiting:YES]; //搜索状态-激活等待指示
 
 		//执行搜索
 		[self.delegate searchController:self searchString:searchString];
@@ -308,9 +312,9 @@ searchDisplayController:(UISearchDisplayController*) theSearchDisplayController
 
 - (void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar
 {
-	if ([self.delegate respondsToSelector:@selector(searchBarbookmarkButtonPressed:)]) 
+	if ([self.delegate respondsToSelector:@selector(searchBarBookmarkButtonClicked:)]) 
 	{
-		[self.delegate searchBarbookmarkButtonPressed:searchBar];
+		[self.delegate searchBarBookmarkButtonClicked:searchBar];
 	}
 }
 
@@ -404,7 +408,7 @@ searchDisplayController:(UISearchDisplayController*) theSearchDisplayController
 		tableView.hidden = YES ;
 		//[self.searbarMaskView removeFromSuperview];
 	}else {
-		if (self.filteredListContent.count !=0 ) 
+		if (self.filteredListContent.count !=0 && self.searchDisplayController.searchBar.text.length > 0) 
 		{
 			tableView.hidden = NO ;
 			if (self.searchDisplayController.searchContentsController.view == self.searchMaskView.superview)

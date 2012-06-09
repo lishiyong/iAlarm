@@ -14,13 +14,12 @@
 
 @required
  
-- (NSArray*)searchController:(YCSearchController *)controller searchString:(NSString *)searchString;
+- (void)searchController:(YCSearchController *)controller searchString:(NSString *)searchString;
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar;
 
 @optional
-
--(void)searchBarbookmarkButtonPressed:(id)sender;
-
+- (void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar;
+- (void)searchController:(YCSearchController *)controller addressDictionary:(NSDictionary *)addressDictionary addressTitle:(NSString *) addressTitle;
 
 @end
 
@@ -59,8 +58,11 @@ searchDisplayController:(UISearchDisplayController*) theSearchDisplayController;
 
 - (void)addListContentWithString:(NSString*)string;
 
-#pragma mark  设置搜索等待
+//设置搜索等待
 - (void)setSearchWaiting:(BOOL)Waiting;
+@property (nonatomic,readonly,getter = isWaiting) BOOL waiting;
+
+
 
 
 

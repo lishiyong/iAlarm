@@ -100,7 +100,7 @@
             [_forwardGeocoder geocodeAddressString:queryObj completionHandler:theBlock];
         
     }else{
-        [_forwardGeocoder geocodeAddressString:queryObj completionHandler:theBlock]; 
+        [_forwardGeocoder geocodeAddressDictionary:queryObj completionHandler:theBlock];
     }
  
 }

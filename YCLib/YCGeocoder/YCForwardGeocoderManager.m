@@ -16,6 +16,7 @@
 
 - (void)_prepare;
 - (void)_forwardGeocode:(YCForwardGeocoder*)geocoder addressString:(NSString *)addressString viewportBiasing:(NSObject*)viewportBiasing;
+- (void)_forwardGeocode:(YCForwardGeocoder*)geocoder addressDictionary:(NSDictionary *)addressDictionary;
 - (void)_handleGeocodeCompletionWithError:(NSError*)error;
 
 @end
@@ -38,6 +39,7 @@
     [_geocoders release];
     [_reservedViewportBiasings release];
     [_addressString release];
+    [_addressTitle release];
 }
 
 - (void)cancel{
@@ -102,6 +104,22 @@
     
 }
 
+- (void)_forwardGeocode:(YCForwardGeocoder*)geocoder addressDictionary:(NSDictionary *)addressDictionary
+{
+    
+    YCforwardGeocodeCompletionHandler theBlock = ^(NSArray *placemarks, NSError *error){
+        if (!error && placemarks.count >0 ) {
+            //查询成功。YCPlacemark类覆写了isEqual:、hash,所以在set数据结构中不会有坐标重复的。            
+            [_results addObjectsFromArray:placemarks];
+        }
+        [_geocoders removeObject:geocoder];
+        [self _handleGeocodeCompletionWithError:error];
+    };
+    
+    [geocoder forwardGeocodeAddressDictionary:addressDictionary completionHandler:theBlock];
+    
+}
+
 - (void)_prepare{
     //先都停止解析,再清空结果集
     [_geocoders enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
@@ -123,6 +141,12 @@
     [_addressString release];
     _addressString = nil;
     
+    [_addressDictionary release];
+    _addressDictionary = nil;
+    
+    [_addressTitle release];
+    _addressTitle = nil;
+    
     _canceled = NO;
 }
 
@@ -131,7 +155,7 @@
     [self _prepare];
     _forwardGeocodeCompletionHandler = [completionHandler copy];
     _reservedViewportBiasings = [reservedViewportBiasings retain];
-    _addressString = [addressString retain];
+    _addressString = [addressString copy];
     
     NSTimeInterval timeoutA = 0;
     NSTimeInterval timeoutB = 0;
@@ -158,7 +182,7 @@
             
             YCForwardGeocoder *geocoderA = [[[YCForwardGeocoder alloc] initWithTimeout:timeoutA forwardGeocoderType:YCForwardGeocoderTypeApple] autorelease];
             [_geocoders addObject:geocoderA];
-                [self _forwardGeocode:geocoderA addressString:addressString viewportBiasing:anObj];
+            [self _forwardGeocode:geocoderA addressString:addressString viewportBiasing:anObj];
             
         }
          
@@ -169,6 +193,14 @@
 
 - (NSString *)addressString;{
     return _addressString;
+}
+
+- (NSString *)addressTitle{
+    return _addressTitle;
+}
+
+- (NSString *)addressDictionary{
+    return _addressDictionary;
 }
 
 - (void)forwardGeocodeAddressString:(NSString *)addressString visibleMapRect:(MKMapRect)visibleMapRect currentLocation:(CLLocation*)currentLocation completionHandler:(YCforwardGeocodeCompletionHandler)completionHandler{
@@ -274,6 +306,38 @@
     [self forwardGeocodeAddressString:addressString viewportBiasings:viewports reservedViewportBiasings:reservedViewports completionHandler:^(NSArray *placemarks, NSError *error){
         completionHandler(placemarks,error);
     }];
+    
+}
+
+
+- (void)forwardGeocodeAddressDictionary:(NSDictionary *)addressDictionary addressTitle:(NSString*)addressTitle completionHandler:(YCforwardGeocodeCompletionHandler)completionHandler{
+    
+    //正在查询中
+    if (_geocoders.count > 0) 
+        return;
+    
+    
+    [self _prepare];
+    _forwardGeocodeCompletionHandler = [completionHandler copy];
+    _addressDictionary = [addressDictionary retain];
+    _addressTitle = [addressTitle copy];
+    
+    NSTimeInterval timeoutA = 8;
+    NSTimeInterval timeoutB = 20;
+    
+    YCForwardGeocoder *geocoderB = [[[YCForwardGeocoder alloc] initWithTimeout:timeoutB forwardGeocoderType:YCForwardGeocoderTypeBS] autorelease];
+    [_geocoders addObject:geocoderB];
+    [self _forwardGeocode:geocoderB addressDictionary:addressDictionary];
+    
+    //5.0版本才支持 CLGeocoder 这个类
+    double systeVersion = [[UIDevice currentDevice].systemVersion doubleValue];
+    NSComparisonResult result = YCCompareDouble(systeVersion, 5.0);
+    if (result == NSOrderedDescending || result == NSOrderedSame)  {
+        
+        YCForwardGeocoder *geocoderA = [[[YCForwardGeocoder alloc] initWithTimeout:timeoutA forwardGeocoderType:YCForwardGeocoderTypeApple] autorelease];
+        [_geocoders addObject:geocoderA];
+        [self _forwardGeocode:geocoderA addressDictionary:addressDictionary];
+    }
     
 }
 

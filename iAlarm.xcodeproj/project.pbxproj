@@ -1080,6 +1080,18 @@
 		9CED14B01579D0E900E0DD2E /* YCPlacemarkUSCA.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CED149A1579D0E900E0DD2E /* YCPlacemarkUSCA.m */; };
 		9CED14B31579E64600E0DD2E /* YCPlacemark+YCForwardGeocode.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CED14B21579E64600E0DD2E /* YCPlacemark+YCForwardGeocode.m */; };
 		9CED14B41579E64600E0DD2E /* YCPlacemark+YCForwardGeocode.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CED14B21579E64600E0DD2E /* YCPlacemark+YCForwardGeocode.m */; };
+		9CEE572215819DA0008205F2 /* YCTabToolbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE572015819DA0008205F2 /* YCTabToolbarController.m */; };
+		9CEE572315819DA0008205F2 /* YCTabToolbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE572015819DA0008205F2 /* YCTabToolbarController.m */; };
+		9CEE572415819DA0008205F2 /* YCTabToolbarController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CEE572115819DA0008205F2 /* YCTabToolbarController.xib */; };
+		9CEE572515819DA0008205F2 /* YCTabToolbarController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CEE572115819DA0008205F2 /* YCTabToolbarController.xib */; };
+		9CEE572915819EB9008205F2 /* IARecentAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE572715819EB9008205F2 /* IARecentAddressViewController.m */; };
+		9CEE572A15819EB9008205F2 /* IARecentAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE572715819EB9008205F2 /* IARecentAddressViewController.m */; };
+		9CEE572B15819EB9008205F2 /* IARecentAddressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CEE572815819EB9008205F2 /* IARecentAddressViewController.xib */; };
+		9CEE572C15819EB9008205F2 /* IARecentAddressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CEE572815819EB9008205F2 /* IARecentAddressViewController.xib */; };
+		9CEE572F15819F41008205F2 /* IABookmarkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE572E15819F41008205F2 /* IABookmarkManager.m */; };
+		9CEE573015819F41008205F2 /* IABookmarkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE572E15819F41008205F2 /* IABookmarkManager.m */; };
+		9CEE574F1581F92A008205F2 /* IARecentAddressManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE574E1581F92A008205F2 /* IARecentAddressManager.m */; };
+		9CEE57501581F92A008205F2 /* IARecentAddressManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE574E1581F92A008205F2 /* IARecentAddressManager.m */; };
 		9CF1662A15691A9200281A33 /* UIViewController+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF1662915691A9200281A33 /* UIViewController+YC.m */; };
 		9CF1662B15691A9200281A33 /* UIViewController+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF1662915691A9200281A33 /* UIViewController+YC.m */; };
 		9CF166A015693B4000281A33 /* IAAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF1667615693B4000281A33 /* IAAnnotation.m */; };
@@ -1931,7 +1943,7 @@
 		9CE8970713000275008FBD45 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		9CE8972A130003DF008FBD45 /* iAlarm_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iAlarm_Prefix.pch; sourceTree = "<group>"; };
 		9CE8973813000454008FBD45 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		9CEC5798157C689A007C1BAE /* NSMutableString+YCGeocode.h */ = {isa = PBXFileReference; fileEncoding = 4; path = "NSMutableString+YCGeocode.h"; sourceTree = "<group>"; };
+		9CEC5798157C689A007C1BAE /* NSMutableString+YCGeocode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableString+YCGeocode.h"; sourceTree = "<group>"; };
 		9CEC5799157C689A007C1BAE /* NSMutableString+YCGeocode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableString+YCGeocode.m"; sourceTree = "<group>"; };
 		9CED14721579B7B300E0DD2E /* YCForwardGeocoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCForwardGeocoder.h; path = YCGeocoder/YCForwardGeocoder.h; sourceTree = "<group>"; };
 		9CED14731579B7B300E0DD2E /* YCForwardGeocoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCForwardGeocoder.m; path = YCGeocoder/YCForwardGeocoder.m; sourceTree = "<group>"; };
@@ -1959,6 +1971,16 @@
 		9CED149A1579D0E900E0DD2E /* YCPlacemarkUSCA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCPlacemarkUSCA.m; sourceTree = "<group>"; };
 		9CED14B11579E64600E0DD2E /* YCPlacemark+YCForwardGeocode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "YCPlacemark+YCForwardGeocode.h"; sourceTree = "<group>"; };
 		9CED14B21579E64600E0DD2E /* YCPlacemark+YCForwardGeocode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "YCPlacemark+YCForwardGeocode.m"; sourceTree = "<group>"; };
+		9CEE571F15819DA0008205F2 /* YCTabToolbarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCTabToolbarController.h; sourceTree = "<group>"; };
+		9CEE572015819DA0008205F2 /* YCTabToolbarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCTabToolbarController.m; sourceTree = "<group>"; };
+		9CEE572115819DA0008205F2 /* YCTabToolbarController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = YCTabToolbarController.xib; sourceTree = "<group>"; };
+		9CEE572615819EB9008205F2 /* IARecentAddressViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IARecentAddressViewController.h; sourceTree = "<group>"; };
+		9CEE572715819EB9008205F2 /* IARecentAddressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IARecentAddressViewController.m; sourceTree = "<group>"; };
+		9CEE572815819EB9008205F2 /* IARecentAddressViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IARecentAddressViewController.xib; sourceTree = "<group>"; };
+		9CEE572D15819F41008205F2 /* IABookmarkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IABookmarkManager.h; sourceTree = "<group>"; };
+		9CEE572E15819F41008205F2 /* IABookmarkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IABookmarkManager.m; sourceTree = "<group>"; };
+		9CEE574D1581F929008205F2 /* IARecentAddressManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IARecentAddressManager.h; sourceTree = "<group>"; };
+		9CEE574E1581F92A008205F2 /* IARecentAddressManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IARecentAddressManager.m; sourceTree = "<group>"; };
 		9CF1662815691A9200281A33 /* UIViewController+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+YC.h"; sourceTree = "<group>"; };
 		9CF1662915691A9200281A33 /* UIViewController+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+YC.m"; sourceTree = "<group>"; };
 		9CF1667515693B4000281A33 /* IAAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAAnnotation.h; sourceTree = "<group>"; };
@@ -2777,6 +2799,9 @@
 		9C7485AA1562981F00486793 /* YCViewController */ = {
 			isa = PBXGroup;
 			children = (
+				9CEE571F15819DA0008205F2 /* YCTabToolbarController.h */,
+				9CEE572015819DA0008205F2 /* YCTabToolbarController.m */,
+				9CEE572115819DA0008205F2 /* YCTabToolbarController.xib */,
 				9C7485AB1562981F00486793 /* YCMaskViewController.h */,
 				9C7485AC1562981F00486793 /* YCMaskViewController.m */,
 				9C7485AD1562981F00486793 /* YCMaskViewController.xib */,
@@ -3582,6 +3607,7 @@
 		9CE894A312FFFFD2008FBD45 /* AlarmUI */ = {
 			isa = PBXGroup;
 			children = (
+				9CF349301580558A001ECA54 /* Bookmarks */,
 				9CF1667315693B3F00281A33 /* Others */,
 				9C85F37E14FBA68C00B49FF4 /* AlarmFind */,
 				9CE894A412FFFFD2008FBD45 /* AlarmDetail */,
@@ -3909,6 +3935,20 @@
 				9CF1669C15693B4000281A33 /* 20_IAFlagYellow@2x.png */,
 			);
 			path = 2x;
+			sourceTree = "<group>";
+		};
+		9CF349301580558A001ECA54 /* Bookmarks */ = {
+			isa = PBXGroup;
+			children = (
+				9CEE574D1581F929008205F2 /* IARecentAddressManager.h */,
+				9CEE574E1581F92A008205F2 /* IARecentAddressManager.m */,
+				9CEE572615819EB9008205F2 /* IARecentAddressViewController.h */,
+				9CEE572715819EB9008205F2 /* IARecentAddressViewController.m */,
+				9CEE572815819EB9008205F2 /* IARecentAddressViewController.xib */,
+				9CEE572D15819F41008205F2 /* IABookmarkManager.h */,
+				9CEE572E15819F41008205F2 /* IABookmarkManager.m */,
+			);
+			path = Bookmarks;
 			sourceTree = "<group>";
 		};
 		9CFE83FD14683056004A4BF1 /* MoveArrow */ = {
@@ -4361,6 +4401,8 @@
 				9CF166E015693B4000281A33 /* 20_IAFlagWhite@2x.png in Resources */,
 				9CF166E215693B4000281A33 /* 20_IAFlagYellow@2x.png in Resources */,
 				9CF166E415693B4000281A33 /* IAMapPinGray.png in Resources */,
+				9CEE572415819DA0008205F2 /* YCTabToolbarController.xib in Resources */,
+				9CEE572B15819EB9008205F2 /* IARecentAddressViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4732,6 +4774,8 @@
 				9CF166E115693B4000281A33 /* 20_IAFlagWhite@2x.png in Resources */,
 				9CF166E315693B4000281A33 /* 20_IAFlagYellow@2x.png in Resources */,
 				9CF166E515693B4000281A33 /* IAMapPinGray.png in Resources */,
+				9CEE572515819DA0008205F2 /* YCTabToolbarController.xib in Resources */,
+				9CEE572C15819EB9008205F2 /* IARecentAddressViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4948,6 +4992,10 @@
 				9C54AD22157B00EB00105BA8 /* YCForwardGeocoderManager.m in Sources */,
 				9C54AD34157B12B400105BA8 /* NSValue+YC.m in Sources */,
 				9CEC579A157C689A007C1BAE /* NSMutableString+YCGeocode.m in Sources */,
+				9CEE572215819DA0008205F2 /* YCTabToolbarController.m in Sources */,
+				9CEE572915819EB9008205F2 /* IARecentAddressViewController.m in Sources */,
+				9CEE572F15819F41008205F2 /* IABookmarkManager.m in Sources */,
+				9CEE574F1581F92A008205F2 /* IARecentAddressManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5161,6 +5209,10 @@
 				9C54AD23157B00EB00105BA8 /* YCForwardGeocoderManager.m in Sources */,
 				9C54AD35157B12B400105BA8 /* NSValue+YC.m in Sources */,
 				9CEC579B157C689A007C1BAE /* NSMutableString+YCGeocode.m in Sources */,
+				9CEE572315819DA0008205F2 /* YCTabToolbarController.m in Sources */,
+				9CEE572A15819EB9008205F2 /* IARecentAddressViewController.m in Sources */,
+				9CEE573015819F41008205F2 /* IABookmarkManager.m in Sources */,
+				9CEE57501581F92A008205F2 /* IARecentAddressManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

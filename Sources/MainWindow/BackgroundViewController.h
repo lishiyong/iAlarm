@@ -22,6 +22,7 @@ typedef enum {
 @class AlarmsMapListViewController;
 @class YCSearchBar;
 @class YCForwardGeocoderManager;
+@class IABookmarkManager;
 
 @interface BackgroundViewController : UIViewController
 <UIAlertViewDelegate,YCSearchControllerDelegete,YCAlertTableViewDelegete> {
@@ -50,9 +51,7 @@ typedef enum {
 	UIBarButtonItem *mapTypeBarButtonItem;
 	UIBarButtonItem *locationingBarItem;                    //显示正在定位的指示器的barItem
 
-	
-	UIView *animationBackgroundView;//地图、list都加到这个view上
-    
+	UIView *animationBackgroundView;//地图、list都加到这个view上    
 }
 
 
@@ -66,7 +65,7 @@ typedef enum {
 @property (nonatomic, retain) IBOutlet UINavigationBar *navBar;
 @property (nonatomic, retain) IBOutlet YCSearchBar *searchBar;
 @property (nonatomic, retain) YCSearchController *searchController;
-
+@property (nonatomic, retain) IBOutlet IABookmarkManager *bookmarkManager;
 
 @property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, retain, readonly) UIBarButtonItem *infoBarButtonItem;
@@ -78,6 +77,10 @@ typedef enum {
 
 @property (nonatomic, retain) IBOutlet UIView *animationBackgroundView;
 
+/**
+ IABookmarkManager的delegate方法
+ **/
+-(void)resetAnnotationWithPlacemark:(YCPlacemark*)placemark;
 
 
 @end

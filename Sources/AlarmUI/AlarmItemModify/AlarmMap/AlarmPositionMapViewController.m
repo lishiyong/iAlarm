@@ -1779,7 +1779,7 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 #pragma mark -
 #pragma mark YCSearchControllerDelegete methods
 
-- (NSArray*)searchController:(YCSearchController *)controller searchString:(NSString *)searchString
+- (void)searchController:(YCSearchController *)controller searchString:(NSString *)searchString
 {
 	// 开始搜    
     MKMapRect bounds;
@@ -1810,7 +1810,6 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
         
     }];
     
-	return nil;
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{		 

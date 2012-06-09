@@ -13,27 +13,25 @@
 {
 	BOOL canResignFirstResponder;
 	
-	
-	#pragma mark -
-	#pragma mark  设置搜索等待
 	UITextField *searchBarTextField;  //searchbar上的TextField控件
 	UITextFieldViewMode originalClearButtonMode;
 	UIActivityIndicatorView *searchActivityIndicator;
-	
-	//NSString *placeholderBackup;
+    BOOL _waiting;
+    BOOL _isOriginalShowsBookmarkButton;
 }
 
 @property(nonatomic,assign) BOOL canResignFirstResponder;
 
 ///////////////////////////////////////////
-#pragma mark -
-#pragma mark  设置搜索等待
+//设置搜索等待
 @property(nonatomic,retain,readonly) UITextField *searchBarTextField;
-- (void)setSearchWaiting:(BOOL)Waiting;
 @property(nonatomic,retain,readonly) UIActivityIndicatorView *searchActivityIndicator;
 ///////////////////////////////////////////
 
-//@property(nonatomic, copy) NSString *placeholderBackup;
+- (void)setSearchWaiting:(BOOL)Waiting;
+@property (nonatomic,readonly,getter = isWaiting) BOOL waiting;
+
+@property(nonatomic,copy) NSString *originalPlaceholderString;
 
 
 @end

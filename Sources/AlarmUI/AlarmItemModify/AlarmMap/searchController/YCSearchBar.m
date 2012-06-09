@@ -12,28 +12,7 @@
 
 @implementation YCSearchBar
 
-@synthesize canResignFirstResponder;
-//@synthesize placeholderBackup;
-
-/*
-//覆盖super
-- (void)setPlaceholder:(NSString *)thePlaceholder{
-	if (thePlaceholder == nil) {
-		[super setPlaceholder:self.placeholderBackup];
-		return;
-	}
-	[super setPlaceholder:thePlaceholder];
-}
- */
-
-/*
-- (id)placeholder{
-	if (super.placeholder==nil) {
-		return self.placeholderBackup;
-	}
-	return super.placeholder;
-}
- */
+@synthesize canResignFirstResponder, waiting = _waiting, originalPlaceholderString = _originalPlaceholderString;
 
 //覆盖super
 - (BOOL)resignFirstResponder
@@ -71,10 +50,11 @@
 	return [super becomeFirstResponder];
 }
 
+
 #pragma mark -
 #pragma mark  设置搜索等待
 
--(id) searchBarTextField{
+-(id)searchBarTextField{
 	if (searchBarTextField == nil ) {
 		NSArray *subViews = [self subviews];
 		for (NSInteger i=0; i<subViews.count; i++) {
@@ -106,20 +86,28 @@
 }
 
 - (void)setSearchWaiting:(BOOL)Waiting{
-	
-	if (Waiting) {
+    
+    if (_waiting == Waiting) 
+        return;
+    
+    if (Waiting) {
 		self.searchBarTextField.clearButtonMode = UITextFieldViewModeNever;
 		[self.searchBarTextField addSubview:self.searchActivityIndicator];
         self.searchActivityIndicator.hidden = NO;
         [self.searchActivityIndicator startAnimating];
+        self.showsBookmarkButton = NO;
 	}else {
 		self.searchBarTextField.clearButtonMode = self->originalClearButtonMode;
         self.searchActivityIndicator.hidden = YES;
         [self.searchActivityIndicator stopAnimating];
         [self.searchActivityIndicator removeFromSuperview];
-	}
+        self.showsBookmarkButton = _isOriginalShowsBookmarkButton;
+    }
+    
+    _waiting = Waiting;
 	
 }
+
 
 - (void)searchFieldReturnPressed{
 	[self setSearchWaiting:YES]; //搜索状态-激活等待指示
@@ -142,13 +130,17 @@
 	//自定义绑定－加入
 	[self.searchBarTextField addTarget:self action:@selector(searchFieldReturnPressed) forControlEvents:UIControlEventEditingDidEndOnExit];
 	
-	
+	//保留原来的bookmark是否显示
+    _isOriginalShowsBookmarkButton = self.showsBookmarkButton;
+    
+    _originalPlaceholderString = [self.placeholder copy];
 }
 
 - (void)dealloc 
 {
 	[searchBarTextField release];
 	[searchActivityIndicator release];
+    [_originalPlaceholderString release];
 	[super dealloc];
 }
 

@@ -1869,7 +1869,6 @@
     [tapMapViewGesture release]; tapMapViewGesture = nil;
     [tapCalloutViewGesture release]; tapCalloutViewGesture = nil;
     [longPressGesture release]; longPressGesture = nil;
-
 }
 
 
@@ -1900,8 +1899,7 @@
     [tapCalloutViewGesture release];
 	[longPressGesture release];
     
-    [checkNetAlert release];
-    
+    [checkNetAlert release];    
     [super dealloc];
 }
 

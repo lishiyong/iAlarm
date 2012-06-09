@@ -50,7 +50,9 @@
         }
         _countryCode = [[[_countryCode uppercaseString] stringByTrim] retain];
     
-        _name = [[_addressDictionary objectForKey:@"Name"] retain];
+        _name = [_addressDictionary objectForKey:@"Name"];
+        _name = ([[_name stringByTrim] length] > 0 ) ? _name : nil;
+        [_name retain];
         _region = [[_addressDictionary objectForKey:@"Region"] retain];
         _location = [[_addressDictionary objectForKey:@"Location"] retain];
         
@@ -329,7 +331,10 @@
 
 - (NSString *)name{
     //MKPlacemark在4.x不支持方法：name
-    if ([_placemark respondsToSelector:@selector(name)] && _placemark.name && _internalPlacemarkNameIsName)
+    NSLog(@"_placemark.name = '%@'",_placemark.name);
+    NSLog(@"_name = '%@'",_name);
+    if ([_placemark respondsToSelector:@selector(name)] && _placemark.name 
+        &&[_placemark.name stringByTrim].length > 0 && _internalPlacemarkNameIsName)
         return _placemark.name;
     else
         return _name;

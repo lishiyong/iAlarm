@@ -10,13 +10,8 @@
 
 @class YCSearchBar;
 @interface YCSearchDisplayController : UISearchDisplayController {
-	//IBOutlet UISearchBar  *searchBar;     //覆盖父类的
-	NSString *lastSearchString;
-	NSString *originalPlaceholderString;
+    NSString *_searchStringBackup;
 }
 
-//@property(nonatomic,readonly) IBOutlet UISearchBar  *searchBar;
-@property(nonatomic,retain) NSString *lastSearchString;
-@property(nonatomic,retain) NSString *originalPlaceholderString;
 
 @end
