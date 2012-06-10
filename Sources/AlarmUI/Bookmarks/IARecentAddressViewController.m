@@ -21,7 +21,7 @@
 }
 
 - (void)clearButtonItemPressed:(id)sender{
-    UIActionSheet *sheet = [[[UIActionSheet alloc] initWithTitle:@"清除么？" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"清楚" otherButtonTitles:nil] autorelease];
+    UIActionSheet *sheet = [[[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"清除所有最近搜索" otherButtonTitles:nil] autorelease];
     [sheet showInView:self.tableView];
 }
 
@@ -139,10 +139,9 @@
         addressString = [key stringByAppendingFormat:@" (%@)",stringValue];
     }
     
-    cell.textLabel.textColor = [UIColor darkGrayColor];
-    cell.textLabel.font = [UIFont boldSystemFontOfSize:14];
+    cell.textLabel.textColor = [UIColor tableCellGrayTextYCColor];
+    cell.textLabel.font = [UIFont boldSystemFontOfSize:15];
     cell.textLabel.text = titleString;
-    NSLog(@"cell.textLabel.bounds = %@",NSStringFromCGRect(cell.textLabel.bounds));
     
     cell.detailTextLabel.text = addressString;
     cell.detailTextLabel.textColor = [UIColor darkTextColor];
@@ -157,6 +156,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     if ([_delegate respondsToSelector:@selector(recentAddressPickerNavigationController:shouldContinueAfterSelectingRecentAddressData:)]) {
         NSDictionary *dic = [[IARecentAddressManager sharedManager].all objectAtIndex:indexPath.row];
         [_delegate recentAddressPickerNavigationController:self shouldContinueAfterSelectingRecentAddressData:dic];

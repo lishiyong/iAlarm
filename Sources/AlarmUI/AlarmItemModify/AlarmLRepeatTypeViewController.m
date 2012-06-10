@@ -19,7 +19,7 @@
 //覆盖父类
 -(IBAction)doneButtonPressed:(id)sender
 {	
-    NSLog(@"lastIndexPath.row = %d",self.lastIndexPath.row);
+    //NSLog(@"lastIndexPath.row = %d",self.lastIndexPath.row);
     
 	YCRepeatType *rep = [DicManager repeatTypeForSortId:self.lastIndexPath.row];
 	self.alarm.repeatType = rep;

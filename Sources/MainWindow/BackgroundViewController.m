@@ -1175,7 +1175,7 @@
                 NSUInteger idx = [addresses indexOfObject:anAddress];
                 
                 while (NSNotFound != idx && count > 1) {
-                    NSString *newAnAddress = [anAddress stringByAppendingFormat:@" [%d]",sameNameIdx];
+                    NSString *newAnAddress = [anAddress stringByAppendingFormat:@" (%d)",sameNameIdx];
                     [addresses replaceObjectAtIndex:idx withObject:newAnAddress];
                     idx = [addresses indexOfObject:anAddress];
                     sameNameIdx++;

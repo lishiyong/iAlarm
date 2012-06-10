@@ -21,6 +21,7 @@
 #import "NSString+YC.h"
 #import "NSObject+YC.h"
 #import "UIApplication+YC.h"
+#import "UIColor+YC.h"
 
 #import "YCFunctions.h"
 #import "YCDouble.h"

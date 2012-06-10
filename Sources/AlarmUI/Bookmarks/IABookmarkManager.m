@@ -41,17 +41,17 @@
         NSArray *displayedItems = [NSArray arrayWithObjects:[NSNumber numberWithInt:kABPersonAddressProperty], 
                                    nil];
         _peoplePicker.displayedProperties = displayedItems;
-        _peoplePicker.title = @"联系人";
+        _peoplePicker.title = @"通讯录";
     }
     
     [_peoplePicker.viewControllers enumerateObjectsUsingBlock:^(UIViewController *obj, NSUInteger idx, BOOL *stop){
-        obj.navigationItem.prompt = @"选择联系人显示在地图上";
+        obj.navigationItem.prompt = @"选取联系人显示在地图上";
     }];
     
     if (!_recentAddressNav) {
         IARecentAddressViewController *recentAddressVC = [[[IARecentAddressViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
         recentAddressVC.delegate = self;
-        recentAddressVC.navigationItem.prompt = @"选择最近搜索";
+        recentAddressVC.navigationItem.prompt = @"选取最近的搜索";
         _recentAddressNav = [[UINavigationController alloc] initWithRootViewController:recentAddressVC];
         _recentAddressNav.title = @"最近搜索";
         
@@ -125,7 +125,7 @@
         picker.displayedPerson = person;
         // Allow users to edit the person’s information
         picker.allowsEditing = YES;
-        picker.navigationItem.prompt = @"选择联系人显示在地图上";
+        picker.navigationItem.prompt = @"选取联系人显示在地图上";
         NSArray *displayedItems = [NSArray arrayWithObjects:[NSNumber numberWithInt:kABPersonAddressProperty], 
                                    nil];
         picker.displayedProperties = displayedItems;

@@ -53,5 +53,12 @@
  **/
 + (UIColor *)mapsMaskColor;
 
+/**
+ 源于未文档颜色：tableCellGrayTextColor
+ 0.50, 0.50, 0.50
+ **/
++ (UIColor *)tableCellGrayTextYCColor;
+
+
 
 @end

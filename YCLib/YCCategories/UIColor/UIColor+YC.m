@@ -54,4 +54,8 @@
     return [UIColor colorWithIntRed:179 intGreen:177 intBlue:173 intAlpha:255];
 }
 
++ (UIColor *)tableCellGrayTextYCColor{
+    return [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0];
+}
+
 @end

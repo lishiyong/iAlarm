@@ -15,7 +15,7 @@
 
 + (IARecentAddressManager*)sharedManager;
 
-- (void)addObject:(id)anObject forKey:(NSString*)key;
+- (void)addObject:(id)object forKey:(NSString*)key;
 - (void)removeAll;
 - (NSArray*)all;
 - (NSUInteger)allCount;
