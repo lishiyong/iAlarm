@@ -143,7 +143,7 @@
 
 - (BOOL)personViewController:(ABPersonViewController *)personViewController shouldPerformDefaultActionForPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifierForValue{
     
-    if (kABPersonAddressProperty == property){
+    if (kABPersonAddressProperty == property && kABMultiValueInvalidIdentifier != identifierForValue){
         
         ABMutableMultiValueRef multi = ABRecordCopyValue(person, kABPersonAddressProperty);
         CFIndex count = ABMultiValueGetCount(multi);
@@ -159,7 +159,7 @@
             
             //联系人的地址
             NSDictionary *addressDic = nil;
-            addressDic = (__bridge_transfer NSDictionary*)ABMultiValueCopyValueAtIndex(multi, 0);
+            addressDic = (__bridge_transfer NSDictionary*)ABMultiValueCopyValueAtIndex(multi, identifierForValue);
             [addressDic autorelease];  
             
             [self _searchWithAddressDictionary:addressDic personName:personName];
