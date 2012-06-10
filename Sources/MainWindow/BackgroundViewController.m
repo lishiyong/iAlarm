@@ -6,7 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "IARecentAddressManager.h"
+#import "IARecentAddressDataManager.h"
 #import "IABookmarkManager.h"
 #import "YCLib.h"
 #import "YCLocation.h"
@@ -1107,13 +1107,13 @@
             theObject = forwardGeocoderManager.addressDictionary;
         }else{
             theKey = forwardGeocoderManager.addressString;
-            if (placemarks.count == 0) 
+            if (placemarks.count == 1) 
                  theObject = [(YCPlacemark*)[placemarks objectAtIndex:0] formattedAddress];
             else
                 theObject = @"...";
         }
         
-        [[IARecentAddressManager sharedManager] addObject:theObject forKey:theKey];
+        [[IARecentAddressDataManager sharedManager] addObject:theObject forKey:theKey];
         
         
         //排序，优先使用当前位置坐标

@@ -28,3 +28,5 @@
 #import "YCMaps.h"
 
 #import "YCTabToolbarController.h"
+
+#import "YCPair.h"

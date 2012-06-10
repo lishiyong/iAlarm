@@ -8,13 +8,13 @@
 
 #import "YCPlacemark.h"
 #import "YCLib.h"
-#import "IARecentAddressManager.h"
+#import "IARecentAddressDataManager.h"
 
-@implementation IARecentAddressManager
+@implementation IARecentAddressDataManager
 
 #define kRecentAddressFileName     @"recentAddress.plist"
 #define kMaxNumberOfRecentAddress  200
-
+/*
 - (void)addObject:(id)object forKey:(NSString*)key{
     
     //删除重复的
@@ -56,13 +56,81 @@
     NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kRecentAddressFileName];
     [NSKeyedArchiver archiveRootObject:_all toFile:filePathName];
 }
+ */
+
+- (void)addObject:(id)object forKey:(NSString*)key{
+    
+    @try {
+        
+        //删除重复的
+        NSIndexSet *indexSetDuplicate = nil;
+        indexSetDuplicate = [_all indexesOfObjectsPassingTest:^BOOL(YCPair *aPair, NSUInteger idx, BOOL *stop) {
+            
+            NSString *aKey = aPair.key;
+            id aValue = aPair.value;
+            
+            BOOL keyEqual = [aKey isEqualToString:key];
+            BOOL valueEqual = NO; 
+            
+            //value是NSString和NSDictionary的情况要分开比较
+            if ([object isKindOfClass:[NSString class]] && [aValue isKindOfClass:[NSString class]]) 
+                valueEqual = [object isEqualToString:aValue];
+            else if ([object isKindOfClass:[NSDictionary class]] && [aValue isKindOfClass:[NSDictionary class]]) 
+                valueEqual = [object isEqualToDictionary:aValue];
+            else 
+                valueEqual = NO;
+            
+            if (keyEqual && valueEqual) 
+                return YES;
+            
+            return NO;
+        }];
+        
+        if (indexSetDuplicate && indexSetDuplicate.firstIndex != NSNotFound) 
+            [_all removeObjectsAtIndexes:indexSetDuplicate];    
+        
+        //判断最大list数量限制
+        if (_all.count >= kMaxNumberOfRecentAddress) 
+            [_all removeLastObject];
+        
+        //加到列表
+        YCPair *pair = [YCPair pairWithValue:object forKey:key];
+        [_all insertObject:pair atIndex:0];
+        
+        //保存到文件
+        NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kRecentAddressFileName];
+        [NSKeyedArchiver archiveRootObject:_all toFile:filePathName];
+        
+    }@catch (NSException *exception) {
+        
+        //如果出错了，重新做数据。原来的数据不要了。
+        [_all release];
+        _all = [[NSMutableArray array] retain];
+        
+    }
+    
+}
+
+- (void)addPair:(YCPair*)aPair{
+    id aValue = aPair.value;
+    id aKey = aPair.key;
+    [self addObject:aValue forKey:aKey];
+}
 
 - (void)removeAll{
     [_all removeAllObjects];
     
-    //保存到文件
-    NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kRecentAddressFileName];
-    [NSKeyedArchiver archiveRootObject:_all toFile:filePathName];
+    @try {
+        
+        //保存到文件
+        NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kRecentAddressFileName];
+        [NSKeyedArchiver archiveRootObject:_all toFile:filePathName];
+        
+    }@catch (NSException *exception) {
+        
+    }
+    
+    
 }
 
 - (NSArray*)all{
@@ -76,8 +144,8 @@
 
 #pragma mark - mothed for single 
 
-static IARecentAddressManager *single = nil;
-+ (IARecentAddressManager*)sharedManager{
+static IARecentAddressDataManager *single = nil;
++ (IARecentAddressDataManager*)sharedManager{
     if (single == nil) {
         single = [[super allocWithZone:NULL] init];
     }

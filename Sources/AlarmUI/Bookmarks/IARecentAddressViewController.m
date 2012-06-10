@@ -8,7 +8,7 @@
 
 #import "YCLib.h"
 #import <AddressBookUI/AddressBookUI.h>
-#import "IARecentAddressManager.h"
+#import "IARecentAddressDataManager.h"
 #import "IARecentAddressViewController.h"
 
 @implementation IARecentAddressViewController
@@ -32,7 +32,7 @@
         return;
     }
     
-    [[IARecentAddressManager sharedManager] removeAll];
+    [[IARecentAddressDataManager sharedManager] removeAll];
     [self.tableView reloadData];
 }
 
@@ -106,7 +106,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSUInteger rowCount = [IARecentAddressManager sharedManager].allCount;
+    NSUInteger rowCount = [IARecentAddressDataManager sharedManager].allCount;
     if (rowCount > 0) {
         self.navigationItem.leftBarButtonItem.enabled = YES;
     }else{
@@ -124,9 +124,9 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier] autorelease];
     }
     
-    NSDictionary *dic = [[IARecentAddressManager sharedManager].all objectAtIndex:indexPath.row];
-    NSString *key = [[dic allKeys] objectAtIndex:0]; //查询串或人名
-    id value = [[dic allValues] objectAtIndex:0]; //查询结果，字符串或dic
+    YCPair *aPair = [[IARecentAddressDataManager sharedManager].all objectAtIndex:indexPath.row];
+    NSString *key = aPair.key; //查询串或人名
+    id value = aPair.value;      //查询结果，字符串或dic
     
     NSString *titleString = nil;
     NSString *addressString = nil;
@@ -159,8 +159,8 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if ([_delegate respondsToSelector:@selector(recentAddressPickerNavigationController:shouldContinueAfterSelectingRecentAddressData:)]) {
-        NSDictionary *dic = [[IARecentAddressManager sharedManager].all objectAtIndex:indexPath.row];
-        [_delegate recentAddressPickerNavigationController:self shouldContinueAfterSelectingRecentAddressData:dic];
+        YCPair *aPair = [[IARecentAddressDataManager sharedManager].all objectAtIndex:indexPath.row];
+        [_delegate recentAddressPickerNavigationController:self shouldContinueAfterSelectingRecentAddressData:aPair];
     }
 }
 

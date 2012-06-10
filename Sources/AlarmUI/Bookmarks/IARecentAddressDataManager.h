@@ -8,13 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
-@class YCPlacemark;
-@interface IARecentAddressManager : NSObject{
-    NSMutableArray *_all;
+@class YCPair;
+@interface IARecentAddressDataManager : NSObject{
+    /**
+     一个记录的内容是：YCPair.
+     key有两种情况：     1，联系人的姓名(联系人姓名不存在，用@""代替)；2，搜索字符串。
+     value对应两种情况： 1，联系人数据中的地址字典；1，搜索后得到的格式化地址（多条结果，用@"..."）。
+     **/
+    NSMutableArray *_all; 
 }
 
-+ (IARecentAddressManager*)sharedManager;
++ (IARecentAddressDataManager*)sharedManager;
 
+- (void)addPair:(YCPair*)aPair;
 - (void)addObject:(id)object forKey:(NSString*)key;
 - (void)removeAll;
 - (NSArray*)all;

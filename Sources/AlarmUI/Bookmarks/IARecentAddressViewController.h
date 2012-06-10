@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@class IARecentAddressViewController, YCPlacemark;
+@class IARecentAddressViewController, YCPair;
 @protocol IARecentAddressViewControllerDelegate <NSObject>
 
 - (void)recentAddressPickerNavigationControllerDidCancel:(IARecentAddressViewController *)recentAddressPicker;
-- (BOOL)recentAddressPickerNavigationController:(IARecentAddressViewController *)recentAddressPicker shouldContinueAfterSelectingRecentAddressData:(NSDictionary*)anRecentAddressData;
+- (BOOL)recentAddressPickerNavigationController:(IARecentAddressViewController *)recentAddressPicker shouldContinueAfterSelectingRecentAddressData:(YCPair*)anRecentAddressData;
 
 @end
 

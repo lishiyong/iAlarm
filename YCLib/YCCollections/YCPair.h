@@ -8,6 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@interface YCPair : NSObject
+@interface YCPair : NSObject<NSCoding, NSCopying>{
+    NSDictionary *_dic;
+}
+
+- (id)value;
+- (id)key;
+- (id)initWithValue:(id)aValue forKey:(id)aKey;
++ (id)pairWithValue:(id)aValue forKey:(id)aKey;
+
 
 @end

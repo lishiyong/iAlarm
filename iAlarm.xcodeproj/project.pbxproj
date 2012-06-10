@@ -964,6 +964,8 @@
 		9CE70FD614712CC700DA0AB8 /* IAToolbarPin.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE70FD414712CC700DA0AB8 /* IAToolbarPin.png */; };
 		9CE70FD814712CE000DA0AB8 /* IAToolbarPin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE70FD714712CE000DA0AB8 /* IAToolbarPin@2x.png */; };
 		9CE70FD914712CE000DA0AB8 /* IAToolbarPin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE70FD714712CE000DA0AB8 /* IAToolbarPin@2x.png */; };
+		9CE7AD881584D96F00B3A035 /* YCPair.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE7AD871584D96F00B3A035 /* YCPair.m */; };
+		9CE7AD891584D96F00B3A035 /* YCPair.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE7AD871584D96F00B3A035 /* YCPair.m */; };
 		9CE8954B12FFFFD2008FBD45 /* backgroundCurlview.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8942212FFFFD2008FBD45 /* backgroundCurlview.png */; };
 		9CE8954C12FFFFD2008FBD45 /* IAGlassMask.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8942312FFFFD2008FBD45 /* IAGlassMask.png */; };
 		9CE8954F12FFFFD2008FBD45 /* list_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8942612FFFFD2008FBD45 /* list_background.png */; };
@@ -1088,8 +1090,8 @@
 		9CEE572A15819EB9008205F2 /* IARecentAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE572715819EB9008205F2 /* IARecentAddressViewController.m */; };
 		9CEE572F15819F41008205F2 /* IABookmarkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE572E15819F41008205F2 /* IABookmarkManager.m */; };
 		9CEE573015819F41008205F2 /* IABookmarkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE572E15819F41008205F2 /* IABookmarkManager.m */; };
-		9CEE574F1581F92A008205F2 /* IARecentAddressManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE574E1581F92A008205F2 /* IARecentAddressManager.m */; };
-		9CEE57501581F92A008205F2 /* IARecentAddressManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE574E1581F92A008205F2 /* IARecentAddressManager.m */; };
+		9CEE574F1581F92A008205F2 /* IARecentAddressDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE574E1581F92A008205F2 /* IARecentAddressDataManager.m */; };
+		9CEE57501581F92A008205F2 /* IARecentAddressDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE574E1581F92A008205F2 /* IARecentAddressDataManager.m */; };
 		9CF1662A15691A9200281A33 /* UIViewController+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF1662915691A9200281A33 /* UIViewController+YC.m */; };
 		9CF1662B15691A9200281A33 /* UIViewController+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF1662915691A9200281A33 /* UIViewController+YC.m */; };
 		9CF166A015693B4000281A33 /* IAAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF1667615693B4000281A33 /* IAAnnotation.m */; };
@@ -1823,6 +1825,8 @@
 		9CE4A13E1332031E00CC7F32 /* IAButtonOpenToolbarDone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAButtonOpenToolbarDone@2x.png"; sourceTree = "<group>"; };
 		9CE70FD414712CC700DA0AB8 /* IAToolbarPin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IAToolbarPin.png; sourceTree = "<group>"; };
 		9CE70FD714712CE000DA0AB8 /* IAToolbarPin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAToolbarPin@2x.png"; sourceTree = "<group>"; };
+		9CE7AD861584D96F00B3A035 /* YCPair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCPair.h; sourceTree = "<group>"; };
+		9CE7AD871584D96F00B3A035 /* YCPair.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCPair.m; sourceTree = "<group>"; };
 		9CE8942212FFFFD2008FBD45 /* backgroundCurlview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backgroundCurlview.png; sourceTree = "<group>"; };
 		9CE8942312FFFFD2008FBD45 /* IAGlassMask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IAGlassMask.png; sourceTree = "<group>"; };
 		9CE8942612FFFFD2008FBD45 /* list_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = list_background.png; sourceTree = "<group>"; };
@@ -1976,8 +1980,8 @@
 		9CEE572715819EB9008205F2 /* IARecentAddressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IARecentAddressViewController.m; sourceTree = "<group>"; };
 		9CEE572D15819F41008205F2 /* IABookmarkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IABookmarkManager.h; sourceTree = "<group>"; };
 		9CEE572E15819F41008205F2 /* IABookmarkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IABookmarkManager.m; sourceTree = "<group>"; };
-		9CEE574D1581F929008205F2 /* IARecentAddressManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IARecentAddressManager.h; sourceTree = "<group>"; };
-		9CEE574E1581F92A008205F2 /* IARecentAddressManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IARecentAddressManager.m; sourceTree = "<group>"; };
+		9CEE574D1581F929008205F2 /* IARecentAddressDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; path = IARecentAddressDataManager.h; sourceTree = "<group>"; };
+		9CEE574E1581F92A008205F2 /* IARecentAddressDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IARecentAddressDataManager.m; sourceTree = "<group>"; };
 		9CF1662815691A9200281A33 /* UIViewController+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+YC.h"; sourceTree = "<group>"; };
 		9CF1662915691A9200281A33 /* UIViewController+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+YC.m"; sourceTree = "<group>"; };
 		9CF1667515693B4000281A33 /* IAAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAAnnotation.h; sourceTree = "<group>"; };
@@ -2345,6 +2349,7 @@
 		9C7484BE1562981F00486793 /* YCLib */ = {
 			isa = PBXGroup;
 			children = (
+				9CE7AD851584D79B00B3A035 /* YCCollections */,
 				9C67A1E81572625F00E53116 /* YCGeocoder */,
 				9C767F031564BC5F00A4F397 /* YCUI */,
 				9C767EE21564AB8E00A4F397 /* YCFunctions */,
@@ -3398,6 +3403,15 @@
 			path = 2x;
 			sourceTree = "<group>";
 		};
+		9CE7AD851584D79B00B3A035 /* YCCollections */ = {
+			isa = PBXGroup;
+			children = (
+				9CE7AD861584D96F00B3A035 /* YCPair.h */,
+				9CE7AD871584D96F00B3A035 /* YCPair.m */,
+			);
+			path = YCCollections;
+			sourceTree = "<group>";
+		};
 		9CE8941F12FFFFD2008FBD45 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -3937,8 +3951,8 @@
 		9CF349301580558A001ECA54 /* Bookmarks */ = {
 			isa = PBXGroup;
 			children = (
-				9CEE574D1581F929008205F2 /* IARecentAddressManager.h */,
-				9CEE574E1581F92A008205F2 /* IARecentAddressManager.m */,
+				9CEE574D1581F929008205F2 /* IARecentAddressDataManager.h */,
+				9CEE574E1581F92A008205F2 /* IARecentAddressDataManager.m */,
 				9CEE572615819EB9008205F2 /* IARecentAddressViewController.h */,
 				9CEE572715819EB9008205F2 /* IARecentAddressViewController.m */,
 				9CEE572D15819F41008205F2 /* IABookmarkManager.h */,
@@ -4989,7 +5003,8 @@
 				9CEE572215819DA0008205F2 /* YCTabToolbarController.m in Sources */,
 				9CEE572915819EB9008205F2 /* IARecentAddressViewController.m in Sources */,
 				9CEE572F15819F41008205F2 /* IABookmarkManager.m in Sources */,
-				9CEE574F1581F92A008205F2 /* IARecentAddressManager.m in Sources */,
+				9CEE574F1581F92A008205F2 /* IARecentAddressDataManager.m in Sources */,
+				9CE7AD881584D96F00B3A035 /* YCPair.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5206,7 +5221,8 @@
 				9CEE572315819DA0008205F2 /* YCTabToolbarController.m in Sources */,
 				9CEE572A15819EB9008205F2 /* IARecentAddressViewController.m in Sources */,
 				9CEE573015819F41008205F2 /* IABookmarkManager.m in Sources */,
-				9CEE57501581F92A008205F2 /* IARecentAddressManager.m in Sources */,
+				9CEE57501581F92A008205F2 /* IARecentAddressDataManager.m in Sources */,
+				9CE7AD891584D96F00B3A035 /* YCPair.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
