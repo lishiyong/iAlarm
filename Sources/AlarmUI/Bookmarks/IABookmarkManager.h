@@ -20,7 +20,6 @@
     UINavigationController *_recentAddressNav;
 }
 
-
 @property (nonatomic, assign) IBOutlet UIViewController *currentViewController; //相当于delegate,要用assign
 @property (nonatomic, retain) YCSearchController *searchController;
 

@@ -14,7 +14,16 @@
 NSString* YCSerialCode();
 
 NSString* YCStringFromCLLocationCoordinate2D(CLLocationCoordinate2D coord);
+
+/**
+ 默认逗号 北纬 85°59′59″,东经 180°59′59″
+ **/
 NSString* YCLocalizedStringFromCLLocationCoordinate2D(CLLocationCoordinate2D coord, NSString *northLatitude, NSString *southLatitude, NSString *easeLongitude, NSString *westLongitude);
+
+/**
+ separater：中间分隔的符号
+ **/
+NSString* YCLocalizedStringFromCLLocationCoordinate2DUsingSeparater(CLLocationCoordinate2D coord, NSString *northLatitude, NSString *southLatitude, NSString *easeLongitude, NSString *westLongitude, NSString *separater);
 
 //比较2个 CGPoint；
 BOOL YCCGPointEqualPoint(CGPoint src1,CGPoint src2);

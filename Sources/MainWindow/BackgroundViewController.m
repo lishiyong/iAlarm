@@ -6,6 +6,8 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+
+#import "IAPerson.h"
 #import "IARecentAddressDataManager.h"
 #import "IABookmarkManager.h"
 #import "YCLib.h"
@@ -1044,7 +1046,8 @@
     
 	IAAlarm *alarm = [[[IAAlarm alloc] init] autorelease];
 	alarm.visualCoordinate = visualCoordinate;
-	alarm.positionTitle = (forwardGeocoderManager.addressTitle.length > 0) ? forwardGeocoderManager.addressTitle : titleAddress; //如果是从联系人搜索来的
+	alarm.positionTitle = (forwardGeocoderManager.personName.length > 0) ? forwardGeocoderManager.personName : titleAddress; //如果是从联系人搜索来的
+    alarm.personId = forwardGeocoderManager.personId; //可能关联到一个联系人
 	alarm.positionShort = shortAddress;
 	alarm.position = longAddress;
     alarm.placemark = placemark;
@@ -1102,9 +1105,9 @@
         //加入最近搜索
         NSString *theKey = nil;
         id theObject = nil;
-        if (forwardGeocoderManager.addressTitle) {
-            theKey = forwardGeocoderManager.addressTitle;
-            theObject = forwardGeocoderManager.addressDictionary;
+        if (forwardGeocoderManager.personId != kABRecordInvalidID) {
+            theKey = forwardGeocoderManager.personName;
+            theObject = [[[IAPerson alloc] initWithPersonId:forwardGeocoderManager.personId personName:forwardGeocoderManager.personName addressDictionary:forwardGeocoderManager.addressDictionary] autorelease];
         }else{
             theKey = forwardGeocoderManager.addressString;
             if (placemarks.count == 1) 
@@ -1225,6 +1228,7 @@
     
 }
 
+/*
 - (void)searchController:(YCSearchController *)controller addressDictionary:(NSDictionary *)addressDictionary addressTitle:(NSString *) addressTitle{
     
     if (!forwardGeocoderManager) 
@@ -1232,6 +1236,21 @@
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     [forwardGeocoderManager forwardGeocodeAddressDictionary:addressDictionary addressTitle:addressTitle completionHandler:^(NSArray *placemarks, NSError *error){
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        [self _forwardGeocodingDidCompleteWithPlacemarks:placemarks error:error];
+    }];
+    
+}
+ */
+
+- (void)searchController:(YCSearchController *)controller addressDictionary:(NSDictionary *)addressDictionary personName:(NSString *) personName personId:(int32_t)personId{
+    
+    if (!forwardGeocoderManager) 
+        forwardGeocoderManager = [[YCForwardGeocoderManager alloc] init];
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
+    [forwardGeocoderManager forwardGeocodeAddressDictionary:addressDictionary personName:personName personId:personId completionHandler:^(NSArray *placemarks, NSError *error) {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         [self _forwardGeocodingDidCompleteWithPlacemarks:placemarks error:error];
     }];

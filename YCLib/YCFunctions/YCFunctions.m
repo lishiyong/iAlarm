@@ -40,7 +40,7 @@ NSString* YCStringFromCLLocationCoordinate2D(CLLocationCoordinate2D coord){
 }
 
 NSString* YCLocalizedStringFromCLLocationCoordinate2D(CLLocationCoordinate2D coord, NSString *northLatitude, NSString *southLatitude, NSString *easeLongitude, NSString *westLongitude){
-    
+    /*
     NSString *latFString = nil;
 	if (coord.latitude>0)
         latFString = northLatitude; //北纬
@@ -56,7 +56,35 @@ NSString* YCLocalizedStringFromCLLocationCoordinate2D(CLLocationCoordinate2D coo
     
 	NSString *latstr = convert(coord.latitude, 0, latFString);
 	NSString *lonstr = convert(coord.latitude, 0, lonFString);
+    
     return [NSString stringWithFormat:@"%@,%@",latstr,lonstr];
+     */
+    return YCLocalizedStringFromCLLocationCoordinate2DUsingSeparater(coord,northLatitude,southLatitude,easeLongitude,westLongitude,@", ");
+}
+
+NSString* YCLocalizedStringFromCLLocationCoordinate2DUsingSeparater(CLLocationCoordinate2D coord, NSString *northLatitude, NSString *southLatitude, NSString *easeLongitude, NSString *westLongitude, NSString *separater){
+    
+    NSString *latFString = nil;
+	if (coord.latitude>0)
+        latFString = northLatitude; //北纬
+	else 
+        latFString = southLatitude; //南纬
+    
+    NSString *lonFString = nil;
+    if (coord.longitude>0)
+        lonFString = easeLongitude; //东经
+	else 
+		lonFString = westLongitude; //西经
+    
+    
+	NSString *latstr = convert(coord.latitude, 0, latFString);
+	NSString *lonstr = convert(coord.longitude, 0, lonFString);
+    
+    NSMutableString *format = [NSMutableString stringWithString: @"%@"];
+    [format appendString:separater];
+    [format appendString:@"%@"];
+    
+    return [NSString stringWithFormat:format,latstr,lonstr];
 }
 
 BOOL YCCGPointEqualPoint(CGPoint src1,CGPoint src2){

@@ -354,6 +354,10 @@
         return _location;
 }
 
+- (NSDictionary *)addressDictionary{
+    return _placemark.addressDictionary;
+}
+
 #pragma mark - Override Super
 /**
  坐标相同，就相等

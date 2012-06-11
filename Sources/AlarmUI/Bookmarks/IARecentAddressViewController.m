@@ -7,6 +7,7 @@
 //
 
 #import "YCLib.h"
+#import "IAPerson.h"
 #import <AddressBookUI/AddressBookUI.h>
 #import "IARecentAddressDataManager.h"
 #import "IARecentAddressViewController.h"
@@ -125,7 +126,7 @@
     }
     
     YCPair *aPair = [[IARecentAddressDataManager sharedManager].all objectAtIndex:indexPath.row];
-    NSString *key = aPair.key; //查询串或人名
+    NSString *key = aPair.key;   //查询串或人名
     id value = aPair.value;      //查询结果，字符串或dic
     
     NSString *titleString = nil;
@@ -133,9 +134,10 @@
     if ([value isKindOfClass: [NSString class]]) {
         titleString = @"搜索：";
         addressString = [key stringByAppendingFormat:@" (%@)",value];
-    }else{
+    }else if([value isKindOfClass:[IAPerson class]] ){
         titleString = @"联系人：";
-        NSString *stringValue = [ABCreateStringWithAddressDictionary(value,NO) stringByTrim];
+        NSDictionary *addressDic = [(IAPerson*)value addressDictionary];
+        NSString *stringValue = [ABCreateStringWithAddressDictionary(addressDic,NO) stringByTrim];
         addressString = [key stringByAppendingFormat:@" (%@)",stringValue];
     }
     

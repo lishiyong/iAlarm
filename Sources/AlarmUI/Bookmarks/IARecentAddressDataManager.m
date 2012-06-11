@@ -6,7 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
-#import "YCPlacemark.h"
+#import "IAPerson.h"
 #import "YCLib.h"
 #import "IARecentAddressDataManager.h"
 
@@ -72,11 +72,11 @@
             BOOL keyEqual = [aKey isEqualToString:key];
             BOOL valueEqual = NO; 
             
-            //value是NSString和NSDictionary的情况要分开比较
+            //value是NSString和IAPerson的情况要分开比较
             if ([object isKindOfClass:[NSString class]] && [aValue isKindOfClass:[NSString class]]) 
                 valueEqual = [object isEqualToString:aValue];
-            else if ([object isKindOfClass:[NSDictionary class]] && [aValue isKindOfClass:[NSDictionary class]]) 
-                valueEqual = [object isEqualToDictionary:aValue];
+            else if ([object isKindOfClass:[IAPerson class]] && [aValue isKindOfClass:[IAPerson class]]) 
+                valueEqual = [object isEqual:aValue];
             else 
                 valueEqual = NO;
             

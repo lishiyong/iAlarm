@@ -26,7 +26,8 @@
     if (editing != isEditing){
         editing = isEditing;//一定放到前面，因为下面的self.pinColor 引发的 self.image 需要判断 editing
         
-        UIView *leftView = editing ? minusButton : flagImageView;
+        //UIView *leftView = editing ? minusButton : flagImageView;
+        UIView *leftView = editing ? minusButton : flagButton;
         UIView *rightView = editing ? deleteButton : detailButton;
         
         
@@ -111,6 +112,12 @@
 	}
 }
 
+- (void)flagButtonPressed:(id)sender{
+	if ([self.delegate respondsToSelector:@selector(annotationView:didPressFlagButton:)]) {
+		[self.delegate annotationView:self didPressFlagButton:flagButton];
+	}
+}
+
 
 #pragma mark -
 #pragma mark override super method
@@ -186,6 +193,10 @@
         [minusButton addTarget:self action:@selector(minusButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 		[deleteButton addTarget:self action:@selector(deleteButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         [detailButton addTarget:self action:@selector(detailButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        
+        flagButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+        flagButton.frame = CGRectMake(0, 0, 20, 20);
+        [flagButton addTarget:self action:@selector(flagButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 
         if ([annotation isKindOfClass:[IAAnnotation class]]) {
             IAAlarm *alarm = annotation.alarm;
@@ -193,6 +204,8 @@
             imageName = [NSString stringWithFormat:@"20_%@",imageName]; //使用20像素的图标
             imageName = alarm.enabled ? imageName: @"20_IAFlagGray.png";  //没有启用，使用灰色旗帜
             flagImageView.image = [UIImage imageNamed:imageName];
+            
+            [flagButton setBackgroundImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
         }
         
         [self addObserver:self forKeyPath:@"annotation.alarm.enabled" options:0 context:nil];
@@ -225,6 +238,7 @@
     [flagImageView release];
     [detailButton release];
     [grayPin release];
+    [flagButton release];
 	[super dealloc];
 }
 

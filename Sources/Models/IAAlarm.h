@@ -9,6 +9,7 @@
 #import "IAAlarmRadiusType.h"
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+#import <AddressBook/AddressBook.h>
 
 //闹钟列表改变，包括：增，改，删
 extern NSString *IAAlarmsDataListDidChangeNotification;
@@ -44,6 +45,7 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 #define    kreserve3                @"kreserve3"
 
 #define    kplacemark               @"kplacemark"
+#define    kPersonId                @"kPersonId"
 
 @class IASaveInfo;
 @class YCSound, YCRepeatType, YCPositionType;
@@ -84,6 +86,7 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 	NSString *reserve3;
     
     YCPlacemark *placemark;                  //地点标题，2012-5-28添加
+    ABRecordID personId;                     //通讯录中的联系人id，2012-6-11添加
 
 }
 
@@ -121,6 +124,7 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 @property (nonatomic,copy) NSString *reserve3;
 
 @property (nonatomic,retain) YCPlacemark *placemark;
+@property (nonatomic,assign) ABRecordID personId;
 
 
 - (void)setRealCoordinateWithVisualCoordinate:(CLLocationCoordinate2D)theVisualCoordinate;

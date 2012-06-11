@@ -7,6 +7,7 @@
 //
 
 #import "YCLib.h"
+#import "IAPerson.h"
 #import "YCSearchBar.h"
 #import "YCSearchDisplayController.h"
 #import "YCSearchController.h"
@@ -60,7 +61,7 @@
 
 #pragma mark - ABPeoplePickerNavigationControllerDelegate
 
-- (void)_searchWithAddressDictionary:(NSDictionary *)addressDictionary personName:(NSString *)personName{
+- (void)_searchWithAddressDictionary:(NSDictionary *)addressDictionary personName:(NSString *)personName personId:(ABRecordID)personId{
     
     //做搜索状
     NSString *searchString = ABCreateStringWithAddressDictionary(addressDictionary,NO);
@@ -78,34 +79,55 @@
     }
     
     [self performBlock:^{
-        if ([self.searchController.delegate respondsToSelector:@selector(searchController:addressDictionary:addressTitle:)]) {
-            [self.searchController.delegate searchController:self.searchController addressDictionary:addressDictionary addressTitle:personName];
+        
+        if ([self.searchController.delegate respondsToSelector:@selector(searchController:addressDictionary:personName:personId:)]) {
+            
+            [self.searchController.delegate searchController:self.searchController addressDictionary:addressDictionary personName:personName personId:personId];
+            
+        }
+        
+    } afterDelay:0.1];
+    
+}
+
+- (void)_searchWithSearchString:(NSString*)searchString{
+    
+    //做搜索状
+    self.searchController.searchDisplayController.searchBar.text = searchString;
+    [self.searchController setActive:YES animated:NO];
+    [self.searchController setSearchWaiting:YES];
+    
+    //关闭本视图控制器
+    if ([self.currentViewController respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]) {
+        [self.currentViewController dismissViewControllerAnimated:YES completion:NULL];
+    }else{
+        [self.currentViewController dismissModalViewControllerAnimated:YES];
+    }
+    
+    [self performBlock:^{
+        if ([self.searchController.delegate respondsToSelector:@selector(searchController:searchString:)]) {
+            [self.searchController.delegate searchController:self.searchController searchString:searchString];
         }
     } afterDelay:0.1];
     
 }
 
+
 - (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person{
     
-    
-    ABMutableMultiValueRef multi = ABRecordCopyValue(person, kABPersonAddressProperty);
-    CFIndex count = ABMultiValueGetCount(multi);
-    if (1 == count) {
+    IAPerson *theIAPerson = [[[IAPerson alloc] initWithPerson:person] autorelease];
+    if (theIAPerson.addressDictionaries.count == 1) {
         
-        //联系人的姓名    
-        NSString *personName = nil;
-        personName =  (__bridge_transfer NSString*)ABRecordCopyCompositeName(person);
-        [personName autorelease];
+        //联系人的姓名
+        NSString *personName =  theIAPerson.personName;
         personName = [personName stringByTrim];
         personName = (personName != nil) ? personName : @"";
         
         //联系人的地址
-        NSDictionary *addressDic = nil;
-        addressDic = (__bridge_transfer NSDictionary*)ABMultiValueCopyValueAtIndex(multi, 0);
-        [addressDic autorelease];  
+        NSDictionary *addressDic = [theIAPerson.addressDictionaries objectAtIndex:0];
+        [self _searchWithAddressDictionary:addressDic personName:personName personId:theIAPerson.personId];
         
-        [self _searchWithAddressDictionary:addressDic personName:personName];
-                
+        
     }else { //count == 0 或 count > 1
         
         //打开联系人编辑
@@ -119,10 +141,7 @@
                                    nil];
         picker.displayedProperties = displayedItems;
         [peoplePicker pushViewController:picker animated:YES]; 
-                
     }
-    
-    CFRelease(multi);
     
     return NO;
 }
@@ -145,28 +164,17 @@
     
     if (kABPersonAddressProperty == property && kABMultiValueInvalidIdentifier != identifierForValue){
         
-        ABMutableMultiValueRef multi = ABRecordCopyValue(person, kABPersonAddressProperty);
-        CFIndex count = ABMultiValueGetCount(multi);
-        
-        if (count > 0) {
-    
-            //联系人的姓名    
-            NSString *personName = nil;
-            personName =  (__bridge_transfer NSString*)ABRecordCopyCompositeName(person);
-            [personName autorelease];
+        IAPerson *theIAPerson = [[[IAPerson alloc] initWithPerson:person] autorelease];
+        if (theIAPerson.addressDictionaries.count > identifierForValue) {
+            //联系人的姓名
+            NSString *personName =  theIAPerson.personName;
             personName = [personName stringByTrim];
             personName = (personName != nil) ? personName : @"";
             
             //联系人的地址
-            NSDictionary *addressDic = nil;
-            addressDic = (__bridge_transfer NSDictionary*)ABMultiValueCopyValueAtIndex(multi, identifierForValue);
-            [addressDic autorelease];  
-            
-            [self _searchWithAddressDictionary:addressDic personName:personName];
-            
+            NSDictionary *addressDic = [theIAPerson.addressDictionaries objectAtIndex:identifierForValue];
+            [self _searchWithAddressDictionary:addressDic personName:personName personId:theIAPerson.personId];
         }
-        
-        CFRelease(multi);
     }
     
     return NO;
@@ -200,39 +208,17 @@
 - (BOOL)recentAddressPickerNavigationController:(IARecentAddressViewController *)recentAddressPicker shouldContinueAfterSelectingRecentAddressData:(YCPair*)anRecentAddressData{
     
     NSString *key = anRecentAddressData.key; //查询串或人名
-    id value = anRecentAddressData.value;    //查询结果，字符串或dic
-    
-    //做搜索状
-    NSString *searchString = nil;
-    if ([value isKindOfClass: [NSString class]]) 
-        searchString = key;
-    else
-        searchString = ABCreateStringWithAddressDictionary(value,NO);
-    self.searchController.searchDisplayController.searchBar.text = searchString;
-    [self.searchController setActive:YES animated:NO];
-    [self.searchController setSearchWaiting:YES];
-    
-    //关闭本视图控制器
-    if ([self.currentViewController respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]) {
-        [self.currentViewController dismissViewControllerAnimated:YES completion:NULL];
-    }else{
-        [self.currentViewController dismissModalViewControllerAnimated:YES];
-    }
+    id value = anRecentAddressData.value;    //查询结果，字符串或IAPerson
     
     if ([value isKindOfClass: [NSString class]]) {
         
-        [self performBlock:^{
-            if ([self.searchController.delegate respondsToSelector:@selector(searchController:searchString:)]) {
-                [self.searchController.delegate searchController:self.searchController searchString:key];
-            }
-        } afterDelay:0.1];
+        [self _searchWithSearchString:key];
         
-    }else{
-        [self performBlock:^{
-            if ([self.searchController.delegate respondsToSelector:@selector(searchController:addressDictionary:addressTitle:)]) {
-                [self.searchController.delegate searchController:self.searchController addressDictionary:value addressTitle:key];
-            }
-        } afterDelay:0.1];
+    }else if ([value isKindOfClass:[IAPerson class]]){
+        
+        IAPerson *aPerson = (IAPerson*)value;
+        [self _searchWithAddressDictionary:aPerson.addressDictionary personName:aPerson.personName personId:aPerson.personId];
+        
     }
     
     return NO;

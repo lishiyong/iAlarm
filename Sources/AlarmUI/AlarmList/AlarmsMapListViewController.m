@@ -6,7 +6,12 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+//#import <AddressBook/AddressBook.h>
+//#import <AddressBookUI/AddressBookUI.h>
+#import "IAContactManager.h"
 #import "YCLib.h"
+#import "IAPerson.h"
+#import "IAAddressInfoViewController.h"
 #import "UIAlertView+YC.h"
 #import "UIColor+YC.h"
 #import "YCFunctions.h"
@@ -58,6 +63,7 @@
 @synthesize mapView, maskView, maskLabel, maskActivityIndicator;
 @synthesize mapPointAnnotations;
 @synthesize toolbarFloatingView, mapsTypeButton, satelliteTypeButton, hybridTypeButton;
+@synthesize contactManager;
 
 - (id)alarms{
 	return [IAAlarm alarmArray];
@@ -1303,6 +1309,124 @@
     [notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
 }
 
+- (void)annotationView:(IAPinAnnotationView *)annotationView didPressFlagButton:(UIButton*)button{
+    /*
+    //先找到人
+    IAPerson *thePerson = nil;
+    ABRecordID thePersonId = [(IAAnnotation*)annotationView.annotation alarm].personId;
+    if (kABRecordInvalidID != [(IAAnnotation*)annotationView.annotation alarm].personId )
+        thePerson = [[[IAPerson alloc] initWithPersonId:thePersonId] autorelease];
+    
+    //
+    IAAddressInfoViewController *vc = [[[IAAddressInfoViewController alloc] initWithNibName:@"IAAddressInfoViewController" bundle:nil person:thePerson] autorelease];
+    UINavigationController *navc = [[[UINavigationController alloc] initWithRootViewController:vc] autorelease];
+	
+    UIViewController *rootViewController = self.view.window.rootViewController;
+    if ([rootViewController respondsToSelector:@selector(presentViewController:animated:completion:)]) {
+        [rootViewController presentViewController:navc animated:YES completion:NULL];
+    }else{
+        [self.view.window.rootViewController presentModalViewController:navc animated:YES];
+    }
+     */
+    
+    /*
+    IAAlarm *theAlarm = [(IAAnnotation*)annotationView.annotation alarm];
+    
+    
+    //
+    IAAddressInfoViewController *vc = [[[IAAddressInfoViewController alloc] initWithNibName:@"IAAddressInfoViewController" bundle:nil alarm:theAlarm] autorelease];
+    UINavigationController *navc = [[[UINavigationController alloc] initWithRootViewController:vc] autorelease];
+	
+    UIViewController *rootViewController = self.view.window.rootViewController;
+    if ([rootViewController respondsToSelector:@selector(presentViewController:animated:completion:)]) {
+        [rootViewController presentViewController:navc animated:YES completion:NULL];
+    }else{
+        [self.view.window.rootViewController presentModalViewController:navc animated:YES];
+    }
+     */
+    
+    /*
+    IAAlarm *theAlarm = [(IAAnnotation*)annotationView.annotation alarm];
+    IAPerson *thePerson = nil;
+    ABRecordID thePersonId = theAlarm.personId;
+    if (kABRecordInvalidID != thePersonId )
+        thePerson = [[[IAPerson alloc] initWithPersonId:thePersonId] autorelease];
+    
+    NSDictionary *theAddressDic = theAlarm.placemark.addressDictionary;
+    
+    NSUInteger idxAlarmDic = NSNotFound;
+    if (theAddressDic) {
+        idxAlarmDic = [thePerson.addressDictionaries indexOfObjectPassingTest:^BOOL(NSDictionary *aDic, NSUInteger idx, BOOL *stop) {
+            if ([aDic isEqualToDictionary:theAddressDic]){
+                *stop = YES;
+                return YES;
+            }
+            return NO;
+        }];
+    }
+    
+    //还未关联联系人
+    if (!thePerson || kABRecordInvalidID == thePerson.personId || idxAlarmDic == NSNotFound) {
+        
+        CFErrorRef anError0 = NULL;
+        CFErrorRef anError1 = NULL;
+        
+        ABRecordRef aContact = ABPersonCreate();
+        ABMutableMultiValueRef address = ABMultiValueCreateMutable(kABDictionaryPropertyType);
+        
+        bool didAdd = true;
+        if (theAddressDic) 
+            didAdd = ABMultiValueAddValueAndLabel(address,theAddressDic, NULL, NULL);
+        
+        if (didAdd) 
+            ABRecordSetValue(aContact, kABPersonAddressProperty, address, &anError0);
+ 
+        
+        
+        NSString *coordinateString = YCLocalizedStringFromCLLocationCoordinate2DUsingSeparater(theAlarm.visualCoordinate,kCoordinateFrmStringNorthLatitudeSpace,kCoordinateFrmStringSouthLatitudeSpace,kCoordinateFrmStringEastLongitudeSpace,kCoordinateFrmStringWestLongitudeSpace,@"\n");
+        
+        
+        CFStringRef cfsCoordinateString = CFStringCreateWithCString(NULL,[coordinateString UTF8String],kCFStringEncodingUTF8);
+        ABRecordSetValue(aContact, kABPersonNoteProperty, cfsCoordinateString, &anError1);
+        
+        
+        if (anError0 == NULL && anError1 == NULL)
+        {
+            ABUnknownPersonViewController *picker = [[[ABUnknownPersonViewController alloc] init] autorelease];
+            //picker.unknownPersonViewDelegate = self;
+            picker.displayedPerson = aContact;
+            picker.allowsAddingToAddressBook = YES;
+            picker.allowsActions = NO;
+            picker.alternateName = theAlarm.positionTitle;
+            picker.title = @"简介";
+            //picker.message = @"distance from curreent location:1800 km";
+            
+            //[self.navigationController pushViewController:picker animated:YES];
+            
+            UIViewController *rootViewController = self.view.window.rootViewController;
+            if ([rootViewController respondsToSelector:@selector(presentViewController:animated:completion:)]) {
+                [rootViewController presentViewController:picker animated:YES completion:NULL];
+            }else{
+                [self.view.window.rootViewController presentModalViewController:picker animated:YES];
+            }
+        }
+        
+        
+        CFRelease(cfsCoordinateString);
+        CFRelease(address);
+        CFRelease(aContact);
+        
+        
+    }
+     
+     */
+    
+    IAAlarm *theAlarm = [(IAAnnotation*)annotationView.annotation alarm];
+    self.contactManager.currentViewController = self.view.window.rootViewController;
+    [self.contactManager presentContactViewControllerWithAlarm:theAlarm];
+
+}
+
 #pragma mark -
 #pragma mark Utility - UIGestureRecognizerDelegate
 
@@ -1796,6 +1920,7 @@
                 
                 //坐标改变了，保存
                 alarm.visualCoordinate = annotation.coordinate;
+                alarm.personId = kABRecordInvalidID;//地址改变了，断开可能关联的联系人。
                 [alarm saveFromSender:self];
                 
 				//反转坐标－地址
@@ -1860,6 +1985,7 @@
 	self.mapsTypeButton = nil;
 	self.satelliteTypeButton = nil;                   
 	self.hybridTypeButton = nil;
+    self.contactManager = nil;
 	
 	[self.mapPointAnnotationViews removeAllObjects];
 	[self.mapPointAnnotations removeAllObjects];
@@ -1899,7 +2025,9 @@
     [tapCalloutViewGesture release];
 	[longPressGesture release];
     
-    [checkNetAlert release];    
+    [checkNetAlert release];
+    
+    [contactManager release];
     [super dealloc];
 }
 

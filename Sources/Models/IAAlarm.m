@@ -63,6 +63,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 @synthesize reserve3;
 
 @synthesize placemark;
+@synthesize personId;
 
 - (id)init
 {
@@ -103,6 +104,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 		reserve3 = nil;
         
         placemark = nil;
+        personId = kABRecordInvalidID;
 	}
 	return self;
 }
@@ -143,6 +145,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	[encoder encodeObject:reserve3 forKey:kreserve3];
 	
     [encoder encodeObject:placemark forKey:kplacemark];
+    [encoder encodeInt32:personId forKey:kPersonId];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
@@ -185,6 +188,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 		reserve3 = [[decoder decodeObjectForKey:kreserve3] retain];
         
         placemark = [[decoder decodeObjectForKey:kplacemark] retain];
+        personId = [decoder decodeInt32ForKey:kPersonId];
         
         //////////////////////////
         //为了兼容以前版本的数据
@@ -209,7 +213,12 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
         if (!nameChanged) {
             [alarmName release];
             alarmName = nil;
-        }        
+        }  
+        
+        if (0 == personId) 
+            personId = kABRecordInvalidID;
+        
+        //////////////////////////
 		
     }
     return self;
@@ -256,6 +265,8 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	copy.reserve1 = self.reserve1;
 	copy.reserve2 = self.reserve2;
 	copy.reserve3 = self.reserve3;
+    
+    copy.personId = self.personId;
         
     return copy;
 }

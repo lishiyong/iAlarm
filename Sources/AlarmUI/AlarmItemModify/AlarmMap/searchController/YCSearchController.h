@@ -19,7 +19,10 @@
 
 @optional
 - (void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar;
-- (void)searchController:(YCSearchController *)controller addressDictionary:(NSDictionary *)addressDictionary addressTitle:(NSString *) addressTitle;
+
+//- (void)searchController:(YCSearchController *)controller addressDictionary:(NSDictionary *)addressDictionary addressTitle:(NSString *) addressTitle;
+
+- (void)searchController:(YCSearchController *)controller addressDictionary:(NSDictionary *)addressDictionary personName:(NSString *) personName personId:(int32_t)personId;
 
 @end
 

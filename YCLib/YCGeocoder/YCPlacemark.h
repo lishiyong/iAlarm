@@ -77,10 +77,12 @@
 - (NSString *)name;
 - (CLRegion *)region;
 - (CLLocation *)location;
+- (NSDictionary *)addressDictionary;
 
 /**
  把带换行的地址格式化成一行
  **/
 - (NSString*)_addressForAddressLines:(NSString*)addressLines;
+
 
 @end

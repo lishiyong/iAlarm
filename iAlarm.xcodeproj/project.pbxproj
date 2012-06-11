@@ -218,6 +218,14 @@
 		9C5B1DBA154E582D009235DB /* YCClockAlarm20.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5B1DB7154E582D009235DB /* YCClockAlarm20.png */; };
 		9C5B1DBB154E582D009235DB /* YCClockAlarm20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5B1DB8154E582D009235DB /* YCClockAlarm20@2x.png */; };
 		9C5B1DBC154E582D009235DB /* YCClockAlarm20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5B1DB8154E582D009235DB /* YCClockAlarm20@2x.png */; };
+		9C5B9ED61585A6EA00BBED35 /* IAPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5B9ED51585A6EA00BBED35 /* IAPerson.m */; };
+		9C5B9ED71585A6EA00BBED35 /* IAPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5B9ED51585A6EA00BBED35 /* IAPerson.m */; };
+		9C5B9EDB1585C80C00BBED35 /* IAAddressInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5B9ED91585C80B00BBED35 /* IAAddressInfoViewController.m */; };
+		9C5B9EDC1585C80C00BBED35 /* IAAddressInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5B9ED91585C80B00BBED35 /* IAAddressInfoViewController.m */; };
+		9C5B9EDD1585C80C00BBED35 /* IAAddressInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C5B9EDA1585C80C00BBED35 /* IAAddressInfoViewController.xib */; };
+		9C5B9EDE1585C80C00BBED35 /* IAAddressInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C5B9EDA1585C80C00BBED35 /* IAAddressInfoViewController.xib */; };
+		9C5E1D121586297700274C0F /* IAContactManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5E1D111586297700274C0F /* IAContactManager.m */; };
+		9C5E1D131586297700274C0F /* IAContactManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5E1D111586297700274C0F /* IAContactManager.m */; };
 		9C67A1E61572625700E53116 /* YCReverseGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C67A1E51572625700E53116 /* YCReverseGeocoder.m */; };
 		9C67A1E71572625700E53116 /* YCReverseGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C67A1E51572625700E53116 /* YCReverseGeocoder.m */; };
 		9C67A1EB1572638000E53116 /* YCPlacemark.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C67A1EA1572638000E53116 /* YCPlacemark.m */; };
@@ -1368,6 +1376,13 @@
 		9C5B1DB2154E56A1009235DB /* YCClockAlarm@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCClockAlarm@2x.png"; sourceTree = "<group>"; };
 		9C5B1DB7154E582D009235DB /* YCClockAlarm20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCClockAlarm20.png; sourceTree = "<group>"; };
 		9C5B1DB8154E582D009235DB /* YCClockAlarm20@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCClockAlarm20@2x.png"; sourceTree = "<group>"; };
+		9C5B9ED41585A6EA00BBED35 /* IAPerson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAPerson.h; sourceTree = "<group>"; };
+		9C5B9ED51585A6EA00BBED35 /* IAPerson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAPerson.m; sourceTree = "<group>"; };
+		9C5B9ED81585C80B00BBED35 /* IAAddressInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAAddressInfoViewController.h; sourceTree = "<group>"; };
+		9C5B9ED91585C80B00BBED35 /* IAAddressInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAAddressInfoViewController.m; sourceTree = "<group>"; };
+		9C5B9EDA1585C80C00BBED35 /* IAAddressInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IAAddressInfoViewController.xib; sourceTree = "<group>"; };
+		9C5E1D101586297700274C0F /* IAContactManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAContactManager.h; sourceTree = "<group>"; };
+		9C5E1D111586297700274C0F /* IAContactManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAContactManager.m; sourceTree = "<group>"; };
 		9C67A1E41572625700E53116 /* YCReverseGeocoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCReverseGeocoder.h; path = YCGeocoder/YCReverseGeocoder.h; sourceTree = "<group>"; };
 		9C67A1E51572625700E53116 /* YCReverseGeocoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCReverseGeocoder.m; path = YCGeocoder/YCReverseGeocoder.m; sourceTree = "<group>"; };
 		9C67A1E91572638000E53116 /* YCPlacemark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCPlacemark.h; path = YCGeocoder/YCPlacemark.h; sourceTree = "<group>"; };
@@ -1980,7 +1995,7 @@
 		9CEE572715819EB9008205F2 /* IARecentAddressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IARecentAddressViewController.m; sourceTree = "<group>"; };
 		9CEE572D15819F41008205F2 /* IABookmarkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IABookmarkManager.h; sourceTree = "<group>"; };
 		9CEE572E15819F41008205F2 /* IABookmarkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IABookmarkManager.m; sourceTree = "<group>"; };
-		9CEE574D1581F929008205F2 /* IARecentAddressDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; path = IARecentAddressDataManager.h; sourceTree = "<group>"; };
+		9CEE574D1581F929008205F2 /* IARecentAddressDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IARecentAddressDataManager.h; sourceTree = "<group>"; };
 		9CEE574E1581F92A008205F2 /* IARecentAddressDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IARecentAddressDataManager.m; sourceTree = "<group>"; };
 		9CF1662815691A9200281A33 /* UIViewController+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+YC.h"; sourceTree = "<group>"; };
 		9CF1662915691A9200281A33 /* UIViewController+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+YC.m"; sourceTree = "<group>"; };
@@ -3951,12 +3966,19 @@
 		9CF349301580558A001ECA54 /* Bookmarks */ = {
 			isa = PBXGroup;
 			children = (
+				9C5B9ED41585A6EA00BBED35 /* IAPerson.h */,
+				9C5B9ED51585A6EA00BBED35 /* IAPerson.m */,
 				9CEE574D1581F929008205F2 /* IARecentAddressDataManager.h */,
 				9CEE574E1581F92A008205F2 /* IARecentAddressDataManager.m */,
 				9CEE572615819EB9008205F2 /* IARecentAddressViewController.h */,
 				9CEE572715819EB9008205F2 /* IARecentAddressViewController.m */,
 				9CEE572D15819F41008205F2 /* IABookmarkManager.h */,
 				9CEE572E15819F41008205F2 /* IABookmarkManager.m */,
+				9C5B9ED81585C80B00BBED35 /* IAAddressInfoViewController.h */,
+				9C5B9ED91585C80B00BBED35 /* IAAddressInfoViewController.m */,
+				9C5B9EDA1585C80C00BBED35 /* IAAddressInfoViewController.xib */,
+				9C5E1D101586297700274C0F /* IAContactManager.h */,
+				9C5E1D111586297700274C0F /* IAContactManager.m */,
 			);
 			path = Bookmarks;
 			sourceTree = "<group>";
@@ -4412,6 +4434,7 @@
 				9CF166E215693B4000281A33 /* 20_IAFlagYellow@2x.png in Resources */,
 				9CF166E415693B4000281A33 /* IAMapPinGray.png in Resources */,
 				9CEE572415819DA0008205F2 /* YCTabToolbarController.xib in Resources */,
+				9C5B9EDD1585C80C00BBED35 /* IAAddressInfoViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4784,6 +4807,7 @@
 				9CF166E315693B4000281A33 /* 20_IAFlagYellow@2x.png in Resources */,
 				9CF166E515693B4000281A33 /* IAMapPinGray.png in Resources */,
 				9CEE572515819DA0008205F2 /* YCTabToolbarController.xib in Resources */,
+				9C5B9EDE1585C80C00BBED35 /* IAAddressInfoViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5005,6 +5029,9 @@
 				9CEE572F15819F41008205F2 /* IABookmarkManager.m in Sources */,
 				9CEE574F1581F92A008205F2 /* IARecentAddressDataManager.m in Sources */,
 				9CE7AD881584D96F00B3A035 /* YCPair.m in Sources */,
+				9C5B9ED61585A6EA00BBED35 /* IAPerson.m in Sources */,
+				9C5B9EDB1585C80C00BBED35 /* IAAddressInfoViewController.m in Sources */,
+				9C5E1D121586297700274C0F /* IAContactManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5223,6 +5250,9 @@
 				9CEE573015819F41008205F2 /* IABookmarkManager.m in Sources */,
 				9CEE57501581F92A008205F2 /* IARecentAddressDataManager.m in Sources */,
 				9CE7AD891584D96F00B3A035 /* YCPair.m in Sources */,
+				9C5B9ED71585A6EA00BBED35 /* IAPerson.m in Sources */,
+				9C5B9EDC1585C80C00BBED35 /* IAAddressInfoViewController.m in Sources */,
+				9C5E1D131586297700274C0F /* IAContactManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

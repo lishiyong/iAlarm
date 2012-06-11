@@ -599,13 +599,19 @@
     
     NSString *placemarkName = self.alarmTemp.placemark.name ? self.alarmTemp.placemark.name : @"";
     NSString *shortAddress = self.alarmTemp.positionShort ? self.alarmTemp.positionShort : @"";
-    placemarkName = [placemarkName stringByReplacingOccurrencesOfString:@" " withString:@""]; //空格个逗号都替掉
-    placemarkName = [placemarkName stringByReplacingOccurrencesOfString:@"," withString:@""];
-    shortAddress = [shortAddress stringByReplacingOccurrencesOfString:@" " withString:@""];
-    shortAddress = [shortAddress stringByReplacingOccurrencesOfString:@"," withString:@""];
     
-    if ([shortAddress rangeOfString:placemarkName].location != NSNotFound) //如果名字已经在地址中
+    //空格个逗号都替掉,再比对
+    NSString *placemarkNameTemp = [placemarkName stringByReplacingOccurrencesOfString:@" " withString:@""]; 
+    placemarkNameTemp = [placemarkNameTemp stringByReplacingOccurrencesOfString:@"," withString:@""];
+    
+    NSString *shortAddressTemp = [shortAddress stringByReplacingOccurrencesOfString:@" " withString:@""];
+    shortAddressTemp = [shortAddressTemp stringByReplacingOccurrencesOfString:@"," withString:@""];
+    
+    //如果名字已经在地址中
+    if ([shortAddressTemp rangeOfString:placemarkNameTemp].location != NSNotFound) 
         placemarkName = @"";
+    
+    
     NSString *addressLabelText = [NSString stringWithFormat:@"%@ %@",placemarkName,shortAddress]; 
     addressLabelText = [addressLabelText stringByTrim];
 	theCell.addressLabel.text = addressLabelText;
@@ -1012,6 +1018,7 @@
     YCReverseGeocoder *geocoder = [[[YCReverseGeocoder alloc] initWithTimeout:kTimeOutForReverse] autorelease];
     CLLocation *location = [[[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude] autorelease];
     [geocoder reverseGeocodeLocation:location completionHandler:^(YCPlacemark *placemark, NSError *error) {
+        
         NSString *coordinateString = YCLocalizedStringFromCLLocationCoordinate2D(coordinate,kCoordinateFrmStringNorthLatitude,kCoordinateFrmStringSouthLatitude,kCoordinateFrmStringEastLongitude,kCoordinateFrmStringWestLongitude);
         
         IAAlarm *theAlarm = self.alarmTemp;

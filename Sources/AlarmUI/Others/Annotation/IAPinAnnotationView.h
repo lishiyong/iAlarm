@@ -21,6 +21,8 @@
 //按下了按钮
 - (void)annotationView:(IAPinAnnotationView *)annotationView didPressDeleteButton:(UIButton*)button;
 - (void)annotationView:(IAPinAnnotationView *)annotationView didPressDetailButton:(UIButton*)button;
+- (void)annotationView:(IAPinAnnotationView *)annotationView didPressFlagButton:(UIButton*)button;
+
 //改变了calloutview的状态
 - (void)annotationView:(IAPinAnnotationView *)annotationView didChangeEditingStatus:(BOOL)isEditing;
 
@@ -33,6 +35,8 @@
     UIImageView *flagImageView;
     UIButton *detailButton;
     UIImage *grayPin;
+    UIButton *flagButton;
+    
 }
 
 @property (nonatomic,assign) id delegate;

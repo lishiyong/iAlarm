@@ -10,6 +10,7 @@
 #import <UIKit/UIKit.h>
 #import "IAPinAnnotationView.h"
 
+@class IAContactManager;
 @class YCOverlayImage;
 @class IAAnnotation;
 @class YCPageCurlButtonItem;
@@ -81,6 +82,8 @@
 @property(nonatomic, readonly)  CALayer *focusBox;
 
 @property (nonatomic, retain,readonly) YCAnimateRemoveFileView *animateRemoveFileView;
+
+@property (nonatomic,retain)            IBOutlet IAContactManager *contactManager;
 
 
 @end
