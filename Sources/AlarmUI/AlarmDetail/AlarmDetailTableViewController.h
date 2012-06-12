@@ -22,6 +22,7 @@ typedef enum {
 @class TableViewCellDescription;
 @class CellHeaderView;
 @class YClocationServicesUsableAlert;
+@class IAContactManager;
 @interface AlarmDetailTableViewController : UITableViewController
 <CLLocationManagerDelegate,AVAudioPlayerDelegate,UIAlertViewDelegate>
 {
@@ -64,6 +65,8 @@ typedef enum {
     
     YCSoundPlayer *vibratePlayer;
 	AVAudioPlayer *ringplayer;
+    
+    IAContactManager *_contactManager;
 
 }
 @property (nonatomic,retain) YClocationServicesUsableAlert *locationServicesUsableAlert;

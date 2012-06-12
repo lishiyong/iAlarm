@@ -7,6 +7,8 @@
 //
 
 #import "YCLib.h"
+#import "IAContactManager.h"
+#import "IAPerson.h"
 #import "YCLocationManager.h"
 #import "CLLocation+YC.h"
 #import "IAAlarmNotificationCenter.h"
@@ -571,10 +573,15 @@
 
 
 - (void) didSelectNavDestionationCell:(id)sender{
-	
+	/*
 	UIViewController *detailController1 = (UIViewController*)sender;
     UINavigationController *detailNavigationController1 = [[[UINavigationController alloc] initWithRootViewController:detailController1] autorelease];
 	[self presentModalViewController:detailNavigationController1 animated:YES];
+     */
+    
+    IAAlarm *theAlarm = self.alarmTemp;
+    IAPerson *newPerson = [[[IAPerson alloc] initWithAlarm:theAlarm image:nil] autorelease];
+    [_contactManager pushContactViewControllerWithAlarm:theAlarm newPerson:newPerson];
 	
 }
 - (id)destionationCellDescription{
@@ -588,6 +595,7 @@
 		self->destionationCellDescription.tableViewCell = cell;
 		
 		self->destionationCellDescription.didSelectCellSelector = @selector(didSelectNavDestionationCell:); //向上动画，与其他的左右动画cell有区别
+        
 		AlarmPositionMapViewController *mapViewCtler = [[[AlarmPositionMapViewController alloc] initWithNibName:@"AlarmPositionMapViewController" bundle:nil alarm:self.alarmTemp] autorelease];
 		//新创建AlarmAnnotation标识
 		[mapViewCtler setNewAlarmAnnotation:YES];
@@ -1214,6 +1222,11 @@
     [viewp addSubview:self.testAlarmButton];
     self.tableView.tableFooterView = viewp;    
     [viewp release];
+    
+    if (!_contactManager) {
+        _contactManager = [[IAContactManager alloc] init];
+        _contactManager.currentViewController = self.navigationController;
+    }
 
 }
 
@@ -1497,6 +1510,7 @@
     [vibratePlayer release];
     [ringplayer release];
 	
+    [_contactManager release];
     [super dealloc];
 }
 

@@ -9,10 +9,16 @@
 #import <AddressBook/AddressBook.h>
 #import <Foundation/Foundation.h>
 
+@class IAAlarm;
 @interface IAPerson : NSObject<NSCoding, NSCopying>{
     ABRecordID _personId;
     NSString *_personName;
     NSArray *_addressDictionaries;
+    NSString *_note;
+    UIImage *_image;
+    
+    ABAddressBookRef _addressBook;
+    ABRecordRef _ABperson;
 }
 
 
@@ -20,10 +26,20 @@
 - (NSString *)personName;
 - (NSDictionary *)addressDictionary;
 - (NSArray *)addressDictionaries;
+- (NSString *)note;
+- (UIImage *)image;
 
-- (id)initWithPersonId:(ABRecordID)personId personName:(NSString*)personName addressDictionaries:(NSArray*)addressDictionaries;
+- (ABRecordRef)ABPerson;
+
+//不从库里搜索
+- (id)initWithPersonId:(ABRecordID)personId personName:(NSString*)personName addressDictionaries:(NSArray*)addressDictionaries note:(NSString*)note image:(UIImage*)image;
 - (id)initWithPersonId:(ABRecordID)personId personName:(NSString*)personName addressDictionary:(NSDictionary*)addressDictionary;
-- (id)initWithPersonId:(ABRecordID)personId;
 - (id)initWithPerson:(ABRecordRef)person;
+- (id)initWithAlarm:(IAAlarm*)theAlarm image:(UIImage*)image;
+
+//从库里搜索
+- (id)initWithPersonId:(ABRecordID)personId;
+
+
 
 @end

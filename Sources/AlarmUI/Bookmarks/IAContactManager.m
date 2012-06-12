@@ -7,87 +7,223 @@
 //
 
 #import <AddressBook/AddressBook.h>
-#import <AddressBookUI/AddressBookUI.h>
 #import "YCLib.h"
 #import "IAPerson.h"
 #import "IAAlarm.h"
 #import "LocalizedString.h"
 #import "IAContactManager.h"
 
+@interface IAContactManager (private) 
+
+- (UIBarButtonItem*)_cancelButtonItem;
+
+- (ABUnknownPersonViewController*)_unknownPersonViewControllerWithIAPerson:(IAPerson*)thePerson;
+- (ABPersonViewController*)_personViewControllerWithIAPerson:(IAPerson*)thePerson;
+- (ABPersonViewController*)_personViewControllerWithABPerson:(ABRecordRef)thePerson;
+
+/**
+ 根据contactPerson和newPerson来来判断是ABUnknownPersonViewController还是ABPersonViewController。
+ 并判断多地址索引l
+ **/
+- (UIViewController*)_viewControllerWithContactIAPerson:(IAPerson*)contactPerson newIAPerson:(IAPerson*)newPerson;
+
+@end
+
 @implementation IAContactManager
 @synthesize currentViewController = _currentViewController; 
 
-- (void)presentContactViewControllerWithAlarm:(IAAlarm*)theAlarm{
-
-    IAPerson *thePerson = nil;
-    ABRecordID thePersonId = theAlarm.personId;
-    if (kABRecordInvalidID != thePersonId )
-        thePerson = [[[IAPerson alloc] initWithPersonId:thePersonId] autorelease];
-    
-    NSDictionary *theAddressDic = theAlarm.placemark.addressDictionary;
-    
-    NSUInteger idxAlarmDic = NSNotFound;
-    if (theAddressDic) {
-        idxAlarmDic = [thePerson.addressDictionaries indexOfObjectPassingTest:^BOOL(NSDictionary *aDic, NSUInteger idx, BOOL *stop) {
-            if ([aDic isEqualToDictionary:theAddressDic]){
-                *stop = YES;
-                return YES;
-            }
-            return NO;
-        }];
+- (id)_cancelButtonItem{
+    if (!_cancelButtonItem) {
+        _cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonItemPressed:)];
     }
+    return _cancelButtonItem;
+}
+
+- (ABUnknownPersonViewController*)_unknownPersonViewControllerWithIAPerson:(IAPerson*)thePerson{
     
-    //还未关联联系人
-    if (!thePerson || kABRecordInvalidID == thePerson.personId || idxAlarmDic == NSNotFound) {
+    BOOL isAllowsAddingToAddressBook = (thePerson.addressDictionaries.count >0);
+    
+    ABUnknownPersonViewController *picker = [[[ABUnknownPersonViewController alloc] init] autorelease];
+    picker.unknownPersonViewDelegate = self;
+    picker.displayedPerson = thePerson.ABPerson;
+    picker.allowsAddingToAddressBook = isAllowsAddingToAddressBook;
+    picker.alternateName = thePerson.personName;
+    picker.title = @"简介";
+    
+    return picker;
+}
+
+- (ABPersonViewController*)_personViewControllerWithABPerson:(ABRecordRef)thePerson{
+    ABPersonViewController *picker = [[[ABPersonViewController alloc] init] autorelease];
+    picker.personViewDelegate = self;
+    picker.displayedPerson = thePerson;
+    picker.allowsEditing = YES; //不能让编辑。编辑状态会把关闭按钮给冲掉的。//但没有编辑，高亮不好用
+    picker.title = @"简介";
+    
+    NSArray *displayedItems = [NSArray arrayWithObjects:
+                               [NSNumber numberWithInt:kABPersonPhoneProperty]
+                               ,[NSNumber numberWithInt:kABPersonAddressProperty]
+                               ,[NSNumber numberWithInt:kABPersonNoteProperty]
+                               ,nil];
+    picker.displayedProperties = displayedItems;
+    
+    
+    return picker;
+}
+
+- (UIViewController*)_viewControllerWithContactIAPerson:(IAPerson*)contactPerson newIAPerson:(IAPerson*)newPerson{
+    UIViewController *picker;
+    NSUInteger newPersonDicIndex = 0;
+    if (contactPerson) {
         
-        CFErrorRef anError0 = NULL;
-        CFErrorRef anError1 = NULL;
-        
-        ABRecordRef aContact = ABPersonCreate();
-        ABMutableMultiValueRef address = ABMultiValueCreateMutable(kABDictionaryPropertyType);
-        
-        bool didAdd = true;
-        if (theAddressDic) 
-            didAdd = ABMultiValueAddValueAndLabel(address,theAddressDic, NULL, NULL);
-        
-        if (didAdd) 
-            ABRecordSetValue(aContact, kABPersonAddressProperty, address, &anError0);
-        
-        
-        
-        NSString *coordinateString = YCLocalizedStringFromCLLocationCoordinate2DUsingSeparater(theAlarm.visualCoordinate,kCoordinateFrmStringNorthLatitudeSpace,kCoordinateFrmStringSouthLatitudeSpace,kCoordinateFrmStringEastLongitudeSpace,kCoordinateFrmStringWestLongitudeSpace,@"\n");
-        
-        
-        CFStringRef cfsCoordinateString = CFStringCreateWithCString(NULL,[coordinateString UTF8String],kCFStringEncodingUTF8);
-        ABRecordSetValue(aContact, kABPersonNoteProperty, cfsCoordinateString, &anError1);
-        
-        
-        if (anError0 == NULL && anError1 == NULL)
-        {
-            ABUnknownPersonViewController *picker = [[[ABUnknownPersonViewController alloc] init] autorelease];
-            picker.unknownPersonViewDelegate = self;
-            picker.displayedPerson = aContact;
-            picker.allowsAddingToAddressBook = YES;
-            picker.allowsActions = NO;
-            picker.alternateName = theAlarm.positionTitle;
-            picker.title = @"简介";
-            //picker.message = @"distance from curreent location:1800 km";
+        //找到闹钟地址在通信录中地址的索引位置
+        NSDictionary *newPersonDic = newPerson.addressDictionary;
+        if (newPersonDic){
+            //dic -> string
+            NSString *newAddress = [ABCreateStringWithAddressDictionary(newPersonDic,NO) stringByTrim];
+            newAddress = [newAddress stringByReplacingOccurrencesOfString:@" " withString:@""];
+            newAddress = [newAddress stringByReplacingOccurrencesOfString:@"\n" withString:@""];
             
-            
-            UINavigationController *navc = [[[UINavigationController alloc] initWithRootViewController:picker] autorelease];
-            
-            if ([_currentViewController respondsToSelector:@selector(presentViewController:animated:completion:)]) {
-                [_currentViewController presentViewController:navc animated:YES completion:NULL];
-            }else{
-                [_currentViewController presentModalViewController:navc animated:YES];
-            }
+            newPersonDicIndex = [contactPerson.addressDictionaries indexOfObjectPassingTest:^BOOL(NSDictionary *aDic, NSUInteger idx, BOOL *stop) {
+                
+                //dic -> string
+                NSString *anAddress = [ABCreateStringWithAddressDictionary(aDic,NO) stringByTrim];
+                anAddress = [anAddress stringByReplacingOccurrencesOfString:@" " withString:@""];
+                anAddress = [anAddress stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+                
+                if ([anAddress isEqualToString:newAddress]){
+                    *stop = YES;
+                    return YES;
+                }
+                return NO;
+            }];
         }
         
+        if (NSNotFound == newPersonDicIndex) { //没找到 == 还没加到通信录中呢
+            newPersonDicIndex = 0;
+            picker = [self _unknownPersonViewControllerWithIAPerson:newPerson];
+        }else{
+            picker = [self _personViewControllerWithIAPerson:contactPerson];
+        }
         
-        CFRelease(cfsCoordinateString);
-        CFRelease(address);
-        CFRelease(aContact);
+    }else{//还没加到通信录中呢
+        newPersonDicIndex = 0;
+        picker = [self _unknownPersonViewControllerWithIAPerson:newPerson];
     }
+    
+    //高亮闹钟地址
+    if ([picker respondsToSelector:@selector(setHighlightedItemForProperty:withIdentifier:)]) {
+        [(ABPersonViewController*)picker setHighlightedItemForProperty:kABPersonAddressProperty withIdentifier:newPersonDicIndex];
+    }
+    
+    return picker;
+}
+
+- (ABPersonViewController*)_personViewControllerWithIAPerson:(IAPerson*)thePerson{
+    return [self _personViewControllerWithABPerson:thePerson.ABPerson];
+}
+
+- (void)dealloc{
+    [_alarm release];
+    [_cancelButtonItem release];
+    [super dealloc];
+}
+
+- (void)cancelButtonItemPressed:(id)sender{
+    
+    if ([_currentViewController respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]) {
+        [_currentViewController dismissViewControllerAnimated:YES completion:NULL];
+    }else{
+        [_currentViewController dismissModalViewControllerAnimated:YES];
+    }
+}
+
+
+- (void)presentContactViewControllerWithAlarm:(IAAlarm*)theAlarm newPerson:(IAPerson*)newPerson{
+    _isPush = NO;
+    [_alarm release];
+    _alarm = [theAlarm retain];
+    
+    IAPerson *contactPerson = [[[IAPerson alloc] initWithPersonId:theAlarm.personId] autorelease];
+    UIViewController *picker = [self _viewControllerWithContactIAPerson:contactPerson newIAPerson:newPerson];
+    
+    UINavigationController *navc = [[[UINavigationController alloc] initWithRootViewController:picker] autorelease];    
+    if ([_currentViewController respondsToSelector:@selector(presentViewController:animated:completion:)]) {
+        [_currentViewController presentViewController:navc animated:YES completion:NULL];
+    }else{
+        [_currentViewController presentModalViewController:navc animated:YES];
+    }
+    
+    picker.navigationItem.leftBarButtonItem = [self _cancelButtonItem];
+    picker.navigationItem.rightBarButtonItem = nil; //4.x右边也有一个取消按钮
+    
+}
+
+- (void)pushContactViewControllerWithAlarm:(IAAlarm*)theAlarm newPerson:(IAPerson*)newPerson{
+    _isPush = YES;
+    [_alarm release];
+    _alarm = [theAlarm retain];
+    
+    IAPerson *contactPerson = [[[IAPerson alloc] initWithPersonId:theAlarm.personId] autorelease];
+    UIViewController *picker = [self _viewControllerWithContactIAPerson:contactPerson newIAPerson:newPerson];
+    
+    [(UINavigationController*)_currentViewController pushViewController:picker animated:YES];
+    picker.navigationItem.rightBarButtonItem = nil; //4.x右边也有一个取消按钮
+
+}
+
+
+#pragma mark - ABUnknownPersonViewControllerDelegate
+
+- (void)unknownPersonViewController:(ABUnknownPersonViewController *)unknownPersonView didResolveToPerson:(ABRecordRef)person{
+    if (person) {
+        ABRecordID thePersonId = ABRecordGetRecordID(person);
+        _alarm.personId = thePersonId;
+        [_alarm save];
+        
+        if (!_isPush) {
+            //先关掉原来的ABUnknownPersonViewController
+            if ([_currentViewController respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]) {
+                [_currentViewController dismissViewControllerAnimated:NO completion:NULL];
+            }else{
+                [_currentViewController dismissModalViewControllerAnimated:NO];
+            }
+        }else{
+            [(UINavigationController*) _currentViewController popToRootViewControllerAnimated:NO];
+        }
+        
+        //再打开ABPersonViewController
+        IAPerson *contactPerson = [[[IAPerson alloc] initWithPerson:person] autorelease];
+        IAPerson *newPerson = [[[IAPerson alloc] initWithAlarm:_alarm image:nil] autorelease];
+        UIViewController *picker = [self _viewControllerWithContactIAPerson:contactPerson newIAPerson:newPerson];
+        
+        if (!_isPush) {
+            UINavigationController *navc = [[[UINavigationController alloc] initWithRootViewController:picker] autorelease];    
+            if ([_currentViewController respondsToSelector:@selector(presentViewController:animated:completion:)]) {
+                [_currentViewController presentViewController:navc animated:NO completion:NULL];
+            }else{
+                [_currentViewController presentModalViewController:navc animated:NO];
+            }
+            
+            picker.navigationItem.leftBarButtonItem = [self _cancelButtonItem];
+            picker.navigationItem.rightBarButtonItem = nil; //4.x右边也有一个取消按钮
+        }else{
+            [(UINavigationController*) _currentViewController pushViewController:picker animated:NO];
+            picker.navigationItem.rightBarButtonItem = nil; //4.x右边也有一个取消按钮
+        }
+        
+    }
+    
+}
+
+- (BOOL)unknownPersonViewController:(ABUnknownPersonViewController *)personViewController shouldPerformDefaultActionForPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier{
+    return NO;
+}
+
+#pragma mark - ABPersonViewControllerDelegate
+
+- (BOOL)personViewController:(ABPersonViewController *)personViewController shouldPerformDefaultActionForPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifierForValue{
+    return NO;
 }
 
 @end

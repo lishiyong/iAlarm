@@ -6,6 +6,9 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCLib.h"
+#import "LocalizedString.h"
+#import "IAAlarm.h"
 #import "IAPerson.h"
 
 @implementation IAPerson
@@ -25,13 +28,21 @@
 - (NSArray *)addressDictionaries{
     return _addressDictionaries;
 }
+- (NSString *)note{
+    return _note;
+}
+- (UIImage *)image{
+    return _image;
+}
 
-- (id)initWithPersonId:(ABRecordID)personId personName:(NSString*)personName addressDictionaries:(NSArray*)addressDictionaries{
+- (id)initWithPersonId:(ABRecordID)personId personName:(NSString*)personName addressDictionaries:(NSArray*)addressDictionaries note:(NSString*)note image:(UIImage*)image{
     self = [super init];
     if (self) {
         _personId = personId;
         _personName = [personName copy];
         _addressDictionaries = [addressDictionaries retain];
+        _note = [note copy];
+        _image = [image retain];
     }
     return self;
 }
@@ -42,14 +53,61 @@
     if (addressDictionary) 
         dics = [NSArray arrayWithObject:addressDictionary];
     
-    return [self initWithPersonId:personId personName:personName addressDictionaries:dics];
+    return [self initWithPersonId:personId personName:personName addressDictionaries:dics note:nil image:nil];
 }
 
+
+- (id)initWithPersonId:(ABRecordID)personId{
+    if (kABRecordInvalidID == personId) {
+        return nil;
+    }
+    
+    //先查询到联系人
+    _addressBook = ABAddressBookCreate();
+    ABRecordRef thePerson = ABAddressBookGetPersonWithRecordID(_addressBook,personId);
+    self = [self initWithPerson:thePerson];
+    return self;
+}
+/*
+- (id)initWithAlarm:(IAAlarm*)theAlarm image:(UIImage*)image{
+    
+    //如果关联了联系人，取来即可
+    if (kABRecordInvalidID != theAlarm.personId) {
+        id tempSelf = [self initWithPersonId:theAlarm.personId]; //防止self==nil,下面不能用了。
+        if (tempSelf) {
+            self = tempSelf;
+            return self;
+        }
+    }
+    
+    //地址
+    NSDictionary *theAddressDic = theAlarm.placemark.addressDictionary; 
+    NSArray *theAddressArray = theAddressDic ? [NSArray arrayWithObject:theAddressDic] : nil;
+    //备注
+    NSString *coordinateString = nil;                                   
+    CLLocationCoordinate2D coor = theAlarm.visualCoordinate;
+    if (CLLocationCoordinate2DIsValid(coor)) {
+        coordinateString = YCLocalizedStringFromCLLocationCoordinate2DUsingSeparater(coor,kCoordinateFrmStringNorthLatitudeSpace,kCoordinateFrmStringSouthLatitudeSpace,kCoordinateFrmStringEastLongitudeSpace,kCoordinateFrmStringWestLongitudeSpace,@"\n");
+    }
+    //姓名
+    NSString *name = theAlarm.alarmName ? theAlarm.alarmName : theAlarm.positionTitle;
+    
+    
+    self = [self initWithPersonId:kABRecordInvalidID personName:name addressDictionaries:theAddressArray note:coordinateString image:image];
+    return self;
+}
+ */
+
 - (id)initWithPerson:(ABRecordRef)thePerson{
+    
     ABRecordID thePersonId = kABRecordInvalidID;
     NSString *thePersonName = nil;
     NSMutableArray *theDics = [NSMutableArray array];
+    NSString *theNote = nil;
+    UIImage *theImage = nil;
     if (thePerson != NULL) {
+        
+        _ABperson = CFRetain(thePerson);
         
         //id
         thePersonId = ABRecordGetRecordID(thePerson);
@@ -68,20 +126,132 @@
             [theDics addObject:addressDic];
         }
         CFRelease(multi);
+        
+        
+        //备注
+        theNote =  (__bridge_transfer NSString*)ABRecordCopyValue(thePerson, kABPersonNoteProperty);
+        [theNote autorelease];
+        
+        //image
+        CFDataRef dataRef = ABPersonCopyImageData(thePerson);
+        if (dataRef) {
+            theImage = [UIImage imageWithData:(NSData *)dataRef];
+            CFRelease(dataRef);
+        }
+        
+        return [self initWithPersonId:thePersonId personName:thePersonName addressDictionaries:(theDics.count > 0) ? theDics : nil note:theNote image:theImage];
+        
+        
+    }else{
+        return nil;
     }
     
-    return [self initWithPersonId:thePersonId personName:thePersonName addressDictionaries:(theDics.count > 0) ? theDics : nil];
 }
-- (id)initWithPersonId:(ABRecordID)personId{
-    //先查询到联系人
-    ABAddressBookRef addressBook = ABAddressBookCreate();
-    ABRecordRef thePerson = ABAddressBookGetPersonWithRecordID(addressBook,personId);
-    return [self initWithPerson:thePerson];
+
+- (id)initWithAlarm:(IAAlarm*)theAlarm image:(UIImage*)image{
+    
+    //id
+    ABRecordID thePersonId = theAlarm.personId;
+    
+    //地址
+    NSDictionary *theAddressDic = theAlarm.placemark.addressDictionary; 
+    NSArray *theAddressArray = theAddressDic ? [NSArray arrayWithObject:theAddressDic] : nil;
+    
+    //备注
+    NSString *coordinateString = nil;                                   
+    CLLocationCoordinate2D coor = theAlarm.visualCoordinate;
+    if (CLLocationCoordinate2DIsValid(coor)) {
+        coordinateString = YCLocalizedStringFromCLLocationCoordinate2DUsingSeparater(coor,kCoordinateFrmStringNorthLatitudeSpace,kCoordinateFrmStringSouthLatitudeSpace,kCoordinateFrmStringEastLongitudeSpace,kCoordinateFrmStringWestLongitudeSpace,@"\n");
+    }
+    //姓名
+    NSString *name = theAlarm.alarmName ? theAlarm.alarmName : theAlarm.positionTitle;
+    
+    
+    self = [self initWithPersonId:thePersonId personName:name addressDictionaries:theAddressArray note:coordinateString image:image];
+    return self;
+}
+
+- (ABRecordRef)ABPerson{
+    
+    //通过personId创建的
+    if (_ABperson) 
+        return _ABperson;
+    
+    
+    ABRecordRef aContact = ABPersonCreate();
+    [(NSObject*)aContact autorelease];
+    
+    //地址
+    if (_addressDictionaries) {
+        
+        ABMutableMultiValueRef address = ABMultiValueCreateMutable(kABDictionaryPropertyType);
+        bool didAdd = false;
+        for (NSDictionary *anAddressDic in _addressDictionaries) {
+            
+            //把非字符串的对象过滤掉:Region,Location
+            NSSet *keySet = [anAddressDic keysOfEntriesPassingTest:^BOOL(id key, id obj, BOOL *stop) {
+                if(![obj isKindOfClass:[NSString class]])
+                    return YES;
+                return NO;
+            }];
+            NSMutableDictionary *newAddressDic = [NSMutableDictionary dictionaryWithDictionary:anAddressDic];
+            [newAddressDic removeObjectsForKeys:[keySet allObjects]];
+            
+            
+            bool didAdd1 = false;
+            if (newAddressDic.count > 0) 
+                didAdd1 = ABMultiValueAddValueAndLabel(address,newAddressDic, NULL, NULL);
+            
+             
+            //加成功一个就可以进行下面的 ABRecordSetValue 了
+            if (!didAdd) 
+                didAdd = didAdd1;
+        }
+        
+        if (didAdd) 
+            ABRecordSetValue(aContact, kABPersonAddressProperty, address, NULL);
+        
+        CFRelease(address);
+    }
+     
+    //备注
+    if (_note) {
+        ABRecordSetValue(aContact, kABPersonNoteProperty, (__bridge_transfer CFStringRef)_note, NULL);
+    }
+    
+    //姓名
+    if (_personName) {
+        /*
+        ABPropertyID nameProperty;
+        if (ABPersonGetCompositeNameFormat() == kABPersonCompositeNameFormatFirstNameFirst)
+            nameProperty = kABPersonFirstNameProperty;
+        else
+            nameProperty = kABPersonLastNameProperty;
+            
+        ABRecordSetValue(aContact, nameProperty, (__bridge_transfer CFStringRef)_personName, NULL);
+         */
+        ABRecordSetValue(aContact, kABPersonOrganizationProperty, (__bridge_transfer CFStringRef)_personName, NULL);
+    }
+    
+    //图
+    if (_image) {
+        NSData *imageData = UIImagePNGRepresentation(_image);
+        ABPersonSetImageData(aContact,(CFDataRef)imageData,NULL);
+    }
+    
+    return aContact;
 }
 
 - (void)dealloc{
     [_personName release];
     [_addressDictionaries release];
+    [_note release];
+    [_image release];
+    
+    if (_ABperson) 
+        CFRelease(_ABperson);
+    if (_addressBook) 
+        CFRelease(_addressBook);
     [super dealloc];
 }
 
@@ -101,11 +271,15 @@
 #define kIAPersonId              @"kIAPersonId"
 #define kIAPersonName            @"kIAPersonName"
 #define kIAAddressDictionaries   @"kIAAddressDictionaries"
+#define kIANote                  @"kIANote"
+#define kIAImage                 @"kIAImage"
 
 - (void)encodeWithCoder:(NSCoder *)encoder{
     [encoder encodeInt32:_personId forKey:kIAPersonId];
     [encoder encodeObject:_personName forKey:kIAPersonName];
     [encoder encodeObject:_addressDictionaries forKey:kIAAddressDictionaries];
+    [encoder encodeObject:_note forKey:kIANote];
+    [encoder encodeObject:_image forKey:kIAImage];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder{
@@ -114,12 +288,14 @@
         _personId = [decoder decodeInt32ForKey:kIAPersonId];
         _personName = [[decoder decodeObjectForKey:kIAPersonName] copy];
         _addressDictionaries = [[decoder decodeObjectForKey:kIAAddressDictionaries] retain];
+        _note = [[decoder decodeObjectForKey:kIANote] copy];
+        _image = [[decoder decodeObjectForKey:kIAImage] retain];
     }
     return self;
 }
 
 - (id)copyWithZone:(NSZone *)zone{
-    IAPerson *copy = [[[self class] allocWithZone: zone] initWithPersonId:self.personId personName:self.personName addressDictionaries:self.addressDictionaries];
+    IAPerson *copy = [[[self class] allocWithZone: zone] initWithPersonId:self.personId personName:self.personName addressDictionaries:self.addressDictionaries note:self.note image:self.image];    
     return copy;
 }
 
