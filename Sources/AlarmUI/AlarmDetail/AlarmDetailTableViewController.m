@@ -6,6 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+
 #import "YCLib.h"
 #import "IAContactManager.h"
 #import "IAPerson.h"
@@ -47,7 +48,8 @@
 #import "UIUtility.h"
 #import "AlarmDetailTableViewController.h"
 #include <AudioToolbox/AudioToolbox.h>
-
+#import "AlarmsMapListViewController.h"
+#import "BackgroundViewController.h"
 
 
 @implementation AlarmDetailTableViewController
@@ -118,6 +120,7 @@
 			[alarmTemp addObserver:self forKeyPath:@"radius" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"positionType" options:0 context:nil];
             [alarmTemp addObserver:self forKeyPath:@"notes" options:0 context:nil];
+            [alarmTemp addObserver:self forKeyPath:@"personId" options:0 context:nil];
 		//}
 		
 	}
@@ -579,8 +582,32 @@
 	[self presentModalViewController:detailNavigationController1 animated:YES];
      */
     
+    
+    CLLocationCoordinate2D lbcoordinate = self.alarmTemp.visualCoordinate;
+    CGSize size = CGSizeMake(64, 64);
+    NSString *imageName = self.alarmTemp.alarmRadiusType.alarmRadiusTypeImageName;
+    imageName = [@"Shadow_" stringByAppendingString:imageName];
+    UIImage *flagImage = [UIImage imageNamed:imageName];
+    CGPoint imageCenter = {8,10};
+    
+    //前提:BackgroundViewController是父控制器
+    BackgroundViewController *bv = nil;
+    if ([self respondsToSelector:@selector(presentingViewController)]) {
+        bv = (BackgroundViewController*) [(UINavigationController*)self.presentingViewController topViewController];
+    }else{
+        bv = (BackgroundViewController*) [(UINavigationController*)self.presentingViewController topViewController];
+    }
+    
+    [bv.mapsViewController view];//先访问一次，防止未加载
+    MKMapView *mapView = bv.mapsViewController.mapView;
+    
+    UIImage *theImage = nil;
+    if (mapView) 
+        theImage = [mapView takeImageWithoutOverlaySize:size overrideImage:flagImage leftBottomAtCoordinate:lbcoordinate imageCenter:imageCenter];
+     
+    
     IAAlarm *theAlarm = self.alarmTemp;
-    IAPerson *newPerson = [[[IAPerson alloc] initWithAlarm:theAlarm image:nil] autorelease];
+    IAPerson *newPerson = [[[IAPerson alloc] initWithAlarm:theAlarm image:theImage] autorelease];
     [_contactManager pushContactViewControllerWithAlarm:theAlarm newPerson:newPerson];
 	
 }
@@ -930,9 +957,11 @@
     self.alarm.reserve1 = self.alarmTemp.reserve1;
     self.alarm.reserve2 = self.alarmTemp.reserve2;
     self.alarm.reserve3 = self.alarmTemp.reserve3;
+    
+    self.alarm.personId = self.alarmTemp.personId;
 	
 	[self.alarm saveFromSender:self];
-	//[self.alarm sendNotifyToUpdateAllViewsFromSender:self];
+
 	///////////////////////
 
 	
@@ -1294,6 +1323,8 @@
 	self.titleForFooter = nil;
     self.footerView = nil;
     
+    //
+    self.title = nil;
 }
 
 

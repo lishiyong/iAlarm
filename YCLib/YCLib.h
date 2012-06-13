@@ -22,10 +22,13 @@
 #import "NSObject+YC.h"
 #import "UIApplication+YC.h"
 #import "UIColor+YC.h"
+#import "MKMapView+YC.h"
+#import "UIImage+YC.h"
 
 #import "YCFunctions.h"
 #import "YCDouble.h"
 #import "YCMaps.h"
+#import "YCGeometry.h"
 
 #import "YCTabToolbarController.h"
 

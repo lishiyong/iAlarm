@@ -11,6 +11,8 @@
 #import "YCMaps.h"
 #import "YCLocation.h"
 #import "YCFunctions.h"
+#import "UIImage+YC.h"
+#import "YCGeometry.h"
 #import "MKMapView+YC.h"
 
 @interface MKMapView (private)
@@ -267,6 +269,7 @@
         
     }
 }
+
 - (void)removeOverlay:(id<MKOverlay>)overlay animated:(BOOL)animated{    
     if (animated) {
         MKOverlayView *overlayView = [self viewForOverlay:overlay];
@@ -286,5 +289,96 @@
         [self removeOverlay:overlay];
     }
 }
+
+- (UIImage*)takeImageSize:(CGSize)size centerAtCoordinate:(CLLocationCoordinate2D)coordinate{
+    CGPoint center = [self convertCoordinate:coordinate toPointToView:self];
+    CGRect frame = YCRectMakeWithCenter(center, size);
+    
+    
+    UIGraphicsBeginImageContextWithOptions(self.layer.bounds.size,YES,0.0);
+    CGContextRef currentContext = UIGraphicsGetCurrentContext();//获取当前quartz 2d绘图环境
+    
+    if (!currentContext) {
+        NSLog(@"警告: currentContext is null。退出当前函数");
+        return nil;
+    }
+    
+    [self.layer renderInContext:currentContext]; 
+    UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    UIImage *newimage = [viewImage imageWithRect:frame];
+    
+    return newimage;
+}
+
+- (UIImage*)takeImageWithoutOverlaySize:(CGSize)size overrideImage:(UIImage*)image leftBottomAtCoordinate:(CLLocationCoordinate2D)coordinate imageCenter:(CGPoint)imageCenter{
+    
+    //加入image
+    UIImageView *imageView = [[[UIImageView alloc] initWithImage:image] autorelease];
+    CGPoint leftBottom = [self convertCoordinate:coordinate toPointToView:self];
+    CGRect frame = YCRectMakeWithLeftBottom(leftBottom, imageView.frame.size);
+    imageView.frame = frame;
+    [self addSubview:imageView];
+    
+    //pin，圈等，先都隐藏了
+    [self.annotations enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if ([obj isKindOfClass: [YCMapPointAnnotation class]]) {
+            MKAnnotationView *theView = [self viewForAnnotation:obj];
+            theView.hidden = YES;
+        }
+    }];
+    
+    [self.overlays enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if ([obj isKindOfClass: [MKCircle class]]) {
+            MKOverlayView *theView = [self viewForOverlay:obj];
+            theView.hidden = YES;
+        }
+    }];
+    
+    BOOL isShowUserLocation = self.showsUserLocation;
+    if (isShowUserLocation) {
+        if (self.userLocation) 
+            [self viewForAnnotation:self.userLocation].hidden = YES;
+    }
+    
+    ///////////////////////////////////
+    //
+    CGPoint cetnter = [self convertPoint:imageCenter fromView:imageView];
+    CLLocationCoordinate2D centerCoordinate = [self convertPoint:cetnter toCoordinateFromView:self];
+    UIImage *imageTook = [self takeImageSize:size centerAtCoordinate:centerCoordinate];
+    //
+    ///////////////////////////////////
+    
+    
+    //再显示
+    [self.annotations enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if ([obj isKindOfClass: [YCMapPointAnnotation class]]) {
+            MKAnnotationView *theView = [self viewForAnnotation:obj];
+            theView.hidden = NO;
+        }
+    }];
+    
+    [self.overlays enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if ([obj isKindOfClass: [MKCircle class]]) {
+            MKOverlayView *theView = [self viewForOverlay:obj];
+            theView.hidden = NO;
+        }
+    }];
+    
+    if (isShowUserLocation) {
+        if (self.userLocation) 
+            [self viewForAnnotation:self.userLocation].hidden = NO;
+    }
+    
+    
+    
+    //删除image
+    [imageView removeFromSuperview];
+    
+    
+    return imageTook;
+    
+}
+
 
 @end

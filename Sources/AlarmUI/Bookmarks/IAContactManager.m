@@ -48,7 +48,10 @@
     picker.displayedPerson = thePerson.ABPerson;
     picker.allowsAddingToAddressBook = isAllowsAddingToAddressBook;
     picker.alternateName = thePerson.personName;
-    picker.title = @"简介";
+    if (_isPush) 
+        picker.title = KLabelAlarmPostion;
+    else
+        picker.title = @"简介";
     
     return picker;
 }
@@ -58,7 +61,10 @@
     picker.personViewDelegate = self;
     picker.displayedPerson = thePerson;
     picker.allowsEditing = YES; //不能让编辑。编辑状态会把关闭按钮给冲掉的。//但没有编辑，高亮不好用
-    picker.title = @"简介";
+    if (_isPush) 
+        picker.title = KLabelAlarmPostion;
+    else
+        picker.title = @"简介";
     
     NSArray *displayedItems = [NSArray arrayWithObjects:
                                [NSNumber numberWithInt:kABPersonPhoneProperty]
@@ -168,7 +174,7 @@
     UIViewController *picker = [self _viewControllerWithContactIAPerson:contactPerson newIAPerson:newPerson];
     
     [(UINavigationController*)_currentViewController pushViewController:picker animated:YES];
-    picker.navigationItem.rightBarButtonItem = nil; //4.x右边也有一个取消按钮
+    //picker.navigationItem.rightBarButtonItem = nil; //4.x右边也有一个取消按钮
 
 }
 
@@ -177,9 +183,20 @@
 
 - (void)unknownPersonViewController:(ABUnknownPersonViewController *)unknownPersonView didResolveToPerson:(ABRecordRef)person{
     if (person) {
-        ABRecordID thePersonId = ABRecordGetRecordID(person);
+        
+        ABRecordID thePersonId = kABRecordInvalidID;
+        if (person) 
+            thePersonId = ABRecordGetRecordID(person);
+        
         _alarm.personId = thePersonId;
-        [_alarm save];
+        if (_isPush) {
+            //push的情况，先找到正主，偷着把正主保存了
+            IAAlarm *alarmNotTemp = [IAAlarm findForAlarmId:_alarm.alarmId];
+            alarmNotTemp.personId = thePersonId;
+            [alarmNotTemp save];
+        }else{//在主界面上直接保存
+            [_alarm save];
+        }
         
         if (!_isPush) {
             //先关掉原来的ABUnknownPersonViewController
@@ -209,7 +226,7 @@
             picker.navigationItem.rightBarButtonItem = nil; //4.x右边也有一个取消按钮
         }else{
             [(UINavigationController*) _currentViewController pushViewController:picker animated:NO];
-            picker.navigationItem.rightBarButtonItem = nil; //4.x右边也有一个取消按钮
+            //picker.navigationItem.rightBarButtonItem = nil; //4.x右边也有一个取消按钮
         }
         
     }
@@ -217,12 +234,14 @@
 }
 
 - (BOOL)unknownPersonViewController:(ABUnknownPersonViewController *)personViewController shouldPerformDefaultActionForPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier{
+     NSLog(@"unknownPersonViewController shouldPerformDefaultActionForPerson");
     return NO;
 }
 
 #pragma mark - ABPersonViewControllerDelegate
 
 - (BOOL)personViewController:(ABPersonViewController *)personViewController shouldPerformDefaultActionForPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifierForValue{
+    NSLog(@"personViewController shouldPerformDefaultActionForPerson");
     return NO;
 }
 

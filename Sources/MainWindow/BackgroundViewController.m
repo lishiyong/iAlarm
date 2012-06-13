@@ -488,14 +488,15 @@
 	}else {//解除了覆盖
 		
 		//map在当前显示做处理toolbar
-		if (IAMapsViewController == curViewControllerType) 
+		if (IAMapsViewController == curViewControllerType) {
 			[self.toolbar setItems:[self mapsViewToolbarItems] animated:YES]; 
+            self.searchBar.hidden = NO;
+        }
 		else 
 			[self.toolbar setItems:[self listViewToolbarItems] animated:YES]; 
 		
 		
 		self.navBar.topItem.rightBarButtonItem = self.addButtonItem;
-		self.searchBar.hidden = NO;
 		
 		NSUInteger alarmsCount = [IAAlarm alarmArray].count;		//空列表不显示编辑按钮
 		if (alarmsCount > 0) {

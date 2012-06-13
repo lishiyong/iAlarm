@@ -1311,8 +1311,17 @@
 
 - (void)annotationView:(IAPinAnnotationView *)annotationView didPressFlagButton:(UIButton*)button{
     
+    CLLocationCoordinate2D lbcoordinate = annotationView.annotation.coordinate;
+    CGSize size = CGSizeMake(64, 64);
+    NSString *imageName = [(IAAnnotation*)annotationView.annotation alarm].alarmRadiusType.alarmRadiusTypeImageName;
+    imageName = [@"Shadow_" stringByAppendingString:imageName];
+    UIImage *flagImage = [UIImage imageNamed:imageName];
+    CGPoint imageCenter = {8,10};
+    UIImage *theImage = [self.mapView takeImageWithoutOverlaySize:size overrideImage:flagImage leftBottomAtCoordinate:lbcoordinate imageCenter:imageCenter];
+
+    
     IAAlarm *theAlarm = [(IAAnnotation*)annotationView.annotation alarm];
-    IAPerson *newPerson = [[[IAPerson alloc] initWithAlarm:theAlarm image:nil] autorelease];
+    IAPerson *newPerson = [[[IAPerson alloc] initWithAlarm:theAlarm image:theImage] autorelease];
     self.contactManager.currentViewController = self.view.window.rootViewController;
     [self.contactManager presentContactViewControllerWithAlarm:theAlarm newPerson:newPerson];
 

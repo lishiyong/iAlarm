@@ -46,11 +46,24 @@
 @property(nonatomic, readonly) NSArray *mapPointAnnotations;
 
 //坐标是否在view的中心，offset:允许偏差的像素
-- (BOOL)isViewCenterForCoordinate:(CLLocationCoordinate2D) coordinate allowableOffset:(CGFloat)offset;
+- (BOOL)isViewCenterForCoordinate:(CLLocationCoordinate2D)coordinate allowableOffset:(CGFloat)offset;
 
 /* MKOverlayView 加不上动画，为什么？
 - (void)addOverlay:(id<MKOverlay>)overlay animated:(BOOL)animated;
 - (void)removeOverlay:(id<MKOverlay>)overlay animated:(BOOL)animated;
  */
+
+/**
+ 以centerAtCoordinate为中心，截取size的图
+ 注意：size是UImage点为单位的，可以随scale变化而变化。
+ 例如：在高清屏下，size = {64,64}，实际截取的图的像素是128*128。
+ **/
+- (UIImage*)takeImageSize:(CGSize)size centerAtCoordinate:(CLLocationCoordinate2D)coordinate;
+
+/**
+ 地图上添加一个image，以这个image为中心截图。
+ **/
+- (UIImage*)takeImageWithoutOverlaySize:(CGSize)size overrideImage:(UIImage*)image leftBottomAtCoordinate:(CLLocationCoordinate2D)coordinate imageCenter:(CGPoint)imageCenter;
+
 
 @end
