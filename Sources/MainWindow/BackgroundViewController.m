@@ -615,11 +615,13 @@
  */
 
 - (void)takeMaskViewWithBarDoHide:(BOOL)doHide{
-    
+    /*
     UIGraphicsBeginImageContextWithOptions(self.mapsViewController.mapView.frame.size,YES,0.0);
     [self.mapsViewController.mapView.layer renderInContext:UIGraphicsGetCurrentContext()]; 
     UIImage *myImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();       
+    UIGraphicsEndImageContext();
+     */
+    UIImage *myImage = [self.mapsViewController.mapView takeImageFullSize];
     
     
     CGRect containerViewFrame = [self.navigationController.view convertRect:self.mapsViewController.mapView.bounds fromView:self.mapsViewController.mapView];

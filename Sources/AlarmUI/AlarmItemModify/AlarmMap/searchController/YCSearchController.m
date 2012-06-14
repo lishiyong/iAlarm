@@ -133,25 +133,29 @@ searchDisplayController:(UISearchDisplayController*) theSearchDisplayController
 }
 
 
-- (void)setActive:(BOOL)visible animated:(BOOL)animated
+- (void)setActive:(BOOL)active animated:(BOOL)animated
 {
-	if (visible) 
+	if (active) 
 	{
-		[self.searchDisplayController setActive:visible animated:animated];
-		if (self->originalSearchBarHidden) //显示或隐藏searchBar
+		[self.searchDisplayController setActive:active animated:animated];
+		
+        /*
+        if (self->originalSearchBarHidden) //显示或隐藏searchBar
 		{
-			[self setSearchBar:self.searchDisplayController.searchBar visible:visible animated:NO]; 
+			[self setSearchBar:self.searchDisplayController.searchBar visible:active animated:NO]; 
 			                                                   //animated:NO 
 			                                                   //显示时候不用动画，maskView遮盖不了searchBar的背后区域
 		}
+         */
 	}else {
-		if (self.searchDisplayController.active) 
-			[self.searchDisplayController setActive:visible animated:animated];
+        [self.searchDisplayController setActive:active animated:animated];
 		
+        /*
 		if (self->originalSearchBarHidden) //显示或隐藏searchBar
 		{
-			[self setSearchBar:self.searchDisplayController.searchBar visible:visible animated:animated]; 
+			[self setSearchBar:self.searchDisplayController.searchBar visible:active animated:animated]; 
 		}
+         */
 		
 		[self.filteredListContent removeAllObjects];
 		
@@ -247,7 +251,7 @@ searchDisplayController:(UISearchDisplayController*) theSearchDisplayController
 	//相同，直接搜索
 	if ([searchString isEqualToString:self.searchDisplayController.searchBar.text]) {
 		//结束搜索状态
-		//[self.searchDisplayController setActive:NO animated:YES];		
+		[self setActive:YES animated:YES];		
 		
 		//反选
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -298,12 +302,9 @@ searchDisplayController:(UISearchDisplayController*) theSearchDisplayController
 	NSString *searchString = [self.searchDisplayController.searchBar.text copy]; 
 	                                 //结束搜索状态,改变searchBar.text,所以copy
 
-	/*
-	//结束搜索状态
-	[self.searchDisplayController setActive:NO animated:YES];
-	 */
+	//开始搜索状态
+	[self setActive:YES animated:YES];
 
-	
 	//执行搜索
 	[self.delegate searchController:self searchString:searchString];
 	[searchString release];

@@ -16,16 +16,18 @@
 //退出搜索时候，保持最后搜索字符串在 bar上
 - (void)setActive:(BOOL)active animated:(BOOL)animated
 {
+    
     if (self.active == active) 
         return;
-        
+    
     YCSearchBar *mySearchBar = (YCSearchBar*)self.searchBar;
+    
     if (active) 
 	{
 		[super setActive:active animated:animated];
 		[mySearchBar becomeFirstResponder];
 		mySearchBar.canResignFirstResponder = NO;
-		
+        
         if (_searchStringBackup && (mySearchBar.text == nil || mySearchBar.text.length == 0)) 
             mySearchBar.text = _searchStringBackup;
         mySearchBar.placeholder = mySearchBar.originalPlaceholderString;
@@ -40,7 +42,7 @@
         _searchStringBackup = [mySearchBar.text copy];
 		mySearchBar.text = nil;
         
-		[super setActive:active animated:animated];
+        [super setActive:active animated:animated];
 		mySearchBar.canResignFirstResponder = YES;
 		[mySearchBar resignFirstResponder];
 	}

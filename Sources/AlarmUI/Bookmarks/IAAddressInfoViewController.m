@@ -157,76 +157,9 @@
     if ([actionSheet cancelButtonIndex] == buttonIndex) {
         return;
     }
-    
-    /*
-    IAPerson *thePerson = nil;
-    ABRecordID thePersonId = alarm.personId;
-    if (kABRecordInvalidID != thePersonId )
-        thePerson = [[[IAPerson alloc] initWithPersonId:thePersonId] autorelease];
-    */
-    
     if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:@"创建新联系人"]) {
         
-        NSDictionary *dic = _alarm.placemark.addressDictionary;
-        
-        // Set up keys and values for the dictionary.
-        CFStringRef keys[5];
-        CFStringRef values[5];
-        keys[0] = kABPersonAddressStreetKey;
-        keys[1] = kABPersonAddressCityKey;
-        keys[2] = kABPersonAddressStateKey;
-        keys[3] = kABPersonAddressZIPKey;
-        keys[4] = kABPersonAddressCountryKey;
-        values[0] = CFSTR("1234 Laurel Street");
-        values[1] = CFSTR("Atlanta");
-        values[2] = CFSTR("GA");
-        values[3] = CFSTR("30303");
-        values[4] = CFSTR("USA");
-        
-        CFDictionaryRef aDict = CFDictionaryCreate(
-                                                   kCFAllocatorDefault,
-                                                   (void *)keys,
-                                                   (void *)values,
-                                                   5,
-                                                   &kCFCopyStringDictionaryKeyCallBacks,
-                                                   &kCFTypeDictionaryValueCallBacks
-                                                   );
-        
-        
-        
-        ABRecordRef aContact = ABPersonCreate();
-        CFErrorRef anError = NULL;
-        ABMultiValueIdentifier identifier;        
-        ABMutableMultiValueRef address = ABMultiValueCreateMutable(kABDictionaryPropertyType);
-        bool didAdd = ABMultiValueAddValueAndLabel(address,dic, kABHomeLabel, &identifier);
-        
-        
-        
-        if (didAdd == YES)
-        {
-            
-            ABRecordSetValue(aContact, kABPersonAddressProperty, address, &anError);
-            
-            if (anError == NULL){
-                    
-                ABNewPersonViewController *picker = [[[ABNewPersonViewController alloc] init] autorelease];
-                //picker.newPersonViewDelegate = self;
-                picker.displayedPerson = aContact;
-                
-                UINavigationController *navigation = [[[UINavigationController alloc] initWithRootViewController:picker] autorelease];
-                [self presentModalViewController:navigation animated:YES];
-                
-            }
-
-            
-        }
-        
-        
-                
-        CFRelease(address);
-        CFRelease(aContact);
-        CFRelease(aDict);
-        
+               
     }else if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:@"添加到现有联系人"]) {
         
     }

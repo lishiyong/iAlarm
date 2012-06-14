@@ -61,6 +61,11 @@
 - (UIImage*)takeImageSize:(CGSize)size centerAtCoordinate:(CLLocationCoordinate2D)coordinate;
 
 /**
+ 截取整个地图
+ **/
+- (UIImage*)takeImageFullSize;
+
+/**
  地图上添加一个image，以这个image为中心截图。
  **/
 - (UIImage*)takeImageWithoutOverlaySize:(CGSize)size overrideImage:(UIImage*)image leftBottomAtCoordinate:(CLLocationCoordinate2D)coordinate imageCenter:(CGPoint)imageCenter;

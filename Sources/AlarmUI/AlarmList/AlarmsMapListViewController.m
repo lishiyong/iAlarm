@@ -1310,7 +1310,7 @@
 }
 
 - (void)annotationView:(IAPinAnnotationView *)annotationView didPressFlagButton:(UIButton*)button{
-    
+    /*
     CLLocationCoordinate2D lbcoordinate = annotationView.annotation.coordinate;
     CGSize size = CGSizeMake(64, 64);
     NSString *imageName = [(IAAnnotation*)annotationView.annotation alarm].alarmRadiusType.alarmRadiusTypeImageName;
@@ -1324,6 +1324,7 @@
     IAPerson *newPerson = [[[IAPerson alloc] initWithAlarm:theAlarm image:theImage] autorelease];
     self.contactManager.currentViewController = self.view.window.rootViewController;
     [self.contactManager presentContactViewControllerWithAlarm:theAlarm newPerson:newPerson];
+     */
 
 }
 

@@ -291,12 +291,15 @@
 }
 
 - (UIImage*)takeImageSize:(CGSize)size centerAtCoordinate:(CLLocationCoordinate2D)coordinate{
-    CGPoint center = [self convertCoordinate:coordinate toPointToView:self];
-    CGRect frame = YCRectMakeWithCenter(center, size);
     
+    CGRect frame = CGRectNull;
+    if (CLLocationCoordinate2DIsValid(coordinate)) { 
+        CGPoint center = [self convertCoordinate:coordinate toPointToView:self];
+        frame = YCRectMakeWithCenter(center, size);
+    }    
     
     UIGraphicsBeginImageContextWithOptions(self.layer.bounds.size,YES,0.0);
-    CGContextRef currentContext = UIGraphicsGetCurrentContext();//获取当前quartz 2d绘图环境
+    CGContextRef currentContext = UIGraphicsGetCurrentContext();
     
     if (!currentContext) {
         NSLog(@"警告: currentContext is null。退出当前函数");
@@ -306,9 +309,12 @@
     [self.layer renderInContext:currentContext]; 
     UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    UIImage *newimage = [viewImage imageWithRect:frame];
     
-    return newimage;
+    if (!CGRectIsNull(frame)) //截取整个地图
+        viewImage = [viewImage imageWithRect:frame];
+
+    
+    return viewImage;
 }
 
 - (UIImage*)takeImageWithoutOverlaySize:(CGSize)size overrideImage:(UIImage*)image leftBottomAtCoordinate:(CLLocationCoordinate2D)coordinate imageCenter:(CGPoint)imageCenter{
@@ -378,6 +384,10 @@
     
     return imageTook;
     
+}
+
+- (UIImage*)takeImageFullSize{
+    return [self takeImageSize:self.bounds.size centerAtCoordinate:kCLLocationCoordinate2DInvalid];
 }
 
 

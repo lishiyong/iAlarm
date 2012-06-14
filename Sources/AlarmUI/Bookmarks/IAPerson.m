@@ -68,35 +68,6 @@
     self = [self initWithPerson:thePerson];
     return self;
 }
-/*
-- (id)initWithAlarm:(IAAlarm*)theAlarm image:(UIImage*)image{
-    
-    //如果关联了联系人，取来即可
-    if (kABRecordInvalidID != theAlarm.personId) {
-        id tempSelf = [self initWithPersonId:theAlarm.personId]; //防止self==nil,下面不能用了。
-        if (tempSelf) {
-            self = tempSelf;
-            return self;
-        }
-    }
-    
-    //地址
-    NSDictionary *theAddressDic = theAlarm.placemark.addressDictionary; 
-    NSArray *theAddressArray = theAddressDic ? [NSArray arrayWithObject:theAddressDic] : nil;
-    //备注
-    NSString *coordinateString = nil;                                   
-    CLLocationCoordinate2D coor = theAlarm.visualCoordinate;
-    if (CLLocationCoordinate2DIsValid(coor)) {
-        coordinateString = YCLocalizedStringFromCLLocationCoordinate2DUsingSeparater(coor,kCoordinateFrmStringNorthLatitudeSpace,kCoordinateFrmStringSouthLatitudeSpace,kCoordinateFrmStringEastLongitudeSpace,kCoordinateFrmStringWestLongitudeSpace,@"\n");
-    }
-    //姓名
-    NSString *name = theAlarm.alarmName ? theAlarm.alarmName : theAlarm.positionTitle;
-    
-    
-    self = [self initWithPersonId:kABRecordInvalidID personName:name addressDictionaries:theAddressArray note:coordinateString image:image];
-    return self;
-}
- */
 
 - (id)initWithPerson:(ABRecordRef)thePerson{
     
@@ -177,7 +148,8 @@
     if (_ABperson) 
         return _ABperson;
     
-    
+    //通过alarm创建的
+
     ABRecordRef aContact = ABPersonCreate();
     [(NSObject*)aContact autorelease];
     

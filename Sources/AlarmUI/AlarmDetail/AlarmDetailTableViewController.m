@@ -120,7 +120,7 @@
 			[alarmTemp addObserver:self forKeyPath:@"radius" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"positionType" options:0 context:nil];
             [alarmTemp addObserver:self forKeyPath:@"notes" options:0 context:nil];
-            [alarmTemp addObserver:self forKeyPath:@"personId" options:0 context:nil];
+            //[alarmTemp addObserver:self forKeyPath:@"personId" options:0 context:nil];
 		//}
 		
 	}
@@ -581,8 +581,7 @@
     UINavigationController *detailNavigationController1 = [[[UINavigationController alloc] initWithRootViewController:detailController1] autorelease];
 	[self presentModalViewController:detailNavigationController1 animated:YES];
      */
-    
-    
+    /*
     CLLocationCoordinate2D lbcoordinate = self.alarmTemp.visualCoordinate;
     CGSize size = CGSizeMake(64, 64);
     NSString *imageName = self.alarmTemp.alarmRadiusType.alarmRadiusTypeImageName;
@@ -590,25 +589,32 @@
     UIImage *flagImage = [UIImage imageNamed:imageName];
     CGPoint imageCenter = {8,10};
     
-    //前提:BackgroundViewController是父控制器
-    BackgroundViewController *bv = nil;
-    if ([self respondsToSelector:@selector(presentingViewController)]) {
-        bv = (BackgroundViewController*) [(UINavigationController*)self.presentingViewController topViewController];
-    }else{
-        bv = (BackgroundViewController*) [(UINavigationController*)self.presentingViewController topViewController];
+    //弄个地图，为了截取image
+    if (!_mapView) {
+        _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, 128, 128)];
+        _mapView.showsUserLocation = NO;
     }
     
-    [bv.mapsViewController view];//先访问一次，防止未加载
-    MKMapView *mapView = bv.mapsViewController.mapView;
-    
-    UIImage *theImage = nil;
-    if (mapView) 
-        theImage = [mapView takeImageWithoutOverlaySize:size overrideImage:flagImage leftBottomAtCoordinate:lbcoordinate imageCenter:imageCenter];
-     
+    if (CLLocationCoordinate2DIsValid(lbcoordinate)) {
+        //[self.view addSubview:_mapView]; //必须加到界面上，否则数据不加载
+        [self.view.window insertSubview:_mapView atIndex:0];
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(lbcoordinate, 1000, 1000);
+        region = [_mapView regionThatFits:region];
+        [_mapView setRegion:region];
+        //return;
+    }else{
+        _mapView.visibleMapRect = MKMapRectWorld;
+    }
+
+   
+    lbcoordinate = CLLocationCoordinate2DIsValid(lbcoordinate) ? lbcoordinate : _mapView.centerCoordinate;
+    UIImage *theImage = [_mapView takeImageWithoutOverlaySize:size overrideImage:flagImage leftBottomAtCoordinate:lbcoordinate imageCenter:imageCenter];
+    if ([_mapView superview]) 
+        [_mapView removeFromSuperview]; 
+    */
     
     IAAlarm *theAlarm = self.alarmTemp;
-    IAPerson *newPerson = [[[IAPerson alloc] initWithAlarm:theAlarm image:theImage] autorelease];
-    [_contactManager pushContactViewControllerWithAlarm:theAlarm newPerson:newPerson];
+    [_contactManager pushContactViewControllerWithAlarm:theAlarm];
 	
 }
 - (id)destionationCellDescription{
@@ -1474,6 +1480,7 @@
 	[locationManager stopUpdatingLocation];
 	[locationManager release]; locationManager = nil;
 	[bestEffortAtLocation release]; bestEffortAtLocation = nil;
+    [_mapView release];_mapView = nil;
 }
 
 - (void)viewDidUnload {
@@ -1533,6 +1540,7 @@
 			[alarmTemp removeObserver:self forKeyPath:@"radius"];
 			[alarmTemp removeObserver:self forKeyPath:@"positionType"];
             [alarmTemp removeObserver:self forKeyPath:@"notes"];
+            //[alarmTemp removeObserver:self forKeyPath:@"personId"];
 		//}
 	}
 	[alarmTemp release];
@@ -1542,6 +1550,7 @@
     [ringplayer release];
 	
     [_contactManager release];
+    [_mapView release];
     [super dealloc];
 }
 

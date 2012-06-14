@@ -33,7 +33,8 @@
     self = [super init];
     if (self) {
         _placemark = [aPlacemark retain];
-        _addressDictionary = [[NSMutableDictionary dictionaryWithDictionary:_placemark.addressDictionary] retain];
+        //NSLog(@"_placemark.addressDictionary = %@",[_placemark.addressDictionary description]);
+        _addressDictionary = [_placemark.addressDictionary mutableCopy];
         //默认的分隔符
         _separater = [[NSString stringWithFormat:@" "] retain]; 
         
@@ -158,6 +159,7 @@
         [self debug];
     } afterDelay:0.1];
      */
+     //NSLog(@"_addressDictionary = %@",[_addressDictionary description]);
      
     return self;
 }

@@ -454,7 +454,7 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 		BOOL vaildCoordinate = CLLocationCoordinate2DIsValid(self.annotationAlarmEditing.coordinate);
 		BOOL vaildSubtitle = (self.annotationAlarmEditing.subtitle != nil && [self.annotationAlarmEditing.subtitle length] > 0);
 		if (!vaildCoordinate || !vaildSubtitle) { //任何一项无效都不行
-			self.navigationItem.rightBarButtonItem.enabled = NO;
+			//self.navigationItem.rightBarButtonItem.enabled = NO;
 			return;
 		}
 		
@@ -464,7 +464,7 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 		{ //任何一项不等
 			self.navigationItem.rightBarButtonItem.enabled = YES;
 		}else {
-			self.navigationItem.rightBarButtonItem.enabled = NO;
+			//self.navigationItem.rightBarButtonItem.enabled = NO;
 		}
 		
 	}
@@ -559,6 +559,7 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 //覆盖父类
 -(IBAction)doneButtonPressed:(id)sender
 {	
+    /*
     if (sender == self) {
         return; //为了对应父类中，难看的代码: - (void)viewWillDisappear:(BOOL)animated
     }
@@ -625,12 +626,11 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 	[self.navigationController dismissModalViewControllerAnimated:YES];
 	
 	[super doneButtonPressed:sender];
+     */
+    
+    [self.navigationController popViewControllerAnimated:YES];
+    [super doneButtonPressed:sender];
 }
-
--(IBAction)cancelButtonPressed:(id)sender{
-	[self.navigationController dismissModalViewControllerAnimated:YES];
-}
-
 
 
 -(IBAction)currentLocationButtonPressed:(id)sender
@@ -817,21 +817,15 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 	//self.navigationItem.prompt = @"Distance to 距離目前位置 距离当前位置。";
 	
 	//由于是上下动画，与其他的修改view不一样，不能共用按钮
-	UIBarButtonItem *doneButton = [[UIBarButtonItem alloc]
+	UIBarButtonItem *doneButton = [[[UIBarButtonItem alloc]
 								   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
 								   target:self 
-								   action:@selector(doneButtonPressed:)];
+								   action:@selector(doneButtonPressed:)] autorelease];
     self.navigationItem.rightBarButtonItem = doneButton;
-	self.navigationItem.rightBarButtonItem.enabled = NO;
-    [doneButton release];
+	//self.navigationItem.rightBarButtonItem.enabled = NO;
 
-	UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc]
-								   initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-								   target:self 
-								   action:@selector(cancelButtonPressed:)];
-    self.navigationItem.leftBarButtonItem = cancelButton;
-    [cancelButton release];
-	
+	self.navigationItem.hidesBackButton = YES;
+
 	
 	
 	mapView.delegate = self;
