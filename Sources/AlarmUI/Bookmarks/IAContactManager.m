@@ -555,7 +555,7 @@
         
         //位置移动
         [CATransaction begin];
-        [CATransaction setAnimationDuration:0.90];
+        [CATransaction setAnimationDuration:0.95];
     
         CGPoint pmCenter = YCRectCenter(kPersonImageFrame);
         CGMutablePathRef thePath = CGPathCreateMutable();
@@ -576,7 +576,7 @@
     CABasicAnimation *scaleAnimation=[CABasicAnimation animationWithKeyPath: @"bounds"];
     scaleAnimation.fromValue= [NSValue valueWithCGRect:(CGRect){{(kPersonViewWidth-kPersonImageWidth)/2,(kPersonViewHeight-kPersonImageHeight)/2},kPersonImageSize}];
     scaleAnimation.toValue= [NSValue valueWithCGRect:_mapLayerBounds];  
-    scaleAnimation.timingFunction= [CAMediaTimingFunction functionWithControlPoints:0.7f:0.1f :0.8f:0.9f];//前极慢，后极快,后慢
+    scaleAnimation.timingFunction= [CAMediaTimingFunction functionWithControlPoints:0.7f:0.05f :0.8f:0.9f];//前极慢，后极快,后慢
     scaleAnimation.delegate = self;
     [_mapLayer addAnimation :scaleAnimation forKey :@"MapScale"]; 
  
@@ -602,11 +602,20 @@
             _unknownPersonVC.title = nil;
             [(UINavigationController*) _currentViewController pushViewController:_alarmPositionVC animated:NO];
             
+            //禁用隐式动画
+            [CATransaction begin];
+            [CATransaction setValue:(id)kCFBooleanTrue
+                             forKey:kCATransactionDisableActions];
+            
             [_containerLayer removeFromSuperlayer];
             [_mapLayerSuperLayer addSublayer:_mapLayer];
             _mapLayer.position = _mapLayerPosition;
             _mapLayer.bounds = _mapLayerBounds;
             _mapLayer.borderWidth = 0;
+            
+            [CATransaction commit];
+            
+
             
             [_containerLayer release];
             [_mapLayer release];
