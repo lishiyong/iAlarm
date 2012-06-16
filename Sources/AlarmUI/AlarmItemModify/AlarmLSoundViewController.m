@@ -54,15 +54,11 @@
 }
 
 //覆盖父类
--(IBAction)doneButtonPressed:(id)sender
-{	
+- (void)saveData{	
 	//YCSound *sound = [DicManager soundForSortId:lastIndexPath.row];
 	NSInteger soundSortId = [self gernarlRowInTableView:self.tableView ForIndexPath:lastIndexPath];
 	YCSound *sound = [DicManager soundForSortId:soundSortId];
-	self.alarm.sound = sound;
-	[self.navigationController popViewControllerAnimated:YES];
-	
-	[super doneButtonPressed:sender];
+	self.alarm.sound = sound;	
 }
 
 #pragma mark -

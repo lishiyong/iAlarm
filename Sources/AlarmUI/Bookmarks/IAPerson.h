@@ -28,6 +28,7 @@
 - (NSArray *)addressDictionaries;
 - (NSString *)note;
 - (UIImage *)image;
+- (void)setImage:(UIImage*)theImage;
 
 - (ABRecordRef)ABPerson;
 

@@ -12,9 +12,9 @@
 
 @interface AlarmLRepeatTypeViewController : AlarmModifyTableViewController {
 
-    NSIndexPath    * lastIndexPath;
+    NSIndexPath  *lastIndexPath;
 }
-@property (nonatomic, retain) NSIndexPath * lastIndexPath;
 
+@property (nonatomic, retain) NSIndexPath * lastIndexPath;
 
 @end

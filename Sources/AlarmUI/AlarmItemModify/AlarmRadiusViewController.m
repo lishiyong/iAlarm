@@ -91,18 +91,14 @@
 #pragma mark -
 #pragma mark Events Handle
 
--(IBAction)doneButtonPressed:(id)sender
-{	
+- (void)saveData{
+    
 	NSInteger row = [self.alarmRadiusPickerView selectedRowInComponent:0];
 	self.alarm.alarmRadiusType = [[DicManager alarmRadiusTypeArray] objectAtIndex:row];
 	self.alarm.alarmRadiusTypeId = self.alarm.alarmRadiusType.alarmRadiusTypeId;
 	double rd = [self alarmRadiusValue];
 	self.alarm.radius = (rd < kMixAlarmRadius) ? kMixAlarmRadius:rd;
 	
-	[self.navigationController popViewControllerAnimated:YES];
-	
-	[super doneButtonPressed:sender];
-	 
 }
 
 

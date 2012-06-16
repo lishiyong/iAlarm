@@ -15,7 +15,9 @@
 }
 
 @property(nonatomic,retain,readonly) IAAlarm *alarm;
--(IBAction)doneButtonPressed:(id)sender;
+
+//子类的接口
+- (void)saveData; 
 
 //指定初始化
 - (id)initWithStyle:(UITableViewStyle)style alarm:(IAAlarm*)theAlarm;

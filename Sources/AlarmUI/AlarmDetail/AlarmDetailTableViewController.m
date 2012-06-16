@@ -631,7 +631,7 @@
         
 		AlarmPositionMapViewController *mapViewCtler = [[[AlarmPositionMapViewController alloc] initWithNibName:@"AlarmPositionMapViewController" bundle:nil alarm:self.alarmTemp] autorelease];
 		//新创建AlarmAnnotation标识
-		[mapViewCtler setNewAlarmAnnotation:YES];
+		//[mapViewCtler setNewAlarmAnnotation:YES];
 		self->destionationCellDescription.didSelectCellObject = mapViewCtler;
 
 	}
@@ -1258,11 +1258,14 @@
     self.tableView.tableFooterView = viewp;    
     [viewp release];
     
-    if (!_contactManager) {
-        _contactManager = [[IAContactManager alloc] init];
-        _contactManager.currentViewController = self.navigationController;
-    }
-
+    //延时加载
+    [self performBlock:^{
+        if (!_contactManager) {
+            _contactManager = [[IAContactManager alloc] init];
+            _contactManager.currentViewController = self.navigationController;
+        }
+    } afterDelay:0.1];
+    
 }
 
 

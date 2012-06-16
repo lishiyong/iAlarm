@@ -17,32 +17,27 @@
 @synthesize lastIndexPath;
 
 //覆盖父类
--(IBAction)doneButtonPressed:(id)sender
-{	
-    //NSLog(@"lastIndexPath.row = %d",self.lastIndexPath.row);
-    
+- (void)saveData{	    
 	YCRepeatType *rep = [DicManager repeatTypeForSortId:self.lastIndexPath.row];
 	self.alarm.repeatType = rep;
-	[self.navigationController popViewControllerAnimated:YES];
-	
-	[super doneButtonPressed:sender];
 }
+ 
 
 #pragma mark -
 #pragma mark View lifecycle
 
-- (void)viewDidLoad {
+- (void)viewDidLoad{
+    
     [super viewDidLoad];
-	
 	self.title = KViewTitleRepeat;
 	
 	//修改视图背景等
 	[self.view setBackgroundColor:[UIColor groupTableViewBackgroundColor]];
 	self.tableView.separatorStyle =  UITableViewCellSeparatorStyleNone;
 }
+ 
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated{
 	[self.tableView reloadData];
 }
 

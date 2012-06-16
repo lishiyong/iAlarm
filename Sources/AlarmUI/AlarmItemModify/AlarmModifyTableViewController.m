@@ -14,47 +14,13 @@
 
 @synthesize alarm;
 
-/*
--(id)alarm
-{
-	return alarm;
-}
--(void)setAlarm:(id)newObj
-{
-	[newObj retain];
-	[alarm release];
-	alarm = newObj;
-}
-*/
-
--(IBAction)doneButtonPressed:(id)sender
-{	
-	//子类覆盖
-	
-	//改变了，发送通知
-	/*
-	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-	[notificationCenter postNotificationName:IAAlarmItemsDidChangeNotification object:self];
-	 */
+- (void)saveData{
+    //
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-	/*
-	UIBarButtonItem *doneButton = [[UIBarButtonItem alloc]
-								   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-								   target:self 
-								   action:@selector(doneButtonPressed:)];
-    self.navigationItem.rightBarButtonItem = doneButton;
-	self.navigationItem.rightBarButtonItem.enabled = NO;
-    [doneButton release];
-	 */
-}
-
-//代码难看，为了省事不用修改其他代码
 - (void)viewWillDisappear:(BOOL)animated{
 	[super viewWillDisappear:animated];
-	[self doneButtonPressed:self]; //其实会调用到子类的这个方法
+	[self saveData]; //其实会调用到子类的这个方法
 }
 
 - (id)initWithStyle:(UITableViewStyle)style alarm:(IAAlarm*)theAlarm{

@@ -15,23 +15,10 @@
 @implementation AlarmNotesViewController
 @synthesize textView;
 
-- (IBAction)doneButtonPressed:(id)sender
-{	
-	
+- (void)saveData{
     self.alarm.notes = self.textView.text;
-	
-	[self.textView keyboardAppearance];
-	[self.navigationController popViewControllerAnimated:YES];
-	
-	[super doneButtonPressed:sender];
+	[self.textView keyboardAppearance];	
 }
-/*
-- (IBAction)textFieldDoneEditing:(id)sender
-{
-	[self doneButtonPressed:nil];
-}
- */
-
 
 #pragma mark - View lifecycle
 

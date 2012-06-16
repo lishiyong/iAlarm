@@ -34,6 +34,23 @@
 - (UIImage *)image{
     return _image;
 }
+- (void)setImage:(UIImage*)theImage{
+    [theImage retain];
+    [_image release];
+    _image = theImage;
+    
+    //ABPerson中的image
+    if (_ABperson) {
+        if(ABPersonHasImageData(_ABperson)) 
+        {
+            ABPersonRemoveImageData(_ABperson, NULL);
+        }
+        if (_image) {
+            NSData *imageData = UIImagePNGRepresentation(_image);
+            ABPersonSetImageData(_ABperson,(CFDataRef)imageData,NULL);
+        }
+    }
+}
 
 - (id)initWithPersonId:(ABRecordID)personId personName:(NSString*)personName addressDictionaries:(NSArray*)addressDictionaries note:(NSString*)note image:(UIImage*)image{
     self = [super init];
@@ -78,7 +95,8 @@
     UIImage *theImage = nil;
     if (thePerson != NULL) {
         
-        _ABperson = CFRetain(thePerson);
+        //_ABperson = CFRetain(thePerson);
+        //_ABperson = ABPersonCreateInSource(thePerson);
         
         //id
         thePersonId = ABRecordGetRecordID(thePerson);
@@ -89,19 +107,23 @@
         
         //地址
         ABMutableMultiValueRef multi = ABRecordCopyValue(thePerson, kABPersonAddressProperty);
-        CFIndex count = ABMultiValueGetCount(multi);
-        for (int i = 0 ; i < count ; i++) {
-            NSDictionary *addressDic = nil;
-            addressDic = (__bridge_transfer NSDictionary*)ABMultiValueCopyValueAtIndex(multi, i);
-            [addressDic autorelease]; 
-            [theDics addObject:addressDic];
+        if (multi) {
+            CFIndex count = ABMultiValueGetCount(multi);
+            for (int i = 0 ; i < count ; i++) {
+                NSDictionary *addressDic = nil;
+                addressDic = (__bridge_transfer NSDictionary*)ABMultiValueCopyValueAtIndex(multi, i);
+                [addressDic autorelease]; 
+                [theDics addObject:addressDic];
+            }
+            CFRelease(multi);
         }
-        CFRelease(multi);
+        
         
         
         //备注
         theNote =  (__bridge_transfer NSString*)ABRecordCopyValue(thePerson, kABPersonNoteProperty);
         [theNote autorelease];
+         
         
         //image
         CFDataRef dataRef = ABPersonCopyImageData(thePerson);
