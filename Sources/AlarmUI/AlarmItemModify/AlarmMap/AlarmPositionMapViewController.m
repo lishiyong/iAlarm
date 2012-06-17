@@ -169,6 +169,7 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 	UILongPressGestureRecognizer *longPressGesture = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(mapViewLongPressed:)] autorelease];
     longPressGesture.minimumPressDuration = 0.75; //多长时间算长按
 	[self.mapView addGestureRecognizer:longPressGesture];
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -209,6 +210,11 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
     [self.navigationItem setHidesBackButton:YES animated:YES];
      
     
+   
+    
+}
+
+- (void)beginWork{
     //pin
     [_annotation release];
     _annotation = [[IAAnnotation alloc] initWithAlarm:self.alarm];
@@ -216,6 +222,10 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 	_annotation.subtitle = self.alarm.position;
     [self.mapView addAnnotation:_annotation];
     
+    //
+    [self performBlock:^{
+        self.mapView.showsUserLocation = YES;
+    } afterDelay:2.5];
 }
 
 -(void)viewDidDisappear:(BOOL)animated {
@@ -250,7 +260,7 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
     if (_annotation) {
         [self performBlock:^{
             [self.mapView selectAnnotation:_annotation animated:YES];
-        } afterDelay:0.75];        
+        } afterDelay:1.0];        
     }
 }
 

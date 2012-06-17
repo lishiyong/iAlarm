@@ -980,6 +980,10 @@
 		9CE1453E141200FE003A1D96 /* IADestinationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE1453C141200FE003A1D96 /* IADestinationCell.m */; };
 		9CE145401412015B003A1D96 /* IADestinationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CE1453F1412015B003A1D96 /* IADestinationCell.xib */; };
 		9CE145411412015B003A1D96 /* IADestinationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CE1453F1412015B003A1D96 /* IADestinationCell.xib */; };
+		9CE19012158DD67F0066C212 /* IAMapAnimationShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE19010158DD67F0066C212 /* IAMapAnimationShadow.png */; };
+		9CE19013158DD67F0066C212 /* IAMapAnimationShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE19010158DD67F0066C212 /* IAMapAnimationShadow.png */; };
+		9CE19014158DD67F0066C212 /* IAMapAnimationShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE19011158DD67F0066C212 /* IAMapAnimationShadow@2x.png */; };
+		9CE19015158DD67F0066C212 /* IAMapAnimationShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE19011158DD67F0066C212 /* IAMapAnimationShadow@2x.png */; };
 		9CE195551306444B007A9FCF /* AlarmListNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE195541306444B007A9FCF /* AlarmListNotifications.m */; };
 		9CE2D264138376FB006FD30C /* IAGlobal.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2D263138376FB006FD30C /* IAGlobal.m */; };
 		9CE436281367A42E0012C9B1 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE436271367A42E0012C9B1 /* Default@2x.png */; };
@@ -1868,6 +1872,8 @@
 		9CE1453B141200FE003A1D96 /* IADestinationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IADestinationCell.h; sourceTree = "<group>"; };
 		9CE1453C141200FE003A1D96 /* IADestinationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IADestinationCell.m; sourceTree = "<group>"; };
 		9CE1453F1412015B003A1D96 /* IADestinationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IADestinationCell.xib; sourceTree = "<group>"; };
+		9CE19010158DD67F0066C212 /* IAMapAnimationShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IAMapAnimationShadow.png; sourceTree = "<group>"; };
+		9CE19011158DD67F0066C212 /* IAMapAnimationShadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAMapAnimationShadow@2x.png"; sourceTree = "<group>"; };
 		9CE195531306444B007A9FCF /* AlarmListNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmListNotifications.h; sourceTree = "<group>"; };
 		9CE195541306444B007A9FCF /* AlarmListNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmListNotifications.m; sourceTree = "<group>"; };
 		9CE2D262138376FB006FD30C /* IAGlobal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAGlobal.h; sourceTree = "<group>"; };
@@ -2366,6 +2372,8 @@
 		9C5F1AFB1588F82E004EC788 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				9CE19010158DD67F0066C212 /* IAMapAnimationShadow.png */,
+				9CE19011158DD67F0066C212 /* IAMapAnimationShadow@2x.png */,
 				9C1AFA26158B12E800B2F3E8 /* IAPersonNoImage.png */,
 				9C1AFA27158B12E800B2F3E8 /* IAPersonNoImage@2x.png */,
 				9C5F1AFF158903CC004EC788 /* Shadow_IAFlagBlueDeep.png */,
@@ -4517,6 +4525,8 @@
 				9C5F1B15158903CC004EC788 /* Shadow_IAFlagPurple@2x.png in Resources */,
 				9C1AFA28158B12E800B2F3E8 /* IAPersonNoImage.png in Resources */,
 				9C1AFA2A158B12E800B2F3E8 /* IAPersonNoImage@2x.png in Resources */,
+				9CE19012158DD67F0066C212 /* IAMapAnimationShadow.png in Resources */,
+				9CE19014158DD67F0066C212 /* IAMapAnimationShadow@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4900,6 +4910,8 @@
 				9C5F1B16158903CC004EC788 /* Shadow_IAFlagPurple@2x.png in Resources */,
 				9C1AFA29158B12E800B2F3E8 /* IAPersonNoImage.png in Resources */,
 				9C1AFA2B158B12E800B2F3E8 /* IAPersonNoImage@2x.png in Resources */,
+				9CE19013158DD67F0066C212 /* IAMapAnimationShadow.png in Resources */,
+				9CE19015158DD67F0066C212 /* IAMapAnimationShadow@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

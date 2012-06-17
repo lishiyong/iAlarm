@@ -39,7 +39,10 @@
 @property (nonatomic,retain) IBOutlet MKMapView* mapView;
 @property (nonatomic,assign) id<NSObject> delegate;
 
+- (void)beginWork;
+
 /**
+ delegate method
  - (void)alarmPositionMapViewControllerDidPressDoneButton:(AlarmPositionMapViewController*)alarmPositionMapViewController;
  **/
 

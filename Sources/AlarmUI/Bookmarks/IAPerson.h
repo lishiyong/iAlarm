@@ -16,6 +16,7 @@
     NSArray *_addressDictionaries;
     NSString *_note;
     UIImage *_image;
+    NSArray *_phones; //YCPair value：电话号码。key：label
     
     ABAddressBookRef _addressBook;
     ABRecordRef _ABperson;
@@ -29,11 +30,12 @@
 - (NSString *)note;
 - (UIImage *)image;
 - (void)setImage:(UIImage*)theImage;
+- (NSArray *)phones;
 
 - (ABRecordRef)ABPerson;
 
 //不从库里搜索
-- (id)initWithPersonId:(ABRecordID)personId personName:(NSString*)personName addressDictionaries:(NSArray*)addressDictionaries note:(NSString*)note image:(UIImage*)image;
+- (id)initWithPersonId:(ABRecordID)personId personName:(NSString*)personName addressDictionaries:(NSArray*)addressDictionaries note:(NSString*)note image:(UIImage*)image phones:(NSArray*)phones;
 - (id)initWithPersonId:(ABRecordID)personId personName:(NSString*)personName addressDictionary:(NSDictionary*)addressDictionary;
 - (id)initWithPerson:(ABRecordRef)person;
 - (id)initWithAlarm:(IAAlarm*)theAlarm image:(UIImage*)image;

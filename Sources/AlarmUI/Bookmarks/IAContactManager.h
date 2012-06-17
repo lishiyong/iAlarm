@@ -16,7 +16,6 @@
     
     IAAlarm *_alarm; 
     UIBarButtonItem *_cancelButtonItem;
-    BOOL _isPush;
     
     ABUnknownPersonViewController *_unknownPersonVC;
     ABPersonViewController *_personVC;
@@ -43,7 +42,6 @@
 
 @property (nonatomic, assign) IBOutlet UIViewController *currentViewController; //相当于delegate,要用assign
 
-//- (void)presentContactViewControllerWithAlarm:(IAAlarm*)theAlarm newPerson:(IAPerson*)newPerson;
 - (void)pushContactViewControllerWithAlarm:(IAAlarm*)theAlarm;
 
 @property (nonatomic, readonly) NSInteger animationKind; //1:地图放大。2.地图缩小

@@ -52,7 +52,11 @@
     }
 }
 
-- (id)initWithPersonId:(ABRecordID)personId personName:(NSString*)personName addressDictionaries:(NSArray*)addressDictionaries note:(NSString*)note image:(UIImage*)image{
+- (NSArray *)phones{
+    return _phones;
+}
+
+- (id)initWithPersonId:(ABRecordID)personId personName:(NSString*)personName addressDictionaries:(NSArray*)addressDictionaries note:(NSString*)note image:(UIImage*)image phones:(NSArray*)phones{
     self = [super init];
     if (self) {
         _personId = personId;
@@ -60,6 +64,7 @@
         _addressDictionaries = [addressDictionaries retain];
         _note = [note copy];
         _image = [image retain];
+        _phones = [phones retain];
     }
     return self;
 }
@@ -70,7 +75,7 @@
     if (addressDictionary) 
         dics = [NSArray arrayWithObject:addressDictionary];
     
-    return [self initWithPersonId:personId personName:personName addressDictionaries:dics note:nil image:nil];
+    return [self initWithPersonId:personId personName:personName addressDictionaries:dics note:nil image:nil phones:nil];
 }
 
 
@@ -93,6 +98,7 @@
     NSMutableArray *theDics = [NSMutableArray array];
     NSString *theNote = nil;
     UIImage *theImage = nil;
+    NSMutableArray *thePhones = [NSMutableArray array];
     if (thePerson != NULL) {
         
         //_ABperson = CFRetain(thePerson);
@@ -106,18 +112,17 @@
         [thePersonName autorelease];
         
         //地址
-        ABMutableMultiValueRef multi = ABRecordCopyValue(thePerson, kABPersonAddressProperty);
-        if (multi) {
-            CFIndex count = ABMultiValueGetCount(multi);
+        ABMutableMultiValueRef multiAddress = ABRecordCopyValue(thePerson, kABPersonAddressProperty);
+        if (multiAddress) {
+            CFIndex count = ABMultiValueGetCount(multiAddress);
             for (int i = 0 ; i < count ; i++) {
                 NSDictionary *addressDic = nil;
-                addressDic = (__bridge_transfer NSDictionary*)ABMultiValueCopyValueAtIndex(multi, i);
+                addressDic = (__bridge_transfer NSDictionary*)ABMultiValueCopyValueAtIndex(multiAddress, i);
                 [addressDic autorelease]; 
                 [theDics addObject:addressDic];
             }
-            CFRelease(multi);
+            CFRelease(multiAddress);
         }
-        
         
         
         //备注
@@ -132,7 +137,24 @@
             CFRelease(dataRef);
         }
         
-        return [self initWithPersonId:thePersonId personName:thePersonName addressDictionaries:(theDics.count > 0) ? theDics : nil note:theNote image:theImage];
+        //phones
+        ABMutableMultiValueRef multiPhones = ABRecordCopyValue(thePerson, kABPersonPhoneProperty);
+        if (multiPhones) {
+            CFIndex count = ABMultiValueGetCount(multiPhones);
+            for (int i = 0 ; i < count ; i++) {
+                NSString *phoneNumber = (__bridge_transfer NSString*)ABMultiValueCopyValueAtIndex(multiPhones, i);
+                NSString *phoneLabel = (__bridge_transfer NSString*)ABMultiValueCopyLabelAtIndex(multiPhones, i);
+                if (phoneNumber && phoneLabel) {
+                    YCPair *anPhonePair = [[[YCPair alloc] initWithValue:phoneNumber forKey:phoneLabel] autorelease];
+                    [thePhones addObject:anPhonePair];
+                }
+                [phoneNumber release];
+                [phoneLabel release];
+            }
+            CFRelease(multiPhones);
+        }
+        
+        return [self initWithPersonId:thePersonId personName:thePersonName addressDictionaries:(theDics.count > 0) ? theDics : nil note:theNote image:theImage phones:thePhones];
         
         
     }else{
@@ -160,7 +182,7 @@
     NSString *name = theAlarm.alarmName ? theAlarm.alarmName : theAlarm.positionTitle;
     
     
-    self = [self initWithPersonId:thePersonId personName:name addressDictionaries:theAddressArray note:coordinateString image:image];
+    self = [self initWithPersonId:thePersonId personName:name addressDictionaries:theAddressArray note:coordinateString image:image phones:nil];
     return self;
 }
 
@@ -233,6 +255,26 @@
         ABPersonSetImageData(aContact,(CFDataRef)imageData,NULL);
     }
     
+    //phones
+    if (_phones && _phones.count > 0) {
+        
+        ABMutableMultiValueRef phones = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+        bool didAdd = false;
+        for (YCPair *aPhonePair in _phones) {
+            
+            bool didAdd1 = ABMultiValueAddValueAndLabel(phones,aPhonePair.value, (__bridge_transfer CFStringRef)aPhonePair.key, NULL);;
+            
+            //加成功一个就可以进行下面的 ABRecordSetValue 了
+            if (!didAdd) 
+                didAdd = didAdd1;
+        }
+        
+        if (didAdd) 
+            ABRecordSetValue(aContact, kABPersonPhoneProperty, phones, NULL);
+        
+        CFRelease(phones);
+    }
+    
     return aContact;
 }
 
@@ -241,6 +283,7 @@
     [_addressDictionaries release];
     [_note release];
     [_image release];
+    [_phones release];
     
     if (_ABperson) 
         CFRelease(_ABperson);
@@ -267,6 +310,7 @@
 #define kIAAddressDictionaries   @"kIAAddressDictionaries"
 #define kIANote                  @"kIANote"
 #define kIAImage                 @"kIAImage"
+#define kIAPhones                @"kIAPhones"
 
 - (void)encodeWithCoder:(NSCoder *)encoder{
     [encoder encodeInt32:_personId forKey:kIAPersonId];
@@ -274,6 +318,7 @@
     [encoder encodeObject:_addressDictionaries forKey:kIAAddressDictionaries];
     [encoder encodeObject:_note forKey:kIANote];
     [encoder encodeObject:_image forKey:kIAImage];
+    [encoder encodeObject:_phones forKey:kIAPhones];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder{
@@ -284,12 +329,13 @@
         _addressDictionaries = [[decoder decodeObjectForKey:kIAAddressDictionaries] retain];
         _note = [[decoder decodeObjectForKey:kIANote] copy];
         _image = [[decoder decodeObjectForKey:kIAImage] retain];
+        _phones = [[decoder decodeObjectForKey:kIAPhones] retain];
     }
     return self;
 }
 
 - (id)copyWithZone:(NSZone *)zone{
-    IAPerson *copy = [[[self class] allocWithZone: zone] initWithPersonId:self.personId personName:self.personName addressDictionaries:self.addressDictionaries note:self.note image:self.image];    
+    IAPerson *copy = [[[self class] allocWithZone: zone] initWithPersonId:self.personId personName:self.personName addressDictionaries:self.addressDictionaries note:self.note image:self.image phones:self.phones];    
     return copy;
 }
 
