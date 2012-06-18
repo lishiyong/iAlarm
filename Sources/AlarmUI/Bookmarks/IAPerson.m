@@ -99,10 +99,8 @@
     NSString *theNote = nil;
     UIImage *theImage = nil;
     NSMutableArray *thePhones = [NSMutableArray array];
+    
     if (thePerson != NULL) {
-        
-        //_ABperson = CFRetain(thePerson);
-        //_ABperson = ABPersonCreateInSource(thePerson);
         
         //id
         thePersonId = ABRecordGetRecordID(thePerson);
@@ -156,7 +154,6 @@
         
         return [self initWithPersonId:thePersonId personName:thePersonName addressDictionaries:(theDics.count > 0) ? theDics : nil note:theNote image:theImage phones:thePhones];
         
-        
     }else{
         return nil;
     }
@@ -188,94 +185,92 @@
 
 - (ABRecordRef)ABPerson{
     
-    //通过personId创建的
-    if (_ABperson) 
-        return _ABperson;
-    
-    //通过alarm创建的
-
-    ABRecordRef aContact = ABPersonCreate();
-    [(NSObject*)aContact autorelease];
-    
-    //地址
-    if (_addressDictionaries) {
+    if (!_ABperson) {
         
-        ABMutableMultiValueRef address = ABMultiValueCreateMutable(kABDictionaryPropertyType);
-        bool didAdd = false;
-        for (NSDictionary *anAddressDic in _addressDictionaries) {
+        _ABperson = ABPersonCreate();  
+        
+        //地址
+        if (_addressDictionaries) {
             
-            //把非字符串的对象过滤掉:Region,Location
-            NSSet *keySet = [anAddressDic keysOfEntriesPassingTest:^BOOL(id key, id obj, BOOL *stop) {
-                if(![obj isKindOfClass:[NSString class]])
-                    return YES;
-                return NO;
-            }];
-            NSMutableDictionary *newAddressDic = [NSMutableDictionary dictionaryWithDictionary:anAddressDic];
-            [newAddressDic removeObjectsForKeys:[keySet allObjects]];
+            ABMutableMultiValueRef address = ABMultiValueCreateMutable(kABDictionaryPropertyType);
+            bool didAdd = false;
+            for (NSDictionary *anAddressDic in _addressDictionaries) {
+                
+                //把非字符串的对象过滤掉:Region,Location
+                NSSet *keySet = [anAddressDic keysOfEntriesPassingTest:^BOOL(id key, id obj, BOOL *stop) {
+                    if(![obj isKindOfClass:[NSString class]])
+                        return YES;
+                    return NO;
+                }];
+                NSMutableDictionary *newAddressDic = [NSMutableDictionary dictionaryWithDictionary:anAddressDic];
+                [newAddressDic removeObjectsForKeys:[keySet allObjects]];
+                
+                
+                bool didAdd1 = false;
+                if (newAddressDic.count > 0) 
+                    didAdd1 = ABMultiValueAddValueAndLabel(address,newAddressDic, NULL, NULL);
+                
+                
+                //加成功一个就可以进行下面的 ABRecordSetValue 了
+                if (!didAdd) 
+                    didAdd = didAdd1;
+            }
             
+            if (didAdd) 
+                ABRecordSetValue(_ABperson, kABPersonAddressProperty, address, NULL);
             
-            bool didAdd1 = false;
-            if (newAddressDic.count > 0) 
-                didAdd1 = ABMultiValueAddValueAndLabel(address,newAddressDic, NULL, NULL);
-            
+            CFRelease(address);
+        }
+        
+        //备注
+        if (_note) {
+            ABRecordSetValue(_ABperson, kABPersonNoteProperty, (__bridge_transfer CFStringRef)_note, NULL);
+        }
+        
+        //姓名
+        if (_personName) {
+            /*
+             ABPropertyID nameProperty;
+             if (ABPersonGetCompositeNameFormat() == kABPersonCompositeNameFormatFirstNameFirst)
+             nameProperty = kABPersonFirstNameProperty;
+             else
+             nameProperty = kABPersonLastNameProperty;
              
-            //加成功一个就可以进行下面的 ABRecordSetValue 了
-            if (!didAdd) 
-                didAdd = didAdd1;
+             ABRecordSetValue(aContact, nameProperty, (__bridge_transfer CFStringRef)_personName, NULL);
+             */
+            ABRecordSetValue(_ABperson, kABPersonOrganizationProperty, (__bridge_transfer CFStringRef)_personName, NULL);
         }
         
-        if (didAdd) 
-            ABRecordSetValue(aContact, kABPersonAddressProperty, address, NULL);
-        
-        CFRelease(address);
-    }
-     
-    //备注
-    if (_note) {
-        ABRecordSetValue(aContact, kABPersonNoteProperty, (__bridge_transfer CFStringRef)_note, NULL);
-    }
-    
-    //姓名
-    if (_personName) {
-        /*
-        ABPropertyID nameProperty;
-        if (ABPersonGetCompositeNameFormat() == kABPersonCompositeNameFormatFirstNameFirst)
-            nameProperty = kABPersonFirstNameProperty;
-        else
-            nameProperty = kABPersonLastNameProperty;
-            
-        ABRecordSetValue(aContact, nameProperty, (__bridge_transfer CFStringRef)_personName, NULL);
-         */
-        ABRecordSetValue(aContact, kABPersonOrganizationProperty, (__bridge_transfer CFStringRef)_personName, NULL);
-    }
-    
-    //图
-    if (_image) {
-        NSData *imageData = UIImagePNGRepresentation(_image);
-        ABPersonSetImageData(aContact,(CFDataRef)imageData,NULL);
-    }
-    
-    //phones
-    if (_phones && _phones.count > 0) {
-        
-        ABMutableMultiValueRef phones = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-        bool didAdd = false;
-        for (YCPair *aPhonePair in _phones) {
-            
-            bool didAdd1 = ABMultiValueAddValueAndLabel(phones,aPhonePair.value, (__bridge_transfer CFStringRef)aPhonePair.key, NULL);;
-            
-            //加成功一个就可以进行下面的 ABRecordSetValue 了
-            if (!didAdd) 
-                didAdd = didAdd1;
+        //图
+        if (_image) {
+            NSData *imageData = UIImagePNGRepresentation(_image);
+            ABPersonSetImageData(_ABperson,(CFDataRef)imageData,NULL);
         }
         
-        if (didAdd) 
-            ABRecordSetValue(aContact, kABPersonPhoneProperty, phones, NULL);
+        //phones
+        if (_phones && _phones.count > 0) {
+            
+            ABMutableMultiValueRef phones = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+            bool didAdd = false;
+            for (YCPair *aPhonePair in _phones) {
+                
+                bool didAdd1 = ABMultiValueAddValueAndLabel(phones,aPhonePair.value, (__bridge_transfer CFStringRef)aPhonePair.key, NULL);;
+                
+                //加成功一个就可以进行下面的 ABRecordSetValue 了
+                if (!didAdd) 
+                    didAdd = didAdd1;
+            }
+            
+            if (didAdd) 
+                ABRecordSetValue(_ABperson, kABPersonPhoneProperty, phones, NULL);
+            
+            CFRelease(phones);
+        }
         
-        CFRelease(phones);
     }
     
-    return aContact;
+    return _ABperson;
+    
 }
 
 - (void)dealloc{

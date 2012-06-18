@@ -59,7 +59,7 @@
 {
     [super viewDidLoad];
     
-    self.title = @"简介";
+    self.title = @"";
     UIBarButtonItem *cancelButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonItemPressed:)] autorelease];
     self.navigationItem.rightBarButtonItem = cancelButtonItem;
     

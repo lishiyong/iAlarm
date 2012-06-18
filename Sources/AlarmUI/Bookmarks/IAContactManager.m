@@ -18,7 +18,7 @@
 
 #define kPersonImageWidth                  64.0
 #define kPersonImageHeight                 64.0
-#define kPersonImageOrigin                 (CGPoint){18.0, 15.0}
+#define kPersonImageOrigin                 (CGPoint){19.0, 15.0}
 #define kPersonImageSize                   (CGSize) {kPersonImageWidth, kPersonImageHeight}
 //#define kPersonImageFrame                  (CGRect) {kPersonImageOrigin, kPersonImageSize}
 
@@ -160,7 +160,7 @@
     _alarmPositionVC.delegate = self;
     [_alarmPositionVC view];
     
-    
+    //重新定位照片
     CGRect personImageFrame = (CGRect) {kPersonImageOrigin, kPersonImageSize};
     if (viewController.view.subviews.count > 0) {
         //找到包含照片的tableview
@@ -212,10 +212,12 @@
     region = [_alarmPositionVC.mapView regionThatFits:region];
     [_alarmPositionVC.mapView setRegion:region];
     
+       //保存为了恢复
     _mapLayerSuperLayer =  [_alarmPositionVC.mapView.layer.superlayer retain];
+    _mapLayerPosition = _alarmPositionVC.mapView.layer.position; 
+    _mapLayerBounds = _alarmPositionVC.mapView.layer.bounds;  
+    
     _mapLayer = [_alarmPositionVC.mapView.layer retain];
-    _mapLayerPosition = _mapLayer.position;
-    _mapLayerBounds = _mapLayer.bounds;    
     _mapLayer.position = YCRectCenter(_containerLayer.bounds);
     [_containerLayer addSublayer:_mapLayer];
     
@@ -227,6 +229,7 @@
     personImageLayer.opacity = 0.0;
     [_containerLayer addSublayer:personImageLayer];
     
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents]; //停止用户响应
     
     [CATransaction begin];
     [CATransaction setAnimationDuration:1.0];
@@ -249,38 +252,38 @@
     scale1Animation.removedOnCompletion = YES;
     [shadowLayer addAnimation :scale1Animation forKey :@"ShadowScale"]; 
     
-    //渐变 照片变成地图
-    [CATransaction begin];
-    [CATransaction setAnimationDuration:0.35];
+        //渐变 照片变成地图
+        [CATransaction begin];
+        [CATransaction setAnimationDuration:0.35];
+        
+        CABasicAnimation *tranAnimation=[CABasicAnimation animationWithKeyPath: @"opacity"];
+        tranAnimation.timingFunction= [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];  //前慢后快
+        tranAnimation.fromValue= [NSNumber numberWithFloat:1.0];
+        tranAnimation.toValue= [NSNumber numberWithFloat:0.0];   
+        tranAnimation.removedOnCompletion = YES;
+        [personImageLayer addAnimation :tranAnimation forKey :@"MapShow" ];
+        
+        [CATransaction commit];
     
-    CABasicAnimation *tranAnimation=[CABasicAnimation animationWithKeyPath: @"opacity"];
-    tranAnimation.timingFunction= [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];  //前慢后快
-    tranAnimation.fromValue= [NSNumber numberWithFloat:1.0];
-    tranAnimation.toValue= [NSNumber numberWithFloat:0.0];   
-    tranAnimation.removedOnCompletion = YES;
-    [personImageLayer addAnimation :tranAnimation forKey :@"MapShow" ];
-    
-    [CATransaction commit];
-    
-    //位置移动
-    [CATransaction begin];
-    [CATransaction setAnimationDuration:0.95];
-    
-    CGPoint pmCenter = YCRectCenter(personImageFrame);
-    CGMutablePathRef thePath = CGPathCreateMutable();
-    CGPathMoveToPoint(thePath,NULL,pmCenter.x,pmCenter.y); //照片的位置 
-    CGPathAddCurveToPoint(thePath,NULL ,
-                          pmCenter.x,     pmCenter.y+100, 
-                          pmCenter.x + 40,pmCenter.y+300, 
-                          160,218);//优美的弧线
-    
-    CAKeyframeAnimation * moveAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
-    moveAnimation.path=thePath;
-    moveAnimation.timingFunction = [CAMediaTimingFunction functionWithControlPoints:0.3f:0.7f :0.5f:0.95f];//前快，后慢;
-    moveAnimation.removedOnCompletion = YES;
-    [_containerLayer addAnimation:moveAnimation forKey:@"ContainerMove"];
-    
-    [CATransaction commit];
+        //位置移动
+        [CATransaction begin];
+        [CATransaction setAnimationDuration:0.95];
+        
+        CGPoint pmCenter = YCRectCenter(personImageFrame);
+        CGMutablePathRef thePath = CGPathCreateMutable();
+        CGPathMoveToPoint(thePath,NULL,pmCenter.x,pmCenter.y); //照片的位置 
+        CGPathAddCurveToPoint(thePath,NULL ,
+                              pmCenter.x,     pmCenter.y+100, 
+                              pmCenter.x + 40,pmCenter.y+300, 
+                              160,218);//优美的弧线
+        
+        CAKeyframeAnimation * moveAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
+        moveAnimation.path=thePath;
+        moveAnimation.timingFunction = [CAMediaTimingFunction functionWithControlPoints:0.3f:0.7f :0.5f:0.95f];//前快，后慢;
+        moveAnimation.removedOnCompletion = YES;
+        [_containerLayer addAnimation:moveAnimation forKey:@"ContainerMove"];
+        
+        [CATransaction commit];
     
     
     _animationKind = 1;
@@ -355,7 +358,6 @@
     //截图，放到最后，免得耽误上面的执行
     if ([vc isKindOfClass:[ABUnknownPersonViewController class]]) {
         
-        CGSize size = CGSizeMake(64, 64);
         NSString *imageName = theAlarm.alarmRadiusType.alarmRadiusTypeImageName;
         imageName = [@"Shadow_" stringByAppendingString:imageName];
         UIImage *flagImage = [UIImage imageNamed:imageName];
@@ -375,7 +377,7 @@
             self._mapView.visibleMapRect = MKMapRectWorld;
         }
         
-        UIImage *theImage = [self._mapView takeImageWithoutOverlaySize:size overrideImage:flagImage leftBottomAtCoordinate:lbcoordinate imageCenter:imageCenter];
+        UIImage *theImage = [self._mapView takeImageWithoutOverlaySize:kPersonImageSize overrideImage:flagImage leftBottomAtCoordinate:lbcoordinate imageCenter:imageCenter];
         [_imageTook release];
         _imageTook = [theImage retain];
         if (self._mapView.superview) 
@@ -415,23 +417,19 @@
             [self performBlock:^{
                 _mapViewDidStartLoadingMap = YES;
                 _delayForWaitingStartLoadingMap = 0.2; //第二次以后等的时间短
-                //NSLog(@"performBlock 0");
             } afterDelay:_delayForWaitingStartLoadingMap];
             
             [self performBlock:^{
                 _mapViewDidFinishLoadingMap = YES;
-                //NSLog(@"performBlock 1");
             } afterDelay:5.0];
             
             
             while (!_mapViewDidFinishLoadingMap || !_mapViewDidStartLoadingMap) {
-                //NSLog(@"while _mapViewDidFinishLoadingMap = %d _mapViewDidStartLoadingMap = %d",_mapViewDidFinishLoadingMap,_mapViewDidStartLoadingMap);
                 [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
             }
-            //NSLog(@"while _mapViewDidFinishLoadingMap = %d _mapViewDidStartLoadingMap = %d",_mapViewDidFinishLoadingMap,_mapViewDidStartLoadingMap);
             
-            //
-            UIImage *theImage = [self._mapView takeImageWithoutOverlaySize:size overrideImage:flagImage leftBottomAtCoordinate:lbcoordinate imageCenter:imageCenter];
+            //再取一次图
+            UIImage *theImage = [self._mapView takeImageWithoutOverlaySize:kPersonImageSize overrideImage:flagImage leftBottomAtCoordinate:lbcoordinate imageCenter:imageCenter];
             [_imageTook release];
             _imageTook = [theImage retain];
             [self._mapView removeFromSuperview];
@@ -449,10 +447,102 @@
             
         }
         
+    }else{ //
+        
+        if (!self._mapView.superview) 
+            [_personVC.view addSubview:self._mapView];//加到界面上，要不然地图缩小动画没地图
+        
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(_alarm.visualCoordinate, kDegreesForTakeImage, kDegreesForTakeImage);
+        region = [self._mapView regionThatFits:region];
+        [self._mapView setRegion:region];
+        
+        //动画的目的是隐藏地图
+        CABasicAnimation *animation=[CABasicAnimation animationWithKeyPath: @"opacity"];
+        animation.duration = 100;
+        animation.timingFunction= [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]; 
+        animation.fromValue= [NSNumber numberWithFloat:0.0];
+        animation.toValue= [NSNumber numberWithFloat:0.0]; 
+        animation.removedOnCompletion = NO;
+        [self._mapView.layer addAnimation :animation forKey :@"hideMapView" ];
+        
+        _mapViewDidFinishLoadingMap = NO;
+        [self performBlock:^{
+            _mapViewDidFinishLoadingMap = YES;
+        } afterDelay:0.1];
+        
+        while (!_mapViewDidFinishLoadingMap) {
+            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+        }
+        
+        [self._mapView removeFromSuperview];
+        [self._mapView.layer removeAllAnimations];
     }
 
 }
 
+#pragma mark - CAAnimation Delegate Methods
+- (void)animationDidStart:(CAAnimation *)theAnimation{
+    
+}
+
+- (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag{
+    
+    
+    if ([theAnimation.delegate respondsToSelector:@selector(animationKind)]) {
+        
+        [CATransaction begin];
+        [CATransaction setValue:(id)kCFBooleanTrue
+                         forKey:kCATransactionDisableActions];
+        
+        
+        //清理、恢复动画现场
+        [_mapLayerSuperLayer addSublayer:_mapLayer];
+        _mapLayer.position = _mapLayerPosition;
+        _mapLayer.bounds = _mapLayerBounds;
+        
+        [_containerLayer removeFromSuperlayer];                
+        [_containerLayer release]; _containerLayer = nil;
+        [_mapLayer release]; _mapLayer = nil;
+        [_mapLayerSuperLayer release]; _mapLayerSuperLayer = nil;
+        
+        [CATransaction commit];
+        
+        if ([theAnimation.delegate animationKind] == 1) {
+            [(UINavigationController*) _currentViewController pushViewController:_alarmPositionVC animated:NO];
+            [_alarmPositionVC beginWork];
+            
+        }else if ([theAnimation.delegate animationKind] == 2){
+            
+            //释放地图view
+            //[_alarmPositionVC release];
+            //_alarmPositionVC = nil;
+            
+            UIViewController *theVC = [(UINavigationController*) _currentViewController topViewController];
+            
+            //更新ABUnknownPersonViewController
+            if (theVC == _unknownPersonVC) {
+                IAPerson *theIAPerson = [[[IAPerson alloc] initWithAlarm:_alarm image:_imageTook] autorelease];
+                _unknownPersonVC.alternateName = theIAPerson.personName;
+                _unknownPersonVC.displayedPerson = theIAPerson.ABPerson;
+                //高亮闹钟地址
+                if ([_unknownPersonVC respondsToSelector:@selector(setHighlightedItemForProperty:withIdentifier:)]) {
+                    [(ABPersonViewController*)_unknownPersonVC setHighlightedItemForProperty:kABPersonAddressProperty withIdentifier:0];
+                }
+            }
+            
+            //更新ABPersonViewController
+            if (theVC == _personVC) {
+                
+            }
+             
+             
+            
+        }
+    }
+    
+    [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+    NSLog(@"animationDidStop flag = %d",flag);
+}
 
 #pragma mark - ABUnknownPersonViewControllerDelegate
 
@@ -537,54 +627,171 @@
     return NO;
 }
 
-#pragma mark - CAAnimation Delegate Methods
-- (void)animationDidStart:(CAAnimation *)theAnimation{
-    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-}
-
-- (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag{
-    [[UIApplication sharedApplication] endIgnoringInteractionEvents];
-    
-    if ([theAnimation.delegate respondsToSelector:@selector(animationKind)]) {
-        if ([theAnimation.delegate animationKind] == 1) {
-            
-            _unknownPersonVC.title = nil;
-            [(UINavigationController*) _currentViewController pushViewController:_alarmPositionVC animated:NO];
-            
-            //禁用隐式动画
-            [CATransaction begin];
-            [CATransaction setValue:(id)kCFBooleanTrue
-                             forKey:kCATransactionDisableActions];
-            
-            [_mapLayerSuperLayer addSublayer:_mapLayer];
-            _mapLayer.position = _mapLayerPosition;
-            _mapLayer.bounds = _mapLayerBounds;
-            [_containerLayer removeFromSuperlayer];
-            
-            [CATransaction commit];
-            
-
-            [_containerLayer release];
-            [_mapLayer release];
-            [_mapLayerSuperLayer release];
-            
-            [_alarmPositionVC beginWork];
-            
-        }else if ([theAnimation.delegate animationKind] == 2){
-            
-        }
-    }
-     
-}
+#pragma mark - AlarmPositionMapViewController Delegate Method
 
 - (void)alarmPositionMapViewControllerDidPressDoneButton:(AlarmPositionMapViewController*)alarmPositionMapViewController{
+    
+    //恢复title
     _unknownPersonVC.title = KLabelAlarmPostion;
     _personVC.title = KLabelAlarmPostion;
+    
+    //在截图前做
+    MKMapView *theMapView = _mapView;
+    [theMapView setRegion:_alarmPositionVC.mapView.region];
+    
+    //截图,要在弹出视图前做
+    CLLocationCoordinate2D lbcoordinate = _alarm.visualCoordinate;
+    lbcoordinate = CLLocationCoordinate2DIsValid(lbcoordinate) ? lbcoordinate : theMapView.centerCoordinate;
+    [_alarmPositionVC.mapView setCenterCoordinate:lbcoordinate];
+    
+    NSString *imageName = _alarm.alarmRadiusType.alarmRadiusTypeImageName;
+    imageName = [@"Shadow_" stringByAppendingString:imageName];
+    UIImage *flagImage = [UIImage imageNamed:imageName];
+    CGPoint imageCenter = {6,12};
+    
+    UIImage *personImage = [_alarmPositionVC.mapView takeImageWithoutOverlaySize:kPersonImageSize overrideImage:flagImage leftBottomAtCoordinate:lbcoordinate imageCenter:imageCenter];
+    [_imageTook release];
+    _imageTook = [personImage retain];
+    
+    
+    //停止用户响应,弹出视图
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents]; 
     [(UINavigationController*) _currentViewController popViewControllerAnimated:NO];
     
-    //释放地图view
-    [_alarmPositionVC release];
-    _alarmPositionVC = nil;
+    //重新定位照片
+    UIViewController *theViewController = [(UINavigationController*)_currentViewController topViewController];
+    CGRect personImageFrame = (CGRect) {kPersonImageOrigin, kPersonImageSize};
+    if (theViewController.view.subviews.count > 0) {
+        //找到包含照片的tableview
+        NSUInteger index = [theViewController.view.subviews indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+            if ([obj isKindOfClass:[UITableView class]]) {
+                *stop = YES;
+                return YES;
+            }
+            return NO;
+        }];
+        UITableView *personTableView = nil;
+        if (NSNotFound != index) {
+            personTableView = [theViewController.view.subviews objectAtIndex:index];
+        }
+        
+        CGFloat offsetX = personTableView.contentOffset.x;
+        CGFloat offsetY = personTableView.contentOffset.y;
+        offsetY = (offsetY < 85 ) ? offsetY : 85;
+        
+        //根据tableview的offset重新定位照片
+        if (personTableView) {
+            personImageFrame = CGRectOffset(personImageFrame, -offsetX, -offsetY);
+        }
+    }
+
+    
+    //根
+    CALayer *rootLayer = theViewController.view.layer;
+    
+    //容器
+    _containerLayer = [[CALayer layer] retain];
+    _containerLayer.bounds = (CGRect){{0,0},kPersonImageSize};
+    _containerLayer.position = YCRectCenter(personImageFrame);
+    _containerLayer.masksToBounds = NO;
+    [rootLayer addSublayer:_containerLayer];
+    
+    //阴影
+    CALayer *shadowLayer = [CALayer layer];
+    shadowLayer.contents = (id)[UIImage imageNamed:@"IAMapAnimationShadow.png"].CGImage;
+    shadowLayer.bounds = _containerLayer.bounds;
+    shadowLayer.position = YCRectCenter(_containerLayer.bounds);
+    shadowLayer.anchorPoint = kMapViewShadowAnchorPoint;
+    [_containerLayer addSublayer:shadowLayer];
+    
+    
+    //地图
+         //保存为了恢复
+    _mapLayerSuperLayer =  [theMapView.layer.superlayer retain];
+    _mapLayerPosition = theMapView.layer.position; 
+    _mapLayerBounds = theMapView.layer.bounds; 
+    
+    _mapLayer = [theMapView.layer retain];
+    _mapLayer.position = YCRectCenter(_containerLayer.bounds);
+    _mapLayer.bounds = _containerLayer.bounds;
+    [_containerLayer addSublayer:_mapLayer];
+    
+    //personImage layer
+    CALayer *personImageLayer = [CALayer layer];
+    personImageLayer.contents = (id)personImage.CGImage;
+    personImageLayer.bounds = (CGRect){{0,0},kPersonImageSize};
+    personImageLayer.position = YCRectCenter(_containerLayer.bounds);
+    personImageLayer.opacity = 1.0;
+    [_containerLayer addSublayer:personImageLayer];
+     
+    
+    
+    [CATransaction begin];
+    [CATransaction setAnimationDuration:1.0];
+        
+        [CATransaction begin];
+        [CATransaction setAnimationDuration:0.75];
+    
+        //地图缩小
+        CABasicAnimation *scaleAnimation=[CABasicAnimation animationWithKeyPath: @"bounds"];
+        scaleAnimation.toValue = [NSValue valueWithCGRect:(CGRect){{(kPersonViewWidth-kPersonImageWidth)/2,(kPersonViewHeight-kPersonImageHeight)/2},kPersonImageSize}];
+        scaleAnimation.fromValue = [NSValue valueWithCGRect:_mapLayerBounds];
+        scaleAnimation.timingFunction= [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];//前极慢，后极快,后慢
+        scaleAnimation.removedOnCompletion = YES;
+        [_mapLayer addAnimation :scaleAnimation forKey :@"MapScale1"]; 
+        
+        //地图阴影缩小
+        CABasicAnimation *scale1Animation=[CABasicAnimation animationWithKeyPath: @"bounds"];
+        scale1Animation.toValue = [NSValue valueWithCGRect:(CGRect){{0,0},
+            {kMapViewShadowWidth/kPersonViewWidth * kPersonImageWidth, kMapViewShadowHeight/kPersonViewHeight * kPersonImageHeight}}];
+        scale1Animation.fromValue = [NSValue valueWithCGRect:(CGRect){{0,0},kMapViewShadowSize}];  
+        scale1Animation.timingFunction= [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];//前极慢，后极快,后慢
+        scale1Animation.removedOnCompletion = YES;
+        [shadowLayer addAnimation :scale1Animation forKey :@"ShadowScale"]; 
+    
+        [CATransaction commit];
+    
+    
+    
+    //渐变 地图变成照片
+    CABasicAnimation *tranAnimation=[CABasicAnimation animationWithKeyPath: @"opacity"];
+    tranAnimation.timingFunction= [CAMediaTimingFunction functionWithControlPoints:0.7f:0.05f :0.8f:0.9f];  //前慢后快
+    tranAnimation.fromValue= [NSNumber numberWithFloat:0.0];
+    tranAnimation.toValue= [NSNumber numberWithFloat:1.0];   
+    tranAnimation.removedOnCompletion = YES;
+    [personImageLayer addAnimation :tranAnimation forKey :@"PersonImageShow1" ];
+    
+    
+    //位置移动
+    CGPoint pmCenter = YCRectCenter(personImageFrame);    //照片位置
+    CGPoint viewCenter = YCRectCenter(rootLayer.bounds);  //视图中心
+    CGMutablePathRef thePath = CGPathCreateMutable();
+    CGPathMoveToPoint(thePath,NULL,viewCenter.x, viewCenter.y); 
+    if (personImageFrame.origin.y > 0) {
+        
+        CGPathAddCurveToPoint(thePath,NULL ,
+                              viewCenter.x + 20, viewCenter.y+40,
+                              viewCenter.x - 50, viewCenter.y-140, 
+                              pmCenter.x,pmCenter.y);  //右弧线
+    }else{
+        
+        CGPathAddCurveToPoint(thePath,NULL ,
+                      pmCenter.x + 40,pmCenter.y+300,
+                      pmCenter.x,     pmCenter.y+100, 
+                      pmCenter.x,pmCenter.y);  //左弧线
+    }
+   
+    
+    CAKeyframeAnimation * moveAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
+    moveAnimation.path=thePath;
+    moveAnimation.timingFunction = [CAMediaTimingFunction functionWithControlPoints:0.7f:0.05f :0.8f:0.9f];  //前慢后快
+    moveAnimation.removedOnCompletion = YES;
+    moveAnimation.delegate = self;
+    [_containerLayer addAnimation:moveAnimation forKey:@"ContainerMove1"];
+    
+    _animationKind = 2;
+    [CATransaction commit];
+    
 }
 
 
@@ -615,26 +822,16 @@
 #pragma mark - MKMapViewDelegate
 
 - (void)mapViewWillStartLoadingMap:(MKMapView *)mapView{
-    //NSLog(@"mapViewWillStartLoadingMap 1");
     _mapViewDidFinishLoadingMap = NO;
     _mapViewDidStartLoadingMap = YES;
 }
 - (void)mapViewDidFinishLoadingMap:(MKMapView *)mapView{
-    //NSLog(@"mapViewDidFinishLoadingMap 2");
     _mapViewDidFinishLoadingMap = YES;
 }
 
 - (void)mapViewDidFailLoadingMap:(MKMapView *)mapView withError:(NSError *)error{
-    //NSLog(@"mapViewDidFailLoadingMap 3");
     _mapViewDidFinishLoadingMap = YES;
 }
-
-/*
-- (BOOL)_viewController:(UIViewController *)personViewController shouldPerformDefaultActionForPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifierForValue{
-    
-}
- */
-
 
 
 @end

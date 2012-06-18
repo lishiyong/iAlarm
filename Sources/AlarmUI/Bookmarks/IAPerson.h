@@ -11,6 +11,7 @@
 
 @class IAAlarm;
 @interface IAPerson : NSObject<NSCoding, NSCopying>{
+    
     ABRecordID _personId;
     NSString *_personName;
     NSArray *_addressDictionaries;
@@ -21,7 +22,6 @@
     ABAddressBookRef _addressBook;
     ABRecordRef _ABperson;
 }
-
 
 - (ABRecordID)personId;
 - (NSString *)personName;
