@@ -66,7 +66,7 @@
         NSIndexSet *indexSetDuplicate = nil;
         indexSetDuplicate = [_all indexesOfObjectsPassingTest:^BOOL(YCPair *aPair, NSUInteger idx, BOOL *stop) {
             
-            NSString *aKey = aPair.key;
+            NSString *aKey = (NSString*)aPair.key;
             id aValue = aPair.value;
             
             BOOL keyEqual = [aKey isEqualToString:key];

@@ -95,6 +95,8 @@
         self.failureBlock(parser.statusCode, [parseError localizedDescription]);
         handeledByBlocks = YES;
     }
+    [_successBlock release];_successBlock = nil; //2012-6-20 添加 李世勇
+    [_failureBlock release];_failureBlock = nil; //2012-6-20 添加 李世勇
 #endif
 	
     if (!handeledByBlocks && self.delegate) {
@@ -122,6 +124,8 @@
         [self.delegate forwardGeocoderConnectionDidFail:self withErrorMessage:errorMessage];
         handeledByBlocks = YES;
     }
+    [_successBlock release];_successBlock = nil; //2012-6-20 添加 李世勇
+    [_failureBlock release];_failureBlock = nil; //2012-6-20 添加 李世勇
 #endif
     
     if (!handeledByBlocks && self.delegate && [self.delegate respondsToSelector:@selector(forwardGeocoderConnectionDidFail:withErrorMessage:)]) {

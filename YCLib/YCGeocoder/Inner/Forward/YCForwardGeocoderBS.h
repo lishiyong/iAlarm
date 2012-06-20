@@ -11,7 +11,6 @@
 
 @interface YCForwardGeocoderBS : YCForwardGeocoder{
     BSForwardGeocoder *_forwardGeocoder;
-    YCforwardGeocodeCompletionHandler _forwardGeocodeCompletionHandler;
     BOOL _geocoding;
 }
 

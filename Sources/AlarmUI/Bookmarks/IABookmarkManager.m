@@ -207,7 +207,7 @@
 
 - (BOOL)recentAddressPickerNavigationController:(IARecentAddressViewController *)recentAddressPicker shouldContinueAfterSelectingRecentAddressData:(YCPair*)anRecentAddressData{
     
-    NSString *key = anRecentAddressData.key; //查询串或人名
+    NSString *key = (NSString*)anRecentAddressData.key; //查询串或人名
     id value = anRecentAddressData.value;    //查询结果，字符串或IAPerson
     
     if ([value isKindOfClass: [NSString class]]) {

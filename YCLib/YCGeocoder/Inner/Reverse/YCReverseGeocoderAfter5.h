@@ -11,7 +11,9 @@
 
 @interface YCReverseGeocoderAfter5 : YCReverseGeocoder{
     CLGeocoder *_geocoder;
-    CLGeocodeCompletionHandler _reverseGeocodeCompletionHandler;
+    
+    //用完就释放，不能依赖receiver中的dealloc，因为有可能与recever互为引用
+    CLGeocodeCompletionHandler _reverseGeocodeCompletionHandler; 
 }
 
 @end

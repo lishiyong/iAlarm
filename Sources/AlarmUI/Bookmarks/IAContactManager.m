@@ -26,11 +26,11 @@
 #define kPersonViewHeight                  416.0
 #define kPersonViewSize                    (CGSize) {kPersonViewWidth, kPersonViewHeight}
 
-#define kMapViewShadowWidth                375.0
-#define kMapViewShadowHeight               471.0
+#define kMapViewShadowWidth                365.0
+#define kMapViewShadowHeight               461.0
 #define kMapViewShadowSize                 (CGSize) {kMapViewShadowWidth, kMapViewShadowHeight}
-#define kMapViewShadowAnchorPoint          (CGPoint){(3+kPersonViewWidth/2)/kMapViewShadowWidth,(10+kPersonViewHeight/2)/kMapViewShadowHeight}
-//阴影的左边缘:3，上边缘:10
+#define kMapViewShadowAnchorPoint          (CGPoint){(4+kPersonViewWidth/2)/kMapViewShadowWidth,(7+kPersonViewHeight/2)/kMapViewShadowHeight}
+//阴影的左边缘:4，上边缘:6
 
 #define kDegreesForTakeImage               1500.0
 
@@ -107,13 +107,13 @@
                                    ,nil];
         _personVC.displayedProperties = displayedItems;
         
-        _personVC.allowsEditing = YES; //不能让编辑。编辑状态会把关闭按钮给冲掉的。//但没有编辑，高亮不好用
+        //_personVC.allowsEditing = YES; //不能让编辑。编辑状态会把关闭按钮给冲掉的。//但没有编辑，高亮不好用
     }
     
     if (thePerson) {
         _personVC.displayedPerson = thePerson.ABPerson;
     }
-    
+    _personVC.navigationItem.rightBarButtonItem = nil; //4.0系统竟然有个右取消按钮
     _personVC.title = KLabelAlarmPostion;
     return _personVC;
 }
@@ -232,7 +232,7 @@
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents]; //停止用户响应
     
     [CATransaction begin];
-    [CATransaction setAnimationDuration:1.0];
+    [CATransaction setAnimationDuration:0.75];
     
     //地图放大
     CABasicAnimation *scaleAnimation=[CABasicAnimation animationWithKeyPath: @"bounds"];
@@ -254,7 +254,7 @@
     
         //渐变 照片变成地图
         [CATransaction begin];
-        [CATransaction setAnimationDuration:0.35];
+        [CATransaction setAnimationDuration:0.25];
         
         CABasicAnimation *tranAnimation=[CABasicAnimation animationWithKeyPath: @"opacity"];
         tranAnimation.timingFunction= [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];  //前慢后快
@@ -267,7 +267,7 @@
     
         //位置移动
         [CATransaction begin];
-        [CATransaction setAnimationDuration:0.95];
+        [CATransaction setAnimationDuration:0.7];
         
         CGPoint pmCenter = YCRectCenter(personImageFrame);
         CGMutablePathRef thePath = CGPathCreateMutable();
@@ -290,31 +290,22 @@
     [CATransaction commit];
 }
 
-- (id)init{
-    self = [super init];
-    if (self) {
-        //提前初始化好，省得打开时候响应的慢
-        [self _unknownPersonViewControllerWithIAPerson:nil];
-        [self _personViewControllerWithIAPerson:nil];
-        _delayForWaitingStartLoadingMap = 0.75;
-    }
-    return self;
+- (void)dealloc{
+    NSLog(@"IAContactManager dealloc");
+    [_alarm release];
+    [_cancelButtonItem release];
+    [_unknownPersonVC release];
+    [_personVC release];
+    [_mapView release];
+    [_personImageTook release];
+    [_alarmPositionVC release];
+    [super dealloc];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
     return [self init];
 }
 
-- (void)dealloc{
-    [_alarm release];
-    [_cancelButtonItem release];
-    [_unknownPersonVC release];
-    [_personVC release];
-    [_mapView release];
-    [_imageTook release];
-    [_alarmPositionVC release];
-    [super dealloc];
-}
 
 - (void)cancelButtonItemPressed:(id)sender{
     
@@ -344,6 +335,7 @@
     
     //
     [(UINavigationController*)_currentViewController pushViewController:vc animated:YES];
+    vc.navigationItem.rightBarButtonItem = nil;
     
     //ABUnknownPersonViewController其实也支持这个函数
     if ([vc isKindOfClass:[ABUnknownPersonViewController class]]) {
@@ -356,7 +348,7 @@
     }
     
     //截图，放到最后，免得耽误上面的执行
-    if ([vc isKindOfClass:[ABUnknownPersonViewController class]]) {
+    if (!contactPerson.image || [vc isKindOfClass:[ABUnknownPersonViewController class]]) {
         
         NSString *imageName = theAlarm.alarmRadiusType.alarmRadiusTypeImageName;
         imageName = [@"Shadow_" stringByAppendingString:imageName];
@@ -371,24 +363,24 @@
             MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(lbcoordinate, kDegreesForTakeImage, kDegreesForTakeImage);
             region = [self._mapView regionThatFits:region];
             if (!self._mapView.superview) 
-                [_unknownPersonVC.view addSubview:self._mapView];//必须加到界面上，否则数据不加载
+                [vc.view addSubview:self._mapView];//必须加到界面上，否则数据不加载
             [self._mapView setRegion:region];
         }else{
             self._mapView.visibleMapRect = MKMapRectWorld;
         }
         
         UIImage *theImage = [self._mapView takeImageWithoutOverlaySize:kPersonImageSize overrideImage:flagImage leftBottomAtCoordinate:lbcoordinate imageCenter:imageCenter];
-        [_imageTook release];
-        _imageTook = [theImage retain];
+        [_personImageTook release];
+        _personImageTook = [theImage retain];
         if (self._mapView.superview) 
             [self._mapView removeFromSuperview];
         
         IAPerson *personWithImage = [[[IAPerson alloc] initWithAlarm:theAlarm image:theImage] autorelease];
-        _unknownPersonVC.displayedPerson = personWithImage.ABPerson;
+        ((ABPersonViewController*)vc).displayedPerson = personWithImage.ABPerson;
          
         //再一次高亮闹钟地址
-        if ([_unknownPersonVC respondsToSelector:@selector(setHighlightedItemForProperty:withIdentifier:)]) {
-         [(ABPersonViewController*)_unknownPersonVC setHighlightedItemForProperty:kABPersonAddressProperty withIdentifier:0];
+        if ([vc respondsToSelector:@selector(setHighlightedItemForProperty:withIdentifier:)]) {
+         [(ABPersonViewController*)vc setHighlightedItemForProperty:kABPersonAddressProperty withIdentifier:0];
         }
         
         //////////////
@@ -397,7 +389,7 @@
         if (CLLocationCoordinate2DIsValid(theAlarm.visualCoordinate)) {
             self._mapView.delegate = self;
             if (!self._mapView.superview) 
-                [_unknownPersonVC.view addSubview:self._mapView];//必须加到界面上，否则数据不加载
+                [vc.view addSubview:self._mapView];//必须加到界面上，否则数据不加载
             
             MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(lbcoordinate, kDegreesForTakeImage, kDegreesForTakeImage);
             region = [self._mapView regionThatFits:region];
@@ -406,11 +398,16 @@
             //动画的目的是隐藏地图
             CABasicAnimation *animation=[CABasicAnimation animationWithKeyPath: @"opacity"];
             animation.duration = 100;
-            animation.timingFunction= [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]; 
-            animation.fromValue= [NSNumber numberWithFloat:0.0];
+            animation.timingFunction= [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+            if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.4) {//5.0以上
+                animation.fromValue= [NSNumber numberWithFloat:0.0];
+            }else{
+                animation.fromValue= [NSNumber numberWithFloat:0.05];// iOS 4.x 需要这样 
+            }
             animation.toValue= [NSNumber numberWithFloat:0.0]; 
-            animation.removedOnCompletion = NO;
+            animation.removedOnCompletion = YES;
             [self._mapView.layer addAnimation :animation forKey :@"hideMapView" ];
+            
             
             _mapViewDidFinishLoadingMap = YES;
             _mapViewDidStartLoadingMap = NO;
@@ -423,26 +420,28 @@
                 _mapViewDidFinishLoadingMap = YES;
             } afterDelay:5.0];
             
-            
+            //NSLog(@"前 while _mapViewDidFinishLoadingMap = %d _mapViewDidStartLoadingMap = %d",_mapViewDidFinishLoadingMap,_mapViewDidStartLoadingMap);
             while (!_mapViewDidFinishLoadingMap || !_mapViewDidStartLoadingMap) {
                 [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
             }
             
+            //NSLog(@"后 while _mapViewDidFinishLoadingMap = %d _mapViewDidStartLoadingMap = %d",_mapViewDidFinishLoadingMap,_mapViewDidStartLoadingMap);
+            
             //再取一次图
             UIImage *theImage = [self._mapView takeImageWithoutOverlaySize:kPersonImageSize overrideImage:flagImage leftBottomAtCoordinate:lbcoordinate imageCenter:imageCenter];
-            [_imageTook release];
-            _imageTook = [theImage retain];
+            [_personImageTook release];
+            _personImageTook = [theImage retain];
             [self._mapView removeFromSuperview];
             [self._mapView.layer removeAllAnimations];
             self._mapView.delegate = nil;//
 
             
             IAPerson *personWithImage = [[[IAPerson alloc] initWithAlarm:theAlarm image:theImage] autorelease];
-            _unknownPersonVC.displayedPerson = personWithImage.ABPerson;
+            ((ABPersonViewController*)vc).displayedPerson = personWithImage.ABPerson;
             
             //再一次高亮闹钟地址
-            if ([_unknownPersonVC respondsToSelector:@selector(setHighlightedItemForProperty:withIdentifier:)]) {
-                [(ABPersonViewController*)_unknownPersonVC setHighlightedItemForProperty:kABPersonAddressProperty withIdentifier:0];
+            if ([vc respondsToSelector:@selector(setHighlightedItemForProperty:withIdentifier:)]) {
+                [(ABPersonViewController*)vc setHighlightedItemForProperty:kABPersonAddressProperty withIdentifier:0];
             }
             
         }
@@ -459,8 +458,12 @@
         //动画的目的是隐藏地图
         CABasicAnimation *animation=[CABasicAnimation animationWithKeyPath: @"opacity"];
         animation.duration = 100;
-        animation.timingFunction= [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]; 
-        animation.fromValue= [NSNumber numberWithFloat:0.0];
+        animation.timingFunction= [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.4) {//5.0以上
+            animation.fromValue= [NSNumber numberWithFloat:0.0];
+        }else{
+            animation.fromValue= [NSNumber numberWithFloat:0.05];// iOS 4.x 需要这样 
+        }
         animation.toValue= [NSNumber numberWithFloat:0.0]; 
         animation.removedOnCompletion = NO;
         [self._mapView.layer addAnimation :animation forKey :@"hideMapView" ];
@@ -490,38 +493,47 @@
     
     if ([theAnimation.delegate respondsToSelector:@selector(animationKind)]) {
         
-        [CATransaction begin];
-        [CATransaction setValue:(id)kCFBooleanTrue
-                         forKey:kCATransactionDisableActions];
-        
-        
         //清理、恢复动画现场
+        
+        //[CATransaction begin];
+        //[CATransaction setValue:(id)kCFBooleanTrue
+        //                 forKey:kCATransactionDisableActions];
+        
+        [_mapLayer removeAllAnimations];
         [_mapLayerSuperLayer addSublayer:_mapLayer];
         _mapLayer.position = _mapLayerPosition;
         _mapLayer.bounds = _mapLayerBounds;
         
-        [_containerLayer removeFromSuperlayer];                
+        [_containerLayer removeAllAnimations];
+        [_containerLayer removeFromSuperlayer];  
+        
+        //[CATransaction commit];
+        
+                      
         [_containerLayer release]; _containerLayer = nil;
         [_mapLayer release]; _mapLayer = nil;
         [_mapLayerSuperLayer release]; _mapLayerSuperLayer = nil;
         
-        [CATransaction commit];
         
         if ([theAnimation.delegate animationKind] == 1) {
             [(UINavigationController*) _currentViewController pushViewController:_alarmPositionVC animated:NO];
             [_alarmPositionVC beginWork];
             
+            //清理动画现场也需要时间
+            [[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:0.2];
+            
         }else if ([theAnimation.delegate animationKind] == 2){
             
             //释放地图view
-            //[_alarmPositionVC release];
-            //_alarmPositionVC = nil;
+            NSLog(@"_alarmPositionVC.retainCount = %d",_alarmPositionVC.retainCount);
+            [_alarmPositionVC release];
+            _alarmPositionVC = nil;
             
             UIViewController *theVC = [(UINavigationController*) _currentViewController topViewController];
             
             //更新ABUnknownPersonViewController
             if (theVC == _unknownPersonVC) {
-                IAPerson *theIAPerson = [[[IAPerson alloc] initWithAlarm:_alarm image:_imageTook] autorelease];
+                IAPerson *theIAPerson = [[[IAPerson alloc] initWithAlarm:_alarm image:_personImageTook] autorelease];
                 _unknownPersonVC.alternateName = theIAPerson.personName;
                 _unknownPersonVC.displayedPerson = theIAPerson.ABPerson;
                 //高亮闹钟地址
@@ -533,15 +545,87 @@
             //更新ABPersonViewController
             if (theVC == _personVC) {
                 
+                ABRecordRef theABPerson = _personVC.displayedPerson;
+                ABRecordID theABPersonId = _alarm.personId;//不能用界面上的，界面上的id是 -1.
+                IAPerson *theIAPerson = [[[IAPerson alloc] initWithPersonId:theABPersonId] autorelease];
+                NSUInteger index = [self _indexAddressDictionaryOfAlarm:_alarm forContactPerson:theABPerson];
+                
+                BOOL hasUnsavedChanges = NO;
+                IAPerson *theIAPeronForAlarm = [[[IAPerson alloc] initWithAlarm:_alarm image:nil] autorelease];
+                if (NSNotFound == index && theIAPeronForAlarm.addressDictionary) {
+                    //保存地址、备注 － database
+                    //[theIAPerson addAddressDictionary:theIAPeronForAlarm.addressDictionary];
+                    [theIAPerson replaceAddressDictionaryAtIndex:_indexHighlighted withAddressDictionary:theIAPeronForAlarm.addressDictionary];
+                    hasUnsavedChanges = YES;
+                }
+                
+                if (theIAPeronForAlarm.note) {
+                    //备注 － database
+                    /*
+                    NSString *oldNote = theIAPerson.note;
+                    NSString *newNote = nil;
+                    if (!oldNote) 
+                        newNote = theIAPeronForAlarm.note;
+                    else if (oldNote && [oldNote rangeOfString:theIAPeronForAlarm.note].location == NSNotFound) 
+                        newNote = [theIAPerson.note stringByAppendingFormat:@"\n%@",theIAPeronForAlarm.note];
+                    
+                    if (newNote && ![oldNote isEqualToString:newNote]) {
+                        [theIAPerson setNote:newNote];
+                        hasUnsavedChanges = YES;
+                    }
+                     */
+                    NSString *oldNote = theIAPerson.note;
+                    NSString *newNote = theIAPeronForAlarm.note;
+                    if (![oldNote isEqualToString:newNote]) {
+                        [theIAPerson setNote:newNote];
+                        hasUnsavedChanges = YES;
+                    }
+                }
+                
+            
+                if (!theIAPerson.image) {//没有照片，才保存
+                    //保存照片 － － database
+                    theIAPerson.image = _personImageTook;
+                    hasUnsavedChanges = YES;
+                }
+                
+                if (theIAPeronForAlarm.personName) {
+                    //名字
+                    NSString *oldName = theIAPerson.personName;
+                    NSString *newName = theIAPeronForAlarm.personName;
+                    if (![oldName isEqualToString:newName]) {
+                        [theIAPerson setPersonName:newName];
+                        hasUnsavedChanges = YES;
+                    }
+                }
+                
+                if (hasUnsavedChanges) {
+                    //保存
+                    [theIAPerson addressBookSave];
+                }
+                
+                //显示,原来的照片被empty了
+                IAPerson *newIAPerson = [[[IAPerson alloc] initWithPersonId:theABPersonId] autorelease];
+                //界面上一定放一个临时的person，免得不小心给修改了
+                IAPerson *newTempIAPerson = [[[IAPerson alloc] initWithPerson:newIAPerson.ABPerson] autorelease];
+                newTempIAPerson.image = _personImageTook;
+                index = [self _indexAddressDictionaryOfAlarm:_alarm forContactPerson:newTempIAPerson.ABPerson];
+                _personVC.displayedPerson = newTempIAPerson.ABPerson;
+                [_personVC setHighlightedItemForProperty:kABPersonAddressProperty withIdentifier:index];
+                
+             
             }
              
-             
+            //不设置竟然给改成默认的了
+            _unknownPersonVC.title = KLabelAlarmPostion;
+            _personVC.title = KLabelAlarmPostion;
+            
+            
+            [[UIApplication sharedApplication] endIgnoringInteractionEvents];
             
         }
     }
     
-    [[UIApplication sharedApplication] endIgnoringInteractionEvents];
-    NSLog(@"animationDidStop flag = %d",flag);
 }
 
 #pragma mark - ABUnknownPersonViewControllerDelegate
@@ -583,7 +667,7 @@
         UIViewController *vc = nil;
         NSUInteger index = [self _indexAddressDictionaryOfAlarm:_alarm forContactPerson:person];
         if (NSNotFound == index) {
-            IAPerson *newPerson = [[[IAPerson alloc] initWithAlarm:_alarm image:_imageTook] autorelease];
+            IAPerson *newPerson = [[[IAPerson alloc] initWithAlarm:_alarm image:_personImageTook] autorelease];
             vc = [self _unknownPersonViewControllerWithIAPerson:newPerson];
         }else{
             IAPerson *contactPerson = [[[IAPerson alloc] initWithPerson:person] autorelease];
@@ -593,12 +677,16 @@
         //弹出新的
         [(UINavigationController*) _currentViewController pushViewController:vc animated:NO];
         
-        //高亮闹钟地址
-        if (NSNotFound != index) {
-            if ([vc respondsToSelector:@selector(setHighlightedItemForProperty:withIdentifier:)]) {
-                [(ABPersonViewController*)vc setHighlightedItemForProperty:kABPersonAddressProperty withIdentifier:index];
+        
+        [self performBlock:^{ //竟然需要这样
+            //高亮闹钟地址
+            if (NSNotFound != index) {
+                if ([vc respondsToSelector:@selector(setHighlightedItemForProperty:withIdentifier:)]) {
+                    [(ABPersonViewController*)vc setHighlightedItemForProperty:kABPersonAddressProperty withIdentifier:index];
+                }
             }
-        }
+            vc.navigationItem.rightBarButtonItem = nil;
+        } afterDelay:0.2];
         
     }
     
@@ -615,6 +703,7 @@
     
     thePerson.image = emptyImage;
     personViewController.displayedPerson = thePerson.ABPerson;
+    personViewController.title = KLabelAlarmPostion;//不设置竟然给改成默认的了
     
     //高亮闹钟地址
     if ([personViewController respondsToSelector:@selector(setHighlightedItemForProperty:withIdentifier:)]) {
@@ -627,13 +716,38 @@
     return NO;
 }
 
+#pragma mark - ABPersonViewControllerDelegate
+
+- (BOOL)personViewController:(ABPersonViewController *)personViewController shouldPerformDefaultActionForPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifierForValue{
+    
+    if ((kABPersonKindProperty == property)|| 
+        (kABPersonAddressProperty == property 
+        &&  [self _indexAddressDictionaryOfAlarm:_alarm forContactPerson:person] == identifierForValue)) {
+                
+        IAPerson *thePerson = [[[IAPerson alloc] initWithPerson:person] autorelease];
+        UIImage *personImage = thePerson.image;
+        UIImage *emptyImage = [UIImage imageNamed:@"IAPersonNoImage.png"];
+        thePerson.image = emptyImage;
+        personViewController.displayedPerson = thePerson.ABPerson;
+        personViewController.title = KLabelAlarmPostion;
+            
+        if (kABPersonAddressProperty == property ) {
+            //高亮闹钟地址
+            [(ABPersonViewController*)personViewController setHighlightedItemForProperty:kABPersonAddressProperty withIdentifier:identifierForValue];
+            _indexHighlighted = identifierForValue;//保存，备用  //TODO
+        }
+            
+        [self _viewController:personViewController personImage:personImage];
+        
+    }
+    
+    
+    return NO;
+}
+
 #pragma mark - AlarmPositionMapViewController Delegate Method
 
 - (void)alarmPositionMapViewControllerDidPressDoneButton:(AlarmPositionMapViewController*)alarmPositionMapViewController{
-    
-    //恢复title
-    _unknownPersonVC.title = KLabelAlarmPostion;
-    _personVC.title = KLabelAlarmPostion;
     
     //在截图前做
     MKMapView *theMapView = _mapView;
@@ -650,8 +764,8 @@
     CGPoint imageCenter = {6,12};
     
     UIImage *personImage = [_alarmPositionVC.mapView takeImageWithoutOverlaySize:kPersonImageSize overrideImage:flagImage leftBottomAtCoordinate:lbcoordinate imageCenter:imageCenter];
-    [_imageTook release];
-    _imageTook = [personImage retain];
+    [_personImageTook release];
+    _personImageTook = [personImage retain];
     
     
     //停止用户响应,弹出视图
@@ -727,10 +841,10 @@
     
     
     [CATransaction begin];
-    [CATransaction setAnimationDuration:1.0];
+    [CATransaction setAnimationDuration:0.75];
         
         [CATransaction begin];
-        [CATransaction setAnimationDuration:0.75];
+        [CATransaction setAnimationDuration:0.4];
     
         //地图缩小
         CABasicAnimation *scaleAnimation=[CABasicAnimation animationWithKeyPath: @"bounds"];
@@ -794,43 +908,85 @@
     
 }
 
-
-#pragma mark - ABPersonViewControllerDelegate
-
-- (BOOL)personViewController:(ABPersonViewController *)personViewController shouldPerformDefaultActionForPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifierForValue{
-    
-    if (kABPersonAddressProperty == property 
-        &&  [self _indexAddressDictionaryOfAlarm:_alarm forContactPerson:person] == identifierForValue) {
-        
-        IAPerson *thePerson = [[[IAPerson alloc] initWithPerson:person] autorelease];
-        UIImage *personImage = thePerson.image;
-        UIImage *emptyImage = [UIImage imageNamed:@"IAPersonNoImage.png"];
-        thePerson.image = emptyImage;
-        personViewController.displayedPerson = thePerson.ABPerson;
-        
-        //高亮闹钟地址
-        [(ABPersonViewController*)personViewController setHighlightedItemForProperty:kABPersonAddressProperty withIdentifier:identifierForValue];
-        
-        [self _viewController:personViewController personImage:personImage];
-        
-    }
-    
-    
-    return NO;
-}
-
 #pragma mark - MKMapViewDelegate
 
 - (void)mapViewWillStartLoadingMap:(MKMapView *)mapView{
+    //NSLog(@"mapViewWillStartLoadingMap 1");
     _mapViewDidFinishLoadingMap = NO;
     _mapViewDidStartLoadingMap = YES;
 }
 - (void)mapViewDidFinishLoadingMap:(MKMapView *)mapView{
+    //NSLog(@"mapViewDidFinishLoadingMap 2");
     _mapViewDidFinishLoadingMap = YES;
 }
 
 - (void)mapViewDidFailLoadingMap:(MKMapView *)mapView withError:(NSError *)error{
+    //NSLog(@"mapViewDidFinishLoadingMap 3");
     _mapViewDidFinishLoadingMap = YES;
+}
+
+#pragma mark - 
+
+- (void)personImageDidPress{
+    UIViewController *vc = [(UINavigationController*) _currentViewController topViewController];
+    if (vc == _unknownPersonVC) {
+        [self unknownPersonViewController:_unknownPersonVC shouldPerformDefaultActionForPerson:_unknownPersonVC.displayedPerson property:kABPersonKindProperty identifier:0]; //没有image属性，用kABPersonKindProperty代替
+    }else if (vc == _personVC){
+        [self personViewController:_personVC shouldPerformDefaultActionForPerson:_personVC.displayedPerson property:kABPersonKindProperty identifier:0]; //没有image属性，用kABPersonKindProperty代替
+    }
+}
+
+
+#pragma mark - mothed for single 
+
+static id single = nil;
++ (IAContactManager*)sharedManager{
+    if (single == nil) {
+        single = [[super allocWithZone:NULL] init];
+    }
+    return single;
+}
+
+- (id)init{
+    self = [super init];
+    if (self) {
+        //提前初始化好，省得打开时候响应的慢
+        [self _unknownPersonViewControllerWithIAPerson:nil];
+        [self _personViewControllerWithIAPerson:nil];
+        _currentViewController = nil;
+        _delayForWaitingStartLoadingMap = 1.0;
+    }
+    return self;
+}
+
++ (id)allocWithZone:(NSZone *)zone
+{
+    return [[self sharedManager] retain];
+}
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    return self;
+}
+
+- (id)retain
+{
+    return self;
+}
+
+- (NSUInteger)retainCount
+{
+    return NSUIntegerMax;  //denotes an object that cannot be released
+}
+
+- (oneway void)release
+{
+    //do nothing
+}
+
+- (id)autorelease
+{
+    return self;
 }
 
 

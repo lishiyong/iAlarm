@@ -12,7 +12,7 @@
 
 
 @interface YCForwardGeocoderManager : NSObject{
-    YCforwardGeocodeCompletionHandler _forwardGeocodeCompletionHandler;
+    YCforwardGeocodeCompletionHandler _forwardGeocodeCompletionHandler; //用完就释放，免得交叉引用
     NSMutableSet *_results;
     NSMutableArray *_geocoders;
     NSArray *_reservedViewportBiasings;

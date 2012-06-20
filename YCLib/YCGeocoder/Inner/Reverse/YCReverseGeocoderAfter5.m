@@ -41,6 +41,17 @@
     [super dealloc];
 }
 
+
+- (void)_doFailReverseGeocodeWithTimeoutError{
+    if (_geocoder.geocoding) {
+        _reverseGeocodeCompletionHandler(nil,[NSError errorWithDomain:NSOSStatusErrorDomain code:-100 userInfo:nil]);
+    }
+}
+
+- (BOOL)isGeocoding{
+    return _geocoder.geocoding;
+}
+
 - (void)cancel{
     if (_geocoder.geocoding) {
         [_geocoder cancelGeocode];
@@ -49,6 +60,9 @@
 
 - (void)reverseGeocodeLocation:(CLLocation *)location completionHandler:(YCReverseGeocodeCompletionHandler)completionHandler{
     
+    if (_geocoder.geocoding)
+        return;
+    
     //声明block，为了超时回调
     CLGeocodeCompletionHandler handler = ^(NSArray *placemarks, NSError *error){
         //取消上次的超时回调，并停止当前查询
@@ -56,30 +70,27 @@
         if (_geocoder.geocoding) 
             [_geocoder cancelGeocode];
         
-        YCPlacemark *aYCplacemark = nil;
+        YCPlacemark *aYCPlacemark = nil;
         if ([placemarks count] > 0) 
-            aYCplacemark = [[[YCPlacemark alloc] initWithPlacemark:[placemarks objectAtIndex:0]] autorelease];
+            aYCPlacemark = [[[YCPlacemark alloc] initWithPlacemark:[placemarks objectAtIndex:0]] autorelease];
         
-         completionHandler(aYCplacemark,error);
-    };
-
-    //释放：有可能上次调用copy的block
-    if (_reverseGeocodeCompletionHandler){
+        if (completionHandler) 
+            completionHandler(aYCPlacemark,error);
+        
+        //用过了就得释放
         [_reverseGeocodeCompletionHandler release];
         _reverseGeocodeCompletionHandler = nil;
-    }
+    };
+    
+    //释放：有可能上次调用copy的block
+    if (_reverseGeocodeCompletionHandler)
+        [_reverseGeocodeCompletionHandler release];
     _reverseGeocodeCompletionHandler = [handler copy];
+    
     
     [_geocoder reverseGeocodeLocation:location completionHandler:_reverseGeocodeCompletionHandler];
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_doFailReverseGeocodeWithTimeoutError) object:nil];
     [self performSelector:@selector(_doFailReverseGeocodeWithTimeoutError) withObject:nil afterDelay:_timeout]; //超时调用
 }
-
-- (void)_doFailReverseGeocodeWithTimeoutError{
-    if (_geocoder.geocoding) {
-        _reverseGeocodeCompletionHandler(nil,[NSError errorWithDomain:NSOSStatusErrorDomain code:-100 userInfo:nil]);
-    }
-}
-
 
 @end

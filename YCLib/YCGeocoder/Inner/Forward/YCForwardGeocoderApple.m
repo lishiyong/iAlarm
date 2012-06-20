@@ -35,8 +35,8 @@
 }
 
 - (void)dealloc{
+    //NSLog(@"YCForwardGeocoderApple dealloc");
     [_forwardGeocoder cancelGeocode];[_forwardGeocoder release];
-    [_forwardGeocodeCompletionHandler release];
     [super dealloc];
 }
 

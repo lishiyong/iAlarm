@@ -11,7 +11,7 @@
 
 @class IAAlarm;
 @interface AlarmModifyViewController : UIViewController {
-	IAAlarm *alarm;
+	//IAAlarm *alarm;
 }
 
 @property(nonatomic,retain,readonly) IAAlarm *alarm;

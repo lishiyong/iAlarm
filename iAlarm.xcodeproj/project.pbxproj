@@ -906,6 +906,10 @@
 		9CA9932513025ADC00298E5D /* AnnotationSubtitleTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA9931413025ADC00298E5D /* AnnotationSubtitleTableCell.xib */; };
 		9CA9932613025ADC00298E5D /* AnnotationTitleTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA9931613025ADC00298E5D /* AnnotationTitleTableCell.m */; };
 		9CA9932713025ADC00298E5D /* AnnotationTitleTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA9931713025ADC00298E5D /* AnnotationTitleTableCell.xib */; };
+		9CACA45A1590B8AB00353667 /* ABPersonIconImageView+YCBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CACA4591590B8AB00353667 /* ABPersonIconImageView+YCBookmark.m */; };
+		9CACA45B1590B8AB00353667 /* ABPersonIconImageView+YCBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CACA4591590B8AB00353667 /* ABPersonIconImageView+YCBookmark.m */; };
+		9CACA45E1590BB4A00353667 /* ABPasteboardControl+YCBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CACA45D1590BB4A00353667 /* ABPasteboardControl+YCBookmark.m */; };
+		9CACA45F1590BB4A00353667 /* ABPasteboardControl+YCBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CACA45D1590BB4A00353667 /* ABPasteboardControl+YCBookmark.m */; };
 		9CC011EF13C6E3ED0042D744 /* BackgroundViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC011EC13C6E3ED0042D744 /* BackgroundViewController.m */; };
 		9CC011F013C6E3ED0042D744 /* BackgroundViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CC011ED13C6E3ED0042D744 /* BackgroundViewController.xib */; };
 		9CC011F113C6E3ED0042D744 /* BackgroundViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC011EC13C6E3ED0042D744 /* BackgroundViewController.m */; };
@@ -1813,6 +1817,10 @@
 		9CA9931513025ADC00298E5D /* AnnotationTitleTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnnotationTitleTableCell.h; sourceTree = "<group>"; };
 		9CA9931613025ADC00298E5D /* AnnotationTitleTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnnotationTitleTableCell.m; sourceTree = "<group>"; };
 		9CA9931713025ADC00298E5D /* AnnotationTitleTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AnnotationTitleTableCell.xib; sourceTree = "<group>"; };
+		9CACA4581590B8AB00353667 /* ABPersonIconImageView+YCBookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ABPersonIconImageView+YCBookmark.h"; sourceTree = "<group>"; };
+		9CACA4591590B8AB00353667 /* ABPersonIconImageView+YCBookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ABPersonIconImageView+YCBookmark.m"; sourceTree = "<group>"; };
+		9CACA45C1590BB4A00353667 /* ABPasteboardControl+YCBookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ABPasteboardControl+YCBookmark.h"; sourceTree = "<group>"; };
+		9CACA45D1590BB4A00353667 /* ABPasteboardControl+YCBookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ABPasteboardControl+YCBookmark.m"; sourceTree = "<group>"; };
 		9CC011EC13C6E3ED0042D744 /* BackgroundViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackgroundViewController.m; sourceTree = "<group>"; };
 		9CC011ED13C6E3ED0042D744 /* BackgroundViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BackgroundViewController.xib; sourceTree = "<group>"; };
 		9CC011EE13C6E3ED0042D744 /* BackgroundViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundViewController.h; sourceTree = "<group>"; };
@@ -4059,6 +4067,10 @@
 				9CEC2EBA158C8CD90086D9B9 /* ABUnknownPersonViewController+YCBookmark.m */,
 				9CEC2EBD158C8D4D0086D9B9 /* ABPersonViewController+YCBookmark.h */,
 				9CEC2EBE158C8D4D0086D9B9 /* ABPersonViewController+YCBookmark.m */,
+				9CACA4581590B8AB00353667 /* ABPersonIconImageView+YCBookmark.h */,
+				9CACA4591590B8AB00353667 /* ABPersonIconImageView+YCBookmark.m */,
+				9CACA45C1590BB4A00353667 /* ABPasteboardControl+YCBookmark.h */,
+				9CACA45D1590BB4A00353667 /* ABPasteboardControl+YCBookmark.m */,
 			);
 			path = Bookmarks;
 			sourceTree = "<group>";
@@ -5140,6 +5152,8 @@
 				9CF86EC81588611D003582EF /* UIImage+YC.m in Sources */,
 				9CEC2EBB158C8CD90086D9B9 /* ABUnknownPersonViewController+YCBookmark.m in Sources */,
 				9CEC2EBF158C8D4D0086D9B9 /* ABPersonViewController+YCBookmark.m in Sources */,
+				9CACA45A1590B8AB00353667 /* ABPersonIconImageView+YCBookmark.m in Sources */,
+				9CACA45E1590BB4A00353667 /* ABPasteboardControl+YCBookmark.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5365,6 +5379,8 @@
 				9CF86EC91588611D003582EF /* UIImage+YC.m in Sources */,
 				9CEC2EBC158C8CD90086D9B9 /* ABUnknownPersonViewController+YCBookmark.m in Sources */,
 				9CEC2EC0158C8D4D0086D9B9 /* ABPersonViewController+YCBookmark.m in Sources */,
+				9CACA45B1590B8AB00353667 /* ABPersonIconImageView+YCBookmark.m in Sources */,
+				9CACA45F1590BB4A00353667 /* ABPasteboardControl+YCBookmark.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

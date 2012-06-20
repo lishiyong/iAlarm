@@ -66,10 +66,6 @@ typedef enum {
     YCSoundPlayer *vibratePlayer;
 	AVAudioPlayer *ringplayer;
     
-    IAContactManager *_contactManager;
-    MKMapView *_mapView;
-    BOOL _mapsDataLoaded;
-
 }
 @property (nonatomic,retain) YClocationServicesUsableAlert *locationServicesUsableAlert;
 

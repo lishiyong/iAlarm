@@ -10,9 +10,7 @@
 #import <UIKit/UIKit.h>
 
 @class IAAlarm;
-@interface AlarmModifyTableViewController : UITableViewController {
-	IAAlarm *alarm;
-}
+@interface AlarmModifyTableViewController : UITableViewController 
 
 @property(nonatomic,retain,readonly) IAAlarm *alarm;
 

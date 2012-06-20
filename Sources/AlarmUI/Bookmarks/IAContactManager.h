@@ -25,10 +25,11 @@
     BOOL _mapViewDidStartLoadingMap;
     BOOL _mapViewDidFinishLoadingMap;
     NSTimeInterval _delayForWaitingStartLoadingMap; //等待地图开始加载数据的时间
-    UIImage *_imageTook;
+    UIImage *_personImageTook;
     
     AlarmPositionMapViewController *_alarmPositionVC;
     
+    NSUInteger _indexHighlighted; //高亮的地址索引
     
     CALayer *_containerLayer;
     CALayer *_mapLayerSuperLayer;
@@ -36,14 +37,15 @@
     CGPoint _mapLayerPosition;
     CGRect _mapLayerBounds;
     
-    
-    
 }
-
+@property (nonatomic, readonly) NSInteger animationKind; //1:地图放大。2.地图缩小
 @property (nonatomic, assign) IBOutlet UIViewController *currentViewController; //相当于delegate,要用assign
+
 
 - (void)pushContactViewControllerWithAlarm:(IAAlarm*)theAlarm;
 
-@property (nonatomic, readonly) NSInteger animationKind; //1:地图放大。2.地图缩小
++ (IAContactManager*)sharedManager;
+
+- (void)personImageDidPress; //响应照片被按了
 
 @end

@@ -107,6 +107,69 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 	}
 }
 
+#define kTimeOutForReverse 30.0
+-(void)reverseGeocodeWithAnnotation:(IAAnnotation*)annotation
+{	
+    CLLocationCoordinate2D visualCoordinate = annotation.coordinate;
+    CLLocation *location = [[[CLLocation alloc] initWithLatitude:visualCoordinate.latitude longitude:visualCoordinate.longitude] autorelease];
+    
+    if (!_geocoder) 
+        _geocoder = [[YCReverseGeocoder alloc] initWithTimeout:kTimeOutForReverse];
+    if (_geocoder.geocoding) 
+        [_geocoder cancel];
+    [_geocoder reverseGeocodeLocation:location completionHandler:^(YCPlacemark *placemark, NSError *error) {        
+        NSString *coordinateString = YCLocalizedStringFromCLLocationCoordinate2D(visualCoordinate,kCoordinateFrmStringNorthLatitude,kCoordinateFrmStringSouthLatitude,kCoordinateFrmStringEastLongitude,kCoordinateFrmStringWestLongitude);
+        
+        IAAlarm *alarm = self.alarm;
+        if (!error && placemark){
+            
+            //优先使用name，其次titleAddress，最后KDefaultAlarmName
+            NSString *titleAddress = placemark.name ? placemark.name :(placemark.titleAddress ? placemark.titleAddress : KDefaultAlarmName);
+            NSString *shortAddress = placemark.shortAddress ? placemark.shortAddress : coordinateString;
+            NSString *longAddress = placemark.longAddress ? placemark.longAddress : coordinateString;
+            
+            
+            annotation.subtitle = longAddress;
+            
+            alarm.position = longAddress;
+            alarm.positionShort = shortAddress;
+            alarm.positionTitle = titleAddress;  
+            alarm.placemark = placemark;
+            alarm.usedCoordinateAddress = NO;
+            
+        }else{
+            
+            if (!alarm.nameChanged) {
+                alarm.alarmName = nil;//把以前版本生成的名称冲掉
+            }
+            
+            alarm.position = coordinateString;
+            alarm.positionShort = coordinateString;
+            alarm.positionTitle = KDefaultAlarmName;
+            alarm.placemark = nil;
+            alarm.usedCoordinateAddress = YES; //反转失败，用坐标做地址
+            
+        }
+        
+        alarm.visualCoordinate = visualCoordinate;
+        alarm.locationAccuracy = kCLLocationAccuracyBest;
+        
+    }];
+    
+}
+
+- (void)resetPinWithCoordinate:(CLLocationCoordinate2D)coordinate{
+	
+	[self.mapView removeAnnotation:_annotation];
+	
+	if (_circleOverlay) { //删除警示圈
+		[self.mapView removeOverlay:_circleOverlay];
+	}
+    
+	_annotation.coordinate = coordinate;
+	[self.mapView addAnnotation:_annotation];
+    
+}
 
 #pragma mark - Notification
 
@@ -118,8 +181,7 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 }
 
 - (void) handle_applicationWillResignActive:(id)notification{	
-    //关闭未关闭的对话框
-    [_checkNetAlert dismissWithClickedButtonIndex:_checkNetAlert.cancelButtonIndex animated:NO];
+    
 }
 
 - (void)registerNotifications {
@@ -147,23 +209,40 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 
 //覆盖父类
 -(void)saveData{
-    //
+    if (_annotation && CLLocationCoordinate2DIsValid(_annotation.coordinate)) {
+        self.alarm.visualCoordinate = _annotation.coordinate;
+    }
 }
 
 -(IBAction)doneButtonPressed:(id)sender
-{	[self saveData];   
+{	
+    [self saveData];   
     if ([_delegate respondsToSelector:@selector(alarmPositionMapViewControllerDidPressDoneButton:)]) {
         [_delegate performSelector:@selector(alarmPositionMapViewControllerDidPressDoneButton:) withObject:self];
     }
 }
 
-
+- (void)mapViewLongPressed:(UILongPressGestureRecognizer *)gestureRecognizer{
+	
+	if (UIGestureRecognizerStateBegan == gestureRecognizer.state){ //只处理长按开始
+		
+		CGPoint pointPressed = [gestureRecognizer locationInView:self.mapView];
+		CLLocationCoordinate2D coordinatePressed = [self.mapView convertPoint:pointPressed toCoordinateFromView:self.mapView];
+		
+		if (CLLocationCoordinate2DIsValid(coordinatePressed)){
+            _annotation.subtitle = nil;
+			[self resetPinWithCoordinate:coordinatePressed];
+            //反转坐标－地址
+            [self performSelector:@selector(reverseGeocodeWithAnnotation:) withObject:_annotation afterDelay:0.1];
+        }
+	}
+	
+}
 
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.mapView.delegate = self;
 	
 	//长按地图
 	UILongPressGestureRecognizer *longPressGesture = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(mapViewLongPressed:)] autorelease];
@@ -205,27 +284,10 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
                                     target:self 
                                     action:@selector(doneButtonPressed:)] autorelease];
     [self.navigationItem setRightBarButtonItem:doneButton animated:YES];
+    self.navigationItem.rightBarButtonItem.enabled = NO; //地图返回动画，不能马上执行
     
-	//self.navigationItem.hidesBackButton = YES;
     [self.navigationItem setHidesBackButton:YES animated:YES];
      
-    
-   
-    
-}
-
-- (void)beginWork{
-    //pin
-    [_annotation release];
-    _annotation = [[IAAnnotation alloc] initWithAlarm:self.alarm];
-    _annotation.title = KLabelMapNewAnnotationTitle;
-	_annotation.subtitle = self.alarm.position;
-    [self.mapView addAnnotation:_annotation];
-    
-    //
-    [self performBlock:^{
-        self.mapView.showsUserLocation = YES;
-    } afterDelay:2.5];
 }
 
 -(void)viewDidDisappear:(BOOL)animated {
@@ -246,6 +308,24 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 
 }
 
+- (void)beginWork{
+    
+    //pin
+    [_annotation release];
+    _annotation = [[IAAnnotation alloc] initWithAlarm:self.alarm];
+    _annotation.title = KLabelMapNewAnnotationTitle;
+	_annotation.subtitle = self.alarm.position;
+    [self.mapView addAnnotation:_annotation];
+    
+    
+    //
+    [self performBlock:^{
+        self.mapView.showsUserLocation = YES;
+        self.navigationItem.rightBarButtonItem.enabled = YES; //地图返回动画，不能马上执行
+    } afterDelay:2.0];
+    
+}
+
 
 #pragma mark - 
 #pragma mark - MKMapViewDelegate
@@ -255,22 +335,28 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
         return;
 }
 
+//为了能取消执行
+- (void)selectTheAnnotationAnimated{
+    if (_annotation) {
+        [self.mapView selectAnnotation:_annotation animated:YES];
+    }
+}
+
 - (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views
 {
-    if (_annotation) {
-        [self performBlock:^{
-            [self.mapView selectAnnotation:_annotation animated:YES];
-        } afterDelay:1.0];        
-    }
+    [self performSelector:@selector(selectTheAnnotationAnimated) withObject:nil afterDelay:1.0];
 }
 
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)annotationView didChangeDragState:(MKAnnotationViewDragState)newState fromOldState:(MKAnnotationViewDragState)oldState 
 {
-	//IAAnnotation *annotation = (IAAnnotation*)annotationView.annotation;
+    
+    //取消pin将要选中
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(selectTheAnnotationAnimated) object:nil];
+    
+	IAAnnotation *annotation = (IAAnnotation*)annotationView.annotation;
 	switch (newState) 
 	{
 		case MKAnnotationViewDragStateStarting:
-			
 			//显示与当前位置的距离。因为拖拽会引发pin的deselect，所以在Starting和Dragging加入显示距离代码
 			[self setDistanceLabel];
 			break;
@@ -281,6 +367,21 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 		case MKAnnotationViewDragStateEnding:   //结束拖拽－大头针落下
 			//显示与当前位置的距离
 			[self setDistanceLabel];
+            
+            //////////////////////////////////////////
+			//反转
+			if ([annotation isKindOfClass:[IAAnnotation class]])
+			{
+                annotation.subtitle = nil;
+				
+                //坐标改变了，保存
+                self.alarm.visualCoordinate = annotation.coordinate;
+				//反转坐标－地址
+				[self performSelector:@selector(reverseGeocodeWithAnnotation:) withObject:annotation afterDelay:0.0];
+				
+			}
+			//////////////////////////////////////////
+        
 			break;
 		case MKAnnotationViewDragStateCanceling: //取消拖拽
 			break;
@@ -288,8 +389,8 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 			break;
 			
 	}
+     
 }
-
 
 - (MKAnnotationView *)mapView:(MKMapView *)theMapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
@@ -310,11 +411,13 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 		
 		pinView.canShowCallout = YES;
 		
+        /*
 		UIButton* rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
 		[rightButton addTarget:self
 						action:@selector(showDetails:)
 			  forControlEvents:UIControlEventTouchUpInside];
 		pinView.rightCalloutAccessoryView = rightButton;
+         */
 		
 	}
 	
@@ -368,7 +471,7 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)annotationView{		
-	//警示圈
+    //警示圈
 	IAAnnotation *annotation = (IAAnnotation*)annotationView.annotation;
 	if ([annotation isKindOfClass:[IAAnnotation class]]){
         
@@ -444,20 +547,26 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 #pragma mark - Memory management
 
 - (void)viewDidUnload {
+    NSLog(@"AlarmPositionMapViewController viewDidUnload");
     [super viewDidUnload];
     [self unRegisterNotifications];
-    [_checkNetAlert release];_checkNetAlert = nil;
+    /*
     self.mapView = nil;
+    [_checkNetAlert release];_checkNetAlert = nil;
     [_annotation release];_annotation = nil;
     [_circleOverlay release]; _circleOverlay = nil;
+     */
 }
 
 - (void)dealloc {
+    NSLog(@"AlarmPositionMapViewController dealloc");
+    [_checkNetAlert dismissWithClickedButtonIndex:_checkNetAlert.cancelButtonIndex animated:NO];
     [self unRegisterNotifications];
     [_checkNetAlert release];
-    [_mapView release];             
 	[_annotation release];
     [_circleOverlay release];
+    [_mapView release];
+    [_geocoder release];
     [super dealloc];
 }
 

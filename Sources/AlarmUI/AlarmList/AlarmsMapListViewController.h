@@ -35,7 +35,7 @@
     //
 	NSMutableArray *mapPointAnnotations;                         //地图标签集合
 	NSMutableDictionary *mapPointAnnotationViews;                //地图标签集合
-	NSMutableDictionary *circleOverlays;                         //警示圈集合
+    MKCircle *_circleOverlay;
 	/////////////////////////////////////
     //浮动工具条
 	YCCalloutBar *toolbarFloatingView;                      
@@ -62,6 +62,9 @@
     ////////////////////////////////////
     //检测网络
     UIAlertView *checkNetAlert;
+    ////////////////////////////////////
+    //反转坐标
+    YCReverseGeocoder *_geocoder;
 	
 }
 
@@ -72,7 +75,6 @@
 
 @property (nonatomic,retain,readonly) NSMutableArray *mapPointAnnotations;
 @property (nonatomic,retain,readonly) NSMutableDictionary *mapPointAnnotationViews;
-@property (nonatomic,retain,readonly) NSMutableDictionary *circleOverlays;
 
 @property (nonatomic,retain)            IBOutlet YCCalloutBar *toolbarFloatingView;
 @property (nonatomic,retain)            IBOutlet UIButton *mapsTypeButton;                
@@ -82,9 +84,6 @@
 @property(nonatomic, readonly)  CALayer *focusBox;
 
 @property (nonatomic, retain,readonly) YCAnimateRemoveFileView *animateRemoveFileView;
-
-@property (nonatomic,retain)            IBOutlet IAContactManager *contactManager;
-
 
 @end
 

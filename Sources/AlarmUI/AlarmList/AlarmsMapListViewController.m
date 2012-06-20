@@ -63,7 +63,6 @@
 @synthesize mapView, maskView, maskLabel, maskActivityIndicator;
 @synthesize mapPointAnnotations;
 @synthesize toolbarFloatingView, mapsTypeButton, satelliteTypeButton, hybridTypeButton;
-@synthesize contactManager;
 
 - (id)alarms{
 	return [IAAlarm alarmArray];
@@ -159,10 +158,6 @@
 	
 	[self.mapPointAnnotationViews setObject:pinView forKey:alarm.alarmId];  //加入到列表
 	
-	//警示圈
-    CLLocationCoordinate2D visualCoordinate = alarm.visualCoordinate;
-	MKCircle *circleOverlay = [MKCircle circleWithCenterCoordinate:visualCoordinate radius:alarm.radius];
-	[self.circleOverlays setObject:circleOverlay forKey:alarm.alarmId];  //加入到列表
 	
 	return annotation;
 }
@@ -172,7 +167,6 @@
     
 	[self.mapPointAnnotations removeAllObjects];
 	[self.mapPointAnnotationViews removeAllObjects];
-	[self.circleOverlays removeAllObjects];
 	for (IAAlarm *temp in self.alarms)
 	{
 		[self insertAnnotationWithAlarm:temp atIndex:-1];
@@ -321,14 +315,6 @@
     return mapPointAnnotations;
 }
 
--(id) circleOverlays{
-	if (circleOverlays == nil)
-    {
-        circleOverlays = [[NSMutableDictionary dictionary] retain];
-    }
-    return circleOverlays;
-}
-
 - (void)setPinsEditing:(BOOL)theEditing{
 	
 	
@@ -468,7 +454,6 @@
 	NSString *alarmId = saveInfo.objId;
 	IAPinAnnotationView *annotationView = [[[self.mapPointAnnotationViews objectForKey:alarmId] retain] autorelease];
     IAAnnotation *annotation = [[(IAAnnotation*)annotationView.annotation retain] autorelease];
-    MKCircle *circleOverlay = [[[self.circleOverlays objectForKey:alarmId] retain] autorelease];
     CLLocationCoordinate2D coordinate = annotation ? annotation.coordinate : kCLLocationCoordinate2DInvalid;
     
 	switch (saveInfo.saveType) {
@@ -478,13 +463,11 @@
 			
             [self.mapPointAnnotationViews removeObjectForKey:alarmId];
 			[self.mapPointAnnotations removeObject:annotation];
-            [self.circleOverlays removeObjectForKey:alarmId];
             
 			if ([(NSNotification*)notification object] == self) {                
                 
 				[self animateRemoveAnnotion:annotation];  //在自己的上删除，动画效果。自己只能删除
                 [self.mapView removeAnnotation:annotation];
-                [self.mapView removeOverlay:circleOverlay];
 
                 //播放删除完动画，再移动地图
                 BOOL animated = YES;
@@ -500,7 +483,6 @@
 			}else {
                 //列表上删除的。先都删除了。
 				[self.mapView removeAnnotations:self.mapView.mapPointAnnotations];
-                [self.mapView removeOverlay:circleOverlay];
                 [self.mapView addAnnotations:self.mapPointAnnotations];
                 [self selectAndVisibleTheNearestAnnotationFromCoordinate: annotation.coordinate animated:NO];//选中离被删除最近的
 			}
@@ -526,10 +508,8 @@
 			
 			//先都删除了   
             [self.mapView removeAnnotation:annotation];
-            [self.mapView removeOverlay:circleOverlay];
             [self.mapPointAnnotationViews removeObjectForKey:alarmId];
 			[self.mapPointAnnotations removeObject:annotation];
-            [self.circleOverlays removeObjectForKey:alarmId];
   
 			//再增加
 			annotation = [self insertAnnotationWithAlarm:[IAAlarm findForAlarmId:alarmId] atIndex:index];
@@ -1489,14 +1469,18 @@
 
 #pragma mark - Utility
 
-#define kTimeOutForReverse 15.0
+#define kTimeOutForReverse 30.0
 -(void)reverseGeocodeWithAnnotation:(IAAnnotation*)annotation
 {	
-    YCReverseGeocoder *geocoder = [[[YCReverseGeocoder alloc] initWithTimeout:kTimeOutForReverse] autorelease];
+    
     CLLocationCoordinate2D visualCoordinate = annotation.coordinate;
     CLLocation *location = [[[CLLocation alloc] initWithLatitude:visualCoordinate.latitude longitude:visualCoordinate.longitude] autorelease];
     
-    [geocoder reverseGeocodeLocation:location completionHandler:^(YCPlacemark *placemark, NSError *error) {        
+    if (!_geocoder) 
+        _geocoder = [[YCReverseGeocoder alloc] initWithTimeout:kTimeOutForReverse];
+    if (_geocoder.geocoding) 
+        [_geocoder cancel];
+    [_geocoder reverseGeocodeLocation:location completionHandler:^(YCPlacemark *placemark, NSError *error) {        
         NSString *coordinateString = YCLocalizedStringFromCLLocationCoordinate2D(visualCoordinate,kCoordinateFrmStringNorthLatitude,kCoordinateFrmStringSouthLatitude,kCoordinateFrmStringEastLongitude,kCoordinateFrmStringWestLongitude);
         
         IAAlarm *alarm = [IAAlarm findForAlarmId:[(IAAnnotation*)annotation identifier]];
@@ -1575,30 +1559,28 @@
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)annotationView
 {	
-    
-	if ([annotationView.annotation isKindOfClass:[MKUserLocation class]])
-		return;
-	
-	//警示圈
+    //警示圈
 	IAAnnotation *annotation = (IAAnnotation*)annotationView.annotation;
 	if ([annotation isKindOfClass:[IAAnnotation class]]){
-        MKCircle *overlay = [self.circleOverlays objectForKey:annotation.identifier];
-        [self.mapView addOverlay:overlay];
+        IAAlarm *theAlarm = annotation.alarm;
+        [_circleOverlay release];
+        _circleOverlay =  [[MKCircle circleWithCenterCoordinate:annotation.coordinate radius:theAlarm.radius] retain];
+        [self.mapView addOverlay:_circleOverlay];
 	}
-     
 }
 
 - (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)annotationView{
     
-    if ([annotationView.annotation isKindOfClass:[MKUserLocation class]])
-		return;
-    
-    //警示圈
-	IAAnnotation *annotation = (IAAnnotation*)annotationView.annotation;
-	if ([annotation isKindOfClass:[IAAnnotation class]]){
-        MKCircle *overlay = [self.circleOverlays objectForKey:annotation.identifier];
-        [self.mapView removeOverlay:overlay];
-	}    
+    IAAnnotation *annotation = (IAAnnotation*)annotationView.annotation;
+	if ([annotation isKindOfClass:[IAAnnotation class]])
+	{	
+        //删除警示圈
+        if (_circleOverlay) {
+            [self.mapView removeOverlay:_circleOverlay];
+            [_circleOverlay release];
+            _circleOverlay = nil;
+        }
+	}  
      
 }
  
@@ -1643,11 +1625,8 @@
 }
 
 - (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id <MKOverlay>)overlay{
-	NSArray *array = [self.circleOverlays allValues];
-	NSInteger index = [array indexOfObject:overlay];
-	
-	if (NSNotFound != index) {
 		
+    if ([overlay isKindOfClass:[MKCircle class]]) {
 		MKCircleView *cirecleView = nil;
 		cirecleView = [[[MKCircleView alloc] initWithCircle:overlay] autorelease];
 		cirecleView.fillColor = [UIColor colorWithRed:160.0/255.0 green:127.0/255.0 blue:255.0/255.0 alpha:0.4]; //淡紫几乎透明
@@ -1728,43 +1707,17 @@
 	[notificationCenter performSelector:@selector(postNotification:) withObject:focusNotification afterDelay:0.0];
     
 	
-	//设置警示半径圈
-	if (self.circleOverlays) {
-		NSArray *array = [self.circleOverlays allValues];
-		for (MKCircle *circleOverlay in array) {
-			
-			//是否是当前选中的
-			BOOL isSelecting = NO;
-			NSArray *selectedArray = [self.mapView selectedAnnotations];
-			if (selectedArray.count >0) {
-				IAAnnotation *selected = [self.mapView.selectedAnnotations objectAtIndex:0];
-				if ([selected isKindOfClass:[IAAnnotation class]]) {
-					MKCircle *selectedCircle = [self.circleOverlays objectForKey:selected.identifier];
-					if (selectedCircle == circleOverlay) 
-						isSelecting = YES;
-				}
-				
-			}
-			
-			//直径是否小于12像素
-			BOOL isTooSmall = YES;
-			if (isSelecting){ //没选中，没必要下面的计算了
-				MKCoordinateRegion overlayRegion = MKCoordinateRegionMakeWithDistance(circleOverlay.coordinate, circleOverlay.radius, circleOverlay.radius);
-				CGRect overlayRect = [self.mapView convertRegion:overlayRegion toRectToView:self.mapView];
-				double w = overlayRect.size.width;
-				isTooSmall = w <12 ? YES : NO;
-			}
-			
-			//显示的条件：选中 而且 不太小
-			BOOL visable = (isSelecting && (!isTooSmall));
-
-			if (visable){
-				if ([self.mapView viewForOverlay:circleOverlay] == nil) {
-					[self.mapView addOverlay:circleOverlay];
-				}
-			}else 
-				[self.mapView removeOverlay:circleOverlay];
-		}
+    //设置警示半径圈
+	if (_circleOverlay) {
+		MKCoordinateRegion overlayRegion = MKCoordinateRegionMakeWithDistance(_circleOverlay.coordinate, _circleOverlay.radius, _circleOverlay.radius);
+		CGRect overlayRect = [self.mapView convertRegion:overlayRegion toRectToView:self.mapView];
+		double w = overlayRect.size.width;
+		MKOverlayView *overlayView = [self.mapView viewForOverlay:_circleOverlay];
+		if (w <12) 
+			overlayView.hidden = YES;
+		else
+			overlayView.hidden = NO;
+		
 	}
 	 
 
@@ -1791,19 +1744,13 @@
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)annotationView didChangeDragState:(MKAnnotationViewDragState)newState fromOldState:(MKAnnotationViewDragState)oldState 
 {    
 	IAAnnotation *annotation = (IAAnnotation*)annotationView.annotation;
-	MKCircle *circleOverlay = [self.circleOverlays objectForKey:annotation.identifier];
 	IAAlarm *alarm = [IAAlarm findForAlarmId:annotation.identifier];
      
 	switch (newState) 
 	{
-			
 		case MKAnnotationViewDragStateStarting:
-			//隐藏警示圈
-            [self.mapView removeOverlay:circleOverlay];
-			break;
+            break;
 		case MKAnnotationViewDragStateDragging:
-			//隐藏警示圈
-			[self.mapView removeOverlay:circleOverlay];
 			break;
 		case MKAnnotationViewDragStateEnding:   //结束拖拽－大头针落下
 			
@@ -1829,33 +1776,8 @@
 				
 			}
 			//////////////////////////////////////////
-			
-			
-			/////////////////////////////////////////
-			//先都删掉，免得出bug
-			[self.mapView removeOverlays:[self.circleOverlays allValues]]; 
-			//从警示圈列表中删除旧的，加入新的
-			[self.circleOverlays removeObjectForKey:annotation.identifier];
-			MKCircle *newCircleOverlay = [MKCircle circleWithCenterCoordinate:annotation.coordinate	radius:alarm.radius];
-			[self.circleOverlays setObject:newCircleOverlay forKey:annotation.identifier];
-			//[self.mapView addOverlay:newCircleOverlay]; 不用加到地图上，选中的委托方法会 加上的
-			/////////////////////////////////////////
-			
-			 
-			break;
+            break;
 		case MKAnnotationViewDragStateCanceling: //取消拖拽
-			
-            //显示警示半径圈
-			if (circleOverlay) {
-				
-				MKCoordinateRegion overlayRegion = MKCoordinateRegionMakeWithDistance(circleOverlay.coordinate, circleOverlay.radius, circleOverlay.radius);
-				CGRect overlayRect = [self.mapView convertRegion:overlayRegion toRectToView:self.mapView];
-				double w = overlayRect.size.width;
-				if (w <12) 
-					[self.mapView addOverlay:circleOverlay];
-				
-			}
-             
 			break;
 		default:
 			break;
@@ -1874,6 +1796,7 @@
 }
 
 - (void)viewDidUnload {
+    NSLog(@"AlarmsMapListViewController dealloc");
     [super viewDidUnload];
 	[self unRegisterNotifications];
     
@@ -1886,11 +1809,9 @@
 	self.mapsTypeButton = nil;
 	self.satelliteTypeButton = nil;                   
 	self.hybridTypeButton = nil;
-    self.contactManager = nil;
 	
 	[self.mapPointAnnotationViews removeAllObjects];
 	[self.mapPointAnnotations removeAllObjects];
-	[self.circleOverlays removeAllObjects];
     
     [viewLoadedDate release]; viewLoadedDate = nil;
     [tapMapViewGesture release]; tapMapViewGesture = nil;
@@ -1900,6 +1821,7 @@
 
 
 - (void)dealloc {
+    NSLog(@"AlarmsMapListViewController dealloc");
 	[self unRegisterNotifications];
 	
 	[mapView release];            
@@ -1909,7 +1831,7 @@
     
     [mapPointAnnotations release];                         
 	[mapPointAnnotationViews release];  
-	[circleOverlays release];
+    [_circleOverlay release];
 
 	[toolbarFloatingView release];
 	[mapsTypeButton release];
@@ -1926,9 +1848,9 @@
     [tapCalloutViewGesture release];
 	[longPressGesture release];
     
-    [checkNetAlert release];
+    [checkNetAlert release]; 
     
-    [contactManager release];
+    [_geocoder release];
     [super dealloc];
 }
 

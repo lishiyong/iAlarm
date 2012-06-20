@@ -403,7 +403,8 @@
 }
 
 - (void)viewDidUnload {
-	[super viewDidUnload];
+	NSLog(@"AlarmsListViewController dealloc");
+    [super viewDidUnload];
 	[self unRegisterNotifications];	 
     
 	[detailController release];detailController = nil;
@@ -415,6 +416,7 @@
 
 
 - (void)dealloc {
+    NSLog(@"AlarmsListViewController dealloc");
 	[self unRegisterNotifications];	 
 	
 	[detailController release];

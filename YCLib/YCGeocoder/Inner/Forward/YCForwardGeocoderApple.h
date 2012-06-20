@@ -11,7 +11,6 @@
 
 @interface YCForwardGeocoderApple : YCForwardGeocoder{
     CLGeocoder *_forwardGeocoder;
-    YCforwardGeocodeCompletionHandler _forwardGeocodeCompletionHandler;
 }
 
 @end

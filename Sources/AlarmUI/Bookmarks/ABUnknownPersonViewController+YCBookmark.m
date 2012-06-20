@@ -11,7 +11,7 @@
 @implementation ABUnknownPersonViewController (YCBookmark)
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{
-    return NO;
+    return (UIInterfaceOrientationPortrait == interfaceOrientation);
 }
 
 @end

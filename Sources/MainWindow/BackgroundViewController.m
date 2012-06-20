@@ -850,6 +850,7 @@
 
 
 - (void)addButtonPressed:(id)sender{
+    
 	IAAlarm *alarm = [[[IAAlarm alloc] init] autorelease];
 	
 	if (IAMapsViewController == curViewControllerType) {
@@ -874,7 +875,7 @@
                                                                   object:self
                                                                 userInfo:[NSDictionary dictionaryWithObject:alarm forKey:IAAlarmAddedKey]];
     [notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
-	
+     	
 }
 
 -(IBAction)editOrDoneButtonItemPressed:(id)sender{
@@ -1206,6 +1207,7 @@
 
 - (void)searchController:(YCSearchController *)controller searchString:(NSString *)searchString
 {
+    
     searchString = [searchString stringByTrim];
     
     //加到最近查询list中
@@ -1226,25 +1228,9 @@
     [forwardGeocoderManager forwardGeocodeAddressString:searchString visibleMapRect:visibleBounds currentLocation:curLocation completionHandler:^(NSArray *placemarks, NSError *error){
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         [self _forwardGeocodingDidCompleteWithPlacemarks:placemarks error:error];
-    }];
-    
-    
+    }];  
+     
 }
-
-/*
-- (void)searchController:(YCSearchController *)controller addressDictionary:(NSDictionary *)addressDictionary addressTitle:(NSString *) addressTitle{
-    
-    if (!forwardGeocoderManager) 
-        forwardGeocoderManager = [[YCForwardGeocoderManager alloc] init];
-    
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    [forwardGeocoderManager forwardGeocodeAddressDictionary:addressDictionary addressTitle:addressTitle completionHandler:^(NSArray *placemarks, NSError *error){
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        [self _forwardGeocodingDidCompleteWithPlacemarks:placemarks error:error];
-    }];
-    
-}
- */
 
 - (void)searchController:(YCSearchController *)controller addressDictionary:(NSDictionary *)addressDictionary personName:(NSString *) personName personId:(int32_t)personId{
     
@@ -1256,8 +1242,7 @@
     [forwardGeocoderManager forwardGeocodeAddressDictionary:addressDictionary personName:personName personId:personId completionHandler:^(NSArray *placemarks, NSError *error) {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         [self _forwardGeocodingDidCompleteWithPlacemarks:placemarks error:error];
-    }];
-    
+    }];    
 }
 
 
@@ -1297,6 +1282,7 @@
 }
 
 - (void)viewDidUnload {
+    NSLog(@"BackgroundViewController viewDidUnload");
     [super viewDidUnload];	
 	[self unRegisterNotifications];
 	
@@ -1311,6 +1297,7 @@
 
 
 - (void)dealloc {
+    NSLog(@"BackgroundViewController dealloc");
 	[listViewController release];
 	[mapsViewController release];	
 	

@@ -12,7 +12,7 @@
 
 
 @implementation AlarmModifyViewController
-@synthesize alarm;
+@synthesize alarm = _alarm;
 
 -(void)saveData{
     //
@@ -20,8 +20,8 @@
 
 -(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil alarm:(IAAlarm*)theAlarm{
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-		alarm = theAlarm;
-		[alarm retain];
+		_alarm = theAlarm;
+		[_alarm retain];
 	}
 	return self;
 }
@@ -40,8 +40,8 @@
 }
 
 - (void)dealloc {
-	[alarm release];
-	alarm = nil;
+	[_alarm release];
+	_alarm = nil;
     [super dealloc];
 }
 

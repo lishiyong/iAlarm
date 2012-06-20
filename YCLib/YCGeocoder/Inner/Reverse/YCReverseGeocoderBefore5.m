@@ -19,7 +19,7 @@
 /**
  结束查询，并释放相关资源
  **/
-- (void)_cancelReverseGeocode;
+- (void)_releaseResoure;
 
 @end
 
@@ -50,14 +50,24 @@
 #pragma mark - Implement Abstract Super Method
 
 - (void)cancel{
-    [self _cancelReverseGeocode];
+    if (_resverseGeocoder.querying) {
+        [_resverseGeocoder cancel];
+        [_resverseGeocoder.delegate reverseGeocoder:_resverseGeocoder didFailWithError:[NSError errorWithDomain:NSOSStatusErrorDomain code:-101 userInfo:nil] ];
+    }
+}
+
+- (BOOL)isGeocoding{
+    if (_resverseGeocoder) 
+        return _resverseGeocoder.querying;
+    else
+        return NO;
 }
 
 
 - (void)reverseGeocodeLocation:(CLLocation *)location completionHandler:(YCReverseGeocodeCompletionHandler)completionHandler{
-    //先取消，不论有没有
-    [self _cancelReverseGeocode];
     
+    if (_resverseGeocoder.querying) return;
+        
     _reverseGeocodeCompletionHandler = [completionHandler copy] ;
     _resverseGeocoder = [[MKReverseGeocoder alloc] initWithCoordinate:location.coordinate];
     _resverseGeocoder.delegate = self;
@@ -69,15 +79,19 @@
 #pragma mark - MKReverseGeocoderDelegate
 
 - (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFindPlacemark:(MKPlacemark *)placemark{
-    YCPlacemark *ycplacemark = [[[YCPlacemark alloc] initWithPlacemark:placemark] autorelease];
-    _reverseGeocodeCompletionHandler(ycplacemark,nil);
-    [self _cancelReverseGeocode];
+    if (_reverseGeocodeCompletionHandler) {
+        YCPlacemark *ycplacemark = [[[YCPlacemark alloc] initWithPlacemark:placemark] autorelease];
+        _reverseGeocodeCompletionHandler(ycplacemark,nil);
+    }
+    
+    [self _releaseResoure];
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_doFailReverseGeocodeWithTimeoutError) object:nil];
 }
 
 - (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFailWithError:(NSError *)error{
-    _reverseGeocodeCompletionHandler(nil,error);
-    [self _cancelReverseGeocode];
+    if (_reverseGeocodeCompletionHandler) 
+        _reverseGeocodeCompletionHandler(nil,error);
+    [self _releaseResoure];
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_doFailReverseGeocodeWithTimeoutError) object:nil];
 }
 
@@ -85,15 +99,13 @@
 
 - (void)_doFailReverseGeocodeWithTimeoutError{
     if (_resverseGeocoder.querying) {
+        [_resverseGeocoder cancel];
         [_resverseGeocoder.delegate reverseGeocoder:_resverseGeocoder didFailWithError:[NSError errorWithDomain:NSOSStatusErrorDomain code:-100 userInfo:nil] ];
     }
 }
 
-- (void)_cancelReverseGeocode{
+- (void)_releaseResoure{
     if (_resverseGeocoder) {
-        if (_resverseGeocoder.querying) {
-            [_resverseGeocoder cancel];
-        }
         [_resverseGeocoder release];
         _resverseGeocoder = nil;
     }
@@ -102,6 +114,7 @@
         [_reverseGeocodeCompletionHandler release];
         _reverseGeocodeCompletionHandler = nil;
     }
+    
 }
 
 @end

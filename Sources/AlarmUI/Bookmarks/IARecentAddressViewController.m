@@ -126,7 +126,7 @@
     }
     
     YCPair *aPair = [[IARecentAddressDataManager sharedManager].all objectAtIndex:indexPath.row];
-    NSString *key = aPair.key;   //查询串或人名
+    NSString *key = (NSString*)aPair.key;   //查询串或人名
     id value = aPair.value;      //查询结果，字符串或dic
     
     NSString *titleString = nil;

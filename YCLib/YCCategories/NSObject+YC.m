@@ -6,6 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCPair.h"
 #import "NSObject+YC.h"
 
 @interface NSObject (private) 
@@ -17,12 +18,13 @@
  **/
 + (NSMutableArray*)_blockOperationPairs;
 + (void)_addBlockOperation:(NSBlockOperation*)aBlockOperation withTarget:(id)aTarget;
-+ (void)_removeBlockOperationsWithTarget:(id)aTarget;
+//+ (void)_removeBlockOperationsWithTarget:(id)aTarget;
 + (void)_removeBlockOperationsWithBlockOperation:(id)aBlockOperation;
++ (void)_removeBlockOperationsWithBlockOperationId:(NSString*)aBlockOperationId;
 + (NSArray*)_blockOperationsForTarget:(id)aTarget;
 
-//做这个方法，是为了在主线程中调用 _removeBlockOperationsWithBlockOperation:
-- (void)_instanceRemoveBlockOperationsWithBlockOperation:(id)aBlockOperation;
+//做这个方法，是为了在主线程中调用 _removeBlockOperationsWithBlockOperationId:
+- (void)_instanceRemoveBlockOperationsWithBlockOperationId:(NSString*)aBlockOperationId;
 
 @end
 
@@ -40,41 +42,60 @@
 }
 
 + (void)_addBlockOperation:(NSBlockOperation*)aBlockOperation withTarget:(id)aTarget{
-    NSDictionary *dic = [NSDictionary dictionaryWithObject:aBlockOperation forKey:[aTarget objectId]];
-    [[NSObject _blockOperationPairs] addObject:dic];
+    YCPair *aPair = [YCPair pairWithValue:aBlockOperation forKey:[aTarget objectId]];
+    [[NSObject _blockOperationPairs] addObject:aPair];
 }
+
 
 + (void)_removeBlockOperationsWithTarget:(id)aTarget{
+    
     NSString *key = [aTarget objectId];
     NSMutableArray *removingArray = [NSMutableArray array];
-    for (NSDictionary *aDic in [NSObject _blockOperationPairs]) {
-        if ([[[aDic allKeys] objectAtIndex:0] isEqual:key] ){
-            [removingArray addObject:aDic];
+    for (YCPair *aPair in [NSObject _blockOperationPairs]) {
+        if ([(NSString *)aPair.key isEqualToString:key]){
+            NSLog(@"(NSString *)aPair.key isEqualToString:key]");
+            [removingArray addObject:aPair];
         }
     }
-    [[NSObject _blockOperationPairs] removeObjectsInArray:removingArray];
+    if (removingArray.count > 0) 
+        [[NSObject _blockOperationPairs] removeObjectsInArray:removingArray];
 }
+ 
 
 + (void)_removeBlockOperationsWithBlockOperation:(id)aBlockOperation{
-    id removingDic = nil;
-    for (NSDictionary *aDic in [NSObject _blockOperationPairs]) {
-        if ([[aDic allValues] objectAtIndex:0] == aBlockOperation ){
-            removingDic = aDic;
+    YCPair* removing = nil;
+    for (YCPair *aPair in [NSObject _blockOperationPairs]) {
+        if (aPair.value == aBlockOperation ){
+            removing = aPair;
+            break;
         }
     }
-    [[NSObject _blockOperationPairs] removeObject:removingDic];
+    if (removing) 
+        [[NSObject _blockOperationPairs] removeObject:removing];    
 }
 
-- (void)_instanceRemoveBlockOperationsWithBlockOperation:(id)aBlockOperation{
-    [NSObject _removeBlockOperationsWithBlockOperation:aBlockOperation];
++ (void)_removeBlockOperationsWithBlockOperationId:(NSString*)aBlockOperationId{
+    YCPair* removing = nil;
+    for (YCPair *aPair in [NSObject _blockOperationPairs]) {
+        if ([aPair.value.objectId isEqualToString:aBlockOperationId] ){
+            removing = aPair;
+            break;
+        }
+    }
+    if (removing) 
+        [[NSObject _blockOperationPairs] removeObject:removing];    
+}
+
+- (void)_instanceRemoveBlockOperationsWithBlockOperationId:(NSString*)aBlockOperationId{
+    [NSObject _removeBlockOperationsWithBlockOperationId:aBlockOperationId ];
 }
 
 + (NSArray*)_blockOperationsForTarget:(id)aTarget{
     NSString *key = [aTarget objectId];
     NSMutableArray *array = [NSMutableArray array];
-    for (NSDictionary *aDic in [NSObject _blockOperationPairs]) {
-        if ([[[aDic allKeys] objectAtIndex:0] isEqual:key] ){
-            [array addObject:[aDic objectForKey:[aTarget objectId]]];
+    for (YCPair *aPair in [NSObject _blockOperationPairs]) {
+        if ([(NSString*)aPair.key isEqualToString:key] ){
+            [array addObject:aPair.value];
         }
     }
     return array;
@@ -205,13 +226,14 @@ static NSTimer *gTimer = nil;
     //执行前加入到全局的列表中,为了让别人可以停止它
     [NSObject _addBlockOperation:blockOperation withTarget:self];
     [blockOperation performSelector:@selector(start) withObject:nil afterDelay:delay];
+    NSString *blockOperationId = blockOperation.objectId;
+    
     
     //执行完成就删除。
     blockOperation.completionBlock = 
     ^{ //这个块竟会放到其他线程中来执行，所以...
-        [self performSelectorOnMainThread:@selector(_instanceRemoveBlockOperationsWithBlockOperation:) withObject:blockOperation waitUntilDone:NO];
-        
-        //[NSObject _removeBlockOperationsWithBlockOperation:blockOperation];
+        //而且，块中不能有blockOperation出现，否则会造成内存泄露
+        [self performSelectorOnMainThread:@selector(_instanceRemoveBlockOperationsWithBlockOperationId:) withObject:blockOperationId waitUntilDone:NO];
     };
 }
 

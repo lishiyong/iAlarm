@@ -33,8 +33,8 @@
 }
 
 - (void)dealloc{
+    //NSLog(@"YCForwardGeocoderBS dealloc");
     [_forwardGeocoder cancel];[_forwardGeocoder release];
-    [_forwardGeocodeCompletionHandler release];
     [super dealloc];
 }
 
@@ -45,7 +45,6 @@
 };
 
 - (void)cancel{
-    NSLog(@"cancel");
     if (_forwardGeocoder.geocoding) 
         [_forwardGeocoder cancel];
 }

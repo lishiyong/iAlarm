@@ -25,23 +25,35 @@
 
 - (ABRecordID)personId;
 - (NSString *)personName;
+- (void)setPersonName:(NSString*)personName;
 - (NSDictionary *)addressDictionary;
 - (NSArray *)addressDictionaries;
+- (void)setAddressDictionaries:(NSArray*)theDics;
 - (NSString *)note;
+- (void)setNote:(NSString*)note;
 - (UIImage *)image;
 - (void)setImage:(UIImage*)theImage;
 - (NSArray *)phones;
-
 - (ABRecordRef)ABPerson;
+
+//添加一个地址
+- (void)addAddressDictionary:(NSDictionary*)dic;
+//替换
+- (void)replaceAddressDictionaryAtIndex:(NSUInteger)index withAddressDictionary:(NSDictionary*)dic;
 
 //不从库里搜索
 - (id)initWithPersonId:(ABRecordID)personId personName:(NSString*)personName addressDictionaries:(NSArray*)addressDictionaries note:(NSString*)note image:(UIImage*)image phones:(NSArray*)phones;
 - (id)initWithPersonId:(ABRecordID)personId personName:(NSString*)personName addressDictionary:(NSDictionary*)addressDictionary;
-- (id)initWithPerson:(ABRecordRef)person;
 - (id)initWithAlarm:(IAAlarm*)theAlarm image:(UIImage*)image;
 
-//从库里搜索
+//不从库里搜索，而且不保存ABRecordRef
+- (id)initWithPerson:(ABRecordRef)person; 
+
+
+//从库里搜索，保存搜索到的ABRecordRef
 - (id)initWithPersonId:(ABRecordID)personId;
+//仅仅能保存从 initWithPersonId: 创建的
+- (void)addressBookSave;
 
 
 

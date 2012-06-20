@@ -33,6 +33,7 @@
 }
 
 - (void)dealloc{
+    //NSLog(@"YCForwardGeocoderManager dealloc");
     [self _prepare];
     [_forwardGeocodeCompletionHandler release];
     [_results release];
@@ -40,6 +41,7 @@
     [_reservedViewportBiasings release];
     [_addressString release];
     [_personName release];
+    [super dealloc];
 }
 
 - (void)cancel{
@@ -54,7 +56,7 @@
 }
 
 - (void)_handleGeocodeCompletionWithError:(NSError*)error{
-    NSLog(@"_geocoders.count = %d",_geocoders.count);
+    //NSLog(@"_geocoders.count = %d",_geocoders.count);
     
     if (_canceled) 
         return;
@@ -62,15 +64,22 @@
     if (_geocoders.count != 0) //还有的在查询
         return;
     
-    NSLog(@"_geocoders.count = %d _results.count = %d",_geocoders.count,_results.count);
+    //NSLog(@"_geocoders.count = %d _results.count = %d",_geocoders.count,_results.count);
     
     if (_results.count > 0) {//有一个结果，就不返回错误
         _forwardGeocodeCompletionHandler(_results.allObjects,nil);
+        [_forwardGeocodeCompletionHandler release];
+        _forwardGeocodeCompletionHandler = nil;
+        
         [_results removeAllObjects];
     }else if (_reservedViewportBiasings && _reservedViewportBiasings.count > 0){
         //无结果，用备用视口再查询一遍
         NSArray *viewports = [_reservedViewportBiasings retain];
+        
         YCforwardGeocodeCompletionHandler blockHandler = [_forwardGeocodeCompletionHandler copy];
+        [_forwardGeocodeCompletionHandler release];
+        _forwardGeocodeCompletionHandler = nil;
+        
         NSString *addressString = [_addressString copy];
         
         [self forwardGeocodeAddressString:addressString viewportBiasings:viewports reservedViewportBiasings:nil completionHandler:blockHandler];
@@ -80,6 +89,8 @@
         [addressString release];
     }else{
         _forwardGeocodeCompletionHandler(nil,error);//返回最后一次的错误
+        [_forwardGeocodeCompletionHandler release];
+        _forwardGeocodeCompletionHandler = nil;
     }
 }
 
@@ -362,7 +373,7 @@
     _personId = personId;
     
     NSTimeInterval timeoutA = 8;
-    NSTimeInterval timeoutB = 20;
+    NSTimeInterval timeoutB = 2;
     
     YCForwardGeocoder *geocoderB = [[[YCForwardGeocoder alloc] initWithTimeout:timeoutB forwardGeocoderType:YCForwardGeocoderTypeBS] autorelease];
     [_geocoders addObject:geocoderB];
@@ -377,6 +388,7 @@
         [_geocoders addObject:geocoderA];
         [self _forwardGeocode:geocoderA addressDictionary:addressDictionary];
     }
+     
 }
 
 @end

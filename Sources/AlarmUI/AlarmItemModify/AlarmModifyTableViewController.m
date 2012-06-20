@@ -12,7 +12,7 @@
 
 @implementation AlarmModifyTableViewController
 
-@synthesize alarm;
+@synthesize alarm = _alarm;
 
 - (void)saveData{
     //
@@ -25,8 +25,8 @@
 
 - (id)initWithStyle:(UITableViewStyle)style alarm:(IAAlarm*)theAlarm{
 	if (self = [super initWithStyle:style]) {
-		alarm = theAlarm;
-		[alarm retain];
+		_alarm = theAlarm;
+		[_alarm retain];
 	}
 	return self;
 }
@@ -38,8 +38,8 @@
 
 
 - (void)dealloc {
-	[alarm release];
-	alarm = nil;
+	[_alarm release];
+	_alarm = nil;
 	
     [super dealloc];
 }
