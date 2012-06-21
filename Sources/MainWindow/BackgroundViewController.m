@@ -1051,11 +1051,15 @@
 	IAAlarm *alarm = [[[IAAlarm alloc] init] autorelease];
 	alarm.visualCoordinate = visualCoordinate;
 	alarm.positionTitle = (forwardGeocoderManager.personName.length > 0) ? forwardGeocoderManager.personName : titleAddress; //如果是从联系人搜索来的
-    alarm.personId = forwardGeocoderManager.personId; //可能关联到一个联系人
 	alarm.positionShort = shortAddress;
 	alarm.position = longAddress;
     alarm.placemark = placemark;
 	alarm.usedCoordinateAddress = NO;
+    
+    
+    IAPerson *contact = [[[IAPerson alloc] initWithPersonId:forwardGeocoderManager.personId] autorelease];
+    IAPerson *person = [[[IAPerson alloc] initWithPerson:contact.ABPerson] autorelease];//弄个不关联数据库的
+    alarm.person = person; //关联到一个联系人
     	
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     NSNotification *aNotification = [NSNotification notificationWithName:IAAddIAlarmButtonPressedNotification 
@@ -1111,7 +1115,7 @@
         id theObject = nil;
         if (forwardGeocoderManager.personId != kABRecordInvalidID) {
             theKey = forwardGeocoderManager.personName;
-            theObject = [[[IAPerson alloc] initWithPersonId:forwardGeocoderManager.personId personName:forwardGeocoderManager.personName addressDictionary:forwardGeocoderManager.addressDictionary] autorelease];
+            theObject = [[[IAPerson alloc] initWithPersonId:forwardGeocoderManager.personId organization:forwardGeocoderManager.personName addressDictionary:forwardGeocoderManager.addressDictionary] autorelease];
         }else{
             theKey = forwardGeocoderManager.addressString;
             if (placemarks.count == 1) 

@@ -28,9 +28,7 @@
     UIImage *_personImageTook;
     
     AlarmPositionMapViewController *_alarmPositionVC;
-    
-    NSUInteger _indexHighlighted; //高亮的地址索引
-    
+        
     CALayer *_containerLayer;
     CALayer *_mapLayerSuperLayer;
     CALayer *_mapLayer;

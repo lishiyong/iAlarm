@@ -16,22 +16,21 @@
 - (ABRecordID)personId{
     return _personId;
 }
+
+- (void)setPersonId:(ABRecordID)personId{
+    _personId = personId;
+}
+
 - (NSString *)personName{
     return _personName;
 }
-- (void)setPersonName:(NSString*)personName{
-    [personName retain];
-    [_personName release];
-    _personName = personName;
-    
-    if (_ABperson) {
-        if (_personName) {
-            ABRecordSetValue(_ABperson, kABPersonOrganizationProperty, (__bridge_transfer CFStringRef)_personName, NULL);
-        }else{
-            ABRecordRemoveValue(_ABperson, kABPersonOrganizationProperty, NULL);
-        }
-    }
+
+- (NSString *)organization{
+    //显示得时候把标识符号去掉
+    NSString *temp = [_organization stringByReplacingOccurrencesOfString:@"✧" withString:@""];
+    return temp;
 }
+
 - (NSDictionary *)addressDictionary{
     if (_addressDictionaries.count > 0) {
         return [_addressDictionaries objectAtIndex:0];
@@ -43,84 +42,12 @@
     return _addressDictionaries;
 }
 
-- (void)setAddressDictionaries:(NSArray*)theDics{
-    [theDics retain];
-    [_addressDictionaries release];
-    _addressDictionaries = theDics;
-    
-    if (_ABperson) {
-        //先删除
-        ABRecordRemoveValue(_ABperson,kABPersonAddressProperty,NULL);
-        //再添加
-        if (_addressDictionaries && _addressDictionaries.count > 0) {
-            
-            ABMutableMultiValueRef address = ABMultiValueCreateMutable(kABDictionaryPropertyType);
-            bool didAdd = false;
-            for (NSDictionary *anAddressDic in _addressDictionaries) {
-                
-                //把非字符串的对象过滤掉:Region,Location
-                NSSet *keySet = [anAddressDic keysOfEntriesPassingTest:^BOOL(id key, id obj, BOOL *stop) {
-                    if(![obj isKindOfClass:[NSString class]])
-                        return YES;
-                    return NO;
-                }];
-                NSMutableDictionary *newAddressDic = [NSMutableDictionary dictionaryWithDictionary:anAddressDic];
-                [newAddressDic removeObjectsForKeys:[keySet allObjects]];
-                
-                
-                bool didAdd1 = false;
-                if (newAddressDic.count > 0) 
-                    didAdd1 = ABMultiValueAddValueAndLabel(address,newAddressDic, NULL, NULL);
-                
-                
-                //加成功一个就可以进行下面的 ABRecordSetValue 了
-                if (!didAdd) 
-                    didAdd = didAdd1;
-            }
-            
-            if (didAdd) 
-                ABRecordSetValue(_ABperson, kABPersonAddressProperty, address, NULL);
-            
-            CFRelease(address);
-        }
-    }
-}
-
 - (NSString *)note{
     return _note;
 }
-- (void)setNote:(NSString*)note{
-    [note retain];
-    [_note release];
-    _note = note;
-    
-    if (_ABperson) {
-        if (_note) {
-            ABRecordSetValue(_ABperson, kABPersonNoteProperty, (__bridge_transfer CFStringRef)_note, NULL);
-        }else{
-            ABRecordRemoveValue(_ABperson, kABPersonNoteProperty, NULL);
-        }
-    }
-}
+
 - (UIImage *)image{
     return _image;
-}
-- (void)setImage:(UIImage*)theImage{
-    [theImage retain];
-    [_image release];
-    _image = theImage;
-    
-    //ABPerson中的image
-    if (_ABperson) {
-        if(ABPersonHasImageData(_ABperson)) 
-        {
-            ABPersonRemoveImageData(_ABperson, NULL);
-        }
-        if (_image) {
-            NSData *imageData = UIImagePNGRepresentation(_image);
-            ABPersonSetImageData(_ABperson,(CFDataRef)imageData,NULL);
-        }
-    }
 }
 
 - (NSArray *)phones{
@@ -174,19 +101,13 @@
             ABRecordSetValue(_ABperson, kABPersonNoteProperty, (__bridge_transfer CFStringRef)_note, NULL);
         }
         
+        /*
         //姓名
         if (_personName) {
-            /*
-             ABPropertyID nameProperty;
-             if (ABPersonGetCompositeNameFormat() == kABPersonCompositeNameFormatFirstNameFirst)
-             nameProperty = kABPersonFirstNameProperty;
-             else
-             nameProperty = kABPersonLastNameProperty;
-             
-             ABRecordSetValue(aContact, nameProperty, (__bridge_transfer CFStringRef)_personName, NULL);
-             */
             ABRecordSetValue(_ABperson, kABPersonOrganizationProperty, (__bridge_transfer CFStringRef)_personName, NULL);
         }
+         */
+        
         
         //图
         if (_image) {
@@ -214,13 +135,18 @@
             CFRelease(phones);
         }
         
+        //organization
+        if (_organization) {
+            ABRecordSetValue(_ABperson, kABPersonOrganizationProperty, (__bridge_transfer CFStringRef)self.organization, NULL);
+        }
+        
     }
     
     return _ABperson;
     
 }
 
-- (id)initWithPersonId:(ABRecordID)personId personName:(NSString*)personName addressDictionaries:(NSArray*)addressDictionaries note:(NSString*)note image:(UIImage*)image phones:(NSArray*)phones{
+- (id)initWithPersonId:(ABRecordID)personId personName:(NSString*)personName organization:(NSString*)organization addressDictionaries:(NSArray*)addressDictionaries note:(NSString*)note image:(UIImage*)image phones:(NSArray*)phones{
     self = [super init];
     if (self) {
         _personId = personId;
@@ -229,17 +155,21 @@
         _note = [note copy];
         _image = [image retain];
         _phones = [phones retain];
+        
+        NSString *temp = [NSString stringWithFormat:@"✧%@✧",organization]; 
+        _organization = [temp retain];
+
     }
     return self;
 }
 
-- (id)initWithPersonId:(ABRecordID)personId personName:(NSString*)personName addressDictionary:(NSDictionary*)addressDictionary{
+- (id)initWithPersonId:(ABRecordID)personId organization:(NSString*)organization addressDictionary:(NSDictionary*)addressDictionary{
     
     NSArray *dics = nil;
     if (addressDictionary) 
         dics = [NSArray arrayWithObject:addressDictionary];
     
-    return [self initWithPersonId:personId personName:personName addressDictionaries:dics note:nil image:nil phones:nil];
+    return [self initWithPersonId:personId personName:nil organization:organization addressDictionaries:dics note:nil image:nil phones:nil];
 }
 
 
@@ -264,6 +194,7 @@
     
     ABRecordID thePersonId = kABRecordInvalidID;
     NSString *thePersonName = nil;
+    NSString *theOrganization = nil;
     NSMutableArray *theDics = [NSMutableArray array];
     NSString *theNote = nil;
     UIImage *theImage = nil;
@@ -277,6 +208,10 @@
         //姓名
         thePersonName =  (__bridge_transfer NSString*)ABRecordCopyCompositeName(thePerson);
         [thePersonName autorelease];
+        
+        //organization
+        theOrganization =  (__bridge_transfer NSString*)ABRecordCopyValue(thePerson, kABPersonOrganizationProperty);
+        [theOrganization autorelease];
         
         //地址
         ABMutableMultiValueRef multiAddress = ABRecordCopyValue(thePerson, kABPersonAddressProperty);
@@ -321,7 +256,7 @@
             CFRelease(multiPhones);
         }
         
-        return [self initWithPersonId:thePersonId personName:thePersonName addressDictionaries:(theDics.count > 0) ? theDics : nil note:theNote image:theImage phones:thePhones];
+        return [self initWithPersonId:thePersonId personName:thePersonName organization:theOrganization addressDictionaries:(theDics.count > 0) ? theDics : nil note:theNote image:theImage phones:thePhones];
         
     }else{
         return nil;
@@ -332,7 +267,10 @@
 - (id)initWithAlarm:(IAAlarm*)theAlarm image:(UIImage*)image{
     
     //id
-    ABRecordID thePersonId = theAlarm.personId;
+    ABRecordID thePersonId = kABRecordInvalidID;
+    if (theAlarm.person) {
+        thePersonId = theAlarm.person.personId;
+    }
     
     //地址
     NSDictionary *theAddressDic = theAlarm.placemark.addressDictionary; 
@@ -344,12 +282,135 @@
     if (CLLocationCoordinate2DIsValid(coor)) {
         coordinateString = YCLocalizedStringFromCLLocationCoordinate2DUsingSeparater(coor,kCoordinateFrmStringNorthLatitudeSpace,kCoordinateFrmStringSouthLatitudeSpace,kCoordinateFrmStringEastLongitudeSpace,kCoordinateFrmStringWestLongitudeSpace,@"\n");
     }
-    //姓名
-    NSString *name = theAlarm.alarmName ? theAlarm.alarmName : theAlarm.positionTitle;
+    
+    //organization
+    NSString *organization = theAlarm.alarmName ? theAlarm.alarmName : theAlarm.positionTitle;
     
     
-    self = [self initWithPersonId:thePersonId personName:name addressDictionaries:theAddressArray note:coordinateString image:image phones:nil];
+    self = [self initWithPersonId:thePersonId personName:nil organization:organization addressDictionaries:theAddressArray note:coordinateString image:image phones:nil];
     return self;
+}
+
+- (void)closeAddressBook{
+    if (_addressBook) {
+        CFRelease(_addressBook);
+        _addressBook = nil;
+    }
+}
+
+- (void)saveAddressBook{
+    if (_addressBook) 
+        ABAddressBookSave(_addressBook,NULL);
+}
+
+- (void)setOrganization:(NSString*)organization{
+    
+    if (_ABperson) {
+        if (organization) {
+            //前“✧”后“✧”做为标识
+            
+            BOOL hasPrefix = YES;
+            BOOL hasSuffix = YES;
+            if (_organization) {
+                hasPrefix = [_organization hasPrefix:@"✧"]; // ([_organization rangeOfString:@"✧"].location != NSNotFound);
+                hasSuffix = [_organization hasSuffix:@"✧"]; //([_organization rangeOfString:@"✧"].location != NSNotFound);
+            }
+            
+            if (hasPrefix || hasSuffix) {
+                NSString *temp = [_organization stringByReplacingOccurrencesOfString:@"✧" withString:@""]; //先去掉，
+                temp = [NSString stringWithFormat:@"✧%@✧",organization]; //再添加一次
+                ABRecordSetValue(_ABperson, kABPersonOrganizationProperty, (__bridge_transfer CFStringRef)temp, NULL);
+            }
+            
+        }else{
+            ABRecordRemoveValue(_ABperson, kABPersonOrganizationProperty, NULL);
+        }
+    }
+    
+    [organization retain];
+    [_organization release];
+    _organization = organization;
+}
+
+- (void)setOrganizationForDisplay:(NSString*)organization{
+    
+    if (_ABperson) {
+        if (organization) {
+            ABRecordSetValue(_ABperson, kABPersonOrganizationProperty, (__bridge_transfer CFStringRef)organization, NULL);
+        }else{
+            ABRecordRemoveValue(_ABperson, kABPersonOrganizationProperty, NULL);
+        }
+    }
+    [organization retain];
+    [_organization release];
+    _organization = organization;
+}
+
+
+
+- (void)setAddressDictionaries:(NSArray*)theDics{
+    [theDics retain];
+    [_addressDictionaries release];
+    _addressDictionaries = theDics;
+    
+    if (_ABperson) {
+        //先删除
+        ABRecordRemoveValue(_ABperson,kABPersonAddressProperty,NULL);
+        //再添加
+        if (_addressDictionaries && _addressDictionaries.count > 0) {
+            
+            ABMutableMultiValueRef address = ABMultiValueCreateMutable(kABDictionaryPropertyType);
+            bool didAdd = false;
+            for (NSDictionary *anAddressDic in _addressDictionaries) {
+                
+                //把非字符串的对象过滤掉:Region,Location
+                NSSet *keySet = [anAddressDic keysOfEntriesPassingTest:^BOOL(id key, id obj, BOOL *stop) {
+                    if(![obj isKindOfClass:[NSString class]])
+                        return YES;
+                    return NO;
+                }];
+                NSMutableDictionary *newAddressDic = [NSMutableDictionary dictionaryWithDictionary:anAddressDic];
+                [newAddressDic removeObjectsForKeys:[keySet allObjects]];
+                
+                
+                bool didAdd1 = false;
+                if (newAddressDic.count > 0) 
+                    didAdd1 = ABMultiValueAddValueAndLabel(address,newAddressDic, NULL, NULL);
+                
+                
+                //加成功一个就可以进行下面的 ABRecordSetValue 了
+                if (!didAdd) 
+                    didAdd = didAdd1;
+            }
+            
+            if (didAdd) 
+                ABRecordSetValue(_ABperson, kABPersonAddressProperty, address, NULL);
+            
+            CFRelease(address);
+        }
+    }
+}
+
+- (void)replaceAddressDictionaryAtIndex:(NSUInteger)index withAddressDictionary:(NSDictionary*)dic{
+    if (!dic || index >= _addressDictionaries.count) 
+        return;
+    
+    //把非字符串的对象过滤掉:Region,Location
+    NSSet *keySet = [dic keysOfEntriesPassingTest:^BOOL(id key, id obj, BOOL *stop) {
+        if(![obj isKindOfClass:[NSString class]])
+            return YES;
+        return NO;
+    }];
+    NSMutableDictionary *newDic = [NSMutableDictionary dictionaryWithDictionary:dic];
+    if ([keySet allObjects].count > 0) 
+        [newDic removeObjectsForKeys:[keySet allObjects]];
+    
+    //调用本类的setAddressDictionaries:
+    if (newDic.count > 0) {
+        NSMutableArray *newDics = [NSMutableArray arrayWithArray:_addressDictionaries];
+        [newDics replaceObjectAtIndex:index withObject:newDic];
+        [self setAddressDictionaries:newDics];
+    }
 }
 
 - (void)addAddressDictionary:(NSDictionary*)dic{
@@ -378,35 +439,78 @@
     }
 }
 
-- (void)replaceAddressDictionaryAtIndex:(NSUInteger)index withAddressDictionary:(NSDictionary*)dic{
-    if (!dic || index >= _addressDictionaries.count) 
-        return;
+- (void)setImage:(UIImage*)theImage{
+    [theImage retain];
+    [_image release];
+    _image = theImage;
     
-    //把非字符串的对象过滤掉:Region,Location
-    NSSet *keySet = [dic keysOfEntriesPassingTest:^BOOL(id key, id obj, BOOL *stop) {
-        if(![obj isKindOfClass:[NSString class]])
-            return YES;
-        return NO;
-    }];
-    NSMutableDictionary *newDic = [NSMutableDictionary dictionaryWithDictionary:dic];
-    if ([keySet allObjects].count > 0) 
-        [newDic removeObjectsForKeys:[keySet allObjects]];
-    
-    //调用本类的setAddressDictionaries:
-    if (newDic.count > 0) {
-        NSMutableArray *newDics = [NSMutableArray arrayWithArray:_addressDictionaries];
-        [newDics replaceObjectAtIndex:index withObject:newDic];
-        [self setAddressDictionaries:newDics];
+    if (_ABperson) {
+        if(ABPersonHasImageData(_ABperson)) 
+        {
+            ABPersonRemoveImageData(_ABperson, NULL);
+        }
+        if (_image) {
+            NSData *imageData = UIImagePNGRepresentation(_image);
+            ABPersonSetImageData(_ABperson,(CFDataRef)imageData,NULL);
+        }
     }
 }
 
-- (void)addressBookSave{
-    if (_addressBook) 
-        ABAddressBookSave(_addressBook,NULL);
+- (void)setNote:(NSString*)note{
+    [note retain];
+    [_note release];
+    _note = note;
+    
+    if (_ABperson) {
+        if (_note) {
+            ABRecordSetValue(_ABperson, kABPersonNoteProperty, (__bridge_transfer CFStringRef)_note, NULL);
+        }else{
+            ABRecordRemoveValue(_ABperson, kABPersonNoteProperty, NULL);
+        }
+    }
 }
+
+- (void)setNoteWithCoordinate:(CLLocationCoordinate2D)coordinate{
+    if (CLLocationCoordinate2DIsValid(coordinate)) {
+        NSString *coordinateString = YCLocalizedStringFromCLLocationCoordinate2DUsingSeparater(coordinate,kCoordinateFrmStringNorthLatitudeSpace,kCoordinateFrmStringSouthLatitudeSpace,kCoordinateFrmStringEastLongitudeSpace,kCoordinateFrmStringWestLongitudeSpace,@"\n");
+        [self setNote:coordinateString];
+    }else{
+        [self setNote:nil];
+    }
+}
+
+- (void)prepareForDisplay:(IAAlarm*)alarm image:(UIImage*)image{
+    
+    if (alarm.placemark.addressDictionary) {
+        self.addressDictionaries = [NSArray arrayWithObject:alarm.placemark.addressDictionary];
+    }else{
+        self.addressDictionaries = nil;
+    }
+    [self setImage:image];
+    [self setNoteWithCoordinate:alarm.visualCoordinate];
+    [self setOrganizationForDisplay:alarm.placemark.name];
+    
+    if (!self.personName && !self.organization) {//如果都没有
+        [self setOrganizationForDisplay:alarm.positionTitle];
+    }
+}
+
+- (BOOL)isAlarmOrganization{
+    BOOL hasPrefix = NO;
+    BOOL hasSuffix = NO;
+    if (_organization) {
+        hasPrefix = [_organization hasPrefix:@"✧"]; // ([_organization rangeOfString:@"✧"].location != NSNotFound);
+        hasSuffix = [_organization hasSuffix:@"✧"]; //([_organization rangeOfString:@"✧"].location != NSNotFound);
+    }
+    
+    return (hasPrefix || hasSuffix);
+}
+
+#pragma mark - Override super
 
 - (void)dealloc{
     [_personName release];
+    [_organization release];
     [_addressDictionaries release];
     [_note release];
     [_image release];
@@ -418,8 +522,6 @@
         CFRelease(_addressBook);
     [super dealloc];
 }
-
-#pragma mark - Override super
 
 - (BOOL)isEqual:(id)object{
     if ([object isKindOfClass: [self class]]) {
@@ -434,6 +536,7 @@
 
 #define kIAPersonId              @"kIAPersonId"
 #define kIAPersonName            @"kIAPersonName"
+#define kIAOrganization          @"kIAOrganization"
 #define kIAAddressDictionaries   @"kIAAddressDictionaries"
 #define kIANote                  @"kIANote"
 #define kIAImage                 @"kIAImage"
@@ -442,6 +545,7 @@
 - (void)encodeWithCoder:(NSCoder *)encoder{
     [encoder encodeInt32:_personId forKey:kIAPersonId];
     [encoder encodeObject:_personName forKey:kIAPersonName];
+    [encoder encodeObject:_organization forKey:kIAOrganization];
     [encoder encodeObject:_addressDictionaries forKey:kIAAddressDictionaries];
     [encoder encodeObject:_note forKey:kIANote];
     [encoder encodeObject:_image forKey:kIAImage];
@@ -453,6 +557,7 @@
     if (self) {
         _personId = [decoder decodeInt32ForKey:kIAPersonId];
         _personName = [[decoder decodeObjectForKey:kIAPersonName] copy];
+        _organization = [[decoder decodeObjectForKey:kIAOrganization] copy];
         _addressDictionaries = [[decoder decodeObjectForKey:kIAAddressDictionaries] retain];
         _note = [[decoder decodeObjectForKey:kIANote] copy];
         _image = [[decoder decodeObjectForKey:kIAImage] retain];
@@ -462,7 +567,7 @@
 }
 
 - (id)copyWithZone:(NSZone *)zone{
-    IAPerson *copy = [[[self class] allocWithZone: zone] initWithPersonId:self.personId personName:self.personName addressDictionaries:self.addressDictionaries note:self.note image:self.image phones:self.phones];    
+    IAPerson *copy = [[[self class] allocWithZone: zone] initWithPersonId:self.personId personName:self.personName organization:self.organization addressDictionaries:self.addressDictionaries note:self.note image:self.image phones:self.phones];    
     return copy;
 }
 

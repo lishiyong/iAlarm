@@ -1768,7 +1768,7 @@
                 
                 //坐标改变了，保存
                 alarm.visualCoordinate = annotation.coordinate;
-                alarm.personId = kABRecordInvalidID;//地址改变了，断开可能关联的联系人。
+                alarm.person = nil;//地址改变了，断开可能关联的联系人。
                 [alarm saveFromSender:self];
                 
 				//反转坐标－地址

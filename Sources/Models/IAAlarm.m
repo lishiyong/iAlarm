@@ -6,6 +6,9 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCLib.h"
+#import "YCPlacemark.h"
+#import "IAPerson.h"
 #import "YCDouble.h"
 #import "YCLocationManager.h"
 #import "YCFunctions.h"
@@ -63,7 +66,8 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 @synthesize reserve3;
 
 @synthesize placemark;
-@synthesize personId;
+@synthesize person;
+@synthesize indexOfPersonAddresses;
 
 - (id)init
 {
@@ -104,7 +108,8 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 		reserve3 = nil;
         
         placemark = nil;
-        personId = kABRecordInvalidID;
+        person = nil;
+        indexOfPersonAddresses = -1;
 	}
 	return self;
 }
@@ -145,7 +150,8 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	[encoder encodeObject:reserve3 forKey:kreserve3];
 	
     [encoder encodeObject:placemark forKey:kplacemark];
-    [encoder encodeInt32:personId forKey:kPersonId];
+    [encoder encodeObject:person forKey:kPerson];
+    [encoder encodeInteger:indexOfPersonAddresses forKey:kIndexOfPersonAddresses];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
@@ -188,7 +194,8 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 		reserve3 = [[decoder decodeObjectForKey:kreserve3] retain];
         
         placemark = [[decoder decodeObjectForKey:kplacemark] retain];
-        personId = [decoder decodeInt32ForKey:kPersonId];
+        person = [[decoder decodeObjectForKey:kPerson] retain];
+        indexOfPersonAddresses = [decoder decodeIntegerForKey:kIndexOfPersonAddresses];
         
         //////////////////////////
         //为了兼容以前版本的数据
@@ -215,8 +222,6 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
             alarmName = nil;
         }  
         
-        if (0 == personId) 
-            personId = kABRecordInvalidID;
         
         //////////////////////////
 		
@@ -266,7 +271,8 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	copy.reserve2 = self.reserve2;
 	copy.reserve3 = self.reserve3;
     
-    copy.personId = self.personId;
+    copy.person = self.person;
+    copy.indexOfPersonAddresses = self.indexOfPersonAddresses;
         
     return copy;
 }
@@ -296,6 +302,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	[reserve3 release];
     
     [placemark release];
+    [person release];
 	
     [super dealloc];
 }
@@ -328,6 +335,39 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 		saveType = IASaveTypeUpdate;
 	}
 	saveInfo.saveType = saveType;
+    
+    if (person) {
+        [self performBlock:^{
+        
+        
+        IAPerson *theContact = [[[IAPerson alloc] initWithPersonId:person.personId] autorelease];
+        
+        //替换地址
+        if (placemark.addressDictionary) {
+            if (theContact.addressDictionaries.count > indexOfPersonAddresses && indexOfPersonAddresses >= 0 ) {
+                [theContact replaceAddressDictionaryAtIndex:indexOfPersonAddresses withAddressDictionary:placemark.addressDictionary];
+            }else{
+                [theContact addAddressDictionary:placemark.addressDictionary];
+                indexOfPersonAddresses = 0; //新的联系人
+            }
+        }
+        
+        //照片、公司名
+        if (!theContact.image) 
+            theContact.image = person.image;
+        if (theContact.isAlarmOrganization) 
+            theContact.organization = person.organization;
+        
+        @try {
+            [theContact saveAddressBook];
+        }
+        @catch (NSException *exception) {
+            
+        }
+            
+        } afterDelay:0.0];
+    }
+    
 	
 	NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kDataFilename];
 	[NSKeyedArchiver archiveRootObject:alarms toFile:filePathName];

@@ -927,7 +927,7 @@
     self.alarm.reserve2 = self.alarmTemp.reserve2;
     self.alarm.reserve3 = self.alarmTemp.reserve3;
     
-    self.alarm.personId = self.alarmTemp.personId;
+    self.alarm.person = self.alarmTemp.person;
 	
 	[self.alarm saveFromSender:self];
 

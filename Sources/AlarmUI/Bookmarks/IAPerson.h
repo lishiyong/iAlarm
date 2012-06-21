@@ -6,6 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import <CoreLocation/CoreLocation.h>
 #import <AddressBook/AddressBook.h>
 #import <Foundation/Foundation.h>
 
@@ -14,6 +15,7 @@
     
     ABRecordID _personId;
     NSString *_personName;
+    NSString *_organization;
     NSArray *_addressDictionaries;
     NSString *_note;
     UIImage *_image;
@@ -24,26 +26,26 @@
 }
 
 - (ABRecordID)personId;
+- (void)setPersonId:(ABRecordID)personId;
 - (NSString *)personName;
-- (void)setPersonName:(NSString*)personName;
+- (NSString *)organization;
 - (NSDictionary *)addressDictionary;
 - (NSArray *)addressDictionaries;
-- (void)setAddressDictionaries:(NSArray*)theDics;
+
 - (NSString *)note;
 - (void)setNote:(NSString*)note;
+- (void)setNoteWithCoordinate:(CLLocationCoordinate2D)coordinate;
 - (UIImage *)image;
-- (void)setImage:(UIImage*)theImage;
 - (NSArray *)phones;
 - (ABRecordRef)ABPerson;
 
 //添加一个地址
 - (void)addAddressDictionary:(NSDictionary*)dic;
-//替换
-- (void)replaceAddressDictionaryAtIndex:(NSUInteger)index withAddressDictionary:(NSDictionary*)dic;
+
 
 //不从库里搜索
-- (id)initWithPersonId:(ABRecordID)personId personName:(NSString*)personName addressDictionaries:(NSArray*)addressDictionaries note:(NSString*)note image:(UIImage*)image phones:(NSArray*)phones;
-- (id)initWithPersonId:(ABRecordID)personId personName:(NSString*)personName addressDictionary:(NSDictionary*)addressDictionary;
+- (id)initWithPersonId:(ABRecordID)personId personName:(NSString*)personName organization:(NSString*)organization addressDictionaries:(NSArray*)addressDictionaries note:(NSString*)note image:(UIImage*)image phones:(NSArray*)phones;
+- (id)initWithPersonId:(ABRecordID)personId organization:(NSString*)organization addressDictionary:(NSDictionary*)addressDictionary;
 - (id)initWithAlarm:(IAAlarm*)theAlarm image:(UIImage*)image;
 
 //不从库里搜索，而且不保存ABRecordRef
@@ -52,8 +54,22 @@
 
 //从库里搜索，保存搜索到的ABRecordRef
 - (id)initWithPersonId:(ABRecordID)personId;
+- (void)closeAddressBook;
+
 //仅仅能保存从 initWithPersonId: 创建的
-- (void)addressBookSave;
+- (void)saveAddressBook;
+//
+- (void)setOrganization:(NSString*)organization;
+- (void)setAddressDictionaries:(NSArray*)theDics;
+- (void)replaceAddressDictionaryAtIndex:(NSUInteger)index withAddressDictionary:(NSDictionary*)dic;
+- (void)setImage:(UIImage*)theImage;
+- (void)setNote:(NSString*)note;
+
+//为显示做准备
+- (void)prepareForDisplay:(IAAlarm*)alarm image:(UIImage*)image;
+
+//公司名称是通过alarm添加的
+- (BOOL)isAlarmOrganization;
 
 
 

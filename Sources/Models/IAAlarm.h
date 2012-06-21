@@ -45,11 +45,13 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 #define    kreserve3                @"kreserve3"
 
 #define    kplacemark               @"kplacemark"
-#define    kPersonId                @"kPersonId"
+#define    kPerson                  @"kPerson"
+#define    kIndexOfPersonAddresses  @"kIndexOfPersonAddresses"
+
 
 @class IASaveInfo;
 @class YCSound, YCRepeatType, YCPositionType;
-@class YCPlacemark;
+@class YCPlacemark, IAPerson;
 @interface IAAlarm : NSObject <NSCoding, NSCopying> {
 	
 	NSString *alarmId;         
@@ -86,7 +88,10 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 	NSString *reserve3;
     
     YCPlacemark *placemark;                  //地点标题，2012-5-28添加
-    ABRecordID personId;                     //通讯录中的联系人id，2012-6-11添加
+    //ABRecordID personId;                     //通讯录中的联系人id，2012-6-11添加
+    
+    IAPerson *person;                        //通讯录中的联系人，2012-6-21添加
+    NSInteger indexOfPersonAddresses;       //对应通讯录中人的地址索引
 
 }
 
@@ -124,7 +129,9 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 @property (nonatomic,copy) NSString *reserve3;
 
 @property (nonatomic,retain) YCPlacemark *placemark;
-@property (nonatomic,assign) ABRecordID personId;
+@property (nonatomic,retain) IAPerson *person;
+@property (nonatomic,assign) NSInteger indexOfPersonAddresses;
+
 
 
 - (void)setRealCoordinateWithVisualCoordinate:(CLLocationCoordinate2D)theVisualCoordinate;
