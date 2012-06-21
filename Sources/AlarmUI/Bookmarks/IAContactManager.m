@@ -84,7 +84,8 @@
     }
     
     if (thePerson) {
-        //_unknownPersonVC.alternateName = thePerson.personName;
+        _unknownPersonVC.alternateName = thePerson.organization ? thePerson.organization : thePerson.personName;//优先显示organization
+        //_unknownPersonVC.alternateName = @"aaa";
         _unknownPersonVC.displayedPerson = thePerson.ABPerson;
         BOOL isAllowsAddingToAddressBook = (thePerson.addressDictionaries.count >0);
         _unknownPersonVC.allowsAddingToAddressBook = isAllowsAddingToAddressBook;
@@ -338,15 +339,16 @@
     if (_alarm.person) {
         displayingPerson = [[[IAPerson alloc] initWithPersonId:_alarm.person.personId] autorelease];
     }
+    NSUInteger index = [self _indexAddressDictionaryOfAlarm:_alarm forContactPerson:displayingPerson.ABPerson];
     
     //根据情况选择视图
     UIViewController *vc = nil;
-    if (!displayingPerson) {
+    if (!displayingPerson || index == NSNotFound) {
         displayingPerson = [[[IAPerson alloc] initWithAlarm:theAlarm image:nil] autorelease];
+        [displayingPerson prepareForUnknownPersonDisplay:_alarm image:nil];
         vc = [self _unknownPersonViewControllerWithIAPerson:displayingPerson];
     }else{
-        UIImage *image = [UIImage imageNamed:@"Shadow_IAFlagPurple.png"];
-        [displayingPerson prepareForDisplay:_alarm image:image];
+        [displayingPerson prepareForDisplay:_alarm image:nil];
         vc = [self _personViewControllerWithIAPerson:displayingPerson];
     }
     
@@ -518,7 +520,7 @@
             //更新ABUnknownPersonViewController
             if (theVC == _unknownPersonVC) {
                 IAPerson *displayingIAPerson = [[[IAPerson alloc] initWithAlarm:_alarm image:_personImageTook] autorelease];
-                [displayingIAPerson prepareForDisplay:_alarm image:_personImageTook];
+                [displayingIAPerson prepareForUnknownPersonDisplay:_alarm image:_personImageTook];
                 [self _updateViewController:theVC person:displayingIAPerson];
                 //更新alarm中的person
                 _alarm.person = displayingIAPerson;
@@ -530,12 +532,13 @@
                 //更新alam 中的person 中的照片
                  _alarm.person.image = _personImageTook; 
                 
-                //界面显示 使用新照片、新地址、新名称、新备注
+                //界面显示
                 IAPerson *displayingIAPerson = [[[IAPerson alloc] initWithPersonId:_alarm.person.personId] autorelease];
                 [displayingIAPerson prepareForDisplay:_alarm image:_personImageTook];
                 [self _updateViewController:theVC person:displayingIAPerson];
                 //更新alarm中的person
                 _alarm.person = displayingIAPerson;
+                //_alarm.indexOfPersonAddresses = displayingIAPerson.addressDictionaries.count -1;
             }
             
             //高亮闹钟地址
@@ -562,7 +565,7 @@
         //把person、地址索引保存到alarm
         IAPerson *didResolveToPerson = [[[IAPerson alloc] initWithPerson:person] autorelease];
         _alarm.person = didResolveToPerson;
-        _alarm.indexOfPersonAddresses = didResolveToPerson.addressDictionaries.count -1; //地址加到了最后一个
+        //_alarm.indexOfPersonAddresses = didResolveToPerson.addressDictionaries.count -1; //地址加到了最后一个
         
         //更新alarm的positionTitle
         NSString *positionTitle = nil;
@@ -583,14 +586,15 @@
         NSUInteger index = [self _indexAddressDictionaryOfAlarm:_alarm forContactPerson:person];
         if (NSNotFound == index) {
             vc = [self _unknownPersonViewControllerWithIAPerson:didResolveToPerson];
+            [didResolveToPerson prepareForUnknownPersonDisplay:_alarm image:_personImageTook];
         }else{
             vc = [self _personViewControllerWithIAPerson:didResolveToPerson];
-            _alarm.indexOfPersonAddresses = index;
+            [didResolveToPerson prepareForDisplay:_alarm image:_personImageTook];
+            _alarm.indexOfPersonAddresses = index; //保持地址索引
         }
         
         //弹出新的
         [(UINavigationController*) _currentViewController pushViewController:vc animated:NO];
-        [didResolveToPerson prepareForDisplay:_alarm image:_personImageTook];
         [self _updateViewController:vc person:didResolveToPerson];
         //更新alarm中的person
         _alarm.person = didResolveToPerson;

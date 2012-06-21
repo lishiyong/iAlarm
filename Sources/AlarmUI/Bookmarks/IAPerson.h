@@ -67,6 +67,7 @@
 
 //为显示做准备
 - (void)prepareForDisplay:(IAAlarm*)alarm image:(UIImage*)image;
+- (void)prepareForUnknownPersonDisplay:(IAAlarm*)alarm image:(UIImage*)image;
 
 //公司名称是通过alarm添加的
 - (BOOL)isAlarmOrganization;

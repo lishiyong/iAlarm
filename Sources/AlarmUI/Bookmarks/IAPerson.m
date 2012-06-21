@@ -480,18 +480,47 @@
 }
 
 - (void)prepareForDisplay:(IAAlarm*)alarm image:(UIImage*)image{
-    
+    //地址显示一个
     if (alarm.placemark.addressDictionary) {
         self.addressDictionaries = [NSArray arrayWithObject:alarm.placemark.addressDictionary];
     }else{
         self.addressDictionaries = nil;
     }
-    [self setImage:image];
-    [self setNoteWithCoordinate:alarm.visualCoordinate];
-    [self setOrganizationForDisplay:alarm.placemark.name];
     
+    //照片用抓的图
+    [self setImage:image];
+    
+    //备注显示坐标
+    [self setNoteWithCoordinate:alarm.visualCoordinate];
+    
+    //不显示标识
+    [self setOrganizationForDisplay:self.organization];
+    
+    //防止没有标题
     if (!self.personName && !self.organization) {//如果都没有
         [self setOrganizationForDisplay:alarm.positionTitle];
+    }
+}
+
+- (void)prepareForUnknownPersonDisplay:(IAAlarm*)alarm image:(UIImage*)image{
+    [self ABPerson];//创建ABPreson
+    
+    //地址显示一个
+    if (alarm.placemark.addressDictionary) {
+        self.addressDictionaries = [NSArray arrayWithObject:alarm.placemark.addressDictionary];
+    }else{
+        self.addressDictionaries = nil;
+    }
+    
+    //照片用抓的图
+    [self setImage:image];
+    
+    //备注显示坐标
+    [self setNoteWithCoordinate:alarm.visualCoordinate];
+    
+    [self setOrganization:alarm.placemark.name];
+    if (!self.organization) {
+        [self setOrganization:alarm.positionTitle];
     }
 }
 

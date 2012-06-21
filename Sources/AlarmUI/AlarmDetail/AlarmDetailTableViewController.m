@@ -928,6 +928,7 @@
     self.alarm.reserve3 = self.alarmTemp.reserve3;
     
     self.alarm.person = self.alarmTemp.person;
+    self.alarm.indexOfPersonAddresses = self.alarmTemp.indexOfPersonAddresses;
 	
 	[self.alarm saveFromSender:self];
 
