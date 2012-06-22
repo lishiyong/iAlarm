@@ -120,7 +120,8 @@
 			[alarmTemp addObserver:self forKeyPath:@"radius" options:0 context:nil];
 			[alarmTemp addObserver:self forKeyPath:@"positionType" options:0 context:nil];
             [alarmTemp addObserver:self forKeyPath:@"notes" options:0 context:nil];
-            //[alarmTemp addObserver:self forKeyPath:@"personId" options:0 context:nil];
+            [alarmTemp addObserver:self forKeyPath:@"person" options:0 context:nil];
+            [alarmTemp addObserver:self forKeyPath:@"indexOfPersonAddresses" options:0 context:nil];
 		//}
 		
 	}
@@ -1504,7 +1505,9 @@
 			[alarmTemp removeObserver:self forKeyPath:@"radius"];
 			[alarmTemp removeObserver:self forKeyPath:@"positionType"];
             [alarmTemp removeObserver:self forKeyPath:@"notes"];
-            //[alarmTemp removeObserver:self forKeyPath:@"personId"];
+            [alarmTemp removeObserver:self forKeyPath:@"person"];
+            [alarmTemp removeObserver:self forKeyPath:@"indexOfPersonAddresses"];
+        
 		//}
 	}
 	[alarmTemp release];

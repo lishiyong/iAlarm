@@ -6,10 +6,14 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import <AddressBookUI/AddressBookUI.h>
 #import "YCLib.h"
 #import "LocalizedString.h"
 #import "IAAlarm.h"
 #import "IAPerson.h"
+
+#define kOrganizationPrefix  @"✧"
+#define kOrganizationSuffix  @"✧"
 
 @implementation IAPerson
 
@@ -27,8 +31,9 @@
 
 - (NSString *)organization{
     //显示得时候把标识符号去掉
-    NSString *temp = [_organization stringByReplacingOccurrencesOfString:@"✧" withString:@""];
-    return temp;
+    NSString *temp = [_organization stringByReplacingOccurrencesOfString:kOrganizationPrefix withString:@""];
+    temp = [_organization stringByReplacingOccurrencesOfString:kOrganizationSuffix withString:@""];
+    return temp;    
 }
 
 - (NSDictionary *)addressDictionary{
@@ -151,14 +156,11 @@
     if (self) {
         _personId = personId;
         _personName = [personName copy];
+        _organization = [organization copy];
         _addressDictionaries = [addressDictionaries retain];
         _note = [note copy];
         _image = [image retain];
         _phones = [phones retain];
-        
-        NSString *temp = [NSString stringWithFormat:@"✧%@✧",organization]; 
-        _organization = [temp retain];
-
     }
     return self;
 }
@@ -280,7 +282,11 @@
     NSString *coordinateString = nil;                                   
     CLLocationCoordinate2D coor = theAlarm.visualCoordinate;
     if (CLLocationCoordinate2DIsValid(coor)) {
+        /*
         coordinateString = YCLocalizedStringFromCLLocationCoordinate2DUsingSeparater(coor,kCoordinateFrmStringNorthLatitudeSpace,kCoordinateFrmStringSouthLatitudeSpace,kCoordinateFrmStringEastLongitudeSpace,kCoordinateFrmStringWestLongitudeSpace,@"\n");
+         */
+        coordinateString = YCLocalizedStringFromCLLocationCoordinate2DUsingSeparater(coor,kCoordinateFrmStringNorthLatitudeDecimal,kCoordinateFrmStringSouthLatitudeDecimal,kCoordinateFrmStringEastLongitudeDecimal,kCoordinateFrmStringWestLongitudeDecimal,@"\n");
+         
     }
     
     //organization
@@ -305,48 +311,36 @@
 
 - (void)setOrganization:(NSString*)organization{
     
+    [organization retain];
+    [_organization release];
+    _organization = organization;
+    
     if (_ABperson) {
         if (organization) {
-            //前“✧”后“✧”做为标识
-            
-            BOOL hasPrefix = YES;
-            BOOL hasSuffix = YES;
-            if (_organization) {
-                hasPrefix = [_organization hasPrefix:@"✧"]; // ([_organization rangeOfString:@"✧"].location != NSNotFound);
-                hasSuffix = [_organization hasSuffix:@"✧"]; //([_organization rangeOfString:@"✧"].location != NSNotFound);
-            }
-            
-            if (hasPrefix || hasSuffix) {
-                NSString *temp = [_organization stringByReplacingOccurrencesOfString:@"✧" withString:@""]; //先去掉，
-                temp = [NSString stringWithFormat:@"✧%@✧",organization]; //再添加一次
-                ABRecordSetValue(_ABperson, kABPersonOrganizationProperty, (__bridge_transfer CFStringRef)temp, NULL);
-            }
-            
+            ABRecordSetValue(_ABperson, kABPersonOrganizationProperty, (__bridge_transfer CFStringRef)_organization, NULL);
         }else{
             ABRecordRemoveValue(_ABperson, kABPersonOrganizationProperty, NULL);
         }
     }
-    
-    [organization retain];
-    [_organization release];
-    _organization = organization;
 }
 
-- (void)setOrganizationForDisplay:(NSString*)organization{
-    
-    if (_ABperson) {
-        if (organization) {
-            ABRecordSetValue(_ABperson, kABPersonOrganizationProperty, (__bridge_transfer CFStringRef)organization, NULL);
-        }else{
-            ABRecordRemoveValue(_ABperson, kABPersonOrganizationProperty, NULL);
-        }
+- (void)setOrganizationWithAlarmIdentifier:(NSString*)organization{
+    if (organization) {
+        //先去掉
+        NSString *temp = [organization stringByReplacingOccurrencesOfString:kOrganizationPrefix withString:@""];
+        temp = [organization stringByReplacingOccurrencesOfString:kOrganizationSuffix withString:@""];
+        
+        //再添加一次
+        NSMutableString *temp1 = [NSMutableString stringWithString:kOrganizationPrefix];
+        [temp1 appendString:organization];
+        [temp1 appendString:kOrganizationSuffix];
+        
+        [self setOrganization:temp1];
+    }else{
+        [self setOrganization:nil];
     }
-    [organization retain];
-    [_organization release];
-    _organization = organization;
+    
 }
-
-
 
 - (void)setAddressDictionaries:(NSArray*)theDics{
     [theDics retain];
@@ -472,7 +466,12 @@
 
 - (void)setNoteWithCoordinate:(CLLocationCoordinate2D)coordinate{
     if (CLLocationCoordinate2DIsValid(coordinate)) {
+        /*
         NSString *coordinateString = YCLocalizedStringFromCLLocationCoordinate2DUsingSeparater(coordinate,kCoordinateFrmStringNorthLatitudeSpace,kCoordinateFrmStringSouthLatitudeSpace,kCoordinateFrmStringEastLongitudeSpace,kCoordinateFrmStringWestLongitudeSpace,@"\n");
+         */
+        
+        NSString *coordinateString = YCLocalizedStringFromCLLocationCoordinate2DUsingSeparater(coordinate,kCoordinateFrmStringNorthLatitudeDecimal,kCoordinateFrmStringSouthLatitudeDecimal,kCoordinateFrmStringEastLongitudeDecimal,kCoordinateFrmStringWestLongitudeDecimal,@"\n");
+         
         [self setNote:coordinateString];
     }else{
         [self setNote:nil];
@@ -480,6 +479,8 @@
 }
 
 - (void)prepareForDisplay:(IAAlarm*)alarm image:(UIImage*)image{
+    [self ABPerson];//创建ABPreson
+    
     //地址显示一个
     if (alarm.placemark.addressDictionary) {
         self.addressDictionaries = [NSArray arrayWithObject:alarm.placemark.addressDictionary];
@@ -493,12 +494,15 @@
     //备注显示坐标
     [self setNoteWithCoordinate:alarm.visualCoordinate];
     
-    //不显示标识
-    [self setOrganizationForDisplay:self.organization];
+    //公司名
+    [self setOrganization:alarm.placemark.name];
+    if (!self.organization) {//
+        [self setOrganization:alarm.positionTitle];
+    }
     
     //防止没有标题
     if (!self.personName && !self.organization) {//如果都没有
-        [self setOrganizationForDisplay:alarm.positionTitle];
+        [self setOrganization:alarm.positionTitle];
     }
 }
 
@@ -518,21 +522,49 @@
     //备注显示坐标
     [self setNoteWithCoordinate:alarm.visualCoordinate];
     
-    [self setOrganization:alarm.placemark.name];
-    if (!self.organization) {
-        [self setOrganization:alarm.positionTitle];
+    //公司名 带公司名中的标识
+    [self setOrganizationWithAlarmIdentifier:alarm.placemark.name];
+    if (!self.organization) {//
+        [self setOrganizationWithAlarmIdentifier:alarm.positionTitle];
     }
 }
 
-- (BOOL)isAlarmOrganization{
+- (BOOL)hasAlarmIdentifierInOrganization{
     BOOL hasPrefix = NO;
     BOOL hasSuffix = NO;
     if (_organization) {
-        hasPrefix = [_organization hasPrefix:@"✧"]; // ([_organization rangeOfString:@"✧"].location != NSNotFound);
-        hasSuffix = [_organization hasSuffix:@"✧"]; //([_organization rangeOfString:@"✧"].location != NSNotFound);
+        hasPrefix = [_organization hasPrefix:kOrganizationPrefix];
+        hasSuffix = [_organization hasSuffix:kOrganizationSuffix];
     }
     
     return (hasPrefix || hasSuffix);
+}
+
+- (NSUInteger)indexOfAddressDictionary:(NSDictionary*)theAddressDictionary{
+    if (!theAddressDictionary || theAddressDictionary.count == 0) return NSNotFound;
+    if (!_addressDictionaries || _addressDictionaries.count == 0) return NSNotFound;
+    
+    //dic -> string
+    NSString *theAddressString = [ABCreateStringWithAddressDictionary(theAddressDictionary,NO) stringByTrim];
+    theAddressString = [theAddressString stringByReplacingOccurrencesOfString:@" " withString:@""];
+    theAddressString = [theAddressString stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    theAddressString = (theAddressString != nil) ? theAddressString : nil;
+    
+    NSUInteger index = [_addressDictionaries indexOfObjectPassingTest:^BOOL(NSDictionary *aDic, NSUInteger idx, BOOL *stop) {
+        
+        //dic -> string
+        NSString *anAddressString = [ABCreateStringWithAddressDictionary(aDic,NO) stringByTrim];
+        anAddressString = [anAddressString stringByReplacingOccurrencesOfString:@" " withString:@""];
+        anAddressString = [anAddressString stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+        
+        if ([anAddressString isEqualToString:theAddressString]){
+            *stop = YES;
+            return YES;
+        }
+        return NO;
+    }];
+    
+    return index;
 }
 
 #pragma mark - Override super
@@ -577,7 +609,7 @@
     [encoder encodeObject:_organization forKey:kIAOrganization];
     [encoder encodeObject:_addressDictionaries forKey:kIAAddressDictionaries];
     [encoder encodeObject:_note forKey:kIANote];
-    [encoder encodeObject:_image forKey:kIAImage];
+    //[encoder encodeObject:_image forKey:kIAImage]; //4.x不支持
     [encoder encodeObject:_phones forKey:kIAPhones];
 }
 
@@ -589,7 +621,7 @@
         _organization = [[decoder decodeObjectForKey:kIAOrganization] copy];
         _addressDictionaries = [[decoder decodeObjectForKey:kIAAddressDictionaries] retain];
         _note = [[decoder decodeObjectForKey:kIANote] copy];
-        _image = [[decoder decodeObjectForKey:kIAImage] retain];
+        //_image = [[decoder decodeObjectForKey:kIAImage] retain];
         _phones = [[decoder decodeObjectForKey:kIAPhones] retain];
     }
     return self;

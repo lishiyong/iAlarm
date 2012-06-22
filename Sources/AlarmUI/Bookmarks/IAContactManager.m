@@ -45,11 +45,6 @@
 - (void)_updateViewController:(UIViewController*)viewController person:(IAPerson*)thePerson;
 
 /**
- 找到闹钟地址在联系人地址(多地址)中的索引
- **/
-- (NSUInteger)_addressDictionaryIndexOfAlarm:(IAAlarm*)alarm forContactPerson:(ABRecordRef)contactPerson;
-
-/**
  统一ABUnknownPersonViewController和ABPersonViewController的点属性的委托方法
  **/
 - (void)_viewController:(UIViewController *)viewController personImage:(UIImage*)personImage;
@@ -85,7 +80,6 @@
     
     if (thePerson) {
         _unknownPersonVC.alternateName = thePerson.organization ? thePerson.organization : thePerson.personName;//优先显示organization
-        //_unknownPersonVC.alternateName = @"aaa";
         _unknownPersonVC.displayedPerson = thePerson.ABPerson;
         BOOL isAllowsAddingToAddressBook = (thePerson.addressDictionaries.count >0);
         _unknownPersonVC.allowsAddingToAddressBook = isAllowsAddingToAddressBook;
@@ -122,47 +116,16 @@
 }
 
 - (void)_updateViewController:(UIViewController*)viewController person:(IAPerson*)thePerson{
+    //4.x必须要一个空人才行
+    IAPerson *emptyPerson = [[[IAPerson alloc] initWithPersonId:kABRecordInvalidID organization:nil addressDictionary:nil] autorelease];
+    
     if (viewController == _unknownPersonVC) {
-        _unknownPersonVC.displayedPerson = nil;
+        _unknownPersonVC.displayedPerson = emptyPerson.ABPerson;
         [self _unknownPersonViewControllerWithIAPerson:thePerson];
     }else if (viewController == _personVC){
-        _personVC.displayedPerson = nil;
+        _personVC.displayedPerson = emptyPerson.ABPerson;
         [self _personViewControllerWithIAPerson:thePerson];
     }
-}
-
-- (NSUInteger)_indexAddressDictionaryOfAlarm:(IAAlarm*)alarm forContactPerson:(ABRecordRef)contactPerson{
-    
-    if (!alarm) return NSNotFound;
-    if (!contactPerson) return NSNotFound;
-    
-    IAPerson *theIAPerson = [[[IAPerson alloc] initWithPerson:contactPerson] autorelease];
-    NSDictionary *theAlarmAddressDic = alarm.placemark.addressDictionary;
-    NSArray *theContactPersonAddressDics = theIAPerson.addressDictionaries;
-    
-    if (!theAlarmAddressDic || theAlarmAddressDic.count == 0) return NSNotFound;
-    if (!theContactPersonAddressDics || theContactPersonAddressDics.count == 0) return NSNotFound;
-    
-    //dic -> string
-    NSString *alarmAddress = [ABCreateStringWithAddressDictionary(theAlarmAddressDic,NO) stringByTrim];
-    alarmAddress = [alarmAddress stringByReplacingOccurrencesOfString:@" " withString:@""];
-    alarmAddress = [alarmAddress stringByReplacingOccurrencesOfString:@"\n" withString:@""];
-    
-    NSUInteger index = [theContactPersonAddressDics indexOfObjectPassingTest:^BOOL(NSDictionary *aDic, NSUInteger idx, BOOL *stop) {
-        
-        //dic -> string
-        NSString *anAddress = [ABCreateStringWithAddressDictionary(aDic,NO) stringByTrim];
-        anAddress = [anAddress stringByReplacingOccurrencesOfString:@" " withString:@""];
-        anAddress = [anAddress stringByReplacingOccurrencesOfString:@"\n" withString:@""];
-        
-        if ([anAddress isEqualToString:alarmAddress]){
-            *stop = YES;
-            return YES;
-        }
-        return NO;
-    }];
-    
-    return index;
 }
 
 - (void)_viewController:(UIViewController *)viewController personImage:(UIImage*)personImage{
@@ -339,7 +302,7 @@
     if (_alarm.person) {
         displayingPerson = [[[IAPerson alloc] initWithPersonId:_alarm.person.personId] autorelease];
     }
-    NSUInteger index = [self _indexAddressDictionaryOfAlarm:_alarm forContactPerson:displayingPerson.ABPerson];
+    NSUInteger index = [displayingPerson indexOfAddressDictionary:_alarm.placemark.addressDictionary];
     
     //根据情况选择视图
     UIViewController *vc = nil;
@@ -538,7 +501,6 @@
                 [self _updateViewController:theVC person:displayingIAPerson];
                 //更新alarm中的person
                 _alarm.person = displayingIAPerson;
-                //_alarm.indexOfPersonAddresses = displayingIAPerson.addressDictionaries.count -1;
             }
             
             //高亮闹钟地址
@@ -547,8 +509,7 @@
             }
             
             //不设置竟然给改成默认的了
-            _unknownPersonVC.title = KLabelAlarmPostion;
-            _personVC.title = KLabelAlarmPostion;
+            theVC.title = KLabelAlarmPostion;
             
             [[UIApplication sharedApplication] endIgnoringInteractionEvents];
             
@@ -563,48 +524,29 @@
     if (person) {
         
         //把person、地址索引保存到alarm
-        IAPerson *didResolveToPerson = [[[IAPerson alloc] initWithPerson:person] autorelease];
+        ABRecordID personId = ABRecordGetRecordID(person);
+        IAPerson *didResolveToPerson = [[[IAPerson alloc] initWithPersonId:personId] autorelease];
         _alarm.person = didResolveToPerson;
-        //_alarm.indexOfPersonAddresses = didResolveToPerson.addressDictionaries.count -1; //地址加到了最后一个
+        _alarm.indexOfPersonAddresses = didResolveToPerson.addressDictionaries.count -1; //地址加到了最后一个
         
-        //更新alarm的positionTitle
-        NSString *positionTitle = nil;
-        if (didResolveToPerson.personName) {
-            positionTitle = didResolveToPerson.personName;
-        }else{
-            positionTitle = didResolveToPerson.organization;
-        }
-        if (positionTitle)
-            _alarm.positionTitle = positionTitle;
-        
-        
-        [(UINavigationController*) _currentViewController popViewControllerAnimated:NO];
-        
-        
-        //根据情况打开哪个
-        UIViewController *vc = nil;
-        NSUInteger index = [self _indexAddressDictionaryOfAlarm:_alarm forContactPerson:person];
-        if (NSNotFound == index) {
-            vc = [self _unknownPersonViewControllerWithIAPerson:didResolveToPerson];
-            [didResolveToPerson prepareForUnknownPersonDisplay:_alarm image:_personImageTook];
-        }else{
-            vc = [self _personViewControllerWithIAPerson:didResolveToPerson];
-            [didResolveToPerson prepareForDisplay:_alarm image:_personImageTook];
-            _alarm.indexOfPersonAddresses = index; //保持地址索引
-        }
+        //更新联系人，及相关视图
+        [didResolveToPerson prepareForDisplay:_alarm image:_personImageTook];
+        [self _updateViewController:_personVC person:didResolveToPerson];
         
         //弹出新的
-        [(UINavigationController*) _currentViewController pushViewController:vc animated:NO];
-        [self _updateViewController:vc person:didResolveToPerson];
-        //更新alarm中的person
-        _alarm.person = didResolveToPerson;
-
-        [self performBlock:^{ //竟然需要这样
-            //高亮闹钟地址
-            if ([vc respondsToSelector:@selector(setHighlightedItemForProperty:withIdentifier:)]) {
-                [(ABPersonViewController*)vc setHighlightedItemForProperty:kABPersonAddressProperty withIdentifier:0];
-            }
-            vc.navigationItem.rightBarButtonItem = nil;
+        [(UINavigationController*) _currentViewController popViewControllerAnimated:NO];
+        [(UINavigationController*) _currentViewController pushViewController:_personVC animated:NO];
+        
+        [_personVC setHighlightedItemForProperty:kABPersonAddressProperty withIdentifier:0];
+        _personVC.navigationItem.rightBarButtonItem = nil;
+        _personVC.title = KLabelAlarmPostion;
+        
+        //竟然需要这样,有时候也不行
+        [self performBlock:^{
+            [_personVC setHighlightedItemForProperty:kABPersonAddressProperty withIdentifier:0];
+            _personVC.navigationItem.rightBarButtonItem = nil;
+            _personVC.title = KLabelAlarmPostion;
+            
         } afterDelay:0.2];
         
     }
@@ -618,6 +560,7 @@
     IAPerson *displayingPerson = [[[IAPerson alloc] initWithPerson:person] autorelease];
     UIImage *personImage = displayingPerson.image;
     [displayingPerson prepareForDisplay:_alarm image:[UIImage imageNamed:@"IAPersonNoImage.png"]];
+    [self _updateViewController:_unknownPersonVC person:displayingPerson];
     
     //高亮闹钟地址
     if ([personViewController respondsToSelector:@selector(setHighlightedItemForProperty:withIdentifier:)]) {
@@ -636,8 +579,8 @@
     
     if ((kABPersonNoteProperty == property) ||
         (kABPersonKindProperty == property)|| 
-        (kABPersonAddressProperty == property 
-        &&  [self _indexAddressDictionaryOfAlarm:_alarm forContactPerson:person] == identifierForValue)) 
+        (kABPersonAddressProperty == property) 
+        ) 
     {
         //更新界面
         ABRecordID displayedPersonId = ABRecordGetRecordID(person);

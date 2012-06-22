@@ -39,8 +39,7 @@
 - (NSArray *)phones;
 - (ABRecordRef)ABPerson;
 
-//添加一个地址
-- (void)addAddressDictionary:(NSDictionary*)dic;
+
 
 
 //不从库里搜索
@@ -48,7 +47,7 @@
 - (id)initWithPersonId:(ABRecordID)personId organization:(NSString*)organization addressDictionary:(NSDictionary*)addressDictionary;
 - (id)initWithAlarm:(IAAlarm*)theAlarm image:(UIImage*)image;
 
-//不从库里搜索，而且不保存ABRecordRef
+//不从库里搜索，而且不retain ABRecordRef
 - (id)initWithPerson:(ABRecordRef)person; 
 
 
@@ -58,19 +57,24 @@
 
 //仅仅能保存从 initWithPersonId: 创建的
 - (void)saveAddressBook;
-//
+
+//同时修改ABPreson
 - (void)setOrganization:(NSString*)organization;
+- (void)setOrganizationWithAlarmIdentifier:(NSString*)organization; //带前后标识
+- (void)addAddressDictionary:(NSDictionary*)dic;//添加一个地址
 - (void)setAddressDictionaries:(NSArray*)theDics;
 - (void)replaceAddressDictionaryAtIndex:(NSUInteger)index withAddressDictionary:(NSDictionary*)dic;
 - (void)setImage:(UIImage*)theImage;
-- (void)setNote:(NSString*)note;
 
-//为显示做准备
+//修改ABPreson，为显示做准备。如果没有ABPreson，创建一个
 - (void)prepareForDisplay:(IAAlarm*)alarm image:(UIImage*)image;
 - (void)prepareForUnknownPersonDisplay:(IAAlarm*)alarm image:(UIImage*)image;
 
-//公司名称是通过alarm添加的
-- (BOOL)isAlarmOrganization;
+//公司名称是否通过alarm添加的
+- (BOOL)hasAlarmIdentifierInOrganization;
+
+//指定的地址在地址组中的索引位置。没找到返回 NSNotfound
+- (NSUInteger)indexOfAddressDictionary:(NSDictionary*)theAddressDictionary;
 
 
 

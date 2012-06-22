@@ -6,6 +6,8 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "IAPerson.h"
+#import "YCPlacemark.h"
 #import "IAAlarm.h"
 #import "YCMapPointAnnotation.h"
 #import "IAAnnotation.h"
@@ -25,6 +27,15 @@
         alarm = [anAlarm retain];
         annotationType = alarm.enabled ? IAMapAnnotationTypeStandard:IAMapAnnotationTypeDisabled;
         _realCoordinate = alarm.realCoordinate;
+        /*
+        NSString *theTitle = nil;
+        theTitle = alarm.alarmName;
+        theTitle = theTitle ? theTitle : alarm.person.personName;
+        theTitle = theTitle ? theTitle : alarm.person.organization;
+        theTitle = theTitle ? theTitle : alarm.positionTitle; 
+        title = [theTitle retain];
+         */
+        
     }
     return self;
 }

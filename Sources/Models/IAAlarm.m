@@ -355,8 +355,8 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
         //照片、公司名
         if (!theContact.image) 
             theContact.image = person.image;
-        if (theContact.isAlarmOrganization) 
-            theContact.organization = person.organization;
+        if (theContact.hasAlarmIdentifierInOrganization) 
+            [theContact setOrganizationWithAlarmIdentifier:person.organization];
         
         @try {
             [theContact saveAddressBook];
@@ -365,7 +365,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
             
         }
             
-        } afterDelay:0.0];
+        } afterDelay:0.1];
     }
     
 	

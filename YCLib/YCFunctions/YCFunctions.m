@@ -77,8 +77,8 @@ NSString* YCLocalizedStringFromCLLocationCoordinate2DUsingSeparater(CLLocationCo
 		lonFString = westLongitude; //西经
     
     
-	NSString *latstr = convert(coord.latitude, 0, latFString);
-	NSString *lonstr = convert(coord.longitude, 0, lonFString);
+	NSString *latstr = convert(coord.latitude, 2, latFString);
+	NSString *lonstr = convert(coord.longitude, 2, lonFString);
     
     NSMutableString *format = [NSMutableString stringWithString: @"%@"];
     [format appendString:separater];

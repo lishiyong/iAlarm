@@ -283,10 +283,10 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
                                     initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                     target:self 
                                     action:@selector(doneButtonPressed:)] autorelease];
-    [self.navigationItem setRightBarButtonItem:doneButton animated:YES];
+    [self.navigationItem setLeftBarButtonItem:doneButton animated:YES];
     self.navigationItem.rightBarButtonItem.enabled = NO; //地图返回动画，不能马上执行
     
-    [self.navigationItem setHidesBackButton:YES animated:YES];
+    //[self.navigationItem setHidesBackButton:YES animated:YES];
      
 }
 
@@ -407,33 +407,24 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 	{
 		pinView = [[[MKPinAnnotationView alloc]
 					initWithAnnotation:annotation reuseIdentifier:pinViewAnnotationIdentifier] autorelease];
-
-		
-		pinView.canShowCallout = YES;
-		
-        /*
-		UIButton* rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-		[rightButton addTarget:self
-						action:@selector(showDetails:)
-			  forControlEvents:UIControlEventTouchUpInside];
-		pinView.rightCalloutAccessoryView = rightButton;
-         */
-		
 	}
 	
+    pinView.canShowCallout = YES;
 	pinView.animatesDrop = YES;
 	pinView.draggable = YES;
 	pinView.pinColor = MKPinAnnotationColorPurple;
-	UIImageView *sfIconView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)] autorelease];
 	
 	//旗帜
 	IAAlarm *alarmTemp = self.alarm;
 	NSString *imageName = alarmTemp.alarmRadiusType.alarmRadiusTypeImageName;
 	imageName = [NSString stringWithFormat:@"20_%@",imageName]; //使用20像素的图标
-	sfIconView.image = [UIImage imageNamed:imageName];
+    
+    UIButton *flagButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    flagButton.frame = CGRectMake(0, 0, 20, 20);
+    [flagButton setBackgroundImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+    [flagButton addTarget:self action:@selector(doneButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 	
-	
-	pinView.leftCalloutAccessoryView = sfIconView;
+	pinView.leftCalloutAccessoryView = flagButton;
 	pinView.annotation = annotation;
 
 	return pinView;
