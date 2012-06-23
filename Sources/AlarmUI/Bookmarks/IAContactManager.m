@@ -54,11 +54,20 @@
 @implementation IAContactManager
 @synthesize currentViewController = _currentViewController, animationKind = _animationKind; 
 
+- (void)setCurrentViewController:(UIViewController *)currentViewController{
+    //相当于 delegate，不用retain
+    _currentViewController = currentViewController;
+    
+    _delayForWaitingStartLoadingMap = 1.0; //每次新打开一个闹钟都会重新设置这个。做了单例，就得这么用了
+}
+
 
 - (MKMapView *)_mapView{
     if (!_mapView) {
         _mapView = [[MKMapView alloc] initWithFrame:(CGRect){{0, 0},kPersonViewSize}];
         _mapView.showsUserLocation = NO;
+        _mapView.scrollEnabled = NO;
+        _mapView.zoomEnabled = NO;
     }
     _mapView.layer.bounds = (CGRect){{0, 0},kPersonViewSize}; //免得抓图给弄坏了
     return _mapView;
@@ -402,31 +411,37 @@
         //NSLog(@"前 while _mapViewDidFinishLoadingMap = %d _mapViewDidStartLoadingMap = %d",_mapViewDidFinishLoadingMap,_mapViewDidStartLoadingMap);
         while (!_mapViewDidFinishLoadingMap || !_mapViewDidStartLoadingMap) {
             [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+            //NSLog(@"中 while _mapViewDidFinishLoadingMap = %d _mapViewDidStartLoadingMap = %d",_mapViewDidFinishLoadingMap,_mapViewDidStartLoadingMap);
         }
         
         //NSLog(@"后 while _mapViewDidFinishLoadingMap = %d _mapViewDidStartLoadingMap = %d",_mapViewDidFinishLoadingMap,_mapViewDidStartLoadingMap);
         
         //再取一次图
         UIImage *theImage = [self._mapView takeImageWithoutOverlaySize:kPersonImageSize overrideImage:flagImage leftBottomAtCoordinate:lbcoordinate imageCenter:imageCenter];
-        [_personImageTook release];
-        _personImageTook = [theImage retain];
         [self._mapView removeFromSuperview];
         [self._mapView.layer removeAllAnimations];
         self._mapView.delegate = nil;//
 
-        
-        [displayingPerson setImage:theImage];
-        [self _updateViewController:vc person:displayingPerson];
-        
-        [self performBlock:^{
-            vc.title = KLabelAlarmPostion;
-            vc.navigationItem.rightBarButtonItem = nil;
+        if (theImage) {
             
-            //高亮闹钟地址
-            if ([vc respondsToSelector:@selector(setHighlightedItemForProperty:withIdentifier:)]) {
-                [(ABPersonViewController*)vc setHighlightedItemForProperty:kABPersonAddressProperty withIdentifier:0];
-            }
-        } afterDelay:0.0];
+            [_personImageTook release];
+            _personImageTook = [theImage retain];
+            
+            [displayingPerson setImage:theImage];
+            [self _updateViewController:vc person:displayingPerson];
+            
+            [self performBlock:^{
+                vc.title = KLabelAlarmPostion;
+                vc.navigationItem.rightBarButtonItem = nil;
+                
+                //高亮闹钟地址
+                if ([vc respondsToSelector:@selector(setHighlightedItemForProperty:withIdentifier:)]) {
+                    [(ABPersonViewController*)vc setHighlightedItemForProperty:kABPersonAddressProperty withIdentifier:0];
+                }
+            } afterDelay:0.0];
+            
+        }
+        
         
     }
     
@@ -811,7 +826,6 @@ static id single = nil;
         [self _unknownPersonViewControllerWithIAPerson:nil];
         [self _personViewControllerWithIAPerson:nil];
         _currentViewController = nil;
-        _delayForWaitingStartLoadingMap = 1.0;
     }
     return self;
 }

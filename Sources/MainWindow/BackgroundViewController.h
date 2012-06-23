@@ -43,7 +43,6 @@ typedef enum {
     NSArray *searchResults;
     YCForwardGeocoderManager *forwardGeocoderManager;
     
-	UIToolbar *toolbar;
 	UIBarButtonItem *infoBarButtonItem;
 	UIBarButtonItem *switchBarButtonItem;
 	UIBarButtonItem *currentLocationBarButtonItem;
@@ -62,12 +61,10 @@ typedef enum {
 @property (nonatomic, retain, readonly) UIBarButtonItem *doneButtonItem;
 @property (nonatomic, retain, readonly) UIBarButtonItem *addButtonItem;
 
-@property (nonatomic, retain) IBOutlet UINavigationBar *navBar;
 @property (nonatomic, retain) IBOutlet YCSearchBar *searchBar;
 @property (nonatomic, retain) YCSearchController *searchController;
 @property (nonatomic, retain) IBOutlet IABookmarkManager *bookmarkManager;
 
-@property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, retain, readonly) UIBarButtonItem *infoBarButtonItem;
 @property (nonatomic, retain, readonly) UIBarButtonItem *switchBarButtonItem;
 @property (nonatomic, retain, readonly) UIBarButtonItem *currentLocationBarButtonItem;

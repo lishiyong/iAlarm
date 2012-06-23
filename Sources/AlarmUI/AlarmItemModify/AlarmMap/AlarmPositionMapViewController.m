@@ -283,10 +283,10 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
                                     initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                     target:self 
                                     action:@selector(doneButtonPressed:)] autorelease];
-    [self.navigationItem setLeftBarButtonItem:doneButton animated:YES];
+    [self.navigationItem setRightBarButtonItem:doneButton animated:YES];
     self.navigationItem.rightBarButtonItem.enabled = NO; //地图返回动画，不能马上执行
     
-    //[self.navigationItem setHidesBackButton:YES animated:YES];
+    [self.navigationItem setHidesBackButton:YES animated:NO];
      
 }
 

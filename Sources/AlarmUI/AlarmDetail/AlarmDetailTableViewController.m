@@ -579,6 +579,7 @@
 - (void) didSelectNavDestionationCell:(id)sender{
     
     IAAlarm *theAlarm = self.alarmTemp;
+    [IAContactManager sharedManager].currentViewController = self.navigationController;
     [[IAContactManager sharedManager] pushContactViewControllerWithAlarm:theAlarm];
 	
 }
@@ -940,6 +941,8 @@
 }
 
 -(IBAction)testAlarmButtonPressed:(id)sender{
+    //防止连按
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     
     IAAlarm *alarmForNotif = self.alarmTemp;
 

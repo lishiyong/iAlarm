@@ -106,6 +106,9 @@
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
+    //测试按钮会禁用
+    if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     
     UIApplicationState state = application.applicationState;
     [application performSelector:@selector(setApplicationIconBadgeNumber:) withInteger:0 afterDelay:0.1];//为评分判断留时间

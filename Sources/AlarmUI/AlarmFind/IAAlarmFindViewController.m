@@ -460,7 +460,7 @@ cell使用后height竟然会加1。奇怪！
     }
     
     [CATransaction begin];
-    [CATransaction setAnimationDuration:2.0];
+    [CATransaction setAnimationDuration:1.5];
     
     CAKeyframeAnimation * moveAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
     moveAnimation.delegate = self;

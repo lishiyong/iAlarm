@@ -641,8 +641,6 @@
 		9C8AB1DA13B0C92100120AD5 /* WaitingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8953712FFFFD2008FBD45 /* WaitingCell.xib */; };
 		9C8AB1DB13B0C92100120AD5 /* AlarmsMapListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CC224AE1300591C00245DAC /* AlarmsMapListViewController.xib */; };
 		9C8AB1DC13B0C92100120AD5 /* AlarmPositionMapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA992F513025ADC00298E5D /* AlarmPositionMapViewController.xib */; };
-		9C8AB1DD13B0C92100120AD5 /* AnnotationSubtitleTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA9931413025ADC00298E5D /* AnnotationSubtitleTableCell.xib */; };
-		9C8AB1DE13B0C92100120AD5 /* AnnotationTitleTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA9931713025ADC00298E5D /* AnnotationTitleTableCell.xib */; };
 		9C8AB21313B0C92100120AD5 /* IAButtonBarFlag@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CCDAE761312BB4800774FD7 /* IAButtonBarFlag@2x.png */; };
 		9C8AB23A13B0C92100120AD5 /* IAButtonOpenToolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CC34A2A132DAF0000C52FD2 /* IAButtonOpenToolbar.png */; };
 		9C8AB24713B0C92100120AD5 /* IAButtonOpenToolbarDone.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CDD1E1C1331EB8300022B02 /* IAButtonOpenToolbarDone.png */; };
@@ -697,15 +695,10 @@
 		9C8AB28F13B0C92100120AD5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8973813000454008FBD45 /* main.m */; };
 		9C8AB29013B0C92100120AD5 /* AlarmsMapListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC224B11300594D00245DAC /* AlarmsMapListViewController.m */; };
 		9C8AB29613B0C92100120AD5 /* AlarmPositionMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA992F413025ADC00298E5D /* AlarmPositionMapViewController.m */; };
-		9C8AB29713B0C92100120AD5 /* MapBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA9930013025ADC00298E5D /* MapBookmark.m */; };
-		9C8AB29813B0C92100120AD5 /* MapBookmarksListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA9930213025ADC00298E5D /* MapBookmarksListController.m */; };
 		9C8AB29913B0C92100120AD5 /* YCSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA9930713025ADC00298E5D /* YCSearchBar.m */; };
 		9C8AB29A13B0C92100120AD5 /* YCSearchBarNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA9930913025ADC00298E5D /* YCSearchBarNotification.m */; };
 		9C8AB29B13B0C92100120AD5 /* YCSearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA9930B13025ADC00298E5D /* YCSearchController.m */; };
 		9C8AB29C13B0C92100120AD5 /* YCSearchDisplayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA9930D13025ADC00298E5D /* YCSearchDisplayController.m */; };
-		9C8AB29D13B0C92100120AD5 /* AnnotationInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA9931013025ADC00298E5D /* AnnotationInfoViewController.m */; };
-		9C8AB29E13B0C92100120AD5 /* AnnotationSubtitleTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA9931313025ADC00298E5D /* AnnotationSubtitleTableCell.m */; };
-		9C8AB29F13B0C92100120AD5 /* AnnotationTitleTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA9931613025ADC00298E5D /* AnnotationTitleTableCell.m */; };
 		9C8AB2AB13B0C92100120AD5 /* AlarmListNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE195541306444B007A9FCF /* AlarmListNotifications.m */; };
 		9C8AB2AE13B0C92100120AD5 /* IASaveInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC103C01307BBEC009C42BC /* IASaveInfo.m */; };
 		9C8AB2B413B0C92100120AD5 /* IARegion.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CFD5D51131DF41700C01B38 /* IARegion.m */; };
@@ -895,17 +888,10 @@
 		9CA485E61519D90D00B9C8D6 /* IAFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA485E31519D90D00B9C8D6 /* IAFeedbackViewController.m */; };
 		9CA9931813025ADC00298E5D /* AlarmPositionMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA992F413025ADC00298E5D /* AlarmPositionMapViewController.m */; };
 		9CA9931913025ADC00298E5D /* AlarmPositionMapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA992F513025ADC00298E5D /* AlarmPositionMapViewController.xib */; };
-		9CA9931D13025ADC00298E5D /* MapBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA9930013025ADC00298E5D /* MapBookmark.m */; };
-		9CA9931E13025ADC00298E5D /* MapBookmarksListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA9930213025ADC00298E5D /* MapBookmarksListController.m */; };
 		9CA9931F13025ADC00298E5D /* YCSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA9930713025ADC00298E5D /* YCSearchBar.m */; };
 		9CA9932013025ADC00298E5D /* YCSearchBarNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA9930913025ADC00298E5D /* YCSearchBarNotification.m */; };
 		9CA9932113025ADC00298E5D /* YCSearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA9930B13025ADC00298E5D /* YCSearchController.m */; };
 		9CA9932213025ADC00298E5D /* YCSearchDisplayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA9930D13025ADC00298E5D /* YCSearchDisplayController.m */; };
-		9CA9932313025ADC00298E5D /* AnnotationInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA9931013025ADC00298E5D /* AnnotationInfoViewController.m */; };
-		9CA9932413025ADC00298E5D /* AnnotationSubtitleTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA9931313025ADC00298E5D /* AnnotationSubtitleTableCell.m */; };
-		9CA9932513025ADC00298E5D /* AnnotationSubtitleTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA9931413025ADC00298E5D /* AnnotationSubtitleTableCell.xib */; };
-		9CA9932613025ADC00298E5D /* AnnotationTitleTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA9931613025ADC00298E5D /* AnnotationTitleTableCell.m */; };
-		9CA9932713025ADC00298E5D /* AnnotationTitleTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA9931713025ADC00298E5D /* AnnotationTitleTableCell.xib */; };
 		9CACA45A1590B8AB00353667 /* ABPersonIconImageView+YCBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CACA4591590B8AB00353667 /* ABPersonIconImageView+YCBookmark.m */; };
 		9CACA45B1590B8AB00353667 /* ABPersonIconImageView+YCBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CACA4591590B8AB00353667 /* ABPersonIconImageView+YCBookmark.m */; };
 		9CACA45E1590BB4A00353667 /* ABPasteboardControl+YCBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CACA45D1590BB4A00353667 /* ABPasteboardControl+YCBookmark.m */; };
@@ -1797,10 +1783,6 @@
 		9CA992F313025ADC00298E5D /* AlarmPositionMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmPositionMapViewController.h; sourceTree = "<group>"; };
 		9CA992F413025ADC00298E5D /* AlarmPositionMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmPositionMapViewController.m; sourceTree = "<group>"; };
 		9CA992F513025ADC00298E5D /* AlarmPositionMapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AlarmPositionMapViewController.xib; sourceTree = "<group>"; };
-		9CA992FF13025ADC00298E5D /* MapBookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBookmark.h; sourceTree = "<group>"; };
-		9CA9930013025ADC00298E5D /* MapBookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapBookmark.m; sourceTree = "<group>"; };
-		9CA9930113025ADC00298E5D /* MapBookmarksListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBookmarksListController.h; sourceTree = "<group>"; };
-		9CA9930213025ADC00298E5D /* MapBookmarksListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapBookmarksListController.m; sourceTree = "<group>"; };
 		9CA9930613025ADC00298E5D /* YCSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCSearchBar.h; sourceTree = "<group>"; };
 		9CA9930713025ADC00298E5D /* YCSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCSearchBar.m; sourceTree = "<group>"; };
 		9CA9930813025ADC00298E5D /* YCSearchBarNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCSearchBarNotification.h; sourceTree = "<group>"; };
@@ -1809,14 +1791,6 @@
 		9CA9930B13025ADC00298E5D /* YCSearchController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCSearchController.m; sourceTree = "<group>"; };
 		9CA9930C13025ADC00298E5D /* YCSearchDisplayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCSearchDisplayController.h; sourceTree = "<group>"; };
 		9CA9930D13025ADC00298E5D /* YCSearchDisplayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCSearchDisplayController.m; sourceTree = "<group>"; };
-		9CA9930F13025ADC00298E5D /* AnnotationInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnnotationInfoViewController.h; sourceTree = "<group>"; };
-		9CA9931013025ADC00298E5D /* AnnotationInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnnotationInfoViewController.m; sourceTree = "<group>"; };
-		9CA9931213025ADC00298E5D /* AnnotationSubtitleTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnnotationSubtitleTableCell.h; sourceTree = "<group>"; };
-		9CA9931313025ADC00298E5D /* AnnotationSubtitleTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnnotationSubtitleTableCell.m; sourceTree = "<group>"; };
-		9CA9931413025ADC00298E5D /* AnnotationSubtitleTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AnnotationSubtitleTableCell.xib; sourceTree = "<group>"; };
-		9CA9931513025ADC00298E5D /* AnnotationTitleTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnnotationTitleTableCell.h; sourceTree = "<group>"; };
-		9CA9931613025ADC00298E5D /* AnnotationTitleTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnnotationTitleTableCell.m; sourceTree = "<group>"; };
-		9CA9931713025ADC00298E5D /* AnnotationTitleTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AnnotationTitleTableCell.xib; sourceTree = "<group>"; };
 		9CACA4581590B8AB00353667 /* ABPersonIconImageView+YCBookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ABPersonIconImageView+YCBookmark.h"; sourceTree = "<group>"; };
 		9CACA4591590B8AB00353667 /* ABPersonIconImageView+YCBookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ABPersonIconImageView+YCBookmark.m"; sourceTree = "<group>"; };
 		9CACA45C1590BB4A00353667 /* ABPasteboardControl+YCBookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ABPasteboardControl+YCBookmark.h"; sourceTree = "<group>"; };
@@ -3337,22 +3311,9 @@
 				9CA992F313025ADC00298E5D /* AlarmPositionMapViewController.h */,
 				9CA992F413025ADC00298E5D /* AlarmPositionMapViewController.m */,
 				9CA992F513025ADC00298E5D /* AlarmPositionMapViewController.xib */,
-				9CA992FE13025ADC00298E5D /* bookmark */,
 				9CA9930513025ADC00298E5D /* searchController */,
-				9CA9930E13025ADC00298E5D /* tabAnnotation */,
 			);
 			path = AlarmMap;
-			sourceTree = "<group>";
-		};
-		9CA992FE13025ADC00298E5D /* bookmark */ = {
-			isa = PBXGroup;
-			children = (
-				9CA992FF13025ADC00298E5D /* MapBookmark.h */,
-				9CA9930013025ADC00298E5D /* MapBookmark.m */,
-				9CA9930113025ADC00298E5D /* MapBookmarksListController.h */,
-				9CA9930213025ADC00298E5D /* MapBookmarksListController.m */,
-			);
-			path = bookmark;
 			sourceTree = "<group>";
 		};
 		9CA9930513025ADC00298E5D /* searchController */ = {
@@ -3368,29 +3329,6 @@
 				9CA9930D13025ADC00298E5D /* YCSearchDisplayController.m */,
 			);
 			path = searchController;
-			sourceTree = "<group>";
-		};
-		9CA9930E13025ADC00298E5D /* tabAnnotation */ = {
-			isa = PBXGroup;
-			children = (
-				9CA9930F13025ADC00298E5D /* AnnotationInfoViewController.h */,
-				9CA9931013025ADC00298E5D /* AnnotationInfoViewController.m */,
-				9CA9931113025ADC00298E5D /* tableCell */,
-			);
-			path = tabAnnotation;
-			sourceTree = "<group>";
-		};
-		9CA9931113025ADC00298E5D /* tableCell */ = {
-			isa = PBXGroup;
-			children = (
-				9CA9931213025ADC00298E5D /* AnnotationSubtitleTableCell.h */,
-				9CA9931313025ADC00298E5D /* AnnotationSubtitleTableCell.m */,
-				9CA9931413025ADC00298E5D /* AnnotationSubtitleTableCell.xib */,
-				9CA9931513025ADC00298E5D /* AnnotationTitleTableCell.h */,
-				9CA9931613025ADC00298E5D /* AnnotationTitleTableCell.m */,
-				9CA9931713025ADC00298E5D /* AnnotationTitleTableCell.xib */,
-			);
-			path = tableCell;
 			sourceTree = "<group>";
 		};
 		9CC472101564F61C00F79985 /* UIColor */ = {
@@ -4217,8 +4155,6 @@
 				9CE895FD12FFFFD2008FBD45 /* WaitingCell.xib in Resources */,
 				9CC224AF1300591C00245DAC /* AlarmsMapListViewController.xib in Resources */,
 				9CA9931913025ADC00298E5D /* AlarmPositionMapViewController.xib in Resources */,
-				9CA9932513025ADC00298E5D /* AnnotationSubtitleTableCell.xib in Resources */,
-				9CA9932713025ADC00298E5D /* AnnotationTitleTableCell.xib in Resources */,
 				9CCDAE771312BB4800774FD7 /* IAButtonBarFlag@2x.png in Resources */,
 				9CC34A2B132DAF0000C52FD2 /* IAButtonOpenToolbar.png in Resources */,
 				9CDD1E1D1331EB8300022B02 /* IAButtonOpenToolbarDone.png in Resources */,
@@ -4602,8 +4538,6 @@
 				9C8AB1DA13B0C92100120AD5 /* WaitingCell.xib in Resources */,
 				9C8AB1DB13B0C92100120AD5 /* AlarmsMapListViewController.xib in Resources */,
 				9C8AB1DC13B0C92100120AD5 /* AlarmPositionMapViewController.xib in Resources */,
-				9C8AB1DD13B0C92100120AD5 /* AnnotationSubtitleTableCell.xib in Resources */,
-				9C8AB1DE13B0C92100120AD5 /* AnnotationTitleTableCell.xib in Resources */,
 				9C8AB21313B0C92100120AD5 /* IAButtonBarFlag@2x.png in Resources */,
 				9C8AB23A13B0C92100120AD5 /* IAButtonOpenToolbar.png in Resources */,
 				9C8AB24713B0C92100120AD5 /* IAButtonOpenToolbarDone.png in Resources */,
@@ -4965,15 +4899,10 @@
 				9CE8973A13000454008FBD45 /* main.m in Sources */,
 				9CC224B21300594D00245DAC /* AlarmsMapListViewController.m in Sources */,
 				9CA9931813025ADC00298E5D /* AlarmPositionMapViewController.m in Sources */,
-				9CA9931D13025ADC00298E5D /* MapBookmark.m in Sources */,
-				9CA9931E13025ADC00298E5D /* MapBookmarksListController.m in Sources */,
 				9CA9931F13025ADC00298E5D /* YCSearchBar.m in Sources */,
 				9CA9932013025ADC00298E5D /* YCSearchBarNotification.m in Sources */,
 				9CA9932113025ADC00298E5D /* YCSearchController.m in Sources */,
 				9CA9932213025ADC00298E5D /* YCSearchDisplayController.m in Sources */,
-				9CA9932313025ADC00298E5D /* AnnotationInfoViewController.m in Sources */,
-				9CA9932413025ADC00298E5D /* AnnotationSubtitleTableCell.m in Sources */,
-				9CA9932613025ADC00298E5D /* AnnotationTitleTableCell.m in Sources */,
 				9CE195551306444B007A9FCF /* AlarmListNotifications.m in Sources */,
 				9CC103C11307BBEC009C42BC /* IASaveInfo.m in Sources */,
 				9CFD5D52131DF41700C01B38 /* IARegion.m in Sources */,
@@ -5192,15 +5121,10 @@
 				9C8AB28F13B0C92100120AD5 /* main.m in Sources */,
 				9C8AB29013B0C92100120AD5 /* AlarmsMapListViewController.m in Sources */,
 				9C8AB29613B0C92100120AD5 /* AlarmPositionMapViewController.m in Sources */,
-				9C8AB29713B0C92100120AD5 /* MapBookmark.m in Sources */,
-				9C8AB29813B0C92100120AD5 /* MapBookmarksListController.m in Sources */,
 				9C8AB29913B0C92100120AD5 /* YCSearchBar.m in Sources */,
 				9C8AB29A13B0C92100120AD5 /* YCSearchBarNotification.m in Sources */,
 				9C8AB29B13B0C92100120AD5 /* YCSearchController.m in Sources */,
 				9C8AB29C13B0C92100120AD5 /* YCSearchDisplayController.m in Sources */,
-				9C8AB29D13B0C92100120AD5 /* AnnotationInfoViewController.m in Sources */,
-				9C8AB29E13B0C92100120AD5 /* AnnotationSubtitleTableCell.m in Sources */,
-				9C8AB29F13B0C92100120AD5 /* AnnotationTitleTableCell.m in Sources */,
 				9C8AB2AB13B0C92100120AD5 /* AlarmListNotifications.m in Sources */,
 				9C8AB2AE13B0C92100120AD5 /* IASaveInfo.m in Sources */,
 				9C8AB2B413B0C92100120AD5 /* IARegion.m in Sources */,

@@ -10,24 +10,22 @@
 #import <MapKit/MapKit.h>
 
 enum {
-    IAMapAnnotationTypeStandard = 0,        //已经定位的普通类型
-	IAMapAnnotationTypeStandardEnabledDrag, //已经定位的普通类型，但可以拖动
-    IAMapAnnotationTypeLocating,            //正在定位的
-    IAMapAnnotationTypeMovingToTarget,      //接近的目标位置
-	IAMapAnnotationTypeSearch,              //搜索的类型
-	IAMapAnnotationTypeDisabled             //禁用
+    IAAnnotationStatusNormal = 0,        //正常状态     titel：名称，           subtitle：距离
+    IAAnnotationStatusNormal1,           //正常状态1    titel：名称，           subtitle：长地址
+	IAAnnotationStatusDisabled,          //禁用状态     titel：名称，           subtitle：长地址
+    IAAnnotationStatusEditingBegin,      //编辑开始状态  titel："拖动改变目的地"， subtitle：名称
+    IAAnnotationStatusReversing,         //反转地址中   titel："..."，          subtitle：名称
+	IAMapAnnotationTypeReversFinished    //反转地址完成  titel：名称，           subtitle：长地址
 };
-typedef NSUInteger IAMapAnnotationType;
+
+typedef NSUInteger IAAnnotationStatus;
 
 
 @class YCMapPointAnnotation, BSKmlResult, IAAlarm;
 @interface IAAnnotation : YCMapPointAnnotation 
 
 @property (nonatomic,readonly) NSString *identifier;
-@property (nonatomic,retain) MKPlacemark *placemarkForReverse;
-@property (nonatomic,retain) BSKmlResult *placeForSearch;
-@property (nonatomic) IAMapAnnotationType annotationType;
-@property (nonatomic,assign) BOOL changedBySearch; //coordinate,subtitle等是通过查询改变的
+@property (nonatomic) IAAnnotationStatus annotationStatus;
 @property (nonatomic,readonly) IAAlarm *alarm;
 
 - (id)initWithAlarm:(IAAlarm*)anAlarm;
