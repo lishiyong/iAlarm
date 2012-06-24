@@ -7,6 +7,7 @@
 //
 
 #import "YCLib.h"
+#import "YCSystemStatus.h"
 #import "IANotifications.h"
 #import "LocalizedString.h"
 #import "IAPerson.h"
@@ -18,6 +19,7 @@
 @interface IAAnnotation (Private) 
 
 - (NSString*)_alarmName;
+- (NSString*)_alarmTitle;
 - (void)handleStandardLocationDidFinish: (NSNotification*) notification;
 - (void)registerNotifications;
 - (void)unRegisterNotifications;
@@ -31,10 +33,19 @@
     NSString *theName = nil;
     theName = self.alarm.alarmName;
     theName = theName ? theName : self.alarm.person.personName;
-    theName = theName ? theName : self.alarm.person.organization;
-    theName = theName ? theName : self.alarm.positionTitle; 
-    
+    theName = theName ? theName : self.alarm.placemark.name;
+    theName = [theName stringByTrim];
+    theName = (theName.length > 0) ? theName : nil;
     return theName;
+}
+
+- (NSString*)_alarmTitle{
+    NSString *theTitle = [self _alarmName];
+    theTitle = theTitle ? theTitle : self.alarm.person.organization;
+    theTitle = theTitle ? theTitle : self.alarm.positionTitle; 
+    theTitle = theTitle ? theTitle : KDefaultAlarmName;
+    
+    return theTitle;
 }
 
 - (void)handleStandardLocationDidFinish: (NSNotification*) notification{
@@ -45,20 +56,26 @@
     //设置与当前位置的距离值
     if (curLocationAndRealCoordinateIsValid) {        
         CLLocationDistance distance = [curLocation distanceFromCoordinate:self.realCoordinate];
-        distanceFromCurrentLocation = distance;
+        _distanceFromCurrentLocation = distance;
+        
+        NSString *distanceString = [curLocation distanceStringFromCoordinate:self.realCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
+        [_distanceString release];
+        _distanceString = [distanceString retain];
+        
     }else{
-        distanceFromCurrentLocation = -1;
+        _distanceFromCurrentLocation = -1;
+        [_distanceString release];
+        _distanceString = nil;
     }
     
     //设置与当前位置的subtitle的字符串
-    if (IAAnnotationStatusNormal == _annotationStatus) {
-        if (curLocationAndRealCoordinateIsValid) {
-            
-            NSString *distanceString = [curLocation distanceStringFromCoordinate:self.realCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
-            if (![self.subtitle isEqualToString:distanceString])
-                self.subtitle = distanceString;
+    if (_subTitleIsDistanceString) {
+        if (_distanceString) {
+            if (![self.subtitle isEqualToString:_distanceString])
+                self.subtitle = _distanceString;
+        }else{
+            self.subtitle = nil;
         }
-            
     }
     
 }
@@ -67,7 +84,7 @@
 	
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver: self
-						   selector: @selector (handle_standardLocationDidFinish:)
+						   selector: @selector (handleStandardLocationDidFinish:)
 							   name: IAStandardLocationDidFinishNotification
 							 object: nil];
 	
@@ -80,14 +97,24 @@
 
 
 - (id)initWithAlarm:(IAAlarm*)anAlarm{
-    BOOL nameIsNull = anAlarm.alarmName ? NO : YES;
-    self = [super initWithCoordinate:anAlarm.visualCoordinate title:nameIsNull?anAlarm.positionTitle:anAlarm.alarmName  subTitle:_alarm.positionShort addressDictionary:nil];
+    self = [super initWithCoordinate:anAlarm.visualCoordinate title:nil
+                            subTitle:nil addressDictionary:nil];
     
     if (self) {
         _alarm = [anAlarm retain];
-        _annotationStatus = _alarm.enabled ? IAAnnotationStatusNormal:IAAnnotationStatusDisabled;
         _realCoordinate = _alarm.realCoordinate;
-        [self unRegisterNotifications];
+                
+        CLLocation *curLocation = [YCSystemStatus deviceStatusSingleInstance].lastLocation;
+        BOOL curLocationAndRealCoordinateIsValid = (curLocation && CLLocationCoordinate2DIsValid(self.realCoordinate));
+        if (curLocationAndRealCoordinateIsValid) {
+            _distanceString = [curLocation distanceStringFromCoordinate:self.realCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
+            [_distanceString retain];
+        }else{
+            _distanceString = nil;
+        }
+        
+        self.annotationStatus = _alarm.enabled ? IAAnnotationStatusNormal:IAAnnotationStatusDisabledNormal;
+        [self registerNotifications];
     }
     return self;
 }
@@ -97,42 +124,66 @@
 }
 
 - (void)setAnnotationStatus:(IAAnnotationStatus)annotationStatus{
+    //NSLog(@"annotationStatus = %d",annotationStatus);
     _annotationStatus = annotationStatus;
     switch (_annotationStatus) {
         case IAAnnotationStatusNormal:
         {//正常状态 titel：名称，subtitle：距离
-            self.title = [self _alarmName];
-            self.subtitle = nil; //在通知中设置
+            self.title = [self _alarmTitle];
+            self.subtitle = nil;
+            self.subtitle = _distanceString; //在通知中不断更新
+            
+            _subTitleIsDistanceString = YES;
             break;
         }
+        case IAAnnotationStatusReversFinished:
         case IAAnnotationStatusNormal1:
-        {//正常状态1 titel：名称，subtitle：长地址
-            self.title = [self _alarmName];
-            self.subtitle = self.alarm.position;
+        {//正常状态1 titel：名称，subtitle：长地址(如果名称是地址，那么subtitle显示距离)
+            //如果不等待，calloutView有裂缝
+            [self performSelector:@selector(setTitle:) withObject:[self _alarmTitle] afterDelay:0.35];
+            self.subtitle = nil;
+            if ([self _alarmName]) {
+                self.subtitle = self.alarm.position;
+                _subTitleIsDistanceString = NO;
+            }else{
+                self.subtitle = _distanceString;
+                _subTitleIsDistanceString = YES;
+            }
             break;
         }
-        case IAAnnotationStatusDisabled:
-        {//禁用状态 titel：名称，subtitle：长地址
-            self.title = [self _alarmName];
+        case IAAnnotationStatusDisabledNormal:
+        {//禁用状态 titel：名称，subtitle：nil
+            self.title = [self _alarmTitle];
+            self.subtitle = nil;            
+            _subTitleIsDistanceString = NO;
+            break;
+        }
+        case IAAnnotationStatusDisabledNormal1:
+        {//禁用状态1 titel：名称，subtitle：长地址
+            self.title = [self _alarmTitle];
             self.subtitle = self.alarm.position;
+            _subTitleIsDistanceString = NO;
             break;
         }
         case IAAnnotationStatusEditingBegin:
         {//编辑开始状态 titel："拖动改变目的地"，subtitle：名称
             self.title = KLabelMapNewAnnotationTitle;
-            self.subtitle = [self _alarmName];
+            self.subtitle = [self _alarmTitle];
+            
+            _subTitleIsDistanceString = NO;
             break;
         }
         case IAAnnotationStatusReversing:
-        {//反转地址中 titel："..."，subtitle：名称
-            self.title = @" . . .                         ";
-            self.subtitle = [self _alarmName];
-            break;
-        }
-        case IAMapAnnotationTypeReversFinished:
-        {//反转地址完成 titel：名称，subtitle：长地址
-            self.title = [self _alarmName];
-            self.subtitle = self.alarm.position;
+        {//反转地址中 titel："..."(或名称)，subtitle：名称(或"...")
+            if ([self _alarmName]) {//有名字，在拖拽过程中不显示地点的更换
+                self.title = [self _alarmName];
+                self.subtitle = @" . . .        ";
+            }else{
+                self.title = @" . . .          ";
+                self.subtitle = nil;
+            }
+            
+            _subTitleIsDistanceString = NO;
             break;
         }
         default:

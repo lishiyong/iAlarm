@@ -12,11 +12,12 @@
 
 @interface YCMapPointAnnotation : MKPlacemark<MKAnnotation> {
 @package
-    NSString *title;
-    NSString *subtitle;
+    NSString *_title;
+    NSString *_subtitle;
     CLLocationCoordinate2D _visualCoordinate;
     CLLocationCoordinate2D _realCoordinate;
-    CLLocationDistance distanceFromCurrentLocation;
+    CLLocationDistance _distanceFromCurrentLocation;
+    NSString *_distanceString;
 }
 
 @property (nonatomic) CLLocationCoordinate2D coordinate;

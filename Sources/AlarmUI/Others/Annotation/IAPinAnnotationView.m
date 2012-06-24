@@ -113,6 +113,20 @@
 }
 
 - (void)flagButtonPressed:(id)sender{
+    //更换Annotation的状态
+    if (IAAnnotationStatusNormal == [(IAAnnotation*)self.annotation annotationStatus]) 
+        [(IAAnnotation*)self.annotation setAnnotationStatus:IAAnnotationStatusNormal1];
+    
+    else if(IAAnnotationStatusNormal1 == [(IAAnnotation*)self.annotation annotationStatus])
+        [(IAAnnotation*)self.annotation setAnnotationStatus:IAAnnotationStatusNormal];
+    
+    else if(IAAnnotationStatusDisabledNormal == [(IAAnnotation*)self.annotation annotationStatus])
+        [(IAAnnotation*)self.annotation setAnnotationStatus:IAAnnotationStatusDisabledNormal1];
+    
+    else if(IAAnnotationStatusDisabledNormal1 == [(IAAnnotation*)self.annotation annotationStatus])
+        [(IAAnnotation*)self.annotation setAnnotationStatus:IAAnnotationStatusDisabledNormal];
+    
+    
 	if ([self.delegate respondsToSelector:@selector(annotationView:didPressFlagButton:)]) {
 		[self.delegate annotationView:self didPressFlagButton:flagButton];
 	}
@@ -207,6 +221,15 @@
             flagImageView.image = [UIImage imageNamed:imageName];
             
             [flagButton setBackgroundImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+            
+            /*
+            //禁用状态时候，缺省是状态1，subtitle显示地址
+            if (alarm.enabled) 
+                annotation.annotationStatus = IAAnnotationStatusNormal;
+            else
+                annotation.annotationStatus = IAAnnotationStatusDisabledNormal;
+             */
+            
         }
         
         [self addObserver:self forKeyPath:@"annotation.alarm.enabled" options:0 context:nil];

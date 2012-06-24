@@ -10,7 +10,7 @@
 #import "YCMapPointAnnotation.h"
 
 @implementation YCMapPointAnnotation
-@synthesize coordinate = _visualCoordinate, title, subtitle, realCoordinate = _realCoordinate;
+@synthesize title = _title, subtitle = _subtitle, coordinate = _visualCoordinate, realCoordinate = _realCoordinate;
 
 -(id) initWithCoordinate:(CLLocationCoordinate2D) coord title:(NSString *) theTitle subTitle:(NSString *) theSubTitle{
     return [self initWithCoordinate:coord title:theTitle subTitle:theSubTitle addressDictionary:nil];
@@ -20,11 +20,12 @@
        addressDictionary:(NSDictionary *)addressDictionary{
     self = [super initWithCoordinate:coord addressDictionary:addressDictionary];
     if (self) {
+        _title = [theTitle copy];
+        _subtitle = [theSubTitle copy];
         _visualCoordinate = coord;
-        title = [theTitle copy];
-        subtitle = [theSubTitle copy];
-        distanceFromCurrentLocation = -1.0; //小于0，表示未初始化
         _realCoordinate = kCLLocationCoordinate2DInvalid; //表示未初始化
+        _distanceFromCurrentLocation = -1.0; //小于0，表示未初始化
+        _distanceString = nil;
     }
     return self;
 }
@@ -130,8 +131,9 @@
 
 
 - (void)dealloc{
-    [title release];
-    [subtitle release];
+    [_title release];
+    [_subtitle release];
+    [_distanceString release];
     [super dealloc];
 }
 

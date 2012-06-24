@@ -96,17 +96,6 @@
 	}
 }
 
-
-- (void) handle_standardLocationDidFinish: (NSNotification*) notification{
-	if (![self isViewLoaded]) return;//还没加载
-    
-	CLLocation *location = [[notification userInfo] objectForKey:IAStandardLocationKey];
-    for (AlarmsListCell *aCell in self.alarmListTableView.visibleCells) {
-        [aCell setDistanceLabelWithCurrentLocation:location animated:YES];
-    }
-    
-}
-
 - (void) handle_applicationWillResignActive:(id)notification{	
 	//恢复navbar 标题
 	self.navigationItem.titleView = nil;
@@ -133,13 +122,7 @@
 						   selector: @selector (handle_alarmsDataListDidChange:)
 							   name: IAAlarmsDataListDidChangeNotification
 							 object: nil];
-    //有新的定位数据产生
-	[notificationCenter addObserver: self
-						   selector: @selector (handle_standardLocationDidFinish:)
-							   name: IAStandardLocationDidFinishNotification
-							 object: nil];
-	 
-	
+	 	
 	[notificationCenter addObserver: self
 						   selector: @selector (handle_applicationWillResignActive:)
 							   name: UIApplicationWillResignActiveNotification
@@ -156,7 +139,6 @@
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	[notificationCenter removeObserver:self	name: IAAlarmListEditStateDidChangeNotification object: nil];
 	[notificationCenter removeObserver:self	name: IAAlarmsDataListDidChangeNotification object: nil];
-	[notificationCenter removeObserver:self	name: IAStandardLocationDidFinishNotification object: nil];
 	[notificationCenter removeObserver:self	name: UIApplicationWillResignActiveNotification object: nil];
     [notificationCenter removeObserver:self	name: IARegionTypeDidChangeNotification object: nil];
 }
@@ -210,7 +192,7 @@
         if (ti < -120) location = nil; //120秒内的数据可用。最后位置过久，不用.
     }
     for (AlarmsListCell *aCell in self.alarmListTableView.visibleCells) {
-        [aCell setDistanceLabelWithCurrentLocation:location animated:NO];
+        [aCell updateCell];
     }
     
 }
@@ -264,7 +246,7 @@
 	NSArray *alarms = [IAAlarm alarmArray];
 	IAAlarm *alarm =[alarms objectAtIndex:indexPath.row];
     cell.alarm = alarm;
-    [cell setDistanceLabelWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation animated:NO]; //使用最后存储的位置
+    [cell updateCell]; //使用最后存储的位置
     
 	
 	if (indexPath.row != [IAAlarm alarmArray].count -1) { //最后的cell有bottomShadow

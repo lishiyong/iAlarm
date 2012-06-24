@@ -25,12 +25,12 @@
         //if (distanceFromCurrentLocation < 0.0 || fabs(distanceFromCurrentLocation - distance) > 100.0) 
         if (![self.subtitle isEqualToString:distanceString])
         {
-            distanceFromCurrentLocation = distance;
+            _distanceFromCurrentLocation = distance;
             self.subtitle = distanceString;
         }
         
     }else{
-        distanceFromCurrentLocation = -1;
+        _distanceFromCurrentLocation = -1;
         self.subtitle = nil;
     }
     

@@ -10,19 +10,22 @@
 #import <MapKit/MapKit.h>
 
 enum {
-    IAAnnotationStatusNormal = 0,        //正常状态     titel：名称，           subtitle：距离
-    IAAnnotationStatusNormal1,           //正常状态1    titel：名称，           subtitle：长地址
-	IAAnnotationStatusDisabled,          //禁用状态     titel：名称，           subtitle：长地址
-    IAAnnotationStatusEditingBegin,      //编辑开始状态  titel："拖动改变目的地"， subtitle：名称
-    IAAnnotationStatusReversing,         //反转地址中   titel："..."，          subtitle：名称
-	IAMapAnnotationTypeReversFinished    //反转地址完成  titel：名称，           subtitle：长地址
+    IAAnnotationStatusNormal = 0,        //正常状态     
+    IAAnnotationStatusNormal1,           //正常状态1    
+	IAAnnotationStatusDisabledNormal,    //禁用状态     
+    IAAnnotationStatusDisabledNormal1,   //禁用状态1 
+    IAAnnotationStatusEditingBegin,      //编辑开始状态  
+    IAAnnotationStatusReversing,         //反转地址中   
+	IAAnnotationStatusReversFinished     //反转地址完成  
 };
 
 typedef NSUInteger IAAnnotationStatus;
 
 
-@class YCMapPointAnnotation, BSKmlResult, IAAlarm;
-@interface IAAnnotation : YCMapPointAnnotation 
+@class YCMapPointAnnotation, IAAlarm;
+@interface IAAnnotation : YCMapPointAnnotation {
+    BOOL _subTitleIsDistanceString;
+}
 
 @property (nonatomic,readonly) NSString *identifier;
 @property (nonatomic) IAAnnotationStatus annotationStatus;

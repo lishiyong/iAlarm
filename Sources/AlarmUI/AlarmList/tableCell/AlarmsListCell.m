@@ -5,6 +5,10 @@
 //  Created by li shiyong on 11-1-9.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 
+#import "YCSystemStatus.h"
+#import "YCLib.h"
+#import "IAPerson.h"
+#import "YCPlacemark.h"
 #import "CLLocation+YC.h"
 #import "UIColor+YC.h"
 #import "IARegionsCenter.h"
@@ -13,15 +17,42 @@
 #import "LocalizedString.h"
 #import "AlarmsListCell.h"
 
+@interface AlarmsListCell (Private) 
+
+- (void)handleStandardLocationDidFinish: (NSNotification*) notification;
+- (void)registerNotifications;
+- (void)unRegisterNotifications;
+
+@end
 
 @implementation AlarmsListCell
 
-@synthesize alarm, enabled;
+@synthesize alarm;
 @synthesize alarmTitleLabel, alarmDetailLabel, isEnabledLabel, flagImageView, topShadowView, bottomShadowView;
 
-- (void)setEnabled:(BOOL)theEnabled{
-    enabled = theEnabled;
-    if (enabled) {
+
+- (void)updateCell{
+    
+    //可用状态时候就更新距离
+    _subTitleIsDistanceString = self.alarm.enabled;
+    
+    NSString *theTitle  = self.alarm.alarmName;
+    theTitle = theTitle ? theTitle : self.alarm.person.personName;
+    theTitle = theTitle ? theTitle : self.alarm.placemark.name;
+    theTitle = [theTitle stringByTrim];
+    theTitle = (theTitle.length > 0) ? theTitle : nil;
+    theTitle = theTitle ? theTitle : self.alarm.person.organization;
+    theTitle = theTitle ? theTitle : self.alarm.positionTitle; 
+    theTitle = theTitle ? theTitle : KDefaultAlarmName;
+    
+    alarmTitleLabel.text = theTitle;
+    alarmDetailLabel.text = self.alarm.enabled ? _distanceString : self.alarm.position;
+    if (!alarmDetailLabel.text) 
+        alarmDetailLabel.text = self.alarm.position;
+    NSString *imageName = self.alarm.enabled ? self.alarm.alarmRadiusType.alarmRadiusTypeImageName : @"IAFlagGray.png";
+    self.flagImageView.image = [UIImage imageNamed:imageName];
+    
+    if (self.alarm.enabled) {
         self.isEnabledLabel.text = KDicOn; 
         self.isEnabledLabel.alpha = 1.0;
         self.alarmDetailLabel.alpha = 1.0;
@@ -29,85 +60,12 @@
         self.alarmDetailLabel.textColor = [UIColor colorWithWhite:0.2 alpha:1.0];
         self.isEnabledLabel.textColor = [UIColor colorWithWhite:0.03 alpha:0.85];
     }else{
-        self.flagImageView.image = [UIImage imageNamed:@"IAFlagGray.png"];//灰色的旗帜
         self.isEnabledLabel.text = KDicOff; //文字:关闭
         self.alarmTitleLabel.textColor = [UIColor darkGrayColor];
         self.alarmDetailLabel.textColor = [UIColor darkGrayColor];
         self.isEnabledLabel.textColor = [UIColor grayColor];
     }
-}
 
-- (void)setAlarm:(IAAlarm *)theAlarm{
-    [theAlarm retain];
-    [alarm release];
-    alarm = theAlarm;
-    
-    alarmTitleLabel.text = self.alarm.alarmName ? self.alarm.alarmName : self.alarm.positionTitle;
-    alarmDetailLabel.text = self.alarm.position;
-    self.enabled = alarm.enabled;
-    if (self.enabled) {
-        NSString *imageName = self.alarm.alarmRadiusType.alarmRadiusTypeImageName;
-        self.flagImageView.image = [UIImage imageNamed:imageName];
-    }
-}
-
-- (void)setDistanceLabelWithCurrentLocation:(CLLocation*)curLocation animated:(BOOL)animated{ 
-    
-    if (curLocation && alarm) {
-        
-        CLLocationDistance distance = [curLocation distanceFromCoordinate:alarm.realCoordinate];
-        NSString *distanceString = [curLocation distanceStringFromCoordinate:alarm.realCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
-        
-        //未设置过 或 与上次的距离超过100米
-        //if (distanceFromCurrentLocation < 0.0 || fabs(distanceFromCurrentLocation - distance) > 100.0) 
-        {
-            distanceFromCurrentLocation = distance;
-
-            if (![self.alarmDetailLabel.text isEqualToString:distanceString]) {
-                
-                //转换动画
-                if (animated) {
-                    self.userInteractionEnabled = NO;
-                    [UIView transitionWithView:self.alarmDetailLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^()
-                     {
-                         self.alarmDetailLabel.text = distanceString;
-                     } completion:^(BOOL finished)
-                     {
-                         self.userInteractionEnabled = YES;
-                     }]; 
-                    
-                }else{
-                    self.alarmDetailLabel.text = distanceString;
-                }
-                
-                
-            }
-            
-        }
-        
-    }else{
-        distanceFromCurrentLocation = -1;
-        if (![self.alarmDetailLabel.text isEqualToString:self.alarm.positionShort]) {
-            
-            //转换动画
-            if (animated) {
-                self.userInteractionEnabled = NO;
-                [UIView transitionWithView:self.alarmDetailLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^()
-                 {
-                     self.alarmDetailLabel.text = self.alarm.position;
-                 } completion:^(BOOL finished)
-                 {
-                     self.userInteractionEnabled = YES;
-                 }];
-            }else{
-               self.alarmDetailLabel.text = self.alarm.position; 
-            }
-
-        }
-        
-    }
-    
-    
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated{
@@ -120,7 +78,18 @@
 - (id)initWithCoder:(NSCoder *)aDecoder{
     self = [super initWithCoder:aDecoder];
     if (self) {
-        distanceFromCurrentLocation = -1;//未设置过的标识
+        _distanceFromCurrentLocation = -1;//未设置过的标识
+        
+        CLLocation *curLocation = [YCSystemStatus deviceStatusSingleInstance].lastLocation;
+        BOOL curLocationAndRealCoordinateIsValid = (curLocation && CLLocationCoordinate2DIsValid(self.alarm.realCoordinate));
+        if (curLocationAndRealCoordinateIsValid) {
+            _distanceString = [curLocation distanceStringFromCoordinate:self.alarm.realCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
+            [_distanceString retain];
+        }else{
+            _distanceString = nil;
+        }
+        
+        [self registerNotifications];
     }
     return self;
 }
@@ -148,8 +117,10 @@
 
 
 - (void)dealloc {
-	[alarm release];
+    [self unRegisterNotifications];
     
+    [_distanceString release];
+	[alarm release];
     [alarmTitleLabel release];
     [alarmDetailLabel release];
     [isEnabledLabel release];
@@ -158,6 +129,59 @@
 	[bottomShadowView release];
     [super dealloc];
 }
+
+
+- (void)handleStandardLocationDidFinish: (NSNotification*) notification{
+    
+    CLLocation *curLocation = [[notification userInfo] objectForKey:IAStandardLocationKey];
+    BOOL curLocationAndRealCoordinateIsValid = (curLocation && CLLocationCoordinate2DIsValid(self.alarm.realCoordinate));
+    
+    //设置与当前位置的距离值
+    if (curLocationAndRealCoordinateIsValid) {        
+        CLLocationDistance distance = [curLocation distanceFromCoordinate:self.alarm.realCoordinate];
+        _distanceFromCurrentLocation = distance;
+        
+        NSString *distanceString = [curLocation distanceStringFromCoordinate:self.alarm.realCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
+        [_distanceString release];
+        _distanceString = [distanceString retain];
+        
+    }else{
+        _distanceFromCurrentLocation = -1;
+        [_distanceString release];
+        _distanceString = nil;
+    }
+    
+    //设置与当前位置的subtitle的字符串
+    if (_subTitleIsDistanceString) {
+        [UIView transitionWithView:self.alarmDetailLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^()
+         {
+             if (_distanceString) {
+                 if (![self.alarmDetailLabel.text isEqualToString:_distanceString])
+                     self.alarmDetailLabel.text = _distanceString;
+             }else{
+                 self.alarmDetailLabel.text = nil;
+             }
+             
+         } completion:NULL];         
+    }
+    
+}
+
+- (void)registerNotifications {
+	
+	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver: self
+						   selector: @selector (handleStandardLocationDidFinish:)
+							   name: IAStandardLocationDidFinishNotification
+							 object: nil];
+	
+}
+
+- (void)unRegisterNotifications{
+	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter removeObserver:self	name: IAStandardLocationDidFinishNotification object: nil];
+}
+
 
 
 @end

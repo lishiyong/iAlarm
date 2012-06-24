@@ -11,12 +11,12 @@
 
 @class IAAlarm;
 @interface AlarmsListCell : UITableViewCell {
-	CLLocationDistance distanceFromCurrentLocation;
+	CLLocationDistance _distanceFromCurrentLocation;
+    NSString  *_distanceString;
+    BOOL _subTitleIsDistanceString;
 }
 
 @property(nonatomic,retain) IAAlarm *alarm;
-@property(nonatomic,getter = isEnabled) BOOL enabled;
-
 @property(nonatomic,retain) IBOutlet UILabel *alarmTitleLabel;
 @property(nonatomic,retain) IBOutlet UILabel *alarmDetailLabel;
 @property(nonatomic,retain) IBOutlet UILabel *isEnabledLabel;
@@ -25,6 +25,7 @@
 @property(nonatomic,retain) IBOutlet UIView *bottomShadowView;
 
 + (id)viewWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle;
-- (void)setDistanceLabelWithCurrentLocation:(CLLocation*)curLocation animated:(BOOL)animated;
+
+- (void)updateCell;
 
 @end

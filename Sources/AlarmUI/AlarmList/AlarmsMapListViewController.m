@@ -327,7 +327,6 @@
 	pinsEditing = theEditing;
 	
 	for (IAAnnotation *aAnnotation in self.mapPointAnnotations) {
-		IAAlarm *alarm = [IAAlarm findForAlarmId:aAnnotation.identifier];
 		IAPinAnnotationView * aAnnotationView = [self.mapPointAnnotationViews objectForKey:aAnnotation.identifier];
 		
 		if (aAnnotationView ==nil ) continue;
@@ -343,9 +342,13 @@
 		aAnnotationView.pinColor = theEditing ? MKPinAnnotationColorPurple : MKPinAnnotationColorRed;
 		aAnnotationView.draggable = theEditing;
 		
-		//更改标题
-		NSString *newTitle = theEditing ? KLabelMapNewAnnotationTitle : (alarm.alarmName ? alarm.alarmName : alarm.positionTitle);
-		aAnnotation.title = newTitle;
+        //等待pinView的按钮转换
+        [self performBlock:^{
+            IAAnnotationStatus statusNormal = aAnnotation.alarm.enabled ? IAAnnotationStatusNormal : IAAnnotationStatusDisabledNormal;
+            aAnnotation.annotationStatus = theEditing ? IAAnnotationStatusEditingBegin : statusNormal;
+        } afterDelay:0.25];
+        
+        
 	}
 
 }
@@ -602,17 +605,6 @@
 	isAlreadyAlertForInternet = NO; //在mapview的加载地图数据失败时候中检查网络
 }
 
-- (void) handle_standardLocationDidFinish: (NSNotification*) notification{
-    //还没加载
-	if (![self isViewLoaded]) return;
-    
-    CLLocation *location = [[notification userInfo] objectForKey:IAStandardLocationKey];
-    for (IAAnnotation *oneObj in self.mapPointAnnotations ) {
-        [oneObj setDistanceSubtitleWithCurrentLocation:location];
-    }
-    
-}
-
 - (void) handle_applicationWillResignActive:(id)notification{	
 	
     //关闭未关闭的对话框
@@ -819,12 +811,6 @@
 							   name: UIApplicationDidBecomeActiveNotification
 							 object: nil];
 	 
-    [notificationCenter addObserver: self
-						   selector: @selector (handle_standardLocationDidFinish:)
-							   name: IAStandardLocationDidFinishNotification
-							 object: nil];
-	
-
 	[notificationCenter addObserver: self
 						   selector: @selector (handle_letAlarmMapsViewHaveAPinVisibleAndSelected:)
 							   name: IALetAlarmMapsViewHaveAPinVisibleAndSelectedNotification
@@ -858,7 +844,6 @@
 	[notificationCenter removeObserver:self	name: IAAlarmsDataListDidChangeNotification object: nil];
 	[notificationCenter removeObserver:self	name: UIApplicationDidEnterBackgroundNotification object: nil];
 	[notificationCenter removeObserver:self	name: UIApplicationWillEnterForegroundNotification object: nil];
-    [notificationCenter removeObserver:self	name: IAStandardLocationDidFinishNotification object: nil];
 	[notificationCenter removeObserver:self	name: UIApplicationWillResignActiveNotification object: nil];
 	[notificationCenter removeObserver:self	name: UIApplicationDidBecomeActiveNotification object: nil];
 	[notificationCenter removeObserver:self	name: IALetAlarmMapsViewHaveAPinVisibleAndSelectedNotification object: nil];
@@ -1045,10 +1030,11 @@
         NSTimeInterval ti = [location.timestamp timeIntervalSinceNow];
         if (ti < -120) location = nil; //120秒内的数据可用。最后位置过久，不用.
     }
-    
+    /*
     for (IAAnnotation *oneObj in self.mapPointAnnotations ) {
         [oneObj setDistanceSubtitleWithCurrentLocation:location];
     }
+     */
 	
 }
 
@@ -1483,50 +1469,35 @@
     [_geocoder reverseGeocodeLocation:location completionHandler:^(YCPlacemark *placemark, NSError *error) {        
         NSString *coordinateString = YCLocalizedStringFromCLLocationCoordinate2D(visualCoordinate,kCoordinateFrmStringNorthLatitude,kCoordinateFrmStringSouthLatitude,kCoordinateFrmStringEastLongitude,kCoordinateFrmStringWestLongitude);
         
-        IAAlarm *alarm = [IAAlarm findForAlarmId:[(IAAnnotation*)annotation identifier]];
+        IAAlarm *alarm = annotation.alarm;
         if (!error && placemark){
             
             //优先使用name，其次titleAddress，最后KDefaultAlarmName
             NSString *titleAddress = placemark.name ? placemark.name :(placemark.titleAddress ? placemark.titleAddress : KDefaultAlarmName);
             NSString *shortAddress = placemark.shortAddress ? placemark.shortAddress : coordinateString;
             NSString *longAddress = placemark.longAddress ? placemark.longAddress : coordinateString;
-                       
-            if (!alarm.nameChanged) {
-                /*不灵
-                annotation.title = nil;
-                [annotation performSelector:@selector(setTitle:) withObject:titleAddress afterDelay:0.2];//先赋空，再赋值，为了拉伸view
-                 */
-                annotation.title = titleAddress;
-            }
+            
             alarm.position = longAddress;
             alarm.positionShort = shortAddress;
             alarm.positionTitle = titleAddress;  
             alarm.placemark = placemark;
             alarm.usedCoordinateAddress = NO;
-            
-            //test
-            //[placemark debug];
-            
+
         }else{
-            
-            if (!alarm.nameChanged) {
-                /*不灵annotation.title = nil; 
-                [annotation performSelector:@selector(setTitle:) withObject:KDefaultAlarmName afterDelay:0.2];//先赋空，再赋值，为了拉伸view
-                 */
-                annotation.title = KDefaultAlarmName; 
-                alarm.alarmName = nil;//把以前版本生成的名称冲掉
-            }
-            
             alarm.position = coordinateString;
             alarm.positionShort = coordinateString;
             alarm.positionTitle = KDefaultAlarmName;
             alarm.placemark = nil;
             alarm.usedCoordinateAddress = YES; //反转失败，用坐标做地址
-            
         }
         
         alarm.visualCoordinate = visualCoordinate;
         alarm.locationAccuracy = kCLLocationAccuracyBest;
+        
+        annotation.annotationStatus = IAAnnotationStatusReversFinished;
+        if (!alarm.nameChanged) //把以前版本生成的名称冲掉
+            alarm.alarmName = nil;
+        
         [alarm saveFromSender:self];
                 
     }];
@@ -1645,7 +1616,7 @@
 }
 
 - (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views{
-    
+    /*
 	for (MKAnnotationView *annotationView in views) {
 
 		IAAnnotation *annoation = (IAAnnotation*)annotationView.annotation ;
@@ -1661,6 +1632,7 @@
 		}
 
 	}
+     */
 	
 }
  
@@ -1758,17 +1730,14 @@
 			//反转
 			if ([annotation isKindOfClass:[IAAnnotation class]])
 			{
-				if (!alarm.nameChanged)
-                    annotation.title = @" . . .                         ";
-				
-				//显示距离当前位置XX公里
-				if ([YCSystemStatus deviceStatusSingleInstance].lastLocation) {
-                    [(IAAnnotation*)annotation setDistanceSubtitleWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];
-				}
                 
                 //坐标改变了，保存
                 alarm.visualCoordinate = annotation.coordinate;
                 alarm.person = nil;//地址改变了，断开可能关联的联系人。
+                
+                if (!alarm.nameChanged)
+                    annotation.annotationStatus = IAAnnotationStatusReversing;
+                
                 [alarm saveFromSender:self];
                 
 				//反转坐标－地址
