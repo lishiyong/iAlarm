@@ -48,28 +48,6 @@
         
     } afterDelay:0.0];
     
-      
-    
-    
-    
-    /*
-    NSLog(@"view0 = %@ %@",NSStringFromClass([viewSelected class]),viewSelected);
-    [viewSelected.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        NSLog(@"UILayoutContainerView's subview = %@ %@",NSStringFromClass([obj class]),obj);
-    }];
-    
-    UIView *transitionView = [viewSelected.subviews objectAtIndex:0];
-    [[transitionView subviews] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        NSLog(@"UINavigationTransitionView's subview = %@ %@",NSStringFromClass([obj class]),obj);
-    }];
-    
-    if (transitionView.subviews.count > 0) {
-        UIView *controllerWrapperView = [[transitionView subviews] objectAtIndex:0];
-        [[controllerWrapperView subviews] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            NSLog(@"UIViewControllerWrapperView's subview = %@ %@",NSStringFromClass([obj class]),obj);
-        }];
-    }
-     */
 }
 
 #pragma mark - View lifecycle

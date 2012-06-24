@@ -14,7 +14,7 @@
 
 @class YCTabToolbarController, YCSearchController;
 
-@interface IABookmarkManager : NSObject<ABPeoplePickerNavigationControllerDelegate, ABPersonViewControllerDelegate, IARecentAddressViewControllerDelegate>{
+@interface IABookmarkManager : NSObject<ABPeoplePickerNavigationControllerDelegate, ABPersonViewControllerDelegate, IARecentAddressViewControllerDelegate,UINavigationControllerDelegate>{
     YCTabToolbarController *_tabToolbarController;
     ABPeoplePickerNavigationController *_peoplePicker;
     UINavigationController *_recentAddressNav;

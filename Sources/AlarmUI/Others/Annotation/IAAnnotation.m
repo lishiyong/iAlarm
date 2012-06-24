@@ -136,19 +136,13 @@
             _subTitleIsDistanceString = YES;
             break;
         }
-        case IAAnnotationStatusReversFinished:
         case IAAnnotationStatusNormal1:
         {//正常状态1 titel：名称，subtitle：长地址(如果名称是地址，那么subtitle显示距离)
             //如果不等待，calloutView有裂缝
             [self performSelector:@selector(setTitle:) withObject:[self _alarmTitle] afterDelay:0.35];
             self.subtitle = nil;
-            if ([self _alarmName]) {
-                self.subtitle = self.alarm.position;
-                _subTitleIsDistanceString = NO;
-            }else{
-                self.subtitle = _distanceString;
-                _subTitleIsDistanceString = YES;
-            }
+            self.subtitle = self.alarm.position;
+            _subTitleIsDistanceString = NO;
             break;
         }
         case IAAnnotationStatusDisabledNormal:
@@ -184,6 +178,20 @@
             }
             
             _subTitleIsDistanceString = NO;
+            break;
+        }
+        case IAAnnotationStatusReversFinished:
+        {//反转完成 titel：名称，subtitle：长地址(如果名称是地址，那么subtitle显示距离)
+            //如果不等待，calloutView有裂缝
+            [self performSelector:@selector(setTitle:) withObject:[self _alarmTitle] afterDelay:0.35];
+            self.subtitle = nil;
+            if ([self _alarmName]) {
+                self.subtitle = self.alarm.position;
+                _subTitleIsDistanceString = NO;
+            }else{
+                self.subtitle = _distanceString;
+                _subTitleIsDistanceString = YES;
+            }
             break;
         }
         default:

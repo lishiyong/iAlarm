@@ -19,9 +19,19 @@
 
 @synthesize currentViewController = _currentViewController, searchController = _searchController;
 
+- (void)cancelButtonItemPressed:(id)sender{
+    //ABPersonViewController 控制器的取消按钮。点击后，回到地图界面。
+    if ([_currentViewController respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]) {
+        [_currentViewController dismissViewControllerAnimated:YES completion:NULL];
+    }else{
+        [_currentViewController dismissModalViewControllerAnimated:YES];
+    }
+}
+
 
 - (void)presentBookmarViewController{
     
+    //设置ABPeoplePickerNavigationController
     if (!_peoplePicker) {
         _peoplePicker = [[ABPeoplePickerNavigationController alloc] init];
         _peoplePicker.peoplePickerDelegate = self;	
@@ -29,12 +39,10 @@
                                    nil];
         _peoplePicker.displayedProperties = displayedItems;
         _peoplePicker.title = @"通讯录";
+        _peoplePicker.delegate = self;
     }
     
-    [_peoplePicker.viewControllers enumerateObjectsUsingBlock:^(UIViewController *obj, NSUInteger idx, BOOL *stop){
-        obj.navigationItem.prompt = @"选取联系人显示在地图上";
-    }];
-    
+    //设置最近“搜索控制器”
     if (!_recentAddressNav) {
         IARecentAddressViewController *recentAddressVC = [[[IARecentAddressViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
         recentAddressVC.delegate = self;
@@ -129,18 +137,21 @@
         
         
     }else { //count == 0 或 count > 1
-        
+                
         //打开联系人编辑
-        ABPersonViewController *picker = [[[ABPersonViewController alloc] init] autorelease];
-        picker.personViewDelegate = self;
-        picker.displayedPerson = person;
-        // Allow users to edit the person’s information
-        picker.allowsEditing = YES;
-        picker.navigationItem.prompt = @"选取联系人显示在地图上";
+        ABPersonViewController *personVC = [[[ABPersonViewController alloc] init] autorelease];
+        personVC.personViewDelegate = self;
+        personVC.displayedPerson = person;
+        personVC.allowsEditing = NO; //允许编辑会把“取消”按钮冲掉
+        personVC.navigationItem.prompt = @"选取联系人显示在地图上";
         NSArray *displayedItems = [NSArray arrayWithObjects:[NSNumber numberWithInt:kABPersonAddressProperty], 
                                    nil];
-        picker.displayedProperties = displayedItems;
-        [peoplePicker pushViewController:picker animated:YES]; 
+        personVC.displayedProperties = displayedItems;
+        
+        [peoplePicker pushViewController:personVC animated:YES]; 
+        
+        UIBarButtonItem *cancelButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonItemPressed:)] autorelease];
+        personVC.navigationItem.rightBarButtonItem = cancelButtonItem; //必须在push后设置才有效
     }
     
     return NO;
@@ -222,6 +233,14 @@
     }
     
     return NO;
+}
+
+#pragma mark -  UINavigationControllerDelegate
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
+    //ABPeoplePickerNavigationController是个nav控制器，把它包含的子视图都设置上
+    if (navigationController == _peoplePicker) {
+        viewController.navigationItem.prompt = @"选取联系人显示在地图上";
+    }
 }
 
 @end

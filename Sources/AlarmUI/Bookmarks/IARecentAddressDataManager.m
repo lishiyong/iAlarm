@@ -14,49 +14,6 @@
 
 #define kRecentAddressFileName     @"recentAddress.plist"
 #define kMaxNumberOfRecentAddress  200
-/*
-- (void)addObject:(id)object forKey:(NSString*)key{
-    
-    //删除重复的
-    NSIndexSet *indexSetDuplicate = nil;
-    indexSetDuplicate = [_all indexesOfObjectsPassingTest:^BOOL(NSDictionary *anDic, NSUInteger idx, BOOL *stop) {
-        
-        NSString *anKey = [[anDic allKeys] objectAtIndex:0];
-        id anValue = [[anDic allValues] objectAtIndex:0];
-        
-        BOOL keyEqual = [anKey isEqualToString:key];
-        BOOL valueEqual = NO; 
-        
-        //value是NSString和NSDictionary的情况要分开比较
-        if ([object isKindOfClass:[NSString class]] && [anValue isKindOfClass:[NSString class]]) 
-            valueEqual = [object isEqualToString:anValue];
-        else if ([object isKindOfClass:[NSDictionary class]] && [anValue isKindOfClass:[NSDictionary class]]) 
-            valueEqual = [object isEqualToDictionary:anValue];
-        else 
-            valueEqual = NO;
-        
-        if (keyEqual && valueEqual) 
-            return YES;
-        
-        return NO;
-    }];
-    
-    if (indexSetDuplicate && indexSetDuplicate.firstIndex != NSNotFound) 
-        [_all removeObjectsAtIndexes:indexSetDuplicate];    
-    
-    //判断最大list数量限制
-    if (_all.count >= kMaxNumberOfRecentAddress) 
-        [_all removeLastObject];
-    
-    //加到列表
-    NSDictionary *dic = [NSDictionary dictionaryWithObject:object forKey:key];
-    [_all insertObject:dic atIndex:0];
-    
-    //保存到文件
-    NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kRecentAddressFileName];
-    [NSKeyedArchiver archiveRootObject:_all toFile:filePathName];
-}
- */
 
 - (void)addObject:(id)object forKey:(NSString*)key{
     
