@@ -120,7 +120,7 @@
 }
 
 - (void) handle_applicationWillResignActive:(id)notification{	
-	[YCSystemStatus deviceStatusSingleInstance].lastLocation = nil;//免得下次使用了缓存
+	//[YCSystemStatus sharedSystemStatus].lastLocation = nil;//免得下次使用了缓存
     
     IARegionsCenter *regionsCenter = [IARegionsCenter regionCenterSingleInstance];
     if ([regionsCenter.regions count] <= 0) {
@@ -223,11 +223,11 @@
 		return;
 	}
     
-    NSString *s = [NSString stringWithFormat:@"定位经度：%.f,指针:%d",newLocation.horizontalAccuracy,(int)newLocation];
+    NSString *s = [NSString stringWithFormat:@"定位经度：%.f,指针:%p",newLocation.horizontalAccuracy,newLocation];
     [[YCLog logSingleInstance] addlog:s];
 
     
-    [YCSystemStatus deviceStatusSingleInstance].lastLocation = newLocation;//收集last数据
+    [YCSystemStatus sharedSystemStatus].lastLocation = newLocation;//收集last数据
     //////////////////////////////////////////////////////////////
     //程序在前台，发送接到定位数据通知
     UIApplication* app = [UIApplication sharedApplication];
@@ -242,7 +242,7 @@
         
         if (oldLocation) {
             if ((oldLocation.horizontalAccuracy - newLocation.horizontalAccuracy) > EPS ){
-                NSString *ss = [NSString stringWithFormat:@"取消检测，精度:%.f,指针:%d",oldLocation.horizontalAccuracy,(int)oldLocation];
+                NSString *ss = [NSString stringWithFormat:@"取消检测，精度:%.f,指针:%p",oldLocation.horizontalAccuracy,oldLocation];
                 [[YCLog logSingleInstance] addlog:ss];
                 //[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(checkLocationData:) object:oldLocation];
                 [NSObject cancelPreviousPerformRequestsWithTarget:self];
@@ -261,7 +261,7 @@
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
-	[YCSystemStatus deviceStatusSingleInstance].lastLocation = nil;
+	[YCSystemStatus sharedSystemStatus].lastLocation = nil;
     //////////////////////////////////////////////////////////////
     //程序在前台，发送接到定位数据通知
     UIApplication* app = [UIApplication sharedApplication];

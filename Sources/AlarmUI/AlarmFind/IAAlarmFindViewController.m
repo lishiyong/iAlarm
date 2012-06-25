@@ -361,7 +361,7 @@ cell使用后height竟然会加1。奇怪！
     NSString *alarmName = alarm.alarmName ? alarm.alarmName : alarm.positionTitle;
     pointAnnotation = [[YCMapPointAnnotation alloc] initWithCoordinate:visualCoordinate title:alarmName subTitle:nil];
     [self.mapView addAnnotation:pointAnnotation];
-    [pointAnnotation setDistanceSubtitleWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];//距离
+    [pointAnnotation setDistanceSubtitleWithCurrentLocation:[YCSystemStatus sharedSystemStatus].lastLocation];//距离
     
     //地图的显示region
     

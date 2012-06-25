@@ -51,7 +51,7 @@
 - (void)showWaitUntilBecomeKeyWindow:(UIWindow*)waitingWindow afterDelay:(NSTimeInterval)delay{
     
     //检查定位服务
-	BOOL enabledLocation = [[YCSystemStatus deviceStatusSingleInstance] enabledLocation];
+	BOOL enabledLocation = [[YCSystemStatus sharedSystemStatus] enabledLocation];
 	if (enabledLocation) {
 		if (![CLLocationManager respondsToSelector:@selector(authorizationStatus)]) //iOS4.2版本后才支持
 		{

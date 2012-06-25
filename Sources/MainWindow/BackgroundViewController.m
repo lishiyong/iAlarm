@@ -514,7 +514,7 @@
 		
 		NSUInteger alarmsCount = [IAAlarm alarmArray].count;		//空列表不显示编辑按钮
 		if (alarmsCount > 0) {
-			if (alarmsCount > 0 && [YCSystemStatus deviceStatusSingleInstance].isAlarmListEditing) {//原来是编辑状态，恢复成编辑状态
+			if (alarmsCount > 0 && [YCSystemStatus sharedSystemStatus].isAlarmListEditing) {//原来是编辑状态，恢复成编辑状态
 				//self.navBar.topItem.leftBarButtonItem = self.doneButtonItem;
                 [self.navigationItem setLeftBarButtonItem:self.doneButtonItem animated:YES];
 				
@@ -629,7 +629,11 @@
     }
     
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-    [[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:UINavigationControllerHideShowBarDuration+0.05];  
+    //[[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:UINavigationControllerHideShowBarDuration+0.05];  
+    [[UIApplication sharedApplication] performBlock:^{
+        if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
+            [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+    } afterDelay:UINavigationControllerHideShowBarDuration+0.05];
 
     BOOL doHide = NO;
     CFBooleanRef doHideCF = (CFBooleanRef)[notification.userInfo objectForKey:IADoHideBarKey];
@@ -776,7 +780,7 @@
     
     //地图移动期间禁止用户操作
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-    //[[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:2.0];//加解禁的保险
+    //加解禁的保险
     [self performBlock:^{
         if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
             [[UIApplication sharedApplication] endIgnoringInteractionEvents];
@@ -803,7 +807,7 @@
     
     //地图移动期间禁止用户操作
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-    //[[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:2.5];//加解禁的保险
+    //加解禁的保险
     [self performBlock:^{
         if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
             [[UIApplication sharedApplication] endIgnoringInteractionEvents];
@@ -1030,7 +1034,11 @@
 	//Zoom into the location
 	////////////////////////
     
-    [[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:delay+2.0];
+    //[[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:delay+2.0];
+    [[UIApplication sharedApplication] performBlock:^{
+        if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
+            [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+    } afterDelay:delay+2.0];
     
     
     NSString *coordinateString = YCLocalizedStringFromCLLocationCoordinate2D(visualCoordinate,kCoordinateFrmStringNorthLatitude,kCoordinateFrmStringSouthLatitude,kCoordinateFrmStringEastLongitude,kCoordinateFrmStringWestLongitude);
@@ -1216,7 +1224,7 @@
     //当前位置的视口
     CLLocation *curLocation = self.mapsViewController.mapView.userLocation.location;
     if (!curLocation) 
-        curLocation = [YCSystemStatus deviceStatusSingleInstance].lastLocation;
+        curLocation = [YCSystemStatus sharedSystemStatus].lastLocation;
     
     if (!forwardGeocoderManager) 
         forwardGeocoderManager = [[YCForwardGeocoderManager alloc] init];

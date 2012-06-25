@@ -623,9 +623,9 @@
 	theCell.addressLabel.text = addressLabelText;
 
     CLLocationCoordinate2D realCoordinate = self.alarmTemp.realCoordinate;
-	if (CLLocationCoordinate2DIsValid(realCoordinate) && [YCSystemStatus deviceStatusSingleInstance].lastLocation) {
+	if (CLLocationCoordinate2DIsValid(realCoordinate) && [YCSystemStatus sharedSystemStatus].lastLocation) {
 		[theCell setAddressLabelWithLarge:NO];
-        CLLocation *currentLocation = [YCSystemStatus deviceStatusSingleInstance].lastLocation;
+        CLLocation *currentLocation = [YCSystemStatus sharedSystemStatus].lastLocation;
 		NSString *distanceString = [currentLocation distanceStringFromCoordinate:realCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
 		[theCell setDistanceWaiting:NO andDistanceText:distanceString];
 	}else {
@@ -1084,7 +1084,7 @@
 	[self.locationServicesUsableAlert showWaitUntilBecomeKeyWindow:self.view.window afterDelay:0.0];
     
     //定位服务没有开启，或没有授权时候：收到失败数据就直接结束定位
-	BOOL enabledLocation = [[YCSystemStatus deviceStatusSingleInstance] enabledLocation];
+	BOOL enabledLocation = [[YCSystemStatus sharedSystemStatus] enabledLocation];
 	if (!enabledLocation) {
 		self.bestEffortAtLocation = nil;
 		[self performSelector:@selector(endLocation) withObject:nil afterDelay:0.1];  //数据更新后，等待x秒
@@ -1157,7 +1157,7 @@
 	}else {
         
         //发送定位结束通知
-        [YCSystemStatus deviceStatusSingleInstance].lastLocation = self.bestEffortAtLocation;
+        [YCSystemStatus sharedSystemStatus].lastLocation = self.bestEffortAtLocation;
         
         NSDictionary *userInfo = [NSDictionary dictionaryWithObject:self.bestEffortAtLocation forKey:IAStandardLocationKey];
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -1249,7 +1249,7 @@
 			self.titleForFooter = KTextPromptNeedSetLocationByMaps;
             [(IADestinationCell*)(self.destionationCellDescription.tableViewCell) setMoveArrow:YES]; //显示箭头动画
 		}else if (self.alarmTemp.usedCoordinateAddress ) {
-            BOOL connectedToInternet = [[YCSystemStatus deviceStatusSingleInstance] connectedToInternet];
+            BOOL connectedToInternet = [[YCSystemStatus sharedSystemStatus] connectedToInternet];
 			if(!connectedToInternet)
                 self.titleForFooter = KTextPromptNeedInternetToReversing;
             else
@@ -1264,8 +1264,8 @@
     
     //重新生成footer中的距离label
     self.footerView = nil;
-    if (CLLocationCoordinate2DIsValid(self.alarmTemp.realCoordinate) && [YCSystemStatus deviceStatusSingleInstance].lastLocation) {
-        [self setDistanceLabelVisibleInFooterViewWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];
+    if (CLLocationCoordinate2DIsValid(self.alarmTemp.realCoordinate) && [YCSystemStatus sharedSystemStatus].lastLocation) {
+        [self setDistanceLabelVisibleInFooterViewWithCurrentLocation:[YCSystemStatus sharedSystemStatus].lastLocation];
     }
 
 	[self.tableView reloadData];
@@ -1430,7 +1430,7 @@
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {	
 	//定位服务没有开启，或没有授权时候：收到失败数据就直接结束定位
-	BOOL enabledLocation = [[YCSystemStatus deviceStatusSingleInstance] enabledLocation];
+	BOOL enabledLocation = [[YCSystemStatus sharedSystemStatus] enabledLocation];
 	if (!enabledLocation) {
 		self.bestEffortAtLocation = nil;
 		[self performSelector:@selector(endLocation) withObject:nil afterDelay:0.1];  //数据更新后，等待x秒

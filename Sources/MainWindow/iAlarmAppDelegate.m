@@ -161,7 +161,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {  
     
 	[application registerNotifications];
-	[YCSystemStatus deviceStatusSingleInstance]; //一定要有这个初始化
+	[YCSystemStatus sharedSystemStatus]; //一定要有这个初始化
     
     self.window.backgroundColor = [UIColor clearColor]; //为了自定义状态栏
 	self.window.rootViewController = self.viewController;
@@ -221,8 +221,8 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
 		
-	BOOL alreadyRate = [YCSystemStatus deviceStatusSingleInstance].alreadyRate;
-	BOOL notToRemindRate = [YCSystemStatus deviceStatusSingleInstance].notToRemindRate;
+	BOOL alreadyRate = [YCSystemStatus sharedSystemStatus].alreadyRate;
+	BOOL notToRemindRate = [YCSystemStatus sharedSystemStatus].notToRemindRate;
 	
 	//没有评过 且 没点过不再提示 且 (闹钟提示过一次 或 每启动x次)
 	BOOL letAlertShow = (!alreadyRate) && (!notToRemindRate) && ( application.applicationIconBadgeNumber > 0 );//没有评过 且 没点过不再提示 且 提醒过
@@ -298,13 +298,13 @@
         if (buttonIndex == 0) {//cancel
 			//
 		}else if (buttonIndex == 1){ // to Rate
-			[YCSystemStatus deviceStatusSingleInstance].alreadyRate = YES;
+			[YCSystemStatus sharedSystemStatus].alreadyRate = YES;
 			NSString *str = [NSString stringWithFormat: 
 							 @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%@",kAppStoreAppID]; 
 			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
 			
 		}else if (buttonIndex == 2){//Not to remind 
-			[YCSystemStatus deviceStatusSingleInstance].notToRemindRate = YES;
+			[YCSystemStatus sharedSystemStatus].notToRemindRate = YES;
 		}
         
     }
@@ -374,8 +374,8 @@
 
 
     //加入到列表中
-    YCSystemStatus *systmStaus = [YCSystemStatus deviceStatusSingleInstance];
-    [systmStaus.localNotificationIdentifiers addObject:region.alarm.alarmId];
+    //YCSystemStatus *systmStaus = [YCSystemStatus deviceStatusSingleInstance];
+    //[systmStaus.localNotificationIdentifiers addObject:region.alarm.alarmId];
     
 	[self alertRegion:region arrived:YES atCurrentLocation:manager.standardLocationManager.location];
 	
@@ -400,8 +400,8 @@
 	
 	
     //加入到列表中
-    YCSystemStatus *systmStaus = [YCSystemStatus deviceStatusSingleInstance];
-    [systmStaus.localNotificationIdentifiers addObject:region.alarm.alarmId];
+    //YCSystemStatus *systmStaus = [YCSystemStatus deviceStatusSingleInstance];
+    //[systmStaus.localNotificationIdentifiers addObject:region.alarm.alarmId];
     
 	[self alertRegion:region arrived:NO atCurrentLocation:manager.standardLocationManager.location];
 	

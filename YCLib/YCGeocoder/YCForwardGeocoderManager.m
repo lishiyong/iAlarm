@@ -326,38 +326,6 @@
     
 }
 
-/*
-- (void)forwardGeocodeAddressDictionary:(NSDictionary *)addressDictionary addressTitle:(NSString*)addressTitle completionHandler:(YCforwardGeocodeCompletionHandler)completionHandler{
-    
-    //正在查询中
-    if (_geocoders.count > 0) 
-        return;
-    
-    
-    [self _prepare];
-    _forwardGeocodeCompletionHandler = [completionHandler copy];
-    _addressDictionary = [addressDictionary retain];
-    _personName = [addressTitle copy];
-    
-    NSTimeInterval timeoutA = 8;
-    NSTimeInterval timeoutB = 20;
-    
-    YCForwardGeocoder *geocoderB = [[[YCForwardGeocoder alloc] initWithTimeout:timeoutB forwardGeocoderType:YCForwardGeocoderTypeBS] autorelease];
-    [_geocoders addObject:geocoderB];
-    [self _forwardGeocode:geocoderB addressDictionary:addressDictionary];
-    
-    //5.0版本才支持 CLGeocoder 这个类
-    double systeVersion = [[UIDevice currentDevice].systemVersion doubleValue];
-    NSComparisonResult result = YCCompareDouble(systeVersion, 5.0);
-    if (result == NSOrderedDescending || result == NSOrderedSame)  {
-        
-        YCForwardGeocoder *geocoderA = [[[YCForwardGeocoder alloc] initWithTimeout:timeoutA forwardGeocoderType:YCForwardGeocoderTypeApple] autorelease];
-        [_geocoders addObject:geocoderA];
-        [self _forwardGeocode:geocoderA addressDictionary:addressDictionary];
-    }
-    
-}
- */
 
 - (void)forwardGeocodeAddressDictionary:(NSDictionary *)addressDictionary personName:(NSString*)personName personId:(ABRecordID)personId completionHandler:(YCforwardGeocodeCompletionHandler)completionHandler{
     
@@ -372,21 +340,22 @@
     _personName = [personName copy];
     _personId = personId;
     
-    NSTimeInterval timeoutA = 8;
-    NSTimeInterval timeoutB = 2;
-    
-    YCForwardGeocoder *geocoderB = [[[YCForwardGeocoder alloc] initWithTimeout:timeoutB forwardGeocoderType:YCForwardGeocoderTypeBS] autorelease];
-    [_geocoders addObject:geocoderB];
-    [self _forwardGeocode:geocoderB addressDictionary:addressDictionary];
+    NSTimeInterval timeout = 20;
     
     //5.0版本才支持 CLGeocoder 这个类
     double systeVersion = [[UIDevice currentDevice].systemVersion doubleValue];
     NSComparisonResult result = YCCompareDouble(systeVersion, 5.0);
     if (result == NSOrderedDescending || result == NSOrderedSame)  {
         
-        YCForwardGeocoder *geocoderA = [[[YCForwardGeocoder alloc] initWithTimeout:timeoutA forwardGeocoderType:YCForwardGeocoderTypeApple] autorelease];
+        YCForwardGeocoder *geocoderA = [[[YCForwardGeocoder alloc] initWithTimeout:timeout forwardGeocoderType:YCForwardGeocoderTypeApple] autorelease];
         [_geocoders addObject:geocoderA];
         [self _forwardGeocode:geocoderA addressDictionary:addressDictionary];
+    }else{
+        
+        YCForwardGeocoder *geocoderB = [[[YCForwardGeocoder alloc] initWithTimeout:timeout forwardGeocoderType:YCForwardGeocoderTypeBS] autorelease];
+        [_geocoders addObject:geocoderB];
+        [self _forwardGeocode:geocoderB addressDictionary:addressDictionary];
+
     }
      
 }

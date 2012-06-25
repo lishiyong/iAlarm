@@ -72,7 +72,7 @@
 
 -(void)alertInternetAfterDelay:(NSTimeInterval)delay{
 	//检查网络
-	BOOL connectedToInternet = [[YCSystemStatus deviceStatusSingleInstance] connectedToInternet];
+	BOOL connectedToInternet = [[YCSystemStatus sharedSystemStatus] connectedToInternet];
 	if (!connectedToInternet) {
         
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0) {
@@ -176,18 +176,6 @@
 
 ////是否有大头针在屏幕可视范围中
 -(BOOL)isHavePinVisible{
-    /*
-	BOOL b = NO;
-	for (IAAlarm* oneObj in self.alarms) {
-		CLLocationCoordinate2D coordinate =  oneObj.realCoordinate;
-		MKMapPoint point = MKMapPointForCoordinate(coordinate);
-		b = MKMapRectContainsPoint(self.mapView.visibleMapRect,point);
-		
-		if (b) break;
-	}
-	
-	return b;
-     */
     
     BOOL b = NO;
 	for (YCMapPointAnnotation* oneObj in [self.mapView mapPointAnnotations]) {
@@ -200,6 +188,20 @@
 
 }
 
+//根据圈的在屏幕上的半径来决定OverlayView是否可视
+- (void)hideOrShowCircleOverlayView:(MKCircle *)circleOverlay{
+    if (circleOverlay) {
+		MKCoordinateRegion overlayRegion = MKCoordinateRegionMakeWithDistance(_circleOverlay.coordinate, _circleOverlay.radius, _circleOverlay.radius);
+		CGRect overlayRect = [self.mapView convertRegion:overlayRegion toRectToView:self.mapView];
+		double w = overlayRect.size.width;
+		MKOverlayView *overlayView = [self.mapView viewForOverlay:_circleOverlay];
+		if (w <12) 
+			overlayView.hidden = YES;
+		else
+			overlayView.hidden = NO;
+		
+	}
+}
 
 #pragma mark -
 #pragma mark property
@@ -863,7 +865,10 @@
 		[self.mapView performSelector:@selector(removeOverlay:) withObject:foucusOverlay afterDelay:1.25];
 
 	//详细页面出现后，再允许拖动地图、允许其他事件
-    [[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:1.25];
+    [[UIApplication sharedApplication] performBlock:^{
+        if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
+            [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+    } afterDelay:1.25];
 
 }
 
@@ -1018,13 +1023,13 @@
 {	
 	[super viewWillAppear:animated];	
 	    
-    if (pinsEditing != [YCSystemStatus deviceStatusSingleInstance].isAlarmListEditing) {
+    if (pinsEditing != [YCSystemStatus sharedSystemStatus].isAlarmListEditing) {
 		//刷新编辑状态
-		[self setUIEditing:[YCSystemStatus deviceStatusSingleInstance].isAlarmListEditing];
+		[self setUIEditing:[YCSystemStatus sharedSystemStatus].isAlarmListEditing];
 	}
 	
     //刷新距离
-    CLLocation *location = [YCSystemStatus deviceStatusSingleInstance].lastLocation;
+    CLLocation *location = [YCSystemStatus sharedSystemStatus].lastLocation;
     if ([UIApplication sharedApplication].applicationDidFinishLaunchineTimeElapsing  < 5.0) {//小于x秒，刚启动，第一次显示view
         //第一次刷新距离，判断一下数据的时间戳，防止是很久前缓存的。
         NSTimeInterval ti = [location.timestamp timeIntervalSinceNow];
@@ -1537,6 +1542,9 @@
         [_circleOverlay release];
         _circleOverlay =  [[MKCircle circleWithCenterCoordinate:annotation.coordinate radius:theAlarm.radius] retain];
         [self.mapView addOverlay:_circleOverlay];
+        
+        //圈是否显示
+        [self hideOrShowCircleOverlayView:_circleOverlay];
 	}
 }
 
@@ -1679,19 +1687,8 @@
 	[notificationCenter performSelector:@selector(postNotification:) withObject:focusNotification afterDelay:0.0];
     
 	
-    //设置警示半径圈
-	if (_circleOverlay) {
-		MKCoordinateRegion overlayRegion = MKCoordinateRegionMakeWithDistance(_circleOverlay.coordinate, _circleOverlay.radius, _circleOverlay.radius);
-		CGRect overlayRect = [self.mapView convertRegion:overlayRegion toRectToView:self.mapView];
-		double w = overlayRect.size.width;
-		MKOverlayView *overlayView = [self.mapView viewForOverlay:_circleOverlay];
-		if (w <12) 
-			overlayView.hidden = YES;
-		else
-			overlayView.hidden = NO;
-		
-	}
-	 
+    //圈是否显示
+    [self hideOrShowCircleOverlayView:_circleOverlay];
 
 }
 

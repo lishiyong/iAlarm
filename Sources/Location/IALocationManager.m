@@ -769,7 +769,7 @@ const NSTimeInterval kShortLocatingInterval = 2.0;                              
 	//isDidSendStandardLocationDidFinish = NO; //为了让下次激活、不能定位时候发送通知
 	
 	//免得下次使用了缓存
-	[YCSystemStatus deviceStatusSingleInstance].lastLocation = nil;
+	[YCSystemStatus sharedSystemStatus].lastLocation = nil;
 	
 	//[[YCLog logSingleInstance] addlog:@"关闭了发送通知轮询"];
     
@@ -892,7 +892,7 @@ const NSTimeInterval kShortLocatingInterval = 2.0;                              
 		}
          */
         
-        [YCSystemStatus deviceStatusSingleInstance].lastLocation = newLocation;//收集last数据
+        [YCSystemStatus sharedSystemStatus].lastLocation = newLocation;//收集last数据
         [self sendStandardLocationDidFinishNotificationWithLocation:newLocation];
 		
         
@@ -1000,7 +1000,7 @@ const NSTimeInterval kShortLocatingInterval = 2.0;                              
 	//NSString *s = [NSString stringWithFormat:@"significantManager didFailWithError %@",error];
 	//[[YCLog logSingleInstance] addlog:s];
     
-    [YCSystemStatus deviceStatusSingleInstance].lastLocation = nil;
+    [YCSystemStatus sharedSystemStatus].lastLocation = nil;
 	
 	//////////////////////////////////////////////////////////////
     //程序在前台，发送接到定位数据通知

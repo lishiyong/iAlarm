@@ -380,7 +380,7 @@
 
 -(void)alertInternetWithTitle:(NSString*)title andBody:(NSString*)body{
 	//检查网络
-	BOOL connectedToInternet = [[YCSystemStatus deviceStatusSingleInstance] connectedToInternet];
+	BOOL connectedToInternet = [[YCSystemStatus sharedSystemStatus] connectedToInternet];
 	if (!connectedToInternet) {
 		[UIUtility simpleAlertBody:body alertTitle:title cancelButtonTitle:kAlertBtnOK delegate:nil];
 	}
@@ -443,7 +443,7 @@
 
 
 - (void)didSelectRateAndReviewCell:(id)sender{
-	[YCSystemStatus deviceStatusSingleInstance].alreadyRate = YES;
+	[YCSystemStatus sharedSystemStatus].alreadyRate = YES;
     
 	NSString *str = [NSString stringWithFormat: 
 					 @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%@",kAppStoreAppID]; 

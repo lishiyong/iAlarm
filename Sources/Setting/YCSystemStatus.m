@@ -17,61 +17,49 @@
 #import "Reachability.h"
 
 #define kSystemStatusFilename @"systemStatus.plist"
-
-
-static NSString *ApplicationDidFinishLaunchNumberKey = @"ApplicationDidFinishLaunchNumberKey";
-static NSString *ApplicationDidBecomeActiveNumberKey = @"ApplicationDidBecomeActiveNumberKey";
-static NSString *AlarmAlertNumberNumberKey           = @"AlarmAlertNumberNumberKey";
-static NSString *LastLocationKey                     = @"LastLocationKey";
-
 static NSString *kAlreadyRateKey                     = @"kAlreadyRateKey";
 static NSString *kNotToRemindRateKey                 = @"kNotToRemindRateKey";
 
-
-
 @implementation YCSystemStatus
-@synthesize localNotificationIdentifiers;
-@synthesize canValidLocation;
-@synthesize isAlarmListEditing;
-@synthesize lastLocation;
+@synthesize isAlarmListEditing = _isAlarmListEditing, lastLocation = _lastLocation;
 
-- (void)setLastLocation:(CLLocation *)theLastLocation{
-
-    if (theLastLocation != lastLocation) {
-        NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kSystemStatusFilename];
-        [NSKeyedArchiver archiveRootObject:theLastLocation toFile:filePathName];
+- (void)setLastLocation:(CLLocation *)lastLocation{
+    //NSLog(@"setLastLocation");
+    
+    BOOL wirteToFile = NO;
+    if (lastLocation) { //nil不写入文件
+        if (_lastWritedLocation) {
+            CLLocationDistance distance = [lastLocation distanceFromLocation:_lastWritedLocation];
+            if (distance > 100.0) {//与上次写入的差值100以上，才写入
+                wirteToFile = YES;
+            }
+        }else{
+            wirteToFile = YES;
+        }
     }
     
-    [theLastLocation retain];
-	[lastLocation release];
-	lastLocation = theLastLocation;
+    if (wirteToFile) {
+        [_lastWritedLocation release];
+        _lastWritedLocation = [lastLocation retain];
+        
+        NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kSystemStatusFilename];
+        [NSKeyedArchiver archiveRootObject:_lastWritedLocation toFile:filePathName];
+        //NSLog(@"setLastLocation to file");
+    }
+    
+    [lastLocation retain];
+	[_lastLocation release];
+	_lastLocation = lastLocation;
     
 }
-
-/*
-- (id)lastLocation{
-    if (lastLocation == nil) {//为空的时候先读出一下存储的数据
-        NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kSystemStatusFilename];
-        lastLocation = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePathName] retain];
-    }
-    return lastLocation;
-}
- */
 
 - (BOOL)isAlarmListEditing{
 	NSUInteger alarmsCount = [IAAlarm alarmArray].count;		//空列表不能是编辑状态
 	if (alarmsCount <= 0){
-		isAlarmListEditing = NO;
+		_isAlarmListEditing = NO;
 	}
 
-	return isAlarmListEditing;
-}
-
-- (id)localNotificationIdentifiers{
-    if (localNotificationIdentifiers == nil) {
-        localNotificationIdentifiers = [[NSMutableArray alloc] initWithCapacity:1];
-    }
-    return localNotificationIdentifiers;
+	return _isAlarmListEditing;
 }
 
 
@@ -105,121 +93,24 @@ static NSString *kNotToRemindRateKey                 = @"kNotToRemindRateKey";
 	
 }
 
-
-
-- (void)handle_standardLocationDidFinish:(NSNotification*) notification{
-	//判断是否能定位
-    CLLocation *location = [[notification userInfo] objectForKey:IAStandardLocationKey];
-	if (location) {
-		canValidLocation = YES;
-	}else {
-		canValidLocation = NO;
-	}
-}
-
 - (void)handle_alarmListEditStateDidChange:(NSNotification*) notification {
 	NSNumber *isEditingObj = [[notification userInfo] objectForKey:IAEditStatusKey];
 	self.isAlarmListEditing = [isEditingObj boolValue];
 }
 
-- (void)handle_applicationDidFinishLaunching:(id)notification{
-	/*
-    NSInteger i = self.applicationDidFinishLaunchNumber;
-	NSNumber *number = [NSNumber numberWithInteger:i+1];
-	
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setObject: number forKey: ApplicationDidFinishLaunchNumberKey];
-	[defaults synchronize];
-     */
-}
-
-- (void)handle_applicationDidBecomeActive:(id)notification{
-    /*
-	NSInteger i = self.applicationDidBecomeActiveNumber;
-	NSNumber *number = [NSNumber numberWithInteger:i+1];
-	
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setObject: number forKey: ApplicationDidBecomeActiveNumberKey];
-	[defaults synchronize];
-     */
-}
-
-
-- (void)handle_alarmDidAlert:(id)notification{
-	
-	NSInteger i = self.alarmAlertNumber;
-	NSNumber *number = [NSNumber numberWithInteger:i+1];
-	
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setObject: number forKey: AlarmAlertNumberNumberKey];
-	[defaults synchronize];	
-	
-}
-
-
-
 - (void)registerNotifications {
 	
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-	[notificationCenter addObserver: self
-						   selector: @selector (handle_standardLocationDidFinish:)
-							   name: IAStandardLocationDidFinishNotification
-							 object: nil];
 	[notificationCenter addObserver: self
 						   selector: @selector (handle_alarmListEditStateDidChange:)
 							   name: IAAlarmListEditStateDidChangeNotification
 							 object: nil];
 	
-	[notificationCenter addObserver: self
-						   selector: @selector (handle_applicationDidFinishLaunching:)
-							   name: UIApplicationDidFinishLaunchingNotification
-							 object: nil];
-	[notificationCenter addObserver: self
-						   selector: @selector (handle_applicationDidBecomeActive:)
-							   name: UIApplicationDidBecomeActiveNotification
-							 object: nil];
-	[notificationCenter addObserver: self
-						   selector: @selector (handle_alarmDidAlert:)
-							   name: IAAlarmDidAlertNotification
-							 object: nil];
-    
-    
 }
 
 - (void)unRegisterNotifications{
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-	[notificationCenter removeObserver:self	name: IAStandardLocationDidFinishNotification object: nil];
-	[notificationCenter removeObserver:self	name: IAAlarmListEditStateDidChangeNotification object: nil];
-	
-	[notificationCenter removeObserver:self	name: UIApplicationDidFinishLaunchingNotification object: nil];
-	[notificationCenter removeObserver:self	name: UIApplicationDidBecomeActiveNotification object: nil];
-	[notificationCenter removeObserver:self	name: IAAlarmDidAlertNotification object: nil];
-}
-
-
-
-- (NSInteger)applicationDidFinishLaunchNumber{
-	NSNumber *number = [[NSUserDefaults standardUserDefaults] objectForKey: ApplicationDidFinishLaunchNumberKey];
-	if (number == nil) {
-		return 0;
-	}
-	return [number integerValue];
-}
-
-- (NSInteger)applicationDidBecomeActiveNumber{
-	NSNumber *number = [[NSUserDefaults standardUserDefaults] objectForKey: ApplicationDidBecomeActiveNumberKey];
-	if (number == nil) {
-		return 0;
-	}
-	return [number integerValue];
-}
-
-- (NSInteger)alarmAlertNumber{
-	NSNumber *number = [[NSUserDefaults standardUserDefaults] objectForKey: AlarmAlertNumberNumberKey];
-	if (number == nil) {
-		return 0;
-	}
-	return [number integerValue];
+    [notificationCenter removeObserver:self	name: IAAlarmListEditStateDidChangeNotification object: nil];
 }
 
 
@@ -256,7 +147,7 @@ static NSString *kNotToRemindRateKey                 = @"kNotToRemindRateKey";
 }
 
 
-+(YCSystemStatus*) deviceStatusSingleInstance
++(YCSystemStatus*) sharedSystemStatus
 {
 	static YCSystemStatus* obj = nil;
 	if (obj == nil) {
@@ -271,23 +162,19 @@ static NSString *kNotToRemindRateKey                 = @"kNotToRemindRateKey";
 - (id)init{
 	if (self = [super init]) {
 		[self registerNotifications];
-		canValidLocation = YES;//默认认为能有效定位
+		//canValidLocation = YES;//默认认为能有效定位
         
         //读出一下存储的数据
         NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kSystemStatusFilename];
-        lastLocation = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePathName] retain];
+        _lastLocation = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePathName] retain];
 	}
 	return self;
 }
 
 - (void)dealloc {
 	[self unRegisterNotifications];
-	[lastLocation release];
-    [localNotificationIdentifiers release];
+	[_lastLocation release];
     [super dealloc];
 }
-
-
-
 
 @end

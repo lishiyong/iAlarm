@@ -39,7 +39,7 @@ NSString *IAInAppPurchaseProUpgradeProductId = @"com.yicheng.iAlarm.upgradetopro
 
 - (NSTimeInterval)timeOutIntervalForLoadStore{
 	//检查网络
-	BOOL connectedToInternet = [[YCSystemStatus deviceStatusSingleInstance] connectedToInternet];
+	BOOL connectedToInternet = [[YCSystemStatus sharedSystemStatus] connectedToInternet];
 	if (connectedToInternet) //有网络时间长
 		return 60.0;
 	else 
@@ -48,7 +48,7 @@ NSString *IAInAppPurchaseProUpgradeProductId = @"com.yicheng.iAlarm.upgradetopro
 
 - (NSTimeInterval)timeOutIntervalForForPurchase{
 	//检查网络
-	BOOL connectedToInternet = [[YCSystemStatus deviceStatusSingleInstance] connectedToInternet];
+	BOOL connectedToInternet = [[YCSystemStatus sharedSystemStatus] connectedToInternet];
 	if (connectedToInternet) //有网络时间长
 		return 60.0*3;
 	else 
@@ -91,7 +91,7 @@ NSString *IAInAppPurchaseProUpgradeProductId = @"com.yicheng.iAlarm.upgradetopro
 - (void)buy{
 	
 	//检查网络
-	BOOL connectedToInternet = [[YCSystemStatus deviceStatusSingleInstance] connectedToInternet];
+	BOOL connectedToInternet = [[YCSystemStatus sharedSystemStatus] connectedToInternet];
 	if (!connectedToInternet) {
 		[UIUtility simpleAlertBody:kAlertNeedInternetBodyAccessAppStore alertTitle:kAlertNeedInternetTitleAccessAppStore cancelButtonTitle:kAlertBtnOK delegate:nil];
 	}

@@ -70,29 +70,61 @@
     
     //设置与当前位置的subtitle的字符串
     if (_subTitleIsDistanceString) {
-        if (_distanceString) {
-            if (![self.subtitle isEqualToString:_distanceString])
-                self.subtitle = _distanceString;
-        }else{
-            self.subtitle = nil;
-        }
+        [self setAnnotationStatus:_annotationStatus];
     }
     
+}
+
+- (void)handleApplicationDidBecomeActive: (NSNotification*) notification{
+    //进入前台，模拟发送定位数据。防止真正的定位数据迟迟不发。
+    NSDictionary *userInfo = nil;
+    CLLocation *curLocation = [YCSystemStatus sharedSystemStatus].lastLocation;
+    if (curLocation)
+        userInfo = [NSDictionary dictionaryWithObject:curLocation forKey:IAStandardLocationKey];
+        
+    NSNotification *aNotification = [NSNotification notificationWithName:IAStandardLocationDidFinishNotification 
+                                                                  object:self
+                                                                userInfo:userInfo];
+    [self handleStandardLocationDidFinish:aNotification];
+    //[self performSelector:@selector(handleStandardLocationDidFinish:) withObject:aNotification afterDelay:0.0];
+}
+
+- (void)handleApplicationWillResignActive: (NSNotification*) notification{
+    /*
+    //进入后台，把距离赋空
+    _distanceString = nil;
+    if (_subTitleIsDistanceString) {
+        [self setAnnotationStatus:_annotationStatus];
+    }
+     */
 }
 
 - (void)registerNotifications {
 	
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    
     [notificationCenter addObserver: self
 						   selector: @selector (handleStandardLocationDidFinish:)
 							   name: IAStandardLocationDidFinishNotification
 							 object: nil];
+     
+    [notificationCenter addObserver: self
+						   selector: @selector (handleApplicationDidBecomeActive:)
+							   name: UIApplicationDidBecomeActiveNotification
+							 object: nil];
+     
+     [notificationCenter addObserver: self
+                            selector: @selector (handleApplicationWillResignActive:)
+                                name: UIApplicationWillResignActiveNotification
+                              object: nil];
 	
 }
 
 - (void)unRegisterNotifications{
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter removeObserver:self	name: IAStandardLocationDidFinishNotification object: nil];
+    [notificationCenter removeObserver:self	name: UIApplicationDidBecomeActiveNotification object: nil];
+    [notificationCenter removeObserver:self	name: UIApplicationWillResignActiveNotification object: nil];
 }
 
 
@@ -104,7 +136,7 @@
         _alarm = [anAlarm retain];
         _realCoordinate = _alarm.realCoordinate;
                 
-        CLLocation *curLocation = [YCSystemStatus deviceStatusSingleInstance].lastLocation;
+        CLLocation *curLocation = [YCSystemStatus sharedSystemStatus].lastLocation;
         BOOL curLocationAndRealCoordinateIsValid = (curLocation && CLLocationCoordinate2DIsValid(self.realCoordinate));
         if (curLocationAndRealCoordinateIsValid) {
             _distanceString = [curLocation distanceStringFromCoordinate:self.realCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
@@ -130,19 +162,35 @@
         case IAAnnotationStatusNormal:
         {//正常状态 titel：名称，subtitle：距离
             self.title = [self _alarmTitle];
-            self.subtitle = nil;
-            self.subtitle = _distanceString; //在通知中不断更新
             
+            if (_distanceString) {
+                if (![self.subtitle isEqualToString:_distanceString]){
+                    self.subtitle = nil;
+                    self.subtitle = _distanceString;
+                }
+            }else{
+                self.subtitle = nil;
+            }
             _subTitleIsDistanceString = YES;
+            
             break;
         }
         case IAAnnotationStatusNormal1:
         {//正常状态1 titel：名称，subtitle：长地址(如果名称是地址，那么subtitle显示距离)
             //如果不等待，calloutView有裂缝
             [self performSelector:@selector(setTitle:) withObject:[self _alarmTitle] afterDelay:0.35];
-            self.subtitle = nil;
-            self.subtitle = self.alarm.position;
+            
+            NSString *postion = self.alarm.position;
+            if (postion) {
+                if (![self.subtitle isEqualToString:postion]){
+                    self.subtitle = nil;
+                    self.subtitle = postion;
+                }
+            }else{
+                self.subtitle = nil;
+            }
             _subTitleIsDistanceString = NO;
+            
             break;
         }
         case IAAnnotationStatusDisabledNormal:
@@ -184,13 +232,21 @@
         {//反转完成 titel：名称，subtitle：长地址(如果名称是地址，那么subtitle显示距离)
             //如果不等待，calloutView有裂缝
             [self performSelector:@selector(setTitle:) withObject:[self _alarmTitle] afterDelay:0.35];
-            self.subtitle = nil;
             if ([self _alarmName]) {
                 self.subtitle = self.alarm.position;
                 _subTitleIsDistanceString = NO;
             }else{
-                self.subtitle = _distanceString;
+                
+                if (_distanceString) {
+                    if (![self.subtitle isEqualToString:_distanceString]){
+                        self.subtitle = nil;
+                        self.subtitle = _distanceString;
+                    }
+                }else{
+                    self.subtitle = nil;
+                }
                 _subTitleIsDistanceString = YES;
+                
             }
             break;
         }

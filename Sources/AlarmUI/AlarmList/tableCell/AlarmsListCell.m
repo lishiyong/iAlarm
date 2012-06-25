@@ -27,9 +27,25 @@
 
 @implementation AlarmsListCell
 
-@synthesize alarm;
+@synthesize alarm = _alarm;
 @synthesize alarmTitleLabel, alarmDetailLabel, isEnabledLabel, flagImageView, topShadowView, bottomShadowView;
 
+- (void)setAlarm:(IAAlarm *)alarm{
+    [alarm retain];
+    [_alarm release];
+    _alarm = alarm;
+    
+    _distanceFromCurrentLocation = -1;//未设置过的标识
+
+    CLLocation *curLocation = [YCSystemStatus sharedSystemStatus].lastLocation;
+    BOOL curLocationAndRealCoordinateIsValid = (curLocation && CLLocationCoordinate2DIsValid(self.alarm.realCoordinate));
+    if (curLocationAndRealCoordinateIsValid) {
+        _distanceString = [curLocation distanceStringFromCoordinate:self.alarm.realCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
+        [_distanceString retain];
+    }else{
+        _distanceString = nil;
+    }
+}
 
 - (void)updateCell{
     
@@ -77,18 +93,7 @@
 
 - (id)initWithCoder:(NSCoder *)aDecoder{
     self = [super initWithCoder:aDecoder];
-    if (self) {
-        _distanceFromCurrentLocation = -1;//未设置过的标识
-        
-        CLLocation *curLocation = [YCSystemStatus deviceStatusSingleInstance].lastLocation;
-        BOOL curLocationAndRealCoordinateIsValid = (curLocation && CLLocationCoordinate2DIsValid(self.alarm.realCoordinate));
-        if (curLocationAndRealCoordinateIsValid) {
-            _distanceString = [curLocation distanceStringFromCoordinate:self.alarm.realCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
-            [_distanceString retain];
-        }else{
-            _distanceString = nil;
-        }
-        
+    if (self) {        
         [self registerNotifications];
     }
     return self;
@@ -120,7 +125,7 @@
     [self unRegisterNotifications];
     
     [_distanceString release];
-	[alarm release];
+	[_alarm release];
     [alarmTitleLabel release];
     [alarmDetailLabel release];
     [isEnabledLabel release];
@@ -167,6 +172,20 @@
     
 }
 
+- (void)handleApplicationDidBecomeActive: (NSNotification*) notification{
+    //进入前台，模拟发送定位数据。防止真正的定位数据迟迟不发。
+    NSDictionary *userInfo = nil;
+    CLLocation *curLocation = [YCSystemStatus sharedSystemStatus].lastLocation;
+    if (curLocation)
+        userInfo = [NSDictionary dictionaryWithObject:curLocation forKey:IAStandardLocationKey];
+    
+    NSNotification *aNotification = [NSNotification notificationWithName:IAStandardLocationDidFinishNotification 
+                                                                  object:self
+                                                                userInfo:userInfo];
+    [self handleStandardLocationDidFinish:aNotification];
+    //[self performSelector:@selector(handleStandardLocationDidFinish:) withObject:aNotification afterDelay:0.0];
+}
+
 - (void)registerNotifications {
 	
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -174,12 +193,17 @@
 						   selector: @selector (handleStandardLocationDidFinish:)
 							   name: IAStandardLocationDidFinishNotification
 							 object: nil];
+    [notificationCenter addObserver: self
+						   selector: @selector (handleApplicationDidBecomeActive:)
+							   name: UIApplicationDidBecomeActiveNotification
+							 object: nil];
 	
 }
 
 - (void)unRegisterNotifications{
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter removeObserver:self	name: IAStandardLocationDidFinishNotification object: nil];
+    [notificationCenter removeObserver:self	name: UIApplicationDidBecomeActiveNotification object: nil];
 }
 
 

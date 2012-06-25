@@ -10,7 +10,7 @@
 #import "YCMapPointAnnotation.h"
 
 @implementation YCMapPointAnnotation
-@synthesize title = _title, subtitle = _subtitle, coordinate = _visualCoordinate, realCoordinate = _realCoordinate;
+@synthesize title = _title, subtitle = _subtitle;
 
 -(id) initWithCoordinate:(CLLocationCoordinate2D) coord title:(NSString *) theTitle subTitle:(NSString *) theSubTitle{
     return [self initWithCoordinate:coord title:theTitle subTitle:theSubTitle addressDictionary:nil];
@@ -30,38 +30,6 @@
     return self;
 }
 
-/*
-- (void)setCoordinate:(CLLocationCoordinate2D)theCoordinate{
-    coordinate = theCoordinate;
-    realCoordinate = kCLLocationCoordinate2DInvalid; //要重新计算它
-}
-
-- (CLLocationCoordinate2D)realCoordinate{
-    if (!CLLocationCoordinate2DIsValid(realCoordinate)) {
-        if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled] 
-            && [[YCLocationManager sharedLocationManager] isInChinaWithCoordinate:self.coordinate]) { //火星坐标
-            realCoordinate = [[YCLocationManager sharedLocationManager] convertToCoordinateFromMarsCoordinate:coordinate];
-        }else{
-            realCoordinate = coordinate;
-        }
-    }
-    return realCoordinate;
-}
-
-- (void)setRealCoordinate:(CLLocationCoordinate2D)theRealCoordinate{
-    //通过设置coordinate来更新realCoordinate
-    if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled] && [[YCLocationManager sharedLocationManager] isInChinaWithCoordinate:theRealCoordinate]) { //开启了转换选项 并且 坐标在中国境内
-        
-        coordinate = [[YCLocationManager sharedLocationManager] convertToMarsCoordinateFromCoordinate:theRealCoordinate];
-        
-    }else{
-        coordinate = theRealCoordinate;
-    }
-    
-    realCoordinate = theRealCoordinate;
-}
- */
-
 - (CLLocationCoordinate2D)coordinate{
     
     if (!CLLocationCoordinate2DIsValid(_visualCoordinate)) {//从真实坐标转换
@@ -77,7 +45,7 @@
     return _visualCoordinate;
 }
 
-- (CLLocationCoordinate2D)realCoordinatee{
+- (CLLocationCoordinate2D)realCoordinate{
     
     if (!CLLocationCoordinate2DIsValid(_realCoordinate)) {//从虚拟坐标转换
         if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled] && [[YCLocationManager sharedLocationManager] isInChinaWithCoordinate:_visualCoordinate]) { //开启了转换选项 并且 坐标在中国境内

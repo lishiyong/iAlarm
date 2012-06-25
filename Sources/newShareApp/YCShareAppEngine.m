@@ -446,7 +446,7 @@ static NSString* kFacebookAppId = @"146975985381829";
 
 -(void)alertInternetWithTitle:(NSString*)title andBody:(NSString*)body{
 	//检查网络
-	BOOL connectedToInternet = [[YCSystemStatus deviceStatusSingleInstance] connectedToInternet];
+	BOOL connectedToInternet = [[YCSystemStatus sharedSystemStatus] connectedToInternet];
 	if (!connectedToInternet) {
 		[UIUtility simpleAlertBody:body alertTitle:title cancelButtonTitle:kAlertBtnOK delegate:nil];
 	}

@@ -59,7 +59,7 @@ NSString *IARegionKey = @"IARegionKey";
 //闹钟列表发生变化
 - (void) handle_alarmsDataListDidChange:(id)notification {
 	
-    CLLocation *lastLocation = [YCSystemStatus deviceStatusSingleInstance].lastLocation;
+    CLLocation *lastLocation = [YCSystemStatus sharedSystemStatus].lastLocation;
     if (lastLocation) {
         NSDate* eventDate = lastLocation.timestamp;
         NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
@@ -352,7 +352,7 @@ NSString *IARegionKey = @"IARegionKey";
     self=[super init];
 	if (self) {
 		//[self resetRegionsWithCurrentLocation:nil];
-        [self resetRegionsWithCurrentLocation:[YCSystemStatus deviceStatusSingleInstance].lastLocation];
+        [self resetRegionsWithCurrentLocation:[YCSystemStatus sharedSystemStatus].lastLocation];
 		[self registerNotifications];
 	}
 	return self;

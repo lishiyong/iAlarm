@@ -77,7 +77,7 @@
 }
 
 - (void) handle_applicationWillResignActive:(id)notification{	
-	[YCSystemStatus deviceStatusSingleInstance].lastLocation = nil;//免得下次使用了缓存
+	[YCSystemStatus sharedSystemStatus].lastLocation = nil;//免得下次使用了缓存
     [self.standardLocationManager stopUpdatingLocation];//有闹钟，仅仅停止标准定位（界面需要的）
     
     NSLog(@"前 count = %d",self.standardLocationManager.monitoredRegions.count);
@@ -204,14 +204,14 @@
 		return;
 	}
     
-    [YCSystemStatus deviceStatusSingleInstance].lastLocation = newLocation;//收集last数据
+    [YCSystemStatus sharedSystemStatus].lastLocation = newLocation;//收集last数据
     [self sendStandardLocationDidFinishNotificationWithLocation:newLocation];
 }
 
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
-	[YCSystemStatus deviceStatusSingleInstance].lastLocation = nil;
+	[YCSystemStatus sharedSystemStatus].lastLocation = nil;
     [self sendStandardLocationDidFinishNotificationWithLocation:nil];
     
 }

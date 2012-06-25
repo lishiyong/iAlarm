@@ -28,7 +28,7 @@
 #import "YCLocation.h"
 #import "YCSearchBar.h"
 #import "AlarmPositionMapViewController.h"
-#import "IAAnnotation.h"
+#import "YCMapPointAnnotation.h"
 #import "IAAlarm.h"
 #import "UIUtility.h"
 #import "YCParam.h"
@@ -62,7 +62,7 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 //设置title为显示当前位置的距离
 - (void)setDistanceLabel{
 
-	CLLocation *curLocation = [YCSystemStatus deviceStatusSingleInstance].lastLocation;
+	CLLocation *curLocation = [YCSystemStatus sharedSystemStatus].lastLocation;
 	if (curLocation) {
         
         CLLocationCoordinate2D realCoordinate = _annotation.realCoordinate;
@@ -76,7 +76,7 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 
 -(void)alertInternetAfterDelay:(NSTimeInterval)delay{
 	//检查网络
-	BOOL connectedToInternet = [[YCSystemStatus deviceStatusSingleInstance] connectedToInternet];
+	BOOL connectedToInternet = [[YCSystemStatus sharedSystemStatus] connectedToInternet];
 	if (!connectedToInternet) {
         
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0) {
@@ -108,7 +108,7 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 }
 
 #define kTimeOutForReverse 30.0
--(void)reverseGeocodeWithAnnotation:(IAAnnotation*)annotation
+-(void)reverseGeocodeWithAnnotation:(YCMapPointAnnotation*)annotation
 {	
     CLLocationCoordinate2D visualCoordinate = annotation.coordinate;
     CLLocation *location = [[[CLLocation alloc] initWithLatitude:visualCoordinate.latitude longitude:visualCoordinate.longitude] autorelease];
@@ -117,9 +117,11 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
         _geocoder = [[YCReverseGeocoder alloc] initWithTimeout:kTimeOutForReverse];
     if (_geocoder.geocoding) 
         [_geocoder cancel];
+    
+    _annotation.subtitle = @" . . . ";;
     [_geocoder reverseGeocodeLocation:location completionHandler:^(YCPlacemark *placemark, NSError *error) {        
         NSString *coordinateString = YCLocalizedStringFromCLLocationCoordinate2D(visualCoordinate,kCoordinateFrmStringNorthLatitude,kCoordinateFrmStringSouthLatitude,kCoordinateFrmStringEastLongitude,kCoordinateFrmStringWestLongitude);
-        
+                
         IAAlarm *alarm = self.alarm;
         if (!error && placemark){
             
@@ -138,6 +140,8 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
             alarm.usedCoordinateAddress = NO;
             
         }else{
+            
+            [_annotation performSelector:@selector(setSubtitle:) withObject:nil afterDelay:1.5]; //"..."多显示一会
             
             if (!alarm.nameChanged) {
                 alarm.alarmName = nil;//把以前版本生成的名称冲掉
@@ -169,6 +173,21 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 	_annotation.coordinate = coordinate;
 	[self.mapView addAnnotation:_annotation];
     
+}
+
+//根据圈的在屏幕上的半径来决定OverlayView是否可视
+- (void)hideOrShowCircleOverlayView:(MKCircle *)circleOverlay{
+    if (circleOverlay) {
+		MKCoordinateRegion overlayRegion = MKCoordinateRegionMakeWithDistance(_circleOverlay.coordinate, _circleOverlay.radius, _circleOverlay.radius);
+		CGRect overlayRect = [self.mapView convertRegion:overlayRegion toRectToView:self.mapView];
+		double w = overlayRect.size.width;
+		MKOverlayView *overlayView = [self.mapView viewForOverlay:_circleOverlay];
+		if (w <12) 
+			overlayView.hidden = YES;
+		else
+			overlayView.hidden = NO;
+		
+	}
 }
 
 #pragma mark - Notification
@@ -266,9 +285,9 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
     }else if (self.mapView.userLocation.location)   {
         //使用当前位置 地图上的
         centerCoordinate = self.mapView.userLocation.location.coordinate;
-    }else if ([YCSystemStatus deviceStatusSingleInstance].lastLocation){
+    }else if ([YCSystemStatus sharedSystemStatus].lastLocation){
         //使用当前位置 定位得到的
-        centerCoordinate = [YCSystemStatus deviceStatusSingleInstance].lastLocation.coordinate;
+        centerCoordinate = [YCSystemStatus sharedSystemStatus].lastLocation.coordinate;
     }else{
         //缺省地图中心点 大概是世界地图
         centerCoordinate = self.mapView.centerCoordinate;
@@ -312,9 +331,9 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
     
     //pin
     [_annotation release];
-    _annotation = [[IAAnnotation alloc] initWithAlarm:self.alarm];
-    _annotation.title = KLabelMapNewAnnotationTitle;
-	_annotation.subtitle = self.alarm.position;
+    CLLocationCoordinate2D visualCoordinate = self.alarm.visualCoordinate;
+    visualCoordinate = CLLocationCoordinate2DIsValid(visualCoordinate) ? visualCoordinate : self.mapView.centerCoordinate;
+    _annotation = [[YCMapPointAnnotation alloc] initWithCoordinate:visualCoordinate title:KLabelMapNewAnnotationTitle subTitle:self.alarm.position];
     [self.mapView addAnnotation:_annotation];
     
     
@@ -353,7 +372,7 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
     //取消pin将要选中
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(selectTheAnnotationAnimated) object:nil];
     
-	IAAnnotation *annotation = (IAAnnotation*)annotationView.annotation;
+	YCMapPointAnnotation *annotation = (YCMapPointAnnotation*)annotationView.annotation;
 	switch (newState) 
 	{
 		case MKAnnotationViewDragStateStarting:
@@ -370,7 +389,7 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
             
             //////////////////////////////////////////
 			//反转
-			if ([annotation isKindOfClass:[IAAnnotation class]])
+			if ([annotation isKindOfClass:[YCMapPointAnnotation class]])
 			{
                 annotation.subtitle = nil;
 				
@@ -432,18 +451,8 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 }
  
 - (void)mapView:(MKMapView *)theMapView regionDidChangeAnimated:(BOOL)animated{
-	//设置警示半径圈
-	if (_circleOverlay) {
-		MKCoordinateRegion overlayRegion = MKCoordinateRegionMakeWithDistance(_circleOverlay.coordinate, _circleOverlay.radius, _circleOverlay.radius);
-		CGRect overlayRect = [self.mapView convertRegion:overlayRegion toRectToView:self.mapView];
-		double w = overlayRect.size.width;
-		MKOverlayView *overlayView = [self.mapView viewForOverlay:_circleOverlay];
-		if (w <12) 
-			overlayView.hidden = YES;
-		else
-			overlayView.hidden = NO;
-		
-	}
+	//圈是否显示
+    [self hideOrShowCircleOverlayView:_circleOverlay];
 }
 
 - (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id <MKOverlay>)overlay{
@@ -463,12 +472,15 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)annotationView{		
     //警示圈
-	IAAnnotation *annotation = (IAAnnotation*)annotationView.annotation;
-	if ([annotation isKindOfClass:[IAAnnotation class]]){
+	YCMapPointAnnotation *annotation = (YCMapPointAnnotation*)annotationView.annotation;
+	if ([annotation isKindOfClass:[YCMapPointAnnotation class]]){
         
         [_circleOverlay release];
         _circleOverlay =  [[MKCircle circleWithCenterCoordinate:annotation.coordinate radius:self.alarm.radius] retain];
         [self.mapView addOverlay:_circleOverlay];
+        
+        //圈是否显示
+        [self hideOrShowCircleOverlayView:_circleOverlay];
 
 		//显示与当前位置的距离
 		[self setDistanceLabel];		
@@ -477,8 +489,8 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 
 - (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)annotationView{
 	
-	IAAnnotation *annotation = (IAAnnotation*)annotationView.annotation;
-	if ([annotation isKindOfClass:[IAAnnotation class]])
+	YCMapPointAnnotation *annotation = (YCMapPointAnnotation*)annotationView.annotation;
+	if ([annotation isKindOfClass:[YCMapPointAnnotation class]])
 	{	
         //删除警示圈
         if (_circleOverlay) {
@@ -488,7 +500,7 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
         }
         
 		//没有选中，就不在显示距离
-		CLLocation *location = [YCSystemStatus deviceStatusSingleInstance].lastLocation;
+		CLLocation *location = [YCSystemStatus sharedSystemStatus].lastLocation;
 		if (location) {
 			[self.navigationItem setTitleView:nil animated:YES];
 		}else

@@ -41,8 +41,8 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 @synthesize positionShort;
 @synthesize positionTitle;
 @synthesize usedCoordinateAddress;
-@synthesize realCoordinate;
-@synthesize visualCoordinate;
+//@synthesize realCoordinate;
+//@synthesize visualCoordinate;
 @synthesize locationAccuracy;
 
 @synthesize enabled;

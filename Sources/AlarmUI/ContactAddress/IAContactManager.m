@@ -526,7 +526,8 @@
             //不设置竟然给改成默认的了
             theVC.title = KLabelAlarmPostion;
             
-            [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+            if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
+                [[UIApplication sharedApplication] endIgnoringInteractionEvents];
             
         }
     }

@@ -12,14 +12,14 @@
 #import <CoreLocation/CoreLocation.h>
 
 
-@class IAAnnotation, YCReverseGeocoder;
+@class YCMapPointAnnotation, YCReverseGeocoder;
 
 @interface AlarmPositionMapViewController : AlarmModifyViewController <MKMapViewDelegate,UIAlertViewDelegate>{
     
     BOOL _alreadyAlertForInternet;
     UIAlertView  *_checkNetAlert;
     
-    IAAnnotation *_annotation;
+    YCMapPointAnnotation *_annotation;
     MKCircle     *_circleOverlay;
     YCReverseGeocoder *_geocoder;
 }

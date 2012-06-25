@@ -182,10 +182,10 @@
 	[super viewWillAppear:animated];
 	
 	//刷新编辑状态
-	[self setUIEditing:[YCSystemStatus deviceStatusSingleInstance].isAlarmListEditing];
+	[self setUIEditing:[YCSystemStatus sharedSystemStatus].isAlarmListEditing];
     
     //刷新距离
-    CLLocation *location = [YCSystemStatus deviceStatusSingleInstance].lastLocation;
+    CLLocation *location = [YCSystemStatus sharedSystemStatus].lastLocation;
     if ([UIApplication sharedApplication].applicationDidFinishLaunchineTimeElapsing  < 5.0) {//小于x秒，刚启动，第一次显示view
         //第一次刷新距离，判断一下数据的时间戳，防止是很久前缓存的。
         NSTimeInterval ti = [location.timestamp timeIntervalSinceNow];
