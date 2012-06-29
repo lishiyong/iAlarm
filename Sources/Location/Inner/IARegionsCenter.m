@@ -378,7 +378,7 @@ NSString *IARegionKey = @"IARegionKey";
 
 
 
-+ (IARegionsCenter*)regionCenterSingleInstance
++ (IARegionsCenter*)sharedRegionCenter
 {
 	static IARegionsCenter *regionCenter =nil;
 	if (regionCenter == nil) {

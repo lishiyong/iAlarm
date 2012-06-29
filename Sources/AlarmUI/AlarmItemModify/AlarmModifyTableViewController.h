@@ -20,5 +20,8 @@
 //指定初始化
 - (id)initWithStyle:(UITableViewStyle)style alarm:(IAAlarm*)theAlarm;
 
+//指定初始化
+-(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil alarm:(IAAlarm*)theAlarm;
+
 
 @end

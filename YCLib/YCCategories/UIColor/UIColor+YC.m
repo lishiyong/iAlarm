@@ -26,19 +26,19 @@
     return [UIColor colorWithRed:172.0/255.0 green:173.0/255.0 blue:175.0/255.0 alpha:1.0];
 }
 
-+ (UIColor *)textColor{
++ (UIColor *)tableCellBlueTextYCColor{
     return [UIColor colorWithRed:0.22 green:0.33 blue:0.53 alpha:1.0];
 }
 
-+ (UIColor *)text1Color{
++ (UIColor *)tableViewFooterTextColor{
     return [UIColor colorWithRed:76.0/255.0 green:86.0/255.0 blue:108.0/255.0 alpha:1.0];
 }
 
-+ (UIColor *)text2Color{
++ (UIColor *)tableViewFooter2TextColor{
     return [UIColor colorWithRed:37.0/255.0 green:50.0/255.0 blue:67.0/255.0 alpha:1.0];
 }
 
-+ (UIColor *)shadowColor{
++ (UIColor *)textShadowColor{
     return [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
 }
 

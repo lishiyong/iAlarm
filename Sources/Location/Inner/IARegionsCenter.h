@@ -30,7 +30,7 @@ extern NSString *IARegionKey;
 @property(nonatomic,readonly)NSDictionary *allRegions;
 
 
-+ (IARegionsCenter*)regionCenterSingleInstance;
++ (IARegionsCenter*)sharedRegionCenter;
 
 /*
 //坐标是否在任何一个预警范围中

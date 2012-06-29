@@ -62,7 +62,7 @@ const NSTimeInterval kShortLocatingInterval = 2.0;                              
 		return;
 	}
 	
-	if ([[IARegionsCenter regionCenterSingleInstance].regions count] == 0) { //区域数目==0，需要轮询！
+	if ([[IARegionsCenter sharedRegionCenter].regions count] == 0) { //区域数目==0，需要轮询！
 		//NSString *s = [NSString stringWithFormat:@"区域数目==0，不用轮询！"];
 		//[[YCLog logSingleInstance] addlog:s];
 		isShouldLoop =  NO;
@@ -75,7 +75,7 @@ const NSTimeInterval kShortLocatingInterval = 2.0;                              
 	}
 	
 	
-	NSInteger bigPreAlarmNumber = [[IARegionsCenter regionCenterSingleInstance ] numberOfContainsBigPreAlarmRegionsWithCoordinate:theLocation.coordinate];
+	NSInteger bigPreAlarmNumber = [[IARegionsCenter sharedRegionCenter ] numberOfContainsBigPreAlarmRegionsWithCoordinate:theLocation.coordinate];
 	if (bigPreAlarmNumber == 0) {//不再任何一个大预警圈，停止轮询
 		//NSString *s = [NSString stringWithFormat:@"不在任何一个大预警圈，不用轮询！"];
 		//[[YCLog logSingleInstance] addlog:s];
@@ -98,8 +98,8 @@ const NSTimeInterval kShortLocatingInterval = 2.0;                              
 	}
 	
 	
-	NSInteger innerNumber = [[IARegionsCenter regionCenterSingleInstance ] numberOfContainsRegionsWithCoordinate:theLocation.coordinate];
-	NSInteger preAlarmNumber = [[IARegionsCenter regionCenterSingleInstance ] numberOfContainsPreAlarmRegionsWithCoordinate:theLocation.coordinate];
+	NSInteger innerNumber = [[IARegionsCenter sharedRegionCenter ] numberOfContainsRegionsWithCoordinate:theLocation.coordinate];
+	NSInteger preAlarmNumber = [[IARegionsCenter sharedRegionCenter ] numberOfContainsPreAlarmRegionsWithCoordinate:theLocation.coordinate];
 	
 	//在所有区域的预警圈外
 	if (0 == preAlarmNumber) {
@@ -168,7 +168,7 @@ const NSTimeInterval kShortLocatingInterval = 2.0;                              
 //是否应该在粗略定位中，打开标准定位
 - (BOOL)isShouldStartStandardLocationWithSignificantLocationData:(CLLocation*)theLocation{
 	
-	if ([[IARegionsCenter regionCenterSingleInstance].regions count] == 0) { //区域数目==0，不用工作！
+	if ([[IARegionsCenter sharedRegionCenter].regions count] == 0) { //区域数目==0，不用工作！
 		//NSString *s = [NSString stringWithFormat:@"区域数目==0，不用工作！"];
 		//[[YCLog logSingleInstance] addlog:s];
 		return NO;
@@ -187,7 +187,7 @@ const NSTimeInterval kShortLocatingInterval = 2.0;                              
 		return YES;
 	}
 	
-	NSInteger bigPreAlarmNumber = [[IARegionsCenter regionCenterSingleInstance ] containsBigPreAlarmRegionsWithCoordinate:theLocation.coordinate].count;
+	NSInteger bigPreAlarmNumber = [[IARegionsCenter sharedRegionCenter ] containsBigPreAlarmRegionsWithCoordinate:theLocation.coordinate].count;
 	if (bigPreAlarmNumber == 0) {  //不再任何一个大预警圈内，不用工作！
 
 		//NSString *s = [NSString stringWithFormat:@"不再任何一个大预警圈内，不用工作！"];
@@ -328,7 +328,7 @@ const NSTimeInterval kShortLocatingInterval = 2.0;                              
 	//测试一下checkDataBySignificantTimer 是否需要停止
 	if (self.checkDataBySignificantTimer){ 
 		
-		NSInteger regionsCount = [[IARegionsCenter regionCenterSingleInstance].regions count];//区域==0
+		NSInteger regionsCount = [[IARegionsCenter sharedRegionCenter].regions count];//区域==0
 		BOOL shouldStop = ([self.shouldStopCDSTimerTime compare:[NSDate date]] == NSOrderedAscending); //时间到了
 		if (self.shouldStopCDSTimerTime == nil) //防止有错
 			shouldStop = YES;
@@ -377,7 +377,7 @@ const NSTimeInterval kShortLocatingInterval = 2.0;                              
 	
 	
 	//检查数据
-	NSInteger regionCount = [[IARegionsCenter regionCenterSingleInstance].regions count];
+	NSInteger regionCount = [[IARegionsCenter sharedRegionCenter].regions count];
 	if (isCheckLocationData && regionCount > 0) { //区域数目大于0才检查数据
 		
 		if (self.lastLocation != nil){
@@ -529,11 +529,11 @@ const NSTimeInterval kShortLocatingInterval = 2.0;                              
 	//NSString *ss0 = [NSString stringWithFormat:@"locationData.timestamp = %@",[[locationData.timestamp description] substringToIndex:19]];
 	//[[YCLog logSingleInstance] addlog:ss0];
 	
-	BOOL canChange = [[IARegionsCenter regionCenterSingleInstance] canChangeUserLocationTypeForCoordinate:locationData.coordinate];
+	BOOL canChange = [[IARegionsCenter sharedRegionCenter] canChangeUserLocationTypeForCoordinate:locationData.coordinate];
 	if (canChange) { //定位数据能改变某个区域的状态
 					
 		//调用代理
-		IARegionsCenter *regionsCenter = [IARegionsCenter regionCenterSingleInstance];
+		IARegionsCenter *regionsCenter = [IARegionsCenter sharedRegionCenter];
 		
 		for (IARegion *region in regionsCenter.regionArray) {
 			IAUserLocationType currentType = [region containsCoordinate:locationData.coordinate];
@@ -701,7 +701,7 @@ const NSTimeInterval kShortLocatingInterval = 2.0;                              
 	if (!canStart) return;
 	
 	[self beginLocationDefault]; //先执行一次。以后靠轮询了。
-	if ([[IARegionsCenter regionCenterSingleInstance].regions count] != 0)
+	if ([[IARegionsCenter sharedRegionCenter].regions count] != 0)
     {
 		if (UIBackgroundTaskInvalid == bgTask) {
 			[self startBackgroundBask];	 
@@ -723,7 +723,7 @@ const NSTimeInterval kShortLocatingInterval = 2.0;                              
 	if (self.foregroundLoopTimer == nil) {
 
 		
-		if ([[IARegionsCenter regionCenterSingleInstance].regions count] != 0)
+		if ([[IARegionsCenter sharedRegionCenter].regions count] != 0)
 		{
 			[self beginLocationWithDuration:15.0 IsCheckLocationData:YES]; //先执行一次。以后靠轮询了。
 			
@@ -774,7 +774,7 @@ const NSTimeInterval kShortLocatingInterval = 2.0;                              
 	//[[YCLog logSingleInstance] addlog:@"关闭了发送通知轮询"];
     
     //没有有效的闹钟，不需要开启任何定位
-    if ([IARegionsCenter regionCenterSingleInstance].regions.count == 0) {
+    if ([IARegionsCenter sharedRegionCenter].regions.count == 0) {
         [self stop];
     }
 }

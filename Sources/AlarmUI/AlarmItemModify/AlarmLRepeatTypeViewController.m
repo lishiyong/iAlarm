@@ -6,15 +6,17 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCLib.h"
 #import "AlarmLRepeatTypeViewController.h"
 #import "DicManager.h"
 #import "YCRepeatType.h"
-#import "UIUtility.h"
 #import "IAAlarm.h"
 
 
 @implementation AlarmLRepeatTypeViewController
-@synthesize lastIndexPath;
+
+@synthesize lastIndexPath = _lastIndexPath;
+@synthesize switchCell = _switchCell, beginEndCell = _beginEndCell, switchControl = _switchControl;
 
 //覆盖父类
 - (void)saveData{	    
@@ -23,6 +25,17 @@
 }
  
 
+- (IBAction)switchControlValueDidChange:(id)sender{
+    if (self.switchControl.on) {
+        if (NSNotFound == [_sections indexOfObject:_beginEndCellArray]) 
+            [_sections addObject:_beginEndCellArray];
+    }else{
+        [_sections removeObject:_beginEndCellArray];
+    }
+    
+    [self.tableView reloadData];
+}
+
 #pragma mark -
 #pragma mark View lifecycle
 
@@ -30,10 +43,50 @@
     
     [super viewDidLoad];
 	self.title = KViewTitleRepeat;
-	
-	//修改视图背景等
-	[self.view setBackgroundColor:[UIColor groupTableViewBackgroundColor]];
-	self.tableView.separatorStyle =  UITableViewCellSeparatorStyleNone;
+    
+    //重复类型cells
+    NSUInteger repeatTypesCount = [DicManager repeatTypeDictionary].count;
+    NSMutableArray *repeatTypecells = [NSMutableArray arrayWithCapacity:repeatTypesCount];
+    
+    for (NSUInteger i = 0; i < repeatTypesCount; i++) {
+        YCRepeatType *rep = [DicManager repeatTypeForSortId:i];
+        UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"] autorelease];
+        
+        NSString *repeatString = rep.repeatTypeName;
+		cell.textLabel.text = repeatString;
+		
+		if ([rep.repeatTypeId isEqualToString:self.alarm.repeatType.repeatTypeId]) {
+			cell.accessoryType = UITableViewCellAccessoryCheckmark ;
+			cell.textLabel.textColor = [UIColor tableCellBlueTextYCColor];
+			self.lastIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
+		}else {
+			cell.accessoryType = UITableViewCellAccessoryNone;
+			cell.textLabel.textColor = [UIColor tableCellBlueTextYCColor];
+		}
+        
+        [repeatTypecells addObject:cell];
+    }
+    
+    //启用开关cell
+    NSArray *switchCellArray = [NSArray arrayWithObjects:self.switchCell, nil];
+    self.switchCell.textLabel.text = @"启用定时提醒";
+    self.switchCell.accessoryView = self.switchControl;
+    
+    _sections = [[NSMutableArray arrayWithObjects:repeatTypecells, switchCellArray, nil] retain];
+    
+    
+    //开始结束cell.到sections中，
+    _beginEndCellArray = [[NSArray arrayWithObjects:self.beginEndCell, nil] retain];
+    self.beginEndCell.textLabel.text = @"开始\r\n结束";
+    self.beginEndCell.detailTextLabel.text = @"2:00 AM\r\n4:00 PM";
+    self.beginEndCell.textLabel.numberOfLines = 2;
+    self.beginEndCell.detailTextLabel.numberOfLines = 2;
+    
+    
+    if (self.switchControl.on) {
+        [_sections addObject:_beginEndCellArray];
+    }
+
 }
  
 
@@ -46,78 +99,78 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
-    return 1;
+    return [_sections count];
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
-    return [DicManager repeatTypeDictionary].count;
+    return [[_sections objectAtIndex:section] count];
 }
 
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [[_sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-    }
-	
-    // Configure the cell...
-	YCRepeatType *rep = [DicManager repeatTypeForSortId:indexPath.row];
-	if (rep) {
-		NSString *repeatString = rep.repeatTypeName;
-		cell.textLabel.text = repeatString;
-		
-		if ([rep.repeatTypeId compare:self.alarm.repeatType.repeatTypeId] == NSOrderedSame) {
-			cell.accessoryType = UITableViewCellAccessoryCheckmark;
-			cell.textLabel.textColor = [UIUtility checkedCellTextColor];
-			self.lastIndexPath = indexPath;
-		}else {
-			cell.accessoryType = UITableViewCellAccessoryNone;
-			cell.textLabel.textColor = [UIUtility defaultCellTextColor];
-		}
-	}
-
-	return cell;
-
+    return cell;
 }
 
 #pragma mark -
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    int newRow = [indexPath row];
-    int oldRow = (lastIndexPath != nil) ? [lastIndexPath row] : -1;
     
-    if (newRow != oldRow)
-    {
-        UITableViewCell *newCell = [tableView cellForRowAtIndexPath:indexPath];
-        newCell.accessoryType = UITableViewCellAccessoryCheckmark;
-		newCell.textLabel.textColor = [UIUtility checkedCellTextColor];
-        
-        UITableViewCell *oldCell = [tableView cellForRowAtIndexPath:lastIndexPath]; 
-        oldCell.accessoryType = UITableViewCellAccessoryNone;
-		oldCell.textLabel.textColor = [UIUtility defaultCellTextColor];
-		self.lastIndexPath = indexPath;
+    switch (indexPath.section) {
+        case 0://重复类型
+        {
+            int newRow = [indexPath row];
+            int oldRow = (_lastIndexPath != nil) ? [_lastIndexPath row] : -1;
+            
+            if (newRow != oldRow)
+            {
+                UITableViewCell *newCell = [tableView cellForRowAtIndexPath:indexPath];
+                newCell.accessoryType = UITableViewCellAccessoryCheckmark;
+                newCell.textLabel.textColor = [UIColor tableCellBlueTextYCColor];
+                
+                UITableViewCell *oldCell = [tableView cellForRowAtIndexPath:_lastIndexPath]; 
+                oldCell.accessoryType = UITableViewCellAccessoryNone;
+                oldCell.textLabel.textColor = [UIColor tableCellBlueTextYCColor];
+                self.lastIndexPath = indexPath;
+            }
+            
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            
+            break;
+        }
+        case 2://开始结束
+        {
+            break;
+        }
+            
+        default:
+            break;
     }
     
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-	
-	//done按钮可用
-	self.navigationItem.rightBarButtonItem.enabled = YES;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    /*
+    UITableViewCell *cell = [[_sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    return cell.bounds.size.height-1;
+     */
+    if (indexPath.section == 2) {
+        return 64;
+    }else{
+        return 44;
+    }
+}
 
 #pragma mark -
 #pragma mark Memory management
 
 - (void)dealloc {
-	[lastIndexPath release];
+	[_lastIndexPath release];
     [super dealloc];
 }
 

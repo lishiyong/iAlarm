@@ -29,7 +29,7 @@
 }
 
 - (void)startAllRegionsMonitoring{    
-    NSDictionary *regions = [IARegionsCenter regionCenterSingleInstance].regions;
+    NSDictionary *regions = [IARegionsCenter sharedRegionCenter].regions;
     for (IARegion *anIAregion in [regions allValues]) {
         CLRegion *anRegion = anIAregion.region;
         [self.standardLocationManager startMonitoringForRegion:anRegion desiredAccuracy:anIAregion.monitoringForRegionDesiredAccuracy];
@@ -83,7 +83,7 @@
     NSLog(@"前 count = %d",self.standardLocationManager.monitoredRegions.count);
     //清理一下，防止有多余的区域在监控中
     NSSet *monitoredRegions = self.standardLocationManager.monitoredRegions;
-    NSDictionary *regionsIA = [IARegionsCenter regionCenterSingleInstance].regions;
+    NSDictionary *regionsIA = [IARegionsCenter sharedRegionCenter].regions;
     NSArray *regionsIAKeys = [regionsIA allKeys];
     for (CLRegion *anRegion in monitoredRegions) {
         if (NSNotFound == [regionsIAKeys indexOfObject:anRegion.identifier]) {
@@ -219,7 +219,7 @@
 
 
 - (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region{
-    IARegion *theIAregion = [[IARegionsCenter regionCenterSingleInstance].regions objectForKey:region.identifier];
+    IARegion *theIAregion = [[IARegionsCenter sharedRegionCenter].regions objectForKey:region.identifier];
     
     //if (theIAregion.userLocationType != IAUserLocationTypeInner) 
     {
@@ -230,7 +230,7 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region{
-    IARegion *theIAregion = [[IARegionsCenter regionCenterSingleInstance].regions objectForKey:region.identifier];
+    IARegion *theIAregion = [[IARegionsCenter sharedRegionCenter].regions objectForKey:region.identifier];
     
     //if (theIAregion.userLocationType != IAUserLocationTypeOuter) 
     {

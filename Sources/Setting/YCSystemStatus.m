@@ -24,7 +24,6 @@ static NSString *kNotToRemindRateKey                 = @"kNotToRemindRateKey";
 @synthesize isAlarmListEditing = _isAlarmListEditing, lastLocation = _lastLocation;
 
 - (void)setLastLocation:(CLLocation *)lastLocation{
-    //NSLog(@"setLastLocation");
     
     BOOL wirteToFile = NO;
     if (lastLocation) { //nil不写入文件
@@ -44,7 +43,6 @@ static NSString *kNotToRemindRateKey                 = @"kNotToRemindRateKey";
         
         NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kSystemStatusFilename];
         [NSKeyedArchiver archiveRootObject:_lastWritedLocation toFile:filePathName];
-        //NSLog(@"setLastLocation to file");
     }
     
     [lastLocation retain];
@@ -162,7 +160,6 @@ static NSString *kNotToRemindRateKey                 = @"kNotToRemindRateKey";
 - (id)init{
 	if (self = [super init]) {
 		[self registerNotifications];
-		//canValidLocation = YES;//默认认为能有效定位
         
         //读出一下存储的数据
         NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kSystemStatusFilename];

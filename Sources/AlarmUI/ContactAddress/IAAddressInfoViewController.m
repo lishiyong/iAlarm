@@ -64,7 +64,7 @@
     self.navigationItem.rightBarButtonItem = cancelButtonItem;
     
     NSArray *cellsSaveAsPerson = [NSArray arrayWithObjects:self.saveAsPersonCell, nil];
-    _cells = [[NSArray arrayWithObjects:cellsSaveAsPerson, nil] retain];
+    _sections = [[NSArray arrayWithObjects:cellsSaveAsPerson, nil] retain];
 
 }
 
@@ -105,17 +105,17 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [_cells count];
+    return [_sections count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[_cells objectAtIndex:section] count];
+    return [[_sections objectAtIndex:section] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {    
-    UITableViewCell *cell = [[_cells objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    UITableViewCell *cell = [[_sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     
     return cell;
 }

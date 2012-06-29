@@ -673,7 +673,7 @@ cell使用后height竟然会加1。奇怪！
     self.watchImageView.layer.anchorPoint = CGPointMake(1, 1);
     
     //备注
-    self.notesLabel.textColor = [UIColor text1Color];
+    self.notesLabel.textColor = [UIColor tableViewFooterTextColor];
     
     //按钮
     [self.button1 setTitle:@"告诉朋友" forState:UIControlStateNormal];

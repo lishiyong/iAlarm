@@ -51,11 +51,11 @@
     NSString *ss = [NSString stringWithFormat:@"执行了检测，数据精度 = %.f,指针=%d",locationData.horizontalAccuracy,locationData];
     [[YCLog logSingleInstance] addlog:ss];
     
-	BOOL canChange = [[IARegionsCenter regionCenterSingleInstance] canChangeUserLocationTypeForCoordinate:locationData.coordinate];
+	BOOL canChange = [[IARegionsCenter sharedRegionCenter] canChangeUserLocationTypeForCoordinate:locationData.coordinate];
 	if (canChange) { //定位数据能改变某个区域的状态
         
 		//调用代理
-		IARegionsCenter *regionsCenter = [IARegionsCenter regionCenterSingleInstance];
+		IARegionsCenter *regionsCenter = [IARegionsCenter sharedRegionCenter];
 		
 		for (IARegion *region in regionsCenter.regionArray) {
 			IAUserLocationType currentType = [region containsCoordinate:locationData.coordinate];
@@ -122,7 +122,7 @@
 - (void) handle_applicationWillResignActive:(id)notification{	
 	//[YCSystemStatus sharedSystemStatus].lastLocation = nil;//免得下次使用了缓存
     
-    IARegionsCenter *regionsCenter = [IARegionsCenter regionCenterSingleInstance];
+    IARegionsCenter *regionsCenter = [IARegionsCenter sharedRegionCenter];
     if ([regionsCenter.regions count] <= 0) {
         [self.standardLocationManager stopUpdatingLocation];
         [self.standardLocationManager stopMonitoringSignificantLocationChanges];
@@ -132,7 +132,7 @@
 
 - (void) handle_regionsDidChange:(NSNotification*)notification {
     
-    IARegionsCenter *regionsCenter = [IARegionsCenter regionCenterSingleInstance];
+    IARegionsCenter *regionsCenter = [IARegionsCenter sharedRegionCenter];
     if ([regionsCenter.regions count] <= 0) {
         [self.standardLocationManager stopUpdatingLocation];
         [self.standardLocationManager stopMonitoringSignificantLocationChanges];
@@ -216,6 +216,7 @@
 //#define EPS 1e-5
 #define EPS 1.0
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation{
+    [[YCLog logSingleInstance] addlog:@"定位通知 locationManager didUpdateToLocation"];
     
     NSDate* eventDate = newLocation.timestamp;
     NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
@@ -237,7 +238,7 @@
     //////////////////////////////////////////////////////////////
     
     
-    IARegionsCenter *regionsCenter = [IARegionsCenter regionCenterSingleInstance];
+    IARegionsCenter *regionsCenter = [IARegionsCenter sharedRegionCenter];
     if ([regionsCenter.regions count] >0) {
         
         if (oldLocation) {

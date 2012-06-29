@@ -7,22 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "AlarmModifyViewController.h"
 
-
-@interface AlarmNameViewController : AlarmModifyViewController {
+@class AlarmModifyTableViewController;
+@interface AlarmNameViewController : AlarmModifyTableViewController {
 	
-	UITextField *alarmNameTextField;
-	UILabel *alarmPositionLabel;
     
-    BOOL isNameTextFieldNullWhenAppear;
 }
 
 @property(nonatomic,retain) IBOutlet UITextField *alarmNameTextField;
-@property(nonatomic,retain) IBOutlet UILabel *alarmPositionLabel;
+@property(nonatomic,retain) IBOutlet UITableViewCell *alarmNameTextCell;
 
 -(IBAction) textFieldDoneEditing:(id)sender;
--(IBAction) textFieldChanged:(id)sender;
 
 
 @end

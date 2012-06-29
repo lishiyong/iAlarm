@@ -108,6 +108,8 @@
 		9C2B806214F690C000B2CC53 /* AlarmNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2B805F14F690C000B2CC53 /* AlarmNotesViewController.m */; };
 		9C2B806314F690C000B2CC53 /* AlarmNotesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C2B806014F690C000B2CC53 /* AlarmNotesViewController.xib */; };
 		9C2B806414F690C000B2CC53 /* AlarmNotesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C2B806014F690C000B2CC53 /* AlarmNotesViewController.xib */; };
+		9C2E7DF6159C1FF300FFCEA1 /* AlarmLRepeatTypeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C2E7DF5159C1FF300FFCEA1 /* AlarmLRepeatTypeViewController.xib */; };
+		9C2E7DF7159C1FF300FFCEA1 /* AlarmLRepeatTypeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C2E7DF5159C1FF300FFCEA1 /* AlarmLRepeatTypeViewController.xib */; };
 		9C36924613D4FEE700F3258C /* focusBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C36924313D4FEE700F3258C /* focusBox.png */; };
 		9C36924713D4FEE700F3258C /* focusBox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C36924413D4FEE700F3258C /* focusBox@2x.png */; };
 		9C36924913D4FEE700F3258C /* focusBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C36924313D4FEE700F3258C /* focusBox.png */; };
@@ -1327,6 +1329,7 @@
 		9C2B805E14F690C000B2CC53 /* AlarmNotesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmNotesViewController.h; sourceTree = "<group>"; };
 		9C2B805F14F690C000B2CC53 /* AlarmNotesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmNotesViewController.m; sourceTree = "<group>"; };
 		9C2B806014F690C000B2CC53 /* AlarmNotesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlarmNotesViewController.xib; sourceTree = "<group>"; };
+		9C2E7DF5159C1FF300FFCEA1 /* AlarmLRepeatTypeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlarmLRepeatTypeViewController.xib; sourceTree = "<group>"; };
 		9C36924313D4FEE700F3258C /* focusBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = focusBox.png; sourceTree = "<group>"; };
 		9C36924413D4FEE700F3258C /* focusBox@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "focusBox@2x.png"; sourceTree = "<group>"; };
 		9C36926B13D5008100F3258C /* focusPoint.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = focusPoint.png; sourceTree = "<group>"; };
@@ -3703,6 +3706,7 @@
 				9CA992F213025ADC00298E5D /* AlarmMap */,
 				9CE894AA12FFFFD2008FBD45 /* AlarmLRepeatTypeViewController.h */,
 				9CE894AB12FFFFD2008FBD45 /* AlarmLRepeatTypeViewController.m */,
+				9C2E7DF5159C1FF300FFCEA1 /* AlarmLRepeatTypeViewController.xib */,
 				9CE894AC12FFFFD2008FBD45 /* AlarmLSoundViewController.h */,
 				9CE894AD12FFFFD2008FBD45 /* AlarmLSoundViewController.m */,
 				9CE894AE12FFFFD2008FBD45 /* AlarmModify.h */,
@@ -4477,6 +4481,7 @@
 				9C62CAEC1597517900722F35 /* Shadow_IAFlagOrange@2x.png in Resources */,
 				9C62CAEE1597517900722F35 /* Shadow_IAFlagPurple.png in Resources */,
 				9C62CAF01597517900722F35 /* Shadow_IAFlagPurple@2x.png in Resources */,
+				9C2E7DF6159C1FF300FFCEA1 /* AlarmLRepeatTypeViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4860,6 +4865,7 @@
 				9C62CAED1597517900722F35 /* Shadow_IAFlagOrange@2x.png in Resources */,
 				9C62CAEF1597517900722F35 /* Shadow_IAFlagPurple.png in Resources */,
 				9C62CAF11597517900722F35 /* Shadow_IAFlagPurple@2x.png in Resources */,
+				9C2E7DF7159C1FF300FFCEA1 /* AlarmLRepeatTypeViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5377,6 +5383,8 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IBC_ERRORS = YES;
+				IBC_WARNINGS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
@@ -5441,6 +5449,8 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IBC_ERRORS = YES;
+				IBC_WARNINGS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
@@ -5560,6 +5570,8 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IBC_ERRORS = YES;
+				IBC_WARNINGS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
@@ -5605,6 +5617,8 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
+				IBC_ERRORS = YES;
+				IBC_WARNINGS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "97ADCFC9-B6C7-41CB-842B-F524A4DEA95C";
@@ -5668,6 +5682,8 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IBC_ERRORS = YES;
+				IBC_WARNINGS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
@@ -5731,6 +5747,8 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IBC_ERRORS = YES;
+				IBC_WARNINGS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "24408D1E-F2CB-40B3-A02C-B496AD54BA5A";

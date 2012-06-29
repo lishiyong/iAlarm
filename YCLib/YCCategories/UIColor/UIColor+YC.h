@@ -22,21 +22,18 @@
 // 172.0/255.0, 173.0/255.0, 175.0/255.0 RGB
 + (UIColor *)lightBackgroundColor;        
 
-// cell详细文本的默认颜色
-+ (UIColor *)textColor;
-
 // 用于默认groudTableView的footer或header
 // 76.0/255.0,  86.0/255.0,  108.0/255.0 RGB
-+ (UIColor *)text1Color; 
++ (UIColor *)tableViewFooterTextColor; 
 
 // 用于灰背景的 groudTableView的footer或header
 // 37.0/255.0,  50.0/255.0,  67.0/255.0 RGB
-+ (UIColor *)text2Color; 
++ (UIColor *)tableViewFooter2TextColor; 
 
 
 // 用于灰背景的文本阴影的颜色
 // 200.0/255.0,  200.0/255.0,  200.0/255.0 RGB
-+ (UIColor *)shadowColor; 
++ (UIColor *)textShadowColor; 
 
 /**
  来自YCTexturedButtonTextGradient.png
@@ -59,6 +56,11 @@
  **/
 + (UIColor *)tableCellGrayTextYCColor;
 
-
+// cell详细文本的默认颜色
+/**
+ 源于未文档颜色：tableCellBlueTextColor
+ 0.22, 0.33, 0.53
+ **/
++ (UIColor *)tableCellBlueTextYCColor;
 
 @end

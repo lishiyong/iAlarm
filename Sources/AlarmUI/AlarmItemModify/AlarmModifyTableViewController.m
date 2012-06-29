@@ -31,6 +31,13 @@
 	return self;
 }
 
+-(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil alarm:(IAAlarm*)theAlarm{
+	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+		_alarm = theAlarm;
+		[_alarm retain];
+	}
+	return self;
+}
 
 - (id)initWithStyle:(UITableViewStyle)style {
 	return [self initWithStyle:style alarm:nil];

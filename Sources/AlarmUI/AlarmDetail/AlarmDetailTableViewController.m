@@ -370,7 +370,9 @@
 		
 		self->repeatCellDescription.tableViewCell = cell;
 		self->repeatCellDescription.didSelectCellSelector = @selector(didSelectNavCell:);
-		AlarmLRepeatTypeViewController *viewCtler = [[[AlarmLRepeatTypeViewController alloc] initWithStyle:UITableViewStyleGrouped alarm:self.alarmTemp] autorelease];
+		//AlarmLRepeatTypeViewController *viewCtler = [[[AlarmLRepeatTypeViewController alloc] initWithStyle:UITableViewStyleGrouped alarm:self.alarmTemp] autorelease];
+        AlarmLRepeatTypeViewController *viewCtler = [[[AlarmLRepeatTypeViewController alloc] initWithNibName:@"AlarmLRepeatTypeViewController" bundle:nil alarm:self.alarmTemp] autorelease];
+        
 		self->repeatCellDescription.didSelectCellObject = viewCtler;
 	}
 	self->repeatCellDescription.tableViewCell.detailTextLabel.text = self.alarmTemp.repeatType.repeatTypeName;
@@ -458,7 +460,7 @@
 	}
     
     if (self.alarmTemp.notes && [[self.alarmTemp.notes stringByTrim] length] >0) {
-        self->notesCellDescription.tableViewCell.detailTextLabel.textColor = [UIColor textColor];
+        self->notesCellDescription.tableViewCell.detailTextLabel.textColor = [UIColor tableCellBlueTextYCColor];
         self->notesCellDescription.tableViewCell.detailTextLabel.text = self.alarmTemp.notes;
     }else{
         self->notesCellDescription.tableViewCell.detailTextLabel.textColor = [UIColor lightGrayColor];

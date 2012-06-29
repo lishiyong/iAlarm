@@ -6,15 +6,14 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "AlarmModifyTableViewController.h"
 #import <UIKit/UIKit.h>
-#import "AlarmModifyViewController.h"
 
-@class YCTextView;
-@interface AlarmNotesViewController : AlarmModifyViewController{
-	YCTextView *textView;
-}
+@class YCTextView, AlarmModifyTableViewController;
+@interface AlarmNotesViewController : AlarmModifyTableViewController
 
 @property(nonatomic,retain) IBOutlet YCTextView *textView;
+@property(nonatomic,retain) IBOutlet UITableViewCell *textViewCell;
 
 
 @end

@@ -14,7 +14,7 @@
 
 @class IAPerson, IAAlarm;
 @interface IAAddressInfoViewController : UITableViewController<UIActionSheetDelegate>{
-    NSArray *_cells;
+    NSArray *_sections;
     IAPerson *_person;
     IAAlarm *_alarm;
 }

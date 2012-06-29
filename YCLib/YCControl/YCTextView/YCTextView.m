@@ -30,18 +30,19 @@
     if (textField == nil) {
         CGRect frame = CGRectMake(7.0, 7.0, self.frame.size.width, 31.0);
         textField = [[UITextField alloc] initWithFrame:frame];
-        textField.font = [UIFont systemFontOfSize:17.0];
-        textField.enabled = NO;
+        textField.font = self.font;
+        textField.userInteractionEnabled = NO;
     }
     return textField;
 }
 
 - (void)setPlaceholder:(NSString *)thePlaceholder{
+    [placeholder release];
     placeholder = [thePlaceholder copy];
     [self updatePlaceholder];
 }
 
-- (void) handle_textViewTextDidChange:(id)notification{	
+- (void)handleTextViewTextDidChange:(id)notification{	
     [self updatePlaceholder];
 }
 
@@ -56,19 +57,19 @@
 	}
 }
 
-- (void) registerNotifications {
+- (void)registerNotifications {
 		
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	
 	[notificationCenter addObserver: self
-						   selector: @selector (handle_textViewTextDidChange:)
+						   selector: @selector (handleTextViewTextDidChange:)
 							   name: UITextViewTextDidChangeNotification
 							 object: self];
     [self addObserver:self forKeyPath:@"text" options:0 context:nil];
 
 }
 
-- (void) unRegisterNotifications {
+- (void)unRegisterNotifications {
 	
     
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -88,10 +89,27 @@
     return self;
 }
 
+- (id)initWithCoder:(NSCoder *)aDecoder{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self addSubview:self.textField];
+        [self registerNotifications];
+    }
+    return self;
+}
+
+- (void)setFont:(UIFont *)font{
+    [super setFont:font];
+    //placeholder的字体与textView相同
+    self.textField.font = font;
+}
+
+/*
 - (void)awakeFromNib{
     [self registerNotifications];
     [self addSubview:self.textField];
 }
+ */
 
 - (void)dealloc{
     [self unRegisterNotifications];

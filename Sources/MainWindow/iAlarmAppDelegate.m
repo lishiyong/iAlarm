@@ -159,15 +159,15 @@
  
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {  
-    
+    [[YCLog logSingleInstance] addlog:@"系统启动 application didFinishLaunchingWithOptions"];
 	[application registerNotifications];
 	[YCSystemStatus sharedSystemStatus]; //一定要有这个初始化
+    [[IARegionsCenter sharedRegionCenter] regions];  //一定要有这个初始化,而且要放到YCSystemStatus的后面
     
     self.window.backgroundColor = [UIColor clearColor]; //为了自定义状态栏
 	self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];	
 	
-    [[IARegionsCenter regionCenterSingleInstance] regions];  //一定要有这个初始化
     
     self->locationManager = [LocationManagerFactory locationManagerInstanceWithDelegate:self];
     [self->locationManager start];
