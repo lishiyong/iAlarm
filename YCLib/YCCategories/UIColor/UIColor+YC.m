@@ -58,4 +58,12 @@
     return [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0];
 }
 
++ (UIColor *)iPadGroupTableViewBackgroundColor{
+    return [UIColor colorWithPatternImage:[UIImage imageNamed:@"YCiPadGroupTableViewBackgroundColor.png"]];
+}
+
++ (UIColor *)iPadTableCellGroupedBackgroundColor{
+    return [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.0];
+}
+
 @end

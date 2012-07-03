@@ -58,24 +58,35 @@
 	return rightShadowView;
 }
 
+- (void)otherInit{
+    self.backgroundView = [[[UIView alloc] init] autorelease];
+    self.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.backgroundView.frame = self.bounds;
+    
+    //上阴影
+    [self.backgroundView addSubview:self.topShadowView];
+    //下阴影
+    [self.backgroundView addSubview:self.bottomShadowView];
+    //左阴影
+    [self.backgroundView addSubview:self.leftShadowView];
+    //右阴影
+    [self.backgroundView addSubview:self.rightShadowView];
+}
 
 - (id)initWithFrame:(CGRect)frame style:(UITableViewStyle)style{
 	if (self = [super initWithFrame:frame style:style]) {
-		self.backgroundView = [[[UIView alloc] init] autorelease];
-		self.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		self.backgroundView.frame = self.bounds;
-		
-		//上阴影
-		[self.backgroundView addSubview:self.topShadowView];
-		//下阴影
-		[self.backgroundView addSubview:self.bottomShadowView];
-		//左阴影
-		[self.backgroundView addSubview:self.leftShadowView];
-		//右阴影
-		[self.backgroundView addSubview:self.rightShadowView];
-
+		[self otherInit];
 	}
 	return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self otherInit];
+    }
+    
+    return self;
 }
 
 - (void)dealloc {

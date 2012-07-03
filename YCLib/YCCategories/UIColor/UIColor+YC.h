@@ -63,4 +63,19 @@
  **/
 + (UIColor *)tableCellBlueTextYCColor;
 
+
+/**
+ ipad groupTableViewBackgroundColor
+ 来自YCiPadGroupTableViewBackgroundColor.png
+ **/
++ (UIColor *)iPadGroupTableViewBackgroundColor;
+
+/**
+ 源于未文档颜色：tableCellGroupedBackgroundColor(ipad)
+ 0.97, 0.97, 0.97, 1
+ **/
++ (UIColor *)iPadTableCellGroupedBackgroundColor;
+
+
+
 @end

@@ -5,6 +5,7 @@
 //  Created by li shiyong on 12-2-27.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
+#import "YCLib.h"
 #import "UIButton+YC.h"
 #import "YCLocationManager.h"
 #import "YCAlarmStatusBar.h"
@@ -80,6 +81,7 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
 @synthesize mapViewCell, takeImageContainerView, containerView, mapView, maskImageView, timeIntervalLabel, watchImageView;
 @synthesize buttonCell, button1, button2, button3;
 @synthesize notesCell, notesLabel;
+@synthesize backgroundTableView, backgroundTableViewCell;
 
 - (id)doneButtonItem{
 	
@@ -196,7 +198,7 @@ cell使用后height竟然会加1。奇怪！
     animation.delegate = self;
     animation.type = kCATransitionPush;
     animation.subtype = animationSubtype;
-    animation.duration = 0.5;
+    animation.duration = 0.75;
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     [self.tableView.layer addAnimation:animation forKey:@"upDown AlarmNotification"];
 }
@@ -568,16 +570,26 @@ cell使用后height竟然会加1。奇怪！
 
 #pragma mark - Table view data source & delegate
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)theTableView {
+    if (theTableView == self.backgroundTableView) {
+        return 1;
+    }
+    
     return 3;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	
+- (NSInteger)tableView:(UITableView *)theTableView numberOfRowsInSection:(NSInteger)section {
+	if (theTableView == self.backgroundTableView) {
+        return 1;
+    }
+    
 	return 1;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)theTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (theTableView == self.backgroundTableView) {
+        return self.backgroundTableViewCell;
+    }
     
 	UITableViewCell *cell  = nil;
     switch (indexPath.section) {
@@ -597,26 +609,24 @@ cell使用后height竟然会加1。奇怪！
     return cell;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+- (NSString *)tableView:(UITableView *)theTableView titleForHeaderInSection:(NSInteger)section{
+    
+    if (theTableView == self.backgroundTableView) {
+        return nil;
+    }
+    
     if (section == 1) {
         return @"备注：";
     }
 	
     return nil;
 }
-/*
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section{
-    if (section == 1) {
-        NSString *s = [viewedAlarmNotification.alarm.notes trim];
-        if ([s length] == 0) s = @"\n";//备注为空，1空行占空间
-        return s;
-    }
-	
-    return nil;
-}
- */
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+- (CGFloat)tableView:(UITableView *)theTableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (theTableView == self.backgroundTableView) {
+        return 416.0;
+    }
+    
     switch (indexPath.section) {
         case 0:
             return self.mapViewCell.frame.size.height;
@@ -633,23 +643,58 @@ cell使用后height竟然会加1。奇怪！
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+- (CGFloat)tableView:(UITableView *)theTableView heightForHeaderInSection:(NSInteger)section{
+    if (theTableView == self.backgroundTableView) {
+        return 0.0;
+    }
+    
     if (section == 1) {
         return 23.0; //备注 上下空太大了，缩小点
     }
     return 0.0;
 }
- 
+
+#pragma mark - UIScrollViewDelegate
+/*
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset{
+    if (scrollView == self.backgroundTableView) {
+        //NSLog(@"targetContentOffset = %@",NSStringFromCGPoint(*targetContentOffset));
+        //NSLog(@"velocity = %@",NSStringFromCGPoint(velocity));
+        //NSLog(@"self.backgroundTableViewCell.frame = %@",NSStringFromCGRect(self.backgroundTableViewCell.frame));
+        UISegmentedControl *sc = (UISegmentedControl*)self.upDownBarItem.customView;
+        sc.selectedSegmentIndex = 0;
+        [self segmentAction:sc];
+        
+    }
+}
+ */
 
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //5.0以下 cell背景设成透明后，显示背景后面竟然是黑的。没搞懂，到底是谁的颜色。所以只好给加个背景view了。
     
+    //设置一个可以拖拽的背景
+    self.backgroundTableView.backgroundView.backgroundColor = [UIColor darkGrayColor];
+    self.backgroundTableView.leftShadowView.hidden = YES;
+    self.backgroundTableView.rightShadowView.hidden = YES;
+    self.backgroundTableView.topShadowView.bounds = (CGRect){{0,0},{320,15}};
+    self.backgroundTableView.bottomShadowView.bounds = (CGRect){{0,0},{320,15}};
+    
+    [self performBlock:^{
+        self.backgroundTableViewCell.layer.shadowOpacity = 0.3;
+        self.backgroundTableViewCell.layer.shadowOffset = CGSizeMake(0, -4.0);
+        self.backgroundTableViewCell.layer.shadowColor = [UIColor blackColor].CGColor;
+        self.backgroundTableViewCell.layer.shadowRadius = 7.0;
+        
+    } afterDelay:0.5];
+    [self.backgroundTableViewCell addSubview:self.tableView];
+    
+    //5.0以下 cell背景设成透明后，显示背景后面竟然是黑的。没搞懂，到底是谁的颜色。所以只好给加个背景view了。
     self.tableView.backgroundView = [[[UIView alloc] initWithFrame:self.tableView.frame] autorelease];
-    self.tableView.backgroundView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    //self.tableView.backgroundView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    self.tableView.backgroundView.backgroundColor = [UIColor iPadGroupTableViewBackgroundColor];
      
     
     self.navigationItem.leftBarButtonItem = self.doneButtonItem;
@@ -663,10 +708,6 @@ cell使用后height竟然会加1。奇怪！
     self.containerView.layer.cornerRadius = 4;
     self.containerView.layer.borderColor = [UIColor grayColor].CGColor;
     self.containerView.layer.borderWidth = 1.0;
-    //self.containerView.layer.shadowRadius = 2.0;
-    //self.containerView.layer.shadowOpacity = 0.3;
-    //self.containerView.layer.shadowColor = [UIColor blackColor].CGColor;
-    //self.containerView.layer.shadowOffset = CGSizeMake(0, 1.0);
     
     //把position设置到左下角
     self.timeIntervalLabel.layer.anchorPoint = CGPointMake(1, 1);
@@ -764,6 +805,10 @@ cell使用后height竟然会加1。奇怪！
     self.button3 = nil;
     
     self.notesCell = nil;
+    
+    self.backgroundTableView = nil;
+    self.backgroundTableViewCell = nil;
+    
     [actionSheet1 release];actionSheet1 = nil;
     [actionSheet2 release];actionSheet2 = nil;
 }
@@ -789,6 +834,9 @@ cell使用后height竟然会加1。奇怪！
     
     [notesCell release];
     [notesLabel release];
+    
+    [backgroundTableView release];
+    [backgroundTableViewCell release];
     
     [alarmNotifitions release];
     [viewedAlarmNotification release];

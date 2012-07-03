@@ -10,7 +10,7 @@
 #import <MapKit/MapKit.h>
 #import <UIKit/UIKit.h>
 
-@class IAAlarmNotification, YCMapPointAnnotation, YCShareAppEngine;
+@class IAAlarmNotification, YCMapPointAnnotation, YCShareAppEngine, YCShadowTableView;
 @interface IAAlarmFindViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, UIActionSheetDelegate>{
     
     UIBarButtonItem *doneButtonItem;
@@ -46,6 +46,9 @@
 
 @property (nonatomic,retain) IBOutlet UITableViewCell *notesCell;
 @property (nonatomic,retain) IBOutlet UILabel *notesLabel;
+
+@property (nonatomic,retain) IBOutlet YCShadowTableView *backgroundTableView;
+@property (nonatomic,retain) IBOutlet UITableViewCell *backgroundTableViewCell;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil alarmNotifitions:(NSArray *)theAlarmNotifitions;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil alarmNotifitions:(NSArray *)theAlarmNotifitions indexForView:(NSUInteger)theIndexForView;

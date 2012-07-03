@@ -110,6 +110,18 @@
 		9C2B806414F690C000B2CC53 /* AlarmNotesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C2B806014F690C000B2CC53 /* AlarmNotesViewController.xib */; };
 		9C2E7DF6159C1FF300FFCEA1 /* AlarmLRepeatTypeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C2E7DF5159C1FF300FFCEA1 /* AlarmLRepeatTypeViewController.xib */; };
 		9C2E7DF7159C1FF300FFCEA1 /* AlarmLRepeatTypeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C2E7DF5159C1FF300FFCEA1 /* AlarmLRepeatTypeViewController.xib */; };
+		9C324E9F15A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C324E9D15A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor.png */; };
+		9C324EA015A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C324E9D15A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor.png */; };
+		9C324EA115A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C324E9E15A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor@2x.png */; };
+		9C324EA215A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C324E9E15A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor@2x.png */; };
+		9C324EA815A3478D004EDB5D /* YCTableInnerShadowBottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C324EA415A3478D004EDB5D /* YCTableInnerShadowBottom.png */; };
+		9C324EA915A3478D004EDB5D /* YCTableInnerShadowBottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C324EA415A3478D004EDB5D /* YCTableInnerShadowBottom.png */; };
+		9C324EAA15A3478D004EDB5D /* YCTableInnerShadowLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C324EA515A3478D004EDB5D /* YCTableInnerShadowLeft.png */; };
+		9C324EAB15A3478D004EDB5D /* YCTableInnerShadowLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C324EA515A3478D004EDB5D /* YCTableInnerShadowLeft.png */; };
+		9C324EAC15A3478D004EDB5D /* YCTableInnerShadowRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C324EA615A3478D004EDB5D /* YCTableInnerShadowRight.png */; };
+		9C324EAD15A3478D004EDB5D /* YCTableInnerShadowRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C324EA615A3478D004EDB5D /* YCTableInnerShadowRight.png */; };
+		9C324EAE15A3478D004EDB5D /* YCTableInnerShadowTop.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C324EA715A3478D004EDB5D /* YCTableInnerShadowTop.png */; };
+		9C324EAF15A3478D004EDB5D /* YCTableInnerShadowTop.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C324EA715A3478D004EDB5D /* YCTableInnerShadowTop.png */; };
 		9C36924613D4FEE700F3258C /* focusBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C36924313D4FEE700F3258C /* focusBox.png */; };
 		9C36924713D4FEE700F3258C /* focusBox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C36924413D4FEE700F3258C /* focusBox@2x.png */; };
 		9C36924913D4FEE700F3258C /* focusBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C36924313D4FEE700F3258C /* focusBox.png */; };
@@ -648,10 +660,6 @@
 		9C8AB1CD13B0C92100120AD5 /* YCTableCellShadowTop.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8949812FFFFD2008FBD45 /* YCTableCellShadowTop.png */; };
 		9C8AB1CE13B0C92100120AD5 /* YCViewInnerShadowBottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8949912FFFFD2008FBD45 /* YCViewInnerShadowBottom.png */; };
 		9C8AB1CF13B0C92100120AD5 /* YCViewInnerShadowTop.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8949A12FFFFD2008FBD45 /* YCViewInnerShadowTop.png */; };
-		9C8AB1D013B0C92100120AD5 /* YCTableInnerShadowBottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8949B12FFFFD2008FBD45 /* YCTableInnerShadowBottom.png */; };
-		9C8AB1D113B0C92100120AD5 /* YCTableInnerShadowLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8949C12FFFFD2008FBD45 /* YCTableInnerShadowLeft.png */; };
-		9C8AB1D213B0C92100120AD5 /* YCTableInnerShadowRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8949D12FFFFD2008FBD45 /* YCTableInnerShadowRight.png */; };
-		9C8AB1D313B0C92100120AD5 /* YCTableInnerShadowTop.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8949E12FFFFD2008FBD45 /* YCTableInnerShadowTop.png */; };
 		9C8AB1D413B0C92100120AD5 /* AlarmNameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CE894B512FFFFD2008FBD45 /* AlarmNameViewController.xib */; };
 		9C8AB1D513B0C92100120AD5 /* AlarmRadiusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CE894B812FFFFD2008FBD45 /* AlarmRadiusViewController.xib */; };
 		9C8AB1D613B0C92100120AD5 /* AlarmsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CE894BE12FFFFD2008FBD45 /* AlarmsListViewController.xib */; };
@@ -1044,10 +1052,6 @@
 		9CE895B012FFFFD2008FBD45 /* YCTableCellShadowTop.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8949812FFFFD2008FBD45 /* YCTableCellShadowTop.png */; };
 		9CE895B112FFFFD2008FBD45 /* YCViewInnerShadowBottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8949912FFFFD2008FBD45 /* YCViewInnerShadowBottom.png */; };
 		9CE895B212FFFFD2008FBD45 /* YCViewInnerShadowTop.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8949A12FFFFD2008FBD45 /* YCViewInnerShadowTop.png */; };
-		9CE895B312FFFFD2008FBD45 /* YCTableInnerShadowBottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8949B12FFFFD2008FBD45 /* YCTableInnerShadowBottom.png */; };
-		9CE895B412FFFFD2008FBD45 /* YCTableInnerShadowLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8949C12FFFFD2008FBD45 /* YCTableInnerShadowLeft.png */; };
-		9CE895B512FFFFD2008FBD45 /* YCTableInnerShadowRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8949D12FFFFD2008FBD45 /* YCTableInnerShadowRight.png */; };
-		9CE895B612FFFFD2008FBD45 /* YCTableInnerShadowTop.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8949E12FFFFD2008FBD45 /* YCTableInnerShadowTop.png */; };
 		9CE895BA12FFFFD2008FBD45 /* TableViewCellDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE894A812FFFFD2008FBD45 /* TableViewCellDescription.m */; };
 		9CE895BB12FFFFD2008FBD45 /* AlarmLRepeatTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE894AB12FFFFD2008FBD45 /* AlarmLRepeatTypeViewController.m */; };
 		9CE895BC12FFFFD2008FBD45 /* AlarmLSoundViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE894AD12FFFFD2008FBD45 /* AlarmLSoundViewController.m */; };
@@ -1339,6 +1343,12 @@
 		9C2B805F14F690C000B2CC53 /* AlarmNotesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmNotesViewController.m; sourceTree = "<group>"; };
 		9C2B806014F690C000B2CC53 /* AlarmNotesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlarmNotesViewController.xib; sourceTree = "<group>"; };
 		9C2E7DF5159C1FF300FFCEA1 /* AlarmLRepeatTypeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlarmLRepeatTypeViewController.xib; sourceTree = "<group>"; };
+		9C324E9D15A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCiPadGroupTableViewBackgroundColor.png; sourceTree = "<group>"; };
+		9C324E9E15A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCiPadGroupTableViewBackgroundColor@2x.png"; sourceTree = "<group>"; };
+		9C324EA415A3478D004EDB5D /* YCTableInnerShadowBottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCTableInnerShadowBottom.png; sourceTree = "<group>"; };
+		9C324EA515A3478D004EDB5D /* YCTableInnerShadowLeft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCTableInnerShadowLeft.png; sourceTree = "<group>"; };
+		9C324EA615A3478D004EDB5D /* YCTableInnerShadowRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCTableInnerShadowRight.png; sourceTree = "<group>"; };
+		9C324EA715A3478D004EDB5D /* YCTableInnerShadowTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCTableInnerShadowTop.png; sourceTree = "<group>"; };
 		9C36924313D4FEE700F3258C /* focusBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = focusBox.png; sourceTree = "<group>"; };
 		9C36924413D4FEE700F3258C /* focusBox@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "focusBox@2x.png"; sourceTree = "<group>"; };
 		9C36926B13D5008100F3258C /* focusPoint.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = focusPoint.png; sourceTree = "<group>"; };
@@ -1927,10 +1937,6 @@
 		9CE8949812FFFFD2008FBD45 /* YCTableCellShadowTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCTableCellShadowTop.png; sourceTree = "<group>"; };
 		9CE8949912FFFFD2008FBD45 /* YCViewInnerShadowBottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCViewInnerShadowBottom.png; sourceTree = "<group>"; };
 		9CE8949A12FFFFD2008FBD45 /* YCViewInnerShadowTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCViewInnerShadowTop.png; sourceTree = "<group>"; };
-		9CE8949B12FFFFD2008FBD45 /* YCTableInnerShadowBottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCTableInnerShadowBottom.png; sourceTree = "<group>"; };
-		9CE8949C12FFFFD2008FBD45 /* YCTableInnerShadowLeft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCTableInnerShadowLeft.png; sourceTree = "<group>"; };
-		9CE8949D12FFFFD2008FBD45 /* YCTableInnerShadowRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCTableInnerShadowRight.png; sourceTree = "<group>"; };
-		9CE8949E12FFFFD2008FBD45 /* YCTableInnerShadowTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCTableInnerShadowTop.png; sourceTree = "<group>"; };
 		9CE894A712FFFFD2008FBD45 /* TableViewCellDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCellDescription.h; sourceTree = "<group>"; };
 		9CE894A812FFFFD2008FBD45 /* TableViewCellDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewCellDescription.m; sourceTree = "<group>"; };
 		9CE894AA12FFFFD2008FBD45 /* AlarmLRepeatTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmLRepeatTypeViewController.h; sourceTree = "<group>"; };
@@ -2302,6 +2308,17 @@
 			path = newAbout;
 			sourceTree = "<group>";
 		};
+		9C324EA315A3478D004EDB5D /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				9C324EA415A3478D004EDB5D /* YCTableInnerShadowBottom.png */,
+				9C324EA515A3478D004EDB5D /* YCTableInnerShadowLeft.png */,
+				9C324EA615A3478D004EDB5D /* YCTableInnerShadowRight.png */,
+				9C324EA715A3478D004EDB5D /* YCTableInnerShadowTop.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
 		9C3D7FCD1339BDBE00A9C4D6 /* InAppPurchase */ = {
 			isa = PBXGroup;
 			children = (
@@ -2475,6 +2492,7 @@
 		9C7484C91562981F00486793 /* YCAlert */ = {
 			isa = PBXGroup;
 			children = (
+				9C324EA315A3478D004EDB5D /* Images */,
 				9C7484CA1562981F00486793 /* YCAlertTableView.h */,
 				9C7484CB1562981F00486793 /* YCAlertTableView.m */,
 				9C7484CC1562981F00486793 /* YCShadowTableView.h */,
@@ -3376,6 +3394,8 @@
 				9CC472161564F62B00F79985 /* YCTexturedButtonTextGradientSmall@2x.png */,
 				9CC472151564F62B00F79985 /* YCTexturedButtonTextGradient.png */,
 				9CC4721E1564F70B00F79985 /* YCTexturedButtonTextGradient@2x.png */,
+				9C324E9D15A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor.png */,
+				9C324E9E15A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor@2x.png */,
 				9CC472111564F61C00F79985 /* UIColor+YC.h */,
 				9CC472121564F61C00F79985 /* UIColor+YC.m */,
 			);
@@ -3654,10 +3674,6 @@
 				9CE8949812FFFFD2008FBD45 /* YCTableCellShadowTop.png */,
 				9CE8949912FFFFD2008FBD45 /* YCViewInnerShadowBottom.png */,
 				9CE8949A12FFFFD2008FBD45 /* YCViewInnerShadowTop.png */,
-				9CE8949B12FFFFD2008FBD45 /* YCTableInnerShadowBottom.png */,
-				9CE8949C12FFFFD2008FBD45 /* YCTableInnerShadowLeft.png */,
-				9CE8949D12FFFFD2008FBD45 /* YCTableInnerShadowRight.png */,
-				9CE8949E12FFFFD2008FBD45 /* YCTableInnerShadowTop.png */,
 			);
 			path = shadow;
 			sourceTree = "<group>";
@@ -4094,7 +4110,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0430;
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "iAlarm" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -4166,10 +4182,6 @@
 				9CE895B012FFFFD2008FBD45 /* YCTableCellShadowTop.png in Resources */,
 				9CE895B112FFFFD2008FBD45 /* YCViewInnerShadowBottom.png in Resources */,
 				9CE895B212FFFFD2008FBD45 /* YCViewInnerShadowTop.png in Resources */,
-				9CE895B312FFFFD2008FBD45 /* YCTableInnerShadowBottom.png in Resources */,
-				9CE895B412FFFFD2008FBD45 /* YCTableInnerShadowLeft.png in Resources */,
-				9CE895B512FFFFD2008FBD45 /* YCTableInnerShadowRight.png in Resources */,
-				9CE895B612FFFFD2008FBD45 /* YCTableInnerShadowTop.png in Resources */,
 				9CE895C012FFFFD2008FBD45 /* AlarmNameViewController.xib in Resources */,
 				9CE895C212FFFFD2008FBD45 /* AlarmRadiusViewController.xib in Resources */,
 				9CE895C512FFFFD2008FBD45 /* AlarmsListViewController.xib in Resources */,
@@ -4504,6 +4516,12 @@
 				9C52E8A715A2A93E003A74FC /* YCTweetSheetPaperClip@2x.png in Resources */,
 				9C52E8AB15A2ABD7003A74FC /* YCSharingPanelMessageField.png in Resources */,
 				9C52E8AD15A2ABD7003A74FC /* YCSharingPanelMessageField@2x.png in Resources */,
+				9C324E9F15A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor.png in Resources */,
+				9C324EA115A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor@2x.png in Resources */,
+				9C324EA815A3478D004EDB5D /* YCTableInnerShadowBottom.png in Resources */,
+				9C324EAA15A3478D004EDB5D /* YCTableInnerShadowLeft.png in Resources */,
+				9C324EAC15A3478D004EDB5D /* YCTableInnerShadowRight.png in Resources */,
+				9C324EAE15A3478D004EDB5D /* YCTableInnerShadowTop.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4554,10 +4572,6 @@
 				9C8AB1CD13B0C92100120AD5 /* YCTableCellShadowTop.png in Resources */,
 				9C8AB1CE13B0C92100120AD5 /* YCViewInnerShadowBottom.png in Resources */,
 				9C8AB1CF13B0C92100120AD5 /* YCViewInnerShadowTop.png in Resources */,
-				9C8AB1D013B0C92100120AD5 /* YCTableInnerShadowBottom.png in Resources */,
-				9C8AB1D113B0C92100120AD5 /* YCTableInnerShadowLeft.png in Resources */,
-				9C8AB1D213B0C92100120AD5 /* YCTableInnerShadowRight.png in Resources */,
-				9C8AB1D313B0C92100120AD5 /* YCTableInnerShadowTop.png in Resources */,
 				9C8AB1D413B0C92100120AD5 /* AlarmNameViewController.xib in Resources */,
 				9C8AB1D513B0C92100120AD5 /* AlarmRadiusViewController.xib in Resources */,
 				9C8AB1D613B0C92100120AD5 /* AlarmsListViewController.xib in Resources */,
@@ -4892,6 +4906,12 @@
 				9C52E8A815A2A93E003A74FC /* YCTweetSheetPaperClip@2x.png in Resources */,
 				9C52E8AC15A2ABD7003A74FC /* YCSharingPanelMessageField.png in Resources */,
 				9C52E8AE15A2ABD7003A74FC /* YCSharingPanelMessageField@2x.png in Resources */,
+				9C324EA015A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor.png in Resources */,
+				9C324EA215A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor@2x.png in Resources */,
+				9C324EA915A3478D004EDB5D /* YCTableInnerShadowBottom.png in Resources */,
+				9C324EAB15A3478D004EDB5D /* YCTableInnerShadowLeft.png in Resources */,
+				9C324EAD15A3478D004EDB5D /* YCTableInnerShadowRight.png in Resources */,
+				9C324EAF15A3478D004EDB5D /* YCTableInnerShadowTop.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5387,6 +5407,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iAlarm_Prefix.pch;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = "iAlarm-Info.plist";
@@ -5407,6 +5428,7 @@
 				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: li shiyong (G46T6DCB7F)";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IBC_ERRORS = YES;
@@ -5429,6 +5451,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iAlarm_Prefix.pch;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = "iAlarm-Info.plist";
@@ -5449,6 +5472,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iAlarm_Prefix.pch;
+				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = "iAlarm-Info-FullVersion.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
@@ -5473,6 +5497,7 @@
 				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: li shiyong";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IBC_ERRORS = YES;
@@ -5499,6 +5524,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iAlarm_Prefix.pch;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = "iAlarm-Info.plist";
@@ -5522,6 +5548,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iAlarm_Prefix.pch;
+				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = "iAlarm-Info-FullVersion.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
@@ -5548,6 +5575,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iAlarm_Prefix.pch;
+				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = "iAlarm-Info-FullVersion.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
@@ -5571,6 +5599,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iAlarm_Prefix.pch;
+				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = "iAlarm-Info-FullVersion.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
@@ -5594,6 +5623,7 @@
 				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: li shiyong";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IBC_ERRORS = YES;
@@ -5620,6 +5650,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iAlarm_Prefix.pch;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = "iAlarm-Info.plist";
@@ -5640,6 +5671,7 @@
 				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: li shiyong (G46T6DCB7F)";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
@@ -5664,6 +5696,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iAlarm_Prefix.pch;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = "iAlarm-Info.plist";
@@ -5685,6 +5718,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iAlarm_Prefix.pch;
+				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = "iAlarm-Info-FullVersion.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
@@ -5706,6 +5740,7 @@
 				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: li shiyong (G46T6DCB7F)";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IBC_ERRORS = YES;
@@ -5728,6 +5763,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iAlarm_Prefix.pch;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = "iAlarm-Info.plist";
@@ -5748,6 +5784,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iAlarm_Prefix.pch;
+				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = "iAlarm-Info-FullVersion.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
@@ -5771,6 +5808,7 @@
 				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: li shiyong (G46T6DCB7F)";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IBC_ERRORS = YES;
