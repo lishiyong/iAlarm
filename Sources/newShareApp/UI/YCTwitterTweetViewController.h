@@ -35,7 +35,11 @@
 @property (nonatomic, retain, readonly) UIProgressView *progressView;  
 @property (nonatomic, retain, readonly) UIView *navTitleView; 
 @property (nonatomic, retain, readonly) UIView *navTitleView1;
+
 @property(nonatomic,retain) IBOutlet UITextView *textView;
+@property(nonatomic,retain) IBOutlet UIImageView *contentImageView;
+@property(nonatomic,retain) IBOutlet UIImageView *clipImageView;
+
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil engine:(MGTwitterEngine*)theEngine messageDelegate:(id)theDategate shareData:(YCShareContent*)theShareData;

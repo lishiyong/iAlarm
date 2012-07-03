@@ -17,6 +17,7 @@
 @class YCMaskView;
 @class TableViewCellDescription;
 @class YCShareContent;
+@class PeoplesLabelCell;
 
 @interface YCFacebookFeedViewController : UIViewController
 <UITableViewDelegate,UITableViewDataSource, FBRequestDelegate,FBDialogDelegate,FBSessionDelegate
@@ -28,11 +29,7 @@
     UIProgressView *progressView;
 	UIView *navTitleView;
     IBOutlet UITableView *tableView;
-
-
-	NSArray *cellDescriptions;
-	TableViewCellDescription *peoplesLabelCellDescription;                 
-	TableViewCellDescription *messageBodyCellDescription;
+    
 	YCFacebookPeoplePickerNavigationController *fbPeoplePicker;
 	UINavigationController *fbPeoplePickerNavController;
     
@@ -45,6 +42,9 @@
     
     NSInteger publishI;  //当前发送的
 	BOOL sending;
+    
+    NSMutableArray *_sections;
+    PeoplesLabelCell *_peopleLabelCell;
 
 }
 
@@ -54,10 +54,12 @@
 @property (nonatomic, retain, readonly) UIProgressView *progressView;  
 @property (nonatomic, retain, readonly) UIView *navTitleView;
 @property (nonatomic,retain) IBOutlet   UITableView *tableView;
+@property (nonatomic,retain) IBOutlet   UITableViewCell *messageBodyCell;
+@property (nonatomic,readonly)          UITableViewCell *peopleLabelCell;
+@property(nonatomic,retain)    IBOutlet UITextView *textView;
+@property(nonatomic,retain)    IBOutlet UIImageView *contentImageView;
+@property(nonatomic,retain)    IBOutlet UIImageView *clipImageView;
 
-@property(nonatomic,retain) NSArray *cellDescriptions;
-@property(nonatomic,retain) TableViewCellDescription *peoplesLabelCellDescription;
-@property(nonatomic,retain) TableViewCellDescription *messageBodyCellDescription;
 @property(nonatomic,retain) YCFacebookPeoplePickerNavigationController *fbPeoplePicker;
 @property(nonatomic,retain) UINavigationController *fbPeoplePickerNavController;
 

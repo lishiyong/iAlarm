@@ -5,6 +5,7 @@
 //  Created by li shiyong on 12-3-8.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
+#import "YCShareContent.h"
 #import "IAGlobal.h"
 #import "IAShareSettingViewController.h"
 #import "IAFeedbackViewController.h"
@@ -463,7 +464,15 @@
 }
 
 - (void)didSelectShareAppCell:(id)sender{
-	//[self.shareAppEngine shareApp];
+    NSString *title = @"There is cool app!";
+    NSString *message = @"I found a cool app ,tell you!";
+    NSString *link = @"http://111.com";
+    UIImage *image = nil;
+    
+    YCShareContent *shareContent = [YCShareContent shareContentWithTitle:title message:message image:image];
+    shareContent.link1 = link;
+    
+    [shareAppEngine shareAppWithContent:shareContent];
 }
 
 - (void)followOnTwitterByAfterIOS5ForUserName:(NSString*)userName{

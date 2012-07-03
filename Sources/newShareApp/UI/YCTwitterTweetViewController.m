@@ -6,17 +6,18 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
+#import "YCLib.h"
 #import "NSObject+YC.h"
 #import "YCBarButtonItem.h"
 #import "YCShareContent.h"
 #import "LocalizedStringAbout.h"
-//#import "LocalizedString.h"
 #import "SA_OAuthTwitterEngine.h"
 #import "YCTwitterTweetViewController.h"
 
 
 @implementation YCTwitterTweetViewController
-@synthesize textView;
+@synthesize textView, contentImageView, clipImageView;
 
 
 
@@ -165,13 +166,53 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    //纵向可拖拽
+    UIScrollView * sv = (UIScrollView*)self.view;
+    sv.alwaysBounceVertical = YES;
 	
 	self.navigationItem.rightBarButtonItem = self.shareButtonItem;
 	self.navigationItem.leftBarButtonItem = self.cancelButtonItem;
 	
-	//共享的消息
-	//NSString *s = [NSString stringWithFormat:@"%@\n%@",shareContent.message,KLinkCustomAppStoreFullVersion];//twitter上直接完全版
-	self.textView.text = shareContent.message;
+    //文本
+    NSMutableString *text = [NSMutableString string];
+    if (shareContent.message) 
+        [text appendString:shareContent.message];
+    
+    if (shareContent.link1) 
+        [text appendString:shareContent.link1];
+    
+    self.textView.text = text;
+    
+    //image
+    if (shareContent.image1) {
+        
+        if (shareContent.imageAutoSizeFit) {
+            self.contentImageView.image = shareContent.image1;
+        }else {
+            //截取一部分显示
+            CGRect imageRect = (CGRect){{0,0},shareContent.image1.size};
+            CGPoint imageCenter = YCRectCenter(imageRect);
+            CGRect newImageRect = YCRectMakeWithCenter(imageCenter, self.contentImageView.bounds.size);
+            UIImage *newImage = [shareContent.image1 imageWithRect:newImageRect];
+            self.contentImageView.image = newImage;
+        }
+        
+        
+        [self.contentImageView performBlock:^{
+            self.contentImageView.layer.shadowOpacity = 0.4;
+            self.contentImageView.layer.shadowOffset = CGSizeMake(1, 1);
+            self.contentImageView.layer.shadowColor = [UIColor blackColor].CGColor;
+            self.contentImageView.layer.shadowRadius = 2.0;
+        } afterDelay:0.5];
+        
+        //文本让出图片的位置
+        CGRect newBounds = CGRectInset(self.textView.bounds, 40, 0);
+        self.textView.frame = (CGRect){self.textView.frame.origin,newBounds.size};
+        
+    }else {
+        self.contentImageView.hidden = YES;
+        self.clipImageView.hidden = YES;
+    }
     
 }
 
@@ -184,6 +225,8 @@
 
 - (void)viewDidUnload {
 	self.textView = nil;
+    self.contentImageView = nil;
+    self.clipImageView = nil;
 }
 
 
@@ -194,6 +237,8 @@
 	[navTitleView release];
 	[navTitleView1 release];
 	[textView release];
+    [contentImageView release];
+    [clipImageView release];
 
 	[shareContent release]; 
 	[twitterEngine release];

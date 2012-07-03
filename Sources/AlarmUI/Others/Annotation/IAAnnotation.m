@@ -18,8 +18,6 @@
 
 @interface IAAnnotation (Private) 
 
-- (NSString*)_alarmName;
-- (NSString*)_alarmTitle;
 - (void)handleStandardLocationDidFinish: (NSNotification*) notification;
 - (void)registerNotifications;
 - (void)unRegisterNotifications;
@@ -29,24 +27,6 @@
 @implementation IAAnnotation
 @synthesize identifier = _identifier, annotationStatus = _annotationStatus, alarm = _alarm;
 
-- (NSString*)_alarmName{
-    NSString *theName = nil;
-    theName = self.alarm.alarmName;
-    theName = theName ? theName : self.alarm.person.personName;
-    theName = theName ? theName : self.alarm.placemark.name;
-    theName = [theName stringByTrim];
-    theName = (theName.length > 0) ? theName : nil;
-    return theName;
-}
-
-- (NSString*)_alarmTitle{
-    NSString *theTitle = [self _alarmName];
-    theTitle = theTitle ? theTitle : self.alarm.person.organization;
-    theTitle = theTitle ? theTitle : self.alarm.positionTitle; 
-    theTitle = theTitle ? theTitle : KDefaultAlarmName;
-    
-    return theTitle;
-}
 
 - (void)handleStandardLocationDidFinish: (NSNotification*) notification{
     
@@ -161,7 +141,7 @@
     switch (_annotationStatus) {
         case IAAnnotationStatusNormal:
         {//正常状态 titel：名称，subtitle：距离
-            self.title = [self _alarmTitle];
+            self.title = self.alarm.title;
             
             if (_distanceString) {
                 if (![self.subtitle isEqualToString:_distanceString]){
@@ -178,7 +158,7 @@
         case IAAnnotationStatusNormal1:
         {//正常状态1 titel：名称，subtitle：长地址(如果名称是地址，那么subtitle显示距离)
             //如果不等待，calloutView有裂缝
-            [self performSelector:@selector(setTitle:) withObject:[self _alarmTitle] afterDelay:0.35];
+            [self performSelector:@selector(setTitle:) withObject:self.alarm.title afterDelay:0.35];
             
             NSString *postion = self.alarm.position;
             if (postion) {
@@ -195,14 +175,14 @@
         }
         case IAAnnotationStatusDisabledNormal:
         {//禁用状态 titel：名称，subtitle：nil
-            self.title = [self _alarmTitle];
+            self.title = self.alarm.title;
             self.subtitle = nil;            
             _subTitleIsDistanceString = NO;
             break;
         }
         case IAAnnotationStatusDisabledNormal1:
         {//禁用状态1 titel：名称，subtitle：长地址
-            self.title = [self _alarmTitle];
+            self.title = self.alarm.title;
             self.subtitle = self.alarm.position;
             _subTitleIsDistanceString = NO;
             break;
@@ -210,15 +190,15 @@
         case IAAnnotationStatusEditingBegin:
         {//编辑开始状态 titel："拖动改变目的地"，subtitle：名称
             self.title = KLabelMapNewAnnotationTitle;
-            self.subtitle = [self _alarmTitle];
+            self.subtitle = self.alarm.title;
             
             _subTitleIsDistanceString = NO;
             break;
         }
         case IAAnnotationStatusReversing:
         {//反转地址中 titel："..."(或名称)，subtitle：名称(或"...")
-            if ([self _alarmName]) {//有名字，在拖拽过程中不显示地点的更换
-                self.title = [self _alarmName];
+            if (self.alarm.name) {//有名字，在拖拽过程中不显示地点的更换
+                self.title = self.alarm.name;
                 self.subtitle = @" . . .        ";
             }else{
                 self.title = @" . . .          ";
@@ -231,8 +211,8 @@
         case IAAnnotationStatusReversFinished:
         {//反转完成 titel：名称，subtitle：长地址(如果名称是地址，那么subtitle显示距离)
             //如果不等待，calloutView有裂缝
-            [self performSelector:@selector(setTitle:) withObject:[self _alarmTitle] afterDelay:0.35];
-            if ([self _alarmName]) {
+            [self performSelector:@selector(setTitle:) withObject:self.alarm.title afterDelay:0.35];
+            if (self.alarm.name) {
                 self.subtitle = self.alarm.position;
                 _subTitleIsDistanceString = NO;
             }else{

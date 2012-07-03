@@ -140,8 +140,8 @@ cell使用后height竟然会加1。奇怪！
  
 #pragma mark - Controll Event
 - (IBAction)tellFriendsButtonPressed:(id)sender{
-    NSString *title = viewedAlarmNotification.alarm.alarmName;
-    NSString *message = viewedAlarmNotification.alarm.alarmName;
+    NSString *title = viewedAlarmNotification.alarm.title;
+    NSString *message = viewedAlarmNotification.alarm.title;
     UIImage *image = [self takePhotoFromTheMapView];
     [engine shareAppWithContent:[YCShareContent shareContentWithTitle:title message:message image:image]];
 }

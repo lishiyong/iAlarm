@@ -22,11 +22,12 @@
 
 }
 
-
+/*
 + (YCShareContent*)facebookShareContentWithMessage:(NSString*)theMessage image:(UIImage*)theImage;
 + (YCShareContent*)twitterShareContentWithMessage:(NSString*)theMessage image:(UIImage*)theImage;
 + (YCShareContent*)mailShareContentWithMessage:(NSString*)theMessage image:(UIImage*)theImage;
 + (YCShareContent*)messageShareContentWithMessage:(NSString*)theMessage;
+ */
 
 @property(nonatomic, copy) NSString *message;
 @property(nonatomic, copy) NSString *title;
@@ -37,6 +38,7 @@
 @property(nonatomic, copy) NSString *link1;
 @property(nonatomic, copy) NSString *link2;
 
+@property(nonatomic) BOOL imageAutoSizeFit; //image可以自动适应（不需要截取）
 
 
 + (YCShareContent*)shareContentWithTitle:(NSString *)theTitle message:(NSString*)theMessage image:(UIImage *)theImage;

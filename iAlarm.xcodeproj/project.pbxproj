@@ -203,6 +203,14 @@
 		9C50A5ED156DC99F00A4B7CC /* BSGoogleV3KmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C50A5E5156DC99F00A4B7CC /* BSGoogleV3KmlParser.m */; };
 		9C50A5EE156DC99F00A4B7CC /* BSKmlResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C50A5E7156DC99F00A4B7CC /* BSKmlResult.m */; };
 		9C50A5EF156DC99F00A4B7CC /* BSKmlResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C50A5E7156DC99F00A4B7CC /* BSKmlResult.m */; };
+		9C52E8A515A2A93E003A74FC /* YCTweetSheetPaperClip.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C52E8A315A2A93E003A74FC /* YCTweetSheetPaperClip.png */; };
+		9C52E8A615A2A93E003A74FC /* YCTweetSheetPaperClip.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C52E8A315A2A93E003A74FC /* YCTweetSheetPaperClip.png */; };
+		9C52E8A715A2A93E003A74FC /* YCTweetSheetPaperClip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C52E8A415A2A93E003A74FC /* YCTweetSheetPaperClip@2x.png */; };
+		9C52E8A815A2A93E003A74FC /* YCTweetSheetPaperClip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C52E8A415A2A93E003A74FC /* YCTweetSheetPaperClip@2x.png */; };
+		9C52E8AB15A2ABD7003A74FC /* YCSharingPanelMessageField.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C52E8A915A2ABD7003A74FC /* YCSharingPanelMessageField.png */; };
+		9C52E8AC15A2ABD7003A74FC /* YCSharingPanelMessageField.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C52E8A915A2ABD7003A74FC /* YCSharingPanelMessageField.png */; };
+		9C52E8AD15A2ABD7003A74FC /* YCSharingPanelMessageField@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C52E8AA15A2ABD7003A74FC /* YCSharingPanelMessageField@2x.png */; };
+		9C52E8AE15A2ABD7003A74FC /* YCSharingPanelMessageField@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C52E8AA15A2ABD7003A74FC /* YCSharingPanelMessageField@2x.png */; };
 		9C54AD22157B00EB00105BA8 /* YCForwardGeocoderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C54AD21157B00EB00105BA8 /* YCForwardGeocoderManager.m */; };
 		9C54AD23157B00EB00105BA8 /* YCForwardGeocoderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C54AD21157B00EB00105BA8 /* YCForwardGeocoderManager.m */; };
 		9C54AD34157B12B400105BA8 /* NSValue+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C54AD33157B12B400105BA8 /* NSValue+YC.m */; };
@@ -872,8 +880,8 @@
 		9CA4858D1519AD6900B9C8D6 /* YCFacebookPeoplePickerNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA484DD1519AD6900B9C8D6 /* YCFacebookPeoplePickerNavigationController.m */; };
 		9CA4858E1519AD6900B9C8D6 /* YCFacebookPeoplePickerNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA484DE1519AD6900B9C8D6 /* YCFacebookPeoplePickerNavigationController.xib */; };
 		9CA4858F1519AD6900B9C8D6 /* YCFacebookPeoplePickerNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA484DE1519AD6900B9C8D6 /* YCFacebookPeoplePickerNavigationController.xib */; };
-		9CA485941519AD6900B9C8D6 /* YCTwitterFeedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA484E31519AD6900B9C8D6 /* YCTwitterFeedViewController.xib */; };
-		9CA485951519AD6900B9C8D6 /* YCTwitterFeedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA484E31519AD6900B9C8D6 /* YCTwitterFeedViewController.xib */; };
+		9CA485941519AD6900B9C8D6 /* YCTwitterTweetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA484E31519AD6900B9C8D6 /* YCTwitterTweetViewController.xib */; };
+		9CA485951519AD6900B9C8D6 /* YCTwitterTweetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA484E31519AD6900B9C8D6 /* YCTwitterTweetViewController.xib */; };
 		9CA485961519AD6900B9C8D6 /* YCTwitterTweetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA484E51519AD6900B9C8D6 /* YCTwitterTweetViewController.m */; };
 		9CA485971519AD6900B9C8D6 /* YCTwitterTweetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA484E51519AD6900B9C8D6 /* YCTwitterTweetViewController.m */; };
 		9CA485981519AD6900B9C8D6 /* YCShareAppEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA484E71519AD6900B9C8D6 /* YCShareAppEngine.m */; };
@@ -932,6 +940,7 @@
 		9CD5AF1413F2567200A718B6 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CD5AF1313F2567200A718B6 /* MessageUI.framework */; };
 		9CD614DF1369A86A0029B7BC /* IAFlagGray.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD614DE1369A86A0029B7BC /* IAFlagGray.png */; };
 		9CD614E11369A8780029B7BC /* IAFlagGray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD614E01369A8780029B7BC /* IAFlagGray@2x.png */; };
+		9CD78C4615A1E44500CF2880 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C90A1381522BD4400695881 /* Twitter.framework */; };
 		9CD8350B133A356A00B081E2 /* IABuyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD8350A133A356A00B081E2 /* IABuyManager.m */; };
 		9CD89EF914106A60000570C8 /* IAButtonBarLists.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD89EEF14106A60000570C8 /* IAButtonBarLists.png */; };
 		9CD89EFA14106A60000570C8 /* IAButtonBarLists@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD89EF014106A60000570C8 /* IAButtonBarLists@2x.png */; };
@@ -1386,6 +1395,10 @@
 		9C50A5E6156DC99F00A4B7CC /* BSKmlResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSKmlResult.h; sourceTree = "<group>"; };
 		9C50A5E7156DC99F00A4B7CC /* BSKmlResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSKmlResult.m; sourceTree = "<group>"; };
 		9C50A5F0156DEAE400A4B7CC /* 家里 沈阳.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = "家里 沈阳.gpx"; path = "../backup/家里 沈阳.gpx"; sourceTree = "<group>"; };
+		9C52E8A315A2A93E003A74FC /* YCTweetSheetPaperClip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCTweetSheetPaperClip.png; sourceTree = "<group>"; };
+		9C52E8A415A2A93E003A74FC /* YCTweetSheetPaperClip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCTweetSheetPaperClip@2x.png"; sourceTree = "<group>"; };
+		9C52E8A915A2ABD7003A74FC /* YCSharingPanelMessageField.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCSharingPanelMessageField.png; sourceTree = "<group>"; };
+		9C52E8AA15A2ABD7003A74FC /* YCSharingPanelMessageField@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCSharingPanelMessageField@2x.png"; sourceTree = "<group>"; };
 		9C54AD20157B00EB00105BA8 /* YCForwardGeocoderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCForwardGeocoderManager.h; path = YCGeocoder/YCForwardGeocoderManager.h; sourceTree = "<group>"; };
 		9C54AD21157B00EB00105BA8 /* YCForwardGeocoderManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCForwardGeocoderManager.m; path = YCGeocoder/YCForwardGeocoderManager.m; sourceTree = "<group>"; };
 		9C54AD32157B12B400105BA8 /* NSValue+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValue+YC.h"; sourceTree = "<group>"; };
@@ -1773,7 +1786,7 @@
 		9CA484DD1519AD6900B9C8D6 /* YCFacebookPeoplePickerNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCFacebookPeoplePickerNavigationController.m; sourceTree = "<group>"; };
 		9CA484DE1519AD6900B9C8D6 /* YCFacebookPeoplePickerNavigationController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = YCFacebookPeoplePickerNavigationController.xib; sourceTree = "<group>"; };
 		9CA484E21519AD6900B9C8D6 /* YCMessageComposeControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCMessageComposeControllerDelegate.h; sourceTree = "<group>"; };
-		9CA484E31519AD6900B9C8D6 /* YCTwitterFeedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = YCTwitterFeedViewController.xib; sourceTree = "<group>"; };
+		9CA484E31519AD6900B9C8D6 /* YCTwitterTweetViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = YCTwitterTweetViewController.xib; sourceTree = "<group>"; };
 		9CA484E41519AD6900B9C8D6 /* YCTwitterTweetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCTwitterTweetViewController.h; sourceTree = "<group>"; };
 		9CA484E51519AD6900B9C8D6 /* YCTwitterTweetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCTwitterTweetViewController.m; sourceTree = "<group>"; };
 		9CA484E61519AD6900B9C8D6 /* YCShareAppEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCShareAppEngine.h; sourceTree = "<group>"; };
@@ -2096,6 +2109,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9CD78C4615A1E44500CF2880 /* Twitter.framework in Frameworks */,
 				9CA485E01519D86000B9C8D6 /* CFNetwork.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
@@ -2117,10 +2131,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C90A1391522BD4400695881 /* Twitter.framework in Frameworks */,
 				9C02E507157310B6007D2A98 /* AddressBookUI.framework in Frameworks */,
 				9CCF8797157228C6007C7680 /* AddressBook.framework in Frameworks */,
 				9C748732156298D100486793 /* libsqlite3.dylib in Frameworks */,
-				9C90A1391522BD4400695881 /* Twitter.framework in Frameworks */,
 				9C90A1371522BD3A00695881 /* Accounts.framework in Frameworks */,
 				9CA485E11519D87500B9C8D6 /* CFNetwork.framework in Frameworks */,
 				9C8AB2C813B0C92100120AD5 /* Foundation.framework in Frameworks */,
@@ -3243,9 +3257,9 @@
 				9CA484DD1519AD6900B9C8D6 /* YCFacebookPeoplePickerNavigationController.m */,
 				9CA484DE1519AD6900B9C8D6 /* YCFacebookPeoplePickerNavigationController.xib */,
 				9CA484E21519AD6900B9C8D6 /* YCMessageComposeControllerDelegate.h */,
-				9CA484E31519AD6900B9C8D6 /* YCTwitterFeedViewController.xib */,
 				9CA484E41519AD6900B9C8D6 /* YCTwitterTweetViewController.h */,
 				9CA484E51519AD6900B9C8D6 /* YCTwitterTweetViewController.m */,
+				9CA484E31519AD6900B9C8D6 /* YCTwitterTweetViewController.xib */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -3253,6 +3267,10 @@
 		9CA484C41519AD6900B9C8D6 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				9C52E8A915A2ABD7003A74FC /* YCSharingPanelMessageField.png */,
+				9C52E8AA15A2ABD7003A74FC /* YCSharingPanelMessageField@2x.png */,
+				9C52E8A315A2A93E003A74FC /* YCTweetSheetPaperClip.png */,
+				9C52E8A415A2A93E003A74FC /* YCTweetSheetPaperClip@2x.png */,
 				9CA484C51519AD6900B9C8D6 /* female.gif */,
 				9CA484C61519AD6900B9C8D6 /* male.gif */,
 				9CA484C71519AD6900B9C8D6 /* peoplePictureFrame.png */,
@@ -3264,17 +3282,17 @@
 		9CA484C91519AD6900B9C8D6 /* tableCell */ = {
 			isa = PBXGroup;
 			children = (
+				9CA484CC1519AD6900B9C8D6 /* Images */,
 				9CA484CA1519AD6900B9C8D6 /* CheckPeopleCell.h */,
 				9CA484CB1519AD6900B9C8D6 /* CheckPeopleCell.m */,
-				9CA484CC1519AD6900B9C8D6 /* Images */,
+				9CA484D71519AD6900B9C8D6 /* WaitingPromptCell.h */,
+				9CA484D81519AD6900B9C8D6 /* WaitingPromptCell.m */,
 				9CA484D11519AD6900B9C8D6 /* MessageBodyCell.h */,
 				9CA484D21519AD6900B9C8D6 /* MessageBodyCell.m */,
 				9CA484D31519AD6900B9C8D6 /* MessageBodyCell.xib */,
 				9CA484D41519AD6900B9C8D6 /* PeoplesLabelCell.h */,
 				9CA484D51519AD6900B9C8D6 /* PeoplesLabelCell.m */,
 				9CA484D61519AD6900B9C8D6 /* PeoplesLabelCell.xib */,
-				9CA484D71519AD6900B9C8D6 /* WaitingPromptCell.h */,
-				9CA484D81519AD6900B9C8D6 /* WaitingPromptCell.m */,
 			);
 			path = tableCell;
 			sourceTree = "<group>";
@@ -4256,7 +4274,7 @@
 				9CA485841519AD6900B9C8D6 /* PeoplesLabelCell.xib in Resources */,
 				9CA4858A1519AD6900B9C8D6 /* YCFacebookFeedViewController.xib in Resources */,
 				9CA4858E1519AD6900B9C8D6 /* YCFacebookPeoplePickerNavigationController.xib in Resources */,
-				9CA485941519AD6900B9C8D6 /* YCTwitterFeedViewController.xib in Resources */,
+				9CA485941519AD6900B9C8D6 /* YCTwitterTweetViewController.xib in Resources */,
 				9CA485A31519B61900B9C8D6 /* UINavigationBarDefaultButton.png in Resources */,
 				9CA485A51519B61900B9C8D6 /* UINavigationBarDefaultButton@2x.png in Resources */,
 				9CA485A71519B61900B9C8D6 /* UINavigationBarDefaultButtonPressed.png in Resources */,
@@ -4482,6 +4500,10 @@
 				9C62CAEE1597517900722F35 /* Shadow_IAFlagPurple.png in Resources */,
 				9C62CAF01597517900722F35 /* Shadow_IAFlagPurple@2x.png in Resources */,
 				9C2E7DF6159C1FF300FFCEA1 /* AlarmLRepeatTypeViewController.xib in Resources */,
+				9C52E8A515A2A93E003A74FC /* YCTweetSheetPaperClip.png in Resources */,
+				9C52E8A715A2A93E003A74FC /* YCTweetSheetPaperClip@2x.png in Resources */,
+				9C52E8AB15A2ABD7003A74FC /* YCSharingPanelMessageField.png in Resources */,
+				9C52E8AD15A2ABD7003A74FC /* YCSharingPanelMessageField@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4640,7 +4662,7 @@
 				9CA485851519AD6900B9C8D6 /* PeoplesLabelCell.xib in Resources */,
 				9CA4858B1519AD6900B9C8D6 /* YCFacebookFeedViewController.xib in Resources */,
 				9CA4858F1519AD6900B9C8D6 /* YCFacebookPeoplePickerNavigationController.xib in Resources */,
-				9CA485951519AD6900B9C8D6 /* YCTwitterFeedViewController.xib in Resources */,
+				9CA485951519AD6900B9C8D6 /* YCTwitterTweetViewController.xib in Resources */,
 				9CA485A41519B61900B9C8D6 /* UINavigationBarDefaultButton.png in Resources */,
 				9CA485A61519B61900B9C8D6 /* UINavigationBarDefaultButton@2x.png in Resources */,
 				9CA485A81519B61900B9C8D6 /* UINavigationBarDefaultButtonPressed.png in Resources */,
@@ -4866,6 +4888,10 @@
 				9C62CAEF1597517900722F35 /* Shadow_IAFlagPurple.png in Resources */,
 				9C62CAF11597517900722F35 /* Shadow_IAFlagPurple@2x.png in Resources */,
 				9C2E7DF7159C1FF300FFCEA1 /* AlarmLRepeatTypeViewController.xib in Resources */,
+				9C52E8A615A2A93E003A74FC /* YCTweetSheetPaperClip.png in Resources */,
+				9C52E8A815A2A93E003A74FC /* YCTweetSheetPaperClip@2x.png in Resources */,
+				9C52E8AC15A2ABD7003A74FC /* YCSharingPanelMessageField.png in Resources */,
+				9C52E8AE15A2ABD7003A74FC /* YCSharingPanelMessageField@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

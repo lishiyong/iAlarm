@@ -6,6 +6,8 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
+#import "YCLib.h"
 #import "YCShareAppNotifications.h"
 #import "NSObject+YC.h"
 #import "YCShareContent.h"
@@ -23,7 +25,7 @@
 
 
 @implementation YCFacebookFeedViewController
-@synthesize tableView;
+@synthesize tableView ,peopleLabelCell, messageBodyCell, textView, contentImageView, clipImageView;
 
 @synthesize fbPeoplePicker;
 @synthesize fbPeoplePickerNavController;
@@ -74,112 +76,28 @@
 	return self->shareButtonItem;
 }
 
-
-@synthesize cellDescriptions;   
-@synthesize peoplesLabelCellDescription;
-@synthesize messageBodyCellDescription;
-
-- (id)cellDescriptions{
-	if (!self->cellDescriptions) {
-		//第一组
-		NSArray *oneArray = [NSArray arrayWithObjects:
-							 self.peoplesLabelCellDescription,
-							 self.messageBodyCellDescription,
-							 nil];
-		
-		
-		self->cellDescriptions = [NSArray arrayWithObjects:oneArray,nil];
-		[self->cellDescriptions retain];
-	}
-	
-	return self->cellDescriptions;
-}
-
-- (id)peoplesLabelCellDescription{
-	
-	//static NSString *CellIdentifier = @"messagesCell";
-	
-	if (!self->peoplesLabelCellDescription) {
-		self->peoplesLabelCellDescription = [[TableViewCellDescription alloc] init];
-		
-		PeoplesLabelCell *cell = [PeoplesLabelCell viewWithXib];
-		UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd];
-		[button addTarget:self action:@selector(didSelectPeoplesLabelCell:) forControlEvents:UIControlEventTouchUpInside];
-		cell.accessoryView = button;
-		cell.sendToLabel.text = KLabelCellFBSendTo;
-		
-		self->peoplesLabelCellDescription.tableViewCell = cell;
-		self->peoplesLabelCellDescription.didSelectCellSelector = @selector(didSelectPeoplesLabelCell:);
-		
-	}
-	
-	((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).view0.hidden = YES;
-	((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).view1.hidden = YES;
-	((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).view2.hidden = YES;
-	((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).moreLabel.hidden = YES;
-	
-	/*
-	NSArray *checkedPeopleArray = [YCFBData shareData].checkedPeopleArray;
+- (void)updatePeopleLabelCell{
+    
+    _peopleLabelCell.view0.hidden = YES;
+	_peopleLabelCell.view1.hidden = YES;
+	_peopleLabelCell.view2.hidden = YES;
+	_peopleLabelCell.moreLabel.hidden = YES;
+    
+    NSArray *checkedPeopleArray = [YCFacebookGlobalData globalData].checkedPeopleArray;
 	switch ([checkedPeopleArray count]) {
 		case 0://0个元素，都隐藏起来
 			break;
 		case 1:
-			((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).view0.hidden = NO;			
+			_peopleLabelCell.view0.hidden = NO;			
 			break;
 		case 2:
-			((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).view0.hidden = NO;
-			((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).view1.hidden = NO;
-			break;
-		default: // >=3
-			((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).view0.hidden = NO;
-			((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).view1.hidden = NO;
-			((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).view2.hidden = NO;
-			((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).moreLabel.hidden = NO;
-			break;
-	}
-	
-	
-	for (NSInteger i = 0; i<3; i++) {
-		if ((i+1)> [checkedPeopleArray count]) {
-			break;
-		}
-		YCFBPeople *anPeople = [checkedPeopleArray objectAtIndex:i];
-		
-		switch (i) {
-			case 0:
-				((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).imageView0.image = anPeople.picture;
-				((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).label0.text = anPeople.localizedName;				
-				break;
-			case 1:
-				((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).imageView1.image = anPeople.picture;
-				((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).label1.text = anPeople.localizedName;				
-				break;
-			case 2:
-				((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).imageView2.image = anPeople.picture;
-				((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).label2.text = anPeople.localizedName;				
-				break;
-			default: 
-				break;
-		}
-		
-	}
-	 */
-	
-	NSArray *checkedPeopleArray = [YCFacebookGlobalData globalData].checkedPeopleArray;
-	switch ([checkedPeopleArray count]) {
-		case 0://0个元素，都隐藏起来
-			break;
-		case 1:
-			((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).view0.hidden = NO;			
-			break;
-		case 2:
-			((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).view0.hidden = NO;
-			((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).view1.hidden = NO;
+			_peopleLabelCell.view0.hidden = NO;
+			_peopleLabelCell.view1.hidden = NO;
 			break;
 		default: // >2
-			((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).view0.hidden = NO;
-			((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).view1.hidden = NO;
-			((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).moreLabel.hidden = NO;
+			_peopleLabelCell.view0.hidden = NO;
+			_peopleLabelCell.view1.hidden = NO;
+			_peopleLabelCell.moreLabel.hidden = NO;
 			break;
 	}
 	
@@ -192,12 +110,12 @@
 		
 		switch (i) {
 			case 0:
-				((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).imageView0.image = anPeople.pictureImage;
-				((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).label0.text = anPeople.localizedName;				
+				_peopleLabelCell.imageView0.image = anPeople.pictureImage;
+				_peopleLabelCell.label0.text = anPeople.localizedName;				
 				break;
 			case 1:
-				((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).imageView1.image = anPeople.pictureImage;
-				((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).label1.text = anPeople.localizedName;				
+				_peopleLabelCell.imageView1.image = anPeople.pictureImage;
+				_peopleLabelCell.label1.text = anPeople.localizedName;				
 				break;
 			default: 
 				break;
@@ -206,22 +124,20 @@
 	}
 	NSInteger moreNumber = [[[YCFacebookGlobalData globalData] checkedPeoples] count] - 2;
 	NSString * s = [[[NSString alloc] initWithFormat:KTextPromptFBMore,moreNumber] autorelease];
-	((PeoplesLabelCell*)self->peoplesLabelCellDescription.tableViewCell).moreLabel.text = s;
-	
-	return self->peoplesLabelCellDescription;
+	_peopleLabelCell.moreLabel.text = s;
+    
 }
 
-
-- (id)messageBodyCellDescription{
-	
-	if (!self->messageBodyCellDescription) {
-		self->messageBodyCellDescription = [[TableViewCellDescription alloc] init];
-		MessageBodyCell *cell = [MessageBodyCell viewWithXib];
-		self->messageBodyCellDescription.tableViewCell = cell;
-	}
-	
-	
-	return self->messageBodyCellDescription;
+- (id)peopleLabelCell{
+    if (!_peopleLabelCell) {
+        _peopleLabelCell = [PeoplesLabelCell viewWithXib];
+		UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd];
+		[button addTarget:self action:@selector(didSelectPeoplesLabelCell:) forControlEvents:UIControlEventTouchUpInside];
+		_peopleLabelCell.accessoryView = button;
+		_peopleLabelCell.sendToLabel.text = KLabelCellFBSendTo;
+    }
+    
+    return _peopleLabelCell;
 }
 
 
@@ -268,35 +184,20 @@
 
 - (id)publishParam{
 	if (publishParam == nil) {
-		/*
-		NSString *appCustomLink = KLinkCustomAppStore;
-		NSString *appLink = KLinkAppStore;
-		
-		publishParam = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-									   shareContent.mailMessage, @"message",
-									   appLink, @"link",
-									   KShareContentTextGetTheApp, @"name",
-									   appCustomLink,@"caption",
-									   shareContent.imageLinkFB,@"picture",
-									   nil];
-         */
-        /*
-        publishParam = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                        shareContent.message, @"message",
-                        shareContent.link1, @"link",   //链接
-                        KShareContentTextGetTheApp, @"name",
-                        shareContent.link2,@"caption", 
-                        shareContent.imageLink1,@"picture",
-                        nil];
-         */
-        
-        publishParam = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                        shareContent.message, @"message",
-                        shareContent.image1,@"picture",
-                        nil];
-		
-		[publishParam retain];
+        publishParam = [[NSMutableDictionary dictionary] retain];
 	}
+    
+    //先清空
+    [publishParam removeAllObjects];
+    
+    NSString *message = self.textView.text;
+    message = message ? message : @"";
+    UIImage *picture = shareContent.image1;
+    
+    [publishParam setObject:message forKey:@"message"];
+    if (picture) 
+        [publishParam setObject:picture forKey:@"picture"];
+    
 	return publishParam;
 }
 
@@ -382,20 +283,74 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.title = KViewTitleFBNewFeed;
-
-	self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-	self.tableView.tableFooterView = [[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 44.0)] autorelease]; //为了不出现多余的格线
-	self.tableView.tableFooterView.backgroundColor = [UIColor clearColor];
-	self.tableView.tableHeaderView = [[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 0.0)] autorelease]; //为了不出现多余的格线
-	
-	self.navigationItem.rightBarButtonItem = self.shareButtonItem;
+    self.navigationItem.rightBarButtonItem = self.shareButtonItem;
 	self.navigationItem.leftBarButtonItem = self.cancelButtonItem;
-	
-	
-	//分享的消息体
-	MessageBodyCell *cell = (MessageBodyCell*)self.messageBodyCellDescription.tableViewCell;
-	cell.textView.text = shareContent.message;
-	cell.imageView.image = shareContent.image1;
+    
+    self.tableView.backgroundView = [[[UIView alloc] initWithFrame:self.tableView.bounds] autorelease];
+    self.tableView.backgroundView.backgroundColor = [UIColor darkGrayColor];
+    self.peopleLabelCell.backgroundView = [[[UIView alloc] initWithFrame:self.peopleLabelCell.bounds] autorelease];
+    self.peopleLabelCell.backgroundView.backgroundColor = [UIColor whiteColor];
+    self.messageBodyCell.backgroundView = [[[UIView alloc] initWithFrame:self.messageBodyCell.bounds] autorelease];
+    self.messageBodyCell.backgroundView.backgroundColor = [UIColor whiteColor];
+    
+    [self performBlock:^{
+        self.peopleLabelCell.layer.shadowOpacity = 0.3;
+        self.peopleLabelCell.layer.shadowOffset = CGSizeMake(0, -4);
+        self.peopleLabelCell.layer.shadowColor = [UIColor blackColor].CGColor;
+        self.peopleLabelCell.layer.shadowRadius = 3.0;
+        
+        self.messageBodyCell.layer.shadowOpacity = 0.3;
+        self.messageBodyCell.layer.shadowOffset = CGSizeMake(0, 4);
+        self.messageBodyCell.layer.shadowColor = [UIColor blackColor].CGColor;
+        self.messageBodyCell.layer.shadowRadius = 3.0;
+        
+    } afterDelay:0.5];
+     
+    
+    NSArray *cells = [NSArray arrayWithObjects:self.peopleLabelCell, self.messageBodyCell, nil];    
+    _sections = [[NSMutableArray arrayWithObjects:cells, nil] retain];
+     
+    
+    //文本
+    NSMutableString *text = [NSMutableString string];
+    if (shareContent.message) 
+        [text appendString:shareContent.message];
+    if (shareContent.link1) {
+        [text appendString:@"\n"];
+        [text appendString:shareContent.link1];
+    }
+    self.textView.text = text;
+    
+    //image
+    if (shareContent.image1) {
+        
+        if (shareContent.imageAutoSizeFit) {
+            self.contentImageView.image = shareContent.image1;
+        }else {
+            //截取一部分显示
+            CGRect imageRect = (CGRect){{0,0},shareContent.image1.size};
+            CGPoint imageCenter = YCRectCenter(imageRect);
+            CGRect newImageRect = YCRectMakeWithCenter(imageCenter, self.contentImageView.bounds.size);
+            UIImage *newImage = [shareContent.image1 imageWithRect:newImageRect];
+            self.contentImageView.image = newImage;
+        }
+        
+        
+        [self.contentImageView performBlock:^{
+            self.contentImageView.layer.shadowOpacity = 0.4;
+            self.contentImageView.layer.shadowOffset = CGSizeMake(1, 1);
+            self.contentImageView.layer.shadowColor = [UIColor blackColor].CGColor;
+            self.contentImageView.layer.shadowRadius = 2.0;
+        } afterDelay:0.5];
+        
+        //文本让出图片的位置
+        CGRect newBounds = CGRectInset(self.textView.bounds, 40, 0);
+        self.textView.frame = (CGRect){self.textView.frame.origin,newBounds.size};
+        
+    }else {
+        self.contentImageView.hidden = YES;
+        self.clipImageView.hidden = YES;
+    }
 	
 
 }
@@ -410,6 +365,7 @@
 	
 	[self searchFBMe];
 
+    [self updatePeopleLabelCell];
 	[self.tableView reloadData];
 	
 }
@@ -418,22 +374,19 @@
 #pragma mark -
 #pragma mark Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)theTableView {
-    // Return the number of sections.
-    return 1;
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return [_sections count];
 }
 
 
-- (NSInteger)tableView:(UITableView *)theTableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
-    return 2;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [[_sections objectAtIndex:section] count];
 }
 
 
 // Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)theTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSArray *sectionArray = [self.cellDescriptions objectAtIndex:indexPath.section];
-    UITableViewCell *cell = ((TableViewCellDescription*)[sectionArray objectAtIndex:indexPath.row]).tableViewCell;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [[_sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     return cell;
 }
 
@@ -446,28 +399,14 @@
 - (CGFloat)tableView:(UITableView *)theTableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
 	switch (indexPath.row) {
 		case 0:
-			return self.peoplesLabelCellDescription.tableViewCell.frame.size.height;
+			return 82.0;
 			break;
 		case 1:
-			return self.messageBodyCellDescription.tableViewCell.frame.size.height;
+			return 334.0;
 			break;
 		default:
 			return 0; 
 			break;
-	}
-	
-}
-
-- (void)tableView:(UITableView *)theTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	
-	//取消行选中
-	[theTableView deselectRowAtIndexPath:indexPath animated:YES];
-	
-	NSArray *sectionArray = [self.cellDescriptions objectAtIndex:indexPath.section];
-	TableViewCellDescription *tableViewCellDescription= ((TableViewCellDescription*)[sectionArray objectAtIndex:indexPath.row]);
-    SEL selector = tableViewCellDescription.didSelectCellSelector;
-	if (selector) {
-		[self performSelector:selector withObject:tableViewCellDescription.didSelectCellObject];
 	}
 	
 }
@@ -532,14 +471,14 @@
         [notificationCenter performSelector:@selector(postNotification:) withObject:aNotif afterDelay:0.0];
 	}
 
-	
+	[self updatePeopleLabelCell];
 	[self.tableView reloadData];
 	
 	//打开fb的mask
 	[self.maskView setHidden:YES];
 	
 	self.progressView.progress = 1.0;
-
+    
 }
 
 - (void)request:(FBRequest *)request didFailWithError:(NSError *)error {
@@ -565,6 +504,7 @@
 #pragma mark YCFacebookPeoplePickerNavigationController
 
 - (void)peoplePickerNavigationControllerDidDone:(YCFacebookPeoplePickerNavigationController *)peoplePicker checkedPeoples:(NSArray*)checkedPeoples{
+    [self updatePeopleLabelCell];
 	[self.tableView reloadData]; 
 }
 
@@ -597,9 +537,6 @@
     navTitleView = nil;
     self.tableView = nil;
     
-    self.cellDescriptions = nil;
-    self.peoplesLabelCellDescription = nil;
-    self.messageBodyCellDescription = nil;
     self.fbPeoplePicker = nil;
     self.fbPeoplePickerNavController = nil;
     
@@ -607,6 +544,15 @@
     searchParam = nil;
 	[publishParam release]; 
     publishParam = nil;
+    
+    [_sections release];
+    _sections = nil;
+    self.messageBodyCell = nil;
+    [_peopleLabelCell release];
+    _peopleLabelCell = nil;
+    self.textView = nil;
+    self.contentImageView = nil;
+    self.clipImageView = nil;
 }
 
 
@@ -619,10 +565,7 @@
     [tableView release];
 	[progressView release];
 	[navTitleView release];
-	
-	[cellDescriptions release];
-	[peoplesLabelCellDescription release];                 
-	[messageBodyCellDescription release];  
+	 
 	[fbPeoplePicker release];
 	[fbPeoplePickerNavController release];
 	
@@ -631,7 +574,13 @@
     
 	[shareContent release]; 
 	[facebookEngine release];
-        
+    
+    [_sections release];
+    [messageBodyCell release];
+    [_peopleLabelCell release];
+    [textView release];
+    [contentImageView release];
+    [clipImageView release];
     [super dealloc];
 }
 

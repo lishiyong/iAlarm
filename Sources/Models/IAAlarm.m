@@ -571,5 +571,24 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 }
  
 
+- (NSString*)name{
+    NSString *theName = nil;
+    theName = self.alarmName;
+    theName = theName ? theName : self.person.personName;
+    theName = theName ? theName : self.placemark.name;
+    theName = [theName stringByTrim];
+    theName = (theName.length > 0) ? theName : nil;
+    return theName;
+}
+
+- (NSString*)title{
+    NSString *theTitle = [self name];
+    theTitle = theTitle ? theTitle : self.person.organization;
+    theTitle = theTitle ? theTitle : self.positionTitle; 
+    theTitle = theTitle ? theTitle : KDefaultAlarmName;
+    
+    return theTitle;
+}
+
 
 @end

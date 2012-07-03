@@ -157,7 +157,17 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 //取得所有闹钟的列表
 + (NSArray*)alarmArray;
 
+/**
+ 顺序：alarmName, person.personName, placemark.name。
+ 如果都不存在，那么 nil。
+ **/
+- (NSString*)name;
 
+/**
+ 顺序：name, person.organization, positionTitle, KDefaultAlarmName。
+ 不会为nil。
+ **/
+- (NSString*)title;
 
 
 @end

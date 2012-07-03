@@ -12,7 +12,6 @@
 
 @implementation YCShareContent
 
-
 @synthesize message;
 @synthesize title;
 @synthesize image1;
@@ -21,6 +20,7 @@
 @synthesize imageLink2;
 @synthesize link1;
 @synthesize link2;
+@synthesize imageAutoSizeFit;
 
 - (void)dealloc {
 	[message release];
@@ -33,66 +33,6 @@
 	[link2 release]; 
     [super dealloc];
 }
-
-/*
-+ (YCShareContent*)facebookShareContent{
-    YCShareContent* obj = [[[YCShareContent alloc] init] autorelease];
-    obj.message = KShareContentTwitterMessage;
-    obj.title = nil;
-    obj.image1 = nil;
-    obj.image2 = nil;
-    obj.imageLink1 = @"http://i54.tinypic.com/317ff4p.png";
-    obj.imageLink2 = nil;
-    obj.link1 = nil;
-    obj.link2 = nil;
-    
-    return obj;
-}
-
-+ (YCShareContent*)twitterShareContent{
-
-    YCShareContent* obj = [[[YCShareContent alloc] init] autorelease];
-    obj.message = KShareContentTwitterMessage;
-    obj.title = nil;
-    obj.image1 = nil;
-    obj.image2 = nil;
-    obj.imageLink1 = @"http://i54.tinypic.com/317ff4p.png";
-    obj.imageLink2 = nil;
-    obj.link1 = nil;
-    obj.link2 = nil;
-    
-    return obj;
-    
-}
-
-+ (YCShareContent*)mailShareContent{
-    YCShareContent* obj = [[[YCShareContent alloc] init] autorelease];
-    obj.message = KShareContentMailMessage;
-    obj.title = KShareContentMailTitle;
-    obj.image1 = [UIImage imageNamed:@"MailShareImage.jpg"];
-    obj.image2 = nil;
-    obj.imageLink1 = nil;
-    obj.imageLink2 = nil;
-    obj.link1 = KLinkCustomAppStore;
-    obj.link2 = nil;
-    
-    return obj;
-}
-
-+ (YCShareContent*)messageShareContent{
-    YCShareContent* obj = [[[YCShareContent alloc] init] autorelease];
-    obj.message = @"";
-    obj.title = nil;
-    obj.image1 = nil;
-    obj.image2 = nil;
-    obj.imageLink1 = nil;
-    obj.imageLink2 = nil;
-    obj.link1 = KLinkCustomAppStore;
-    obj.link2 = nil;
-    
-    return obj;
-}
-*/
 
 + (YCShareContent*)facebookShareContentWithMessage:(NSString*)theMessage image:(UIImage*)theImage{
     YCShareContent* obj = [[[YCShareContent alloc] init] autorelease];

@@ -6,7 +6,8 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
-
+#import <Twitter/Twitter.h>
+#import <Accounts/Accounts.h>
 #import "YCShareContent.h"
 #import "YCTwitterTweetViewController.h"
 #import "YCFacebookFeedViewController.h"
@@ -175,7 +176,7 @@ static NSString* kFacebookAppId = @"146975985381829";
 - (id)twTweetViewController{
 	if (twTweetViewController == nil) {
         
-        twTweetViewController = [[YCTwitterTweetViewController alloc] initWithNibName:@"YCTwitterFeedViewController" bundle:nil engine:self.twitterEngine messageDelegate:self shareData:shareContent];
+        twTweetViewController = [[YCTwitterTweetViewController alloc] initWithNibName:@"YCTwitterTweetViewController" bundle:nil engine:self.twitterEngine messageDelegate:self shareData:shareContent];
         
 	}
 	return twTweetViewController;
@@ -210,19 +211,44 @@ static NSString* kFacebookAppId = @"146975985381829";
     
     NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
     if ([buttonTitle isEqualToString:KLabelCellTwitter]) {//Tw
+
         
-        //检查网络
-        [self performSelector:@selector(alertInternetWithTitle:andBody:) withObject:kAlertNeedInternetTitleAccessFacebook withObject:kAlertNeedInternetBodyAccessFacebook afterDelay:0.5];
-        if (![self isTwitterAuthorized]){
-            [self authorizeTwitter];
-            sendShardFlag = YES;
-        }else 
-            [superViewController presentModalViewController:self.twTweetNavController animated:YES];
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 4.9) {
+            //tw iOS 5.x 支持
+            
+            TWTweetComposeViewController *tweetViewController = [[[TWTweetComposeViewController alloc] init] autorelease];
+            
+            [tweetViewController setInitialText:shareContent.message];
+            if (shareContent.image1) 
+                [tweetViewController addImage:shareContent.image1];
+            if (shareContent.link1) 
+                [tweetViewController addURL:[NSURL URLWithString:shareContent.link1]];
+
+            
+            [tweetViewController setCompletionHandler:^(TWTweetComposeViewControllerResult result) {
+                //关闭，播放声音
+                BOOL done = (TWTweetComposeViewControllerResultDone == result);
+                [self messageComposeYCViewController:tweetViewController didFinishWithResult:done];
+            }];
+            
+            [superViewController presentViewController:tweetViewController animated:YES completion:NULL];
+            
+            
+        }else {
+            
+            if (![self isTwitterAuthorized]){
+                [self authorizeTwitter];
+                sendShardFlag = YES;
+            }else 
+                [superViewController presentModalViewController:self.twTweetNavController animated:YES];
+            
+        }
+        
+        
+        
+        
         
     }else if([buttonTitle isEqualToString:KLabelCellFacebook]){//fb
-        
-        //检查网络
-        [self performSelector:@selector(alertInternetWithTitle:andBody:) withObject:kAlertNeedInternetTitleAccessFacebook withObject:kAlertNeedInternetBodyAccessFacebook afterDelay:0.5];
         
         if (![self isFacebookAuthorized]){
             [self authorizeFacebook];
@@ -484,17 +510,25 @@ static NSString* kFacebookAppId = @"146975985381829";
 	picker.mailComposeDelegate = self;
 	
     //是否使用默认的数据
-    NSString *emailMessage =shareContent.message;
+    NSMutableString *text = [NSMutableString string];
+    if (shareContent.message) 
+        [text appendString:shareContent.message];
+    if (shareContent.link1) {
+        [text appendString:@"\n"];
+        [text appendString:shareContent.link1];
+    }
     
 	// Attach an image to the email
-    NSData *myData = UIImageJPEGRepresentation(shareContent.image1, 1.0);
-    [picker addAttachmentData:myData mimeType:@"image/jpg" fileName:@"a1"];
+    if (shareContent.image1) {
+        NSData *myData = UIImageJPEGRepresentation(shareContent.image1, 1.0);
+        [picker addAttachmentData:myData mimeType:@"image/jpg" fileName:@"image"];
+    }
 	
 	// 邮件标题
 	[picker setSubject:shareContent.title];
 	
 	// Fill out the email body text
-	NSString *emailBody = emailMessage;
+	NSString *emailBody = text;
 	[picker setMessageBody:emailBody isHTML:NO];
 	
 	[superViewController presentModalViewController:picker animated:YES];
@@ -507,7 +541,15 @@ static NSString* kFacebookAppId = @"146975985381829";
 	MFMessageComposeViewController*picker = [[MFMessageComposeViewController alloc] init];
 	picker.messageComposeDelegate= self;
     
-    picker.body = shareContent.message; 
+    NSMutableString *text = [NSMutableString string];
+    if (shareContent.message) 
+        [text appendString:shareContent.message];
+    if (shareContent.link1) {
+        [text appendString:@"\n"];
+        [text appendString:shareContent.link1];
+    }
+    
+    picker.body = text; 
 	[superViewController presentModalViewController:picker animated:YES];
     [picker release];
 	

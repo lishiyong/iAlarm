@@ -36,8 +36,7 @@
 			cell = (PeoplesLabelCell *)oneObject;
 		}
 	}
-	
-	
+        
 	return cell; 
 }
 
