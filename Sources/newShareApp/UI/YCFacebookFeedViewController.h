@@ -18,6 +18,7 @@
 @class TableViewCellDescription;
 @class YCShareContent;
 @class PeoplesLabelCell;
+@class YCShadowTableView;
 
 @interface YCFacebookFeedViewController : UIViewController
 <UITableViewDelegate,UITableViewDataSource, FBRequestDelegate,FBDialogDelegate,FBSessionDelegate
@@ -28,7 +29,7 @@
 	UIBarButtonItem *shareButtonItem;
     UIProgressView *progressView;
 	UIView *navTitleView;
-    IBOutlet UITableView *tableView;
+    IBOutlet YCShadowTableView *tableView;
     
 	YCFacebookPeoplePickerNavigationController *fbPeoplePicker;
 	UINavigationController *fbPeoplePickerNavController;
@@ -53,7 +54,7 @@
 @property (nonatomic, retain, readonly) UIBarButtonItem *shareButtonItem;
 @property (nonatomic, retain, readonly) UIProgressView *progressView;  
 @property (nonatomic, retain, readonly) UIView *navTitleView;
-@property (nonatomic,retain) IBOutlet   UITableView *tableView;
+@property (nonatomic,retain) IBOutlet   YCShadowTableView *tableView;
 @property (nonatomic,retain) IBOutlet   UITableViewCell *messageBodyCell;
 @property (nonatomic,readonly)          UITableViewCell *peopleLabelCell;
 @property(nonatomic,retain)    IBOutlet UITextView *textView;

@@ -128,9 +128,11 @@ cell使用后height竟然会加1。奇怪！
 - (id)notesCell{
     //notesCell.frame = CGRectMake(0, 0, 300, 0);
     //备注的高度会根据文本的多少自动调整
+    /*
     CGRect frame = notesCell.frame;
     frame.origin = CGPointMake(0, 0);
     frame.size.width = 300;
+     */
     
     return notesCell;
 }
@@ -139,6 +141,7 @@ cell使用后height竟然会加1。奇怪！
     buttonCell.frame = CGRectMake(0, 0, 300, 108);
     return buttonCell;
 }
+ 
  
 #pragma mark - Controll Event
 - (IBAction)tellFriendsButtonPressed:(id)sender{
@@ -399,10 +402,11 @@ cell使用后height竟然会加1。奇怪！
     self.notesLabel.frame = CGRectMake(15, 0, 270, 21);
     self.notesLabel.text = viewedAlarmNotification.alarm.notes;
     [self.notesLabel sizeToFit];
-    //self.notesCell.bounds.size.width = self.notesLabel.bounds.size.width;
     CGRect boundsOfnotesCell = self.notesCell.bounds;
     boundsOfnotesCell.size.height = self.notesLabel.bounds.size.height < 21 ? 21 : self.notesLabel.bounds.size.height;
     self.notesCell.bounds = boundsOfnotesCell;
+    //_notesCellHeight = self.notesCell.bounds.size.height;//notesCell高度调整后，更新
+    
 
     //状态栏
     [[YCAlarmStatusBar shareStatusBar] setHidden:YES animated:YES];
@@ -412,6 +416,7 @@ cell使用后height竟然会加1。奇怪！
     
     //其他数据
     [self.tableView reloadData];
+    [self.backgroundTableView reloadData];
 
 }
 
@@ -623,8 +628,11 @@ cell使用后height竟然会加1。奇怪！
 }
 
 - (CGFloat)tableView:(UITableView *)theTableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     if (theTableView == self.backgroundTableView) {
-        return 416.0;
+        CGFloat contentViewHeight = self.tableView.contentSize.height;
+        contentViewHeight = (contentViewHeight > 416.0) ? contentViewHeight : 416.0;
+        return contentViewHeight;
     }
     
     switch (indexPath.section) {
@@ -641,6 +649,23 @@ cell使用后height竟然会加1。奇怪！
             return 0.0;
             break;
     }
+    
+    /*
+    switch (indexPath.section) {
+        case 0:
+            return _mapViewCellHeight;
+            break;
+        case 1:
+            return _buttonCellHeight;
+            break;
+        case 2:
+            return _notesCellHeight;
+            break;
+        default:
+            return 0.0;
+            break;
+    }
+     */
 }
 
 - (CGFloat)tableView:(UITableView *)theTableView heightForHeaderInSection:(NSInteger)section{
@@ -674,16 +699,19 @@ cell使用后height竟然会加1。奇怪！
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.navigationItem.leftBarButtonItem = self.doneButtonItem;
+    self.navigationItem.rightBarButtonItem = self.upDownBarItem;
     
-    //设置一个可以拖拽的背景
-    self.backgroundTableView.backgroundView.backgroundColor = [UIColor darkGrayColor];
+    
+    //设置cell拖拽后显示背景
+    self.backgroundTableView.backgroundView.backgroundColor = [UIColor tableViewBackgroundViewBackgroundColor];
     self.backgroundTableView.leftShadowView.hidden = YES;
     self.backgroundTableView.rightShadowView.hidden = YES;
-    self.backgroundTableView.topShadowView.bounds = (CGRect){{0,0},{320,15}};
-    self.backgroundTableView.bottomShadowView.bounds = (CGRect){{0,0},{320,15}};
+    self.backgroundTableView.topShadowView.bounds = (CGRect){{0,0},{320,20}};
+    self.backgroundTableView.bottomShadowView.bounds = (CGRect){{0,0},{320,20}};
     
     [self performBlock:^{
-        self.backgroundTableViewCell.layer.shadowOpacity = 0.3;
+        self.backgroundTableViewCell.layer.shadowOpacity = 0.4;
         self.backgroundTableViewCell.layer.shadowOffset = CGSizeMake(0, -4.0);
         self.backgroundTableViewCell.layer.shadowColor = [UIColor blackColor].CGColor;
         self.backgroundTableViewCell.layer.shadowRadius = 7.0;
@@ -692,19 +720,17 @@ cell使用后height竟然会加1。奇怪！
     [self.backgroundTableViewCell addSubview:self.tableView];
     
     //5.0以下 cell背景设成透明后，显示背景后面竟然是黑的。没搞懂，到底是谁的颜色。所以只好给加个背景view了。
-    self.tableView.backgroundView = [[[UIView alloc] initWithFrame:self.tableView.frame] autorelease];
-    //self.tableView.backgroundView.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    self.tableView.backgroundView.backgroundColor = [UIColor iPadGroupTableViewBackgroundColor];
+    //self.tableView.backgroundView = [[[UIView alloc] initWithFrame:self.tableView.frame] autorelease];
+    //self.tableView.backgroundView.backgroundColor = [UIColor iPadGroupTableViewBackgroundColor];
+    UIImageView *backgroundView = [[[UIImageView alloc] initWithFrame:self.tableView.bounds] autorelease];
+    backgroundView.image = [UIImage imageNamed:@"YCiPadGroupTableViewBackgroundColor.png"];
+    self.tableView.backgroundView = backgroundView;
      
-    
-    self.navigationItem.leftBarButtonItem = self.doneButtonItem;
-    self.navigationItem.rightBarButtonItem = self.upDownBarItem;
     
     //containerView 显示阴影。因为mapView，imageView显示阴影均有问题
     self.mapView.layer.cornerRadius = 4;
     self.maskImageView.layer.cornerRadius = 4;
     self.maskImageView.layer.masksToBounds = YES;
-    
     self.containerView.layer.cornerRadius = 4;
     self.containerView.layer.borderColor = [UIColor grayColor].CGColor;
     self.containerView.layer.borderWidth = 1.0;
@@ -720,6 +746,13 @@ cell使用后height竟然会加1。奇怪！
     [self.button1 setTitle:@"告诉朋友" forState:UIControlStateNormal];
     [self.button2 setTitle:@"过5分钟再提醒" forState:UIControlStateNormal];
     [self.button3 setTitle:@"过30分钟再提醒" forState:UIControlStateNormal];
+    
+    /*
+    //留着，tableView的委托要用
+    _mapViewCellHeight = self.mapViewCell.bounds.size.height;
+    _buttonCellHeight = self.buttonCell.bounds.size.height;
+    _notesCellHeight = 0.0;//根据文本多少调整后才知道
+     */
      
     
     [self registerNotifications];

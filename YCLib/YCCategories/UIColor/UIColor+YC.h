@@ -77,5 +77,12 @@
 + (UIColor *)iPadTableCellGroupedBackgroundColor;
 
 
+/**
+ BackgroundView of tableView 背景色
+ 92, 99, 103, 255
+ **/
++ (UIColor *)tableViewBackgroundViewBackgroundColor;
+
+
 
 @end

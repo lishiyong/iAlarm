@@ -14,6 +14,8 @@
 		9C022D51136697C9007C1555 /* AlarmDetailFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C022D50136697C9007C1555 /* AlarmDetailFooterView.xib */; };
 		9C022D541366994C007C1555 /* AlarmDetailFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C022D531366994B007C1555 /* AlarmDetailFooterView.m */; };
 		9C02E507157310B6007D2A98 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C02E506157310B6007D2A98 /* AddressBookUI.framework */; };
+		9C03ABF115A428F700847069 /* s_horizontal_etched_line.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C03ABF015A428F700847069 /* s_horizontal_etched_line.png */; };
+		9C03ABF215A428F700847069 /* s_horizontal_etched_line.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C03ABF015A428F700847069 /* s_horizontal_etched_line.png */; };
 		9C04958014F902AF00A89996 /* IARedButtonNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C04957C14F902AF00A89996 /* IARedButtonNormal.png */; };
 		9C04958114F902AF00A89996 /* IARedButtonNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C04957C14F902AF00A89996 /* IARedButtonNormal.png */; };
 		9C04958214F902AF00A89996 /* IARedButtonNormal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C04957D14F902AF00A89996 /* IARedButtonNormal@2x.png */; };
@@ -1261,6 +1263,7 @@
 		9C022D521366994B007C1555 /* AlarmDetailFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmDetailFooterView.h; sourceTree = "<group>"; };
 		9C022D531366994B007C1555 /* AlarmDetailFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmDetailFooterView.m; sourceTree = "<group>"; };
 		9C02E506157310B6007D2A98 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
+		9C03ABF015A428F700847069 /* s_horizontal_etched_line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = s_horizontal_etched_line.png; sourceTree = "<group>"; };
 		9C04957C14F902AF00A89996 /* IARedButtonNormal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IARedButtonNormal.png; sourceTree = "<group>"; };
 		9C04957D14F902AF00A89996 /* IARedButtonNormal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IARedButtonNormal@2x.png"; sourceTree = "<group>"; };
 		9C04957F14F902AF00A89996 /* IAWhiteButtonNormal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAWhiteButtonNormal@2x.png"; sourceTree = "<group>"; };
@@ -3042,6 +3045,7 @@
 				9C070703152C18E300AC4207 /* UIButtonBarArrowUpSmall.png */,
 				9C0706FD152C189E00AC4207 /* UIButtonBarArrowDownSmall@2x.png */,
 				9C0706F7152C184500AC4207 /* UIButtonBarArrowUpSmall@2x.png */,
+				9C03ABF015A428F700847069 /* s_horizontal_etched_line.png */,
 				9CF8D03E14FDE13400E87446 /* horizontal_etched_line.png */,
 				9C85F38314FBA99F00B49FF4 /* IAAlarmFindViewController.h */,
 				9C85F38414FBA99F00B49FF4 /* IAAlarmFindViewController.m */,
@@ -4522,6 +4526,7 @@
 				9C324EAA15A3478D004EDB5D /* YCTableInnerShadowLeft.png in Resources */,
 				9C324EAC15A3478D004EDB5D /* YCTableInnerShadowRight.png in Resources */,
 				9C324EAE15A3478D004EDB5D /* YCTableInnerShadowTop.png in Resources */,
+				9C03ABF115A428F700847069 /* s_horizontal_etched_line.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4912,6 +4917,7 @@
 				9C324EAB15A3478D004EDB5D /* YCTableInnerShadowLeft.png in Resources */,
 				9C324EAD15A3478D004EDB5D /* YCTableInnerShadowRight.png in Resources */,
 				9C324EAF15A3478D004EDB5D /* YCTableInnerShadowTop.png in Resources */,
+				9C03ABF215A428F700847069 /* s_horizontal_etched_line.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

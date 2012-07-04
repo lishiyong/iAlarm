@@ -11,7 +11,7 @@
 @implementation UIColor (YC)
 
 - (UIColor *)initWithIntRed:(NSInteger)intRed intGreen:(NSInteger)intGreen intBlue:(NSInteger)intBlue intAlpha:(NSInteger)intAlpha{
-    return [self initWithRed:intRed/255.0f green:intGreen/255.0f blue:intBlue/255.0f alpha:intAlpha/255.0];
+    return [self initWithRed:intRed/255.0f green:intGreen/255.0f blue:intBlue/255.0f alpha:intAlpha/255.0f];
 }
 
 + (UIColor *)colorWithIntRed:(NSInteger)intRed intGreen:(NSInteger)intGreen intBlue:(NSInteger)intBlue intAlpha:(NSInteger)intAlpha{
@@ -64,6 +64,10 @@
 
 + (UIColor *)iPadTableCellGroupedBackgroundColor{
     return [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.0];
+}
+
++ (UIColor *)tableViewBackgroundViewBackgroundColor{
+    return [self colorWithIntRed:92 intGreen:99 intBlue:103 intAlpha:255];
 }
 
 @end

@@ -26,6 +26,12 @@
     UIActionSheet *actionSheet2;
     NSTimer *timer;
     UIImageView *clockAlarmImageView;
+    
+    /*
+    CGFloat _mapViewCellHeight;
+    CGFloat _buttonCellHeight;
+    CGFloat _notesCellHeight;
+     */
 }
 @property (nonatomic,retain) IBOutlet UITableView *tableView;
 @property(nonatomic,retain,readonly) UIBarButtonItem *doneButtonItem;
@@ -59,3 +65,4 @@
 
 
 @end
+

@@ -286,21 +286,27 @@
     self.navigationItem.rightBarButtonItem = self.shareButtonItem;
 	self.navigationItem.leftBarButtonItem = self.cancelButtonItem;
     
-    self.tableView.backgroundView = [[[UIView alloc] initWithFrame:self.tableView.bounds] autorelease];
-    self.tableView.backgroundView.backgroundColor = [UIColor darkGrayColor];
+    //tableView的阴影、颜色
+    self.tableView.backgroundView.backgroundColor = [UIColor tableViewBackgroundViewBackgroundColor];
+    self.tableView.leftShadowView.hidden = YES;
+    self.tableView.rightShadowView.hidden = YES;
+    self.tableView.topShadowView.bounds = (CGRect){{0,0},{320,20}};
+    self.tableView.bottomShadowView.bounds = (CGRect){{0,0},{320,20}};
+    
+    //cell的颜色、阴影
     self.peopleLabelCell.backgroundView = [[[UIView alloc] initWithFrame:self.peopleLabelCell.bounds] autorelease];
     self.peopleLabelCell.backgroundView.backgroundColor = [UIColor whiteColor];
     self.messageBodyCell.backgroundView = [[[UIView alloc] initWithFrame:self.messageBodyCell.bounds] autorelease];
-    self.messageBodyCell.backgroundView.backgroundColor = [UIColor whiteColor];
+    self.messageBodyCell.backgroundView.backgroundColor = [UIColor colorWithIntRed:247 intGreen:247 intBlue:247 intAlpha:255];
     
-    [self performBlock:^{
+    [self performBlock:^{ //后设置阴影，避免影响显示的时候的动画
         self.peopleLabelCell.layer.shadowOpacity = 0.3;
-        self.peopleLabelCell.layer.shadowOffset = CGSizeMake(0, -4);
+        self.peopleLabelCell.layer.shadowOffset = CGSizeMake(-4, -4);
         self.peopleLabelCell.layer.shadowColor = [UIColor blackColor].CGColor;
         self.peopleLabelCell.layer.shadowRadius = 3.0;
         
         self.messageBodyCell.layer.shadowOpacity = 0.3;
-        self.messageBodyCell.layer.shadowOffset = CGSizeMake(0, 4);
+        self.messageBodyCell.layer.shadowOffset = CGSizeMake(-4, 4);
         self.messageBodyCell.layer.shadowColor = [UIColor blackColor].CGColor;
         self.messageBodyCell.layer.shadowRadius = 3.0;
         
