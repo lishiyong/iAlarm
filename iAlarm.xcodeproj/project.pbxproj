@@ -1213,6 +1213,24 @@
 		9CF50EFB1499801800C814AB /* TrackingDotYellow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF50EF71499801800C814AB /* TrackingDotYellow@2x.png */; };
 		9CF50EFD14999D8B00C814AB /* IAGlassMask@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF50EFC14999D8B00C814AB /* IAGlassMask@2x.png */; };
 		9CF50EFE14999D8B00C814AB /* IAGlassMask@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF50EFC14999D8B00C814AB /* IAGlassMask@2x.png */; };
+		9CF5B3AE15A546A40033F908 /* s_horizontal_etched_line@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF5B3AD15A546A40033F908 /* s_horizontal_etched_line@2x.png */; };
+		9CF5B3AF15A546A40033F908 /* s_horizontal_etched_line@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF5B3AD15A546A40033F908 /* s_horizontal_etched_line@2x.png */; };
+		9CF5B3F615A570F00033F908 /* YCTableViewCellButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF5B3F415A570F00033F908 /* YCTableViewCellButton.png */; };
+		9CF5B3F715A570F00033F908 /* YCTableViewCellButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF5B3F415A570F00033F908 /* YCTableViewCellButton.png */; };
+		9CF5B3F815A570F00033F908 /* YCTableViewCellButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF5B3F515A570F00033F908 /* YCTableViewCellButton@2x.png */; };
+		9CF5B3F915A570F00033F908 /* YCTableViewCellButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF5B3F515A570F00033F908 /* YCTableViewCellButton@2x.png */; };
+		9CF5B3FD15A5718A0033F908 /* YCFixedImageButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF5B3FC15A5718A0033F908 /* YCFixedImageButton.m */; };
+		9CF5B3FE15A5718A0033F908 /* YCFixedImageButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF5B3FC15A5718A0033F908 /* YCFixedImageButton.m */; };
+		9CF5B40115A576480033F908 /* YCTableViewCellButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF5B40015A576480033F908 /* YCTableViewCellButton.m */; };
+		9CF5B40215A576480033F908 /* YCTableViewCellButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF5B40015A576480033F908 /* YCTableViewCellButton.m */; };
+		9CF5B40915A589D50033F908 /* YCTableViewCellPressedButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF5B40715A589D40033F908 /* YCTableViewCellPressedButton.png */; };
+		9CF5B40A15A589D50033F908 /* YCTableViewCellPressedButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF5B40715A589D40033F908 /* YCTableViewCellPressedButton.png */; };
+		9CF5B40B15A589D50033F908 /* YCTableViewCellPressedButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF5B40815A589D50033F908 /* YCTableViewCellPressedButton@2x.png */; };
+		9CF5B40C15A589D50033F908 /* YCTableViewCellPressedButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF5B40815A589D50033F908 /* YCTableViewCellPressedButton@2x.png */; };
+		9CF5B40D15A595000033F908 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CCF8796157228C6007C7680 /* AddressBook.framework */; };
+		9CF5B40E15A595000033F908 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C02E506157310B6007D2A98 /* AddressBookUI.framework */; };
+		9CF5B40F15A595100033F908 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C748731156298D100486793 /* libsqlite3.dylib */; };
+		9CF5B41015A595970033F908 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C90A1361522BD3A00695881 /* Accounts.framework */; };
 		9CF86EC015884C22003582EF /* YCGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF86EBF15884C22003582EF /* YCGeometry.m */; };
 		9CF86EC115884C22003582EF /* YCGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF86EBF15884C22003582EF /* YCGeometry.m */; };
 		9CF86EC81588611D003582EF /* UIImage+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF86EC71588611D003582EF /* UIImage+YC.m */; };
@@ -1671,10 +1689,10 @@
 		9C767F061564BCB200A4F397 /* UIButton+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+YC.m"; sourceTree = "<group>"; };
 		9C767F091564BCC700A4F397 /* YCTexturedButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCTexturedButton.h; sourceTree = "<group>"; };
 		9C767F0A1564BCC700A4F397 /* YCTexturedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCTexturedButton.m; sourceTree = "<group>"; };
-		9C767F0D1564C9E500A4F397 /* YCTexturedButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCTexturedButton@2x.png"; sourceTree = "<group>"; };
-		9C767F0E1564C9E500A4F397 /* YCTexturedPressedButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCTexturedPressedButton@2x.png"; sourceTree = "<group>"; };
-		9C767F131564CA6200A4F397 /* YCTexturedButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCTexturedButton.png; sourceTree = "<group>"; };
-		9C767F141564CA6200A4F397 /* YCTexturedPressedButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCTexturedPressedButton.png; sourceTree = "<group>"; };
+		9C767F0D1564C9E500A4F397 /* YCTexturedButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "YCTexturedButton@2x.png"; path = "../YCTexturedButton@2x.png"; sourceTree = "<group>"; };
+		9C767F0E1564C9E500A4F397 /* YCTexturedPressedButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "YCTexturedPressedButton@2x.png"; path = "../YCTexturedPressedButton@2x.png"; sourceTree = "<group>"; };
+		9C767F131564CA6200A4F397 /* YCTexturedButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = YCTexturedButton.png; path = ../YCTexturedButton.png; sourceTree = "<group>"; };
+		9C767F141564CA6200A4F397 /* YCTexturedPressedButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = YCTexturedPressedButton.png; path = ../YCTexturedPressedButton.png; sourceTree = "<group>"; };
 		9C85F38314FBA99F00B49FF4 /* IAAlarmFindViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAAlarmFindViewController.h; sourceTree = "<group>"; };
 		9C85F38414FBA99F00B49FF4 /* IAAlarmFindViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAAlarmFindViewController.m; sourceTree = "<group>"; };
 		9C85F38514FBA99F00B49FF4 /* IAAlarmFindViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IAAlarmFindViewController.xib; sourceTree = "<group>"; };
@@ -2092,6 +2110,15 @@
 		9CF50EF61499801800C814AB /* TrackingDotYellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TrackingDotYellow.png; sourceTree = "<group>"; };
 		9CF50EF71499801800C814AB /* TrackingDotYellow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TrackingDotYellow@2x.png"; sourceTree = "<group>"; };
 		9CF50EFC14999D8B00C814AB /* IAGlassMask@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAGlassMask@2x.png"; sourceTree = "<group>"; };
+		9CF5B3AD15A546A40033F908 /* s_horizontal_etched_line@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "s_horizontal_etched_line@2x.png"; sourceTree = "<group>"; };
+		9CF5B3F415A570F00033F908 /* YCTableViewCellButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = YCTableViewCellButton.png; path = ../YCTableViewCellButton.png; sourceTree = "<group>"; };
+		9CF5B3F515A570F00033F908 /* YCTableViewCellButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "YCTableViewCellButton@2x.png"; path = "../YCTableViewCellButton@2x.png"; sourceTree = "<group>"; };
+		9CF5B3FB15A5718A0033F908 /* YCFixedImageButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCFixedImageButton.h; sourceTree = "<group>"; };
+		9CF5B3FC15A5718A0033F908 /* YCFixedImageButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCFixedImageButton.m; sourceTree = "<group>"; };
+		9CF5B3FF15A576480033F908 /* YCTableViewCellButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCTableViewCellButton.h; sourceTree = "<group>"; };
+		9CF5B40015A576480033F908 /* YCTableViewCellButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCTableViewCellButton.m; sourceTree = "<group>"; };
+		9CF5B40715A589D40033F908 /* YCTableViewCellPressedButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCTableViewCellPressedButton.png; sourceTree = "<group>"; };
+		9CF5B40815A589D50033F908 /* YCTableViewCellPressedButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCTableViewCellPressedButton@2x.png"; sourceTree = "<group>"; };
 		9CF86EBE15884C22003582EF /* YCGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCGeometry.h; sourceTree = "<group>"; };
 		9CF86EBF15884C22003582EF /* YCGeometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCGeometry.m; sourceTree = "<group>"; };
 		9CF86EC61588611D003582EF /* UIImage+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+YC.h"; sourceTree = "<group>"; };
@@ -2119,6 +2146,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				9CD78C4615A1E44500CF2880 /* Twitter.framework in Frameworks */,
+				9CF5B40D15A595000033F908 /* AddressBook.framework in Frameworks */,
+				9CF5B40E15A595000033F908 /* AddressBookUI.framework in Frameworks */,
+				9CF5B40F15A595100033F908 /* libsqlite3.dylib in Frameworks */,
+				9CF5B41015A595970033F908 /* Accounts.framework in Frameworks */,
 				9CA485E01519D86000B9C8D6 /* CFNetwork.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
@@ -2131,8 +2162,8 @@
 				9CE8970813000275008FBD45 /* AudioToolbox.framework in Frameworks */,
 				9C3D7FD51339BDDB00A9C4D6 /* StoreKit.framework in Frameworks */,
 				9CD2791813470C0B00A7EAAB /* AVFoundation.framework in Frameworks */,
-				9CE466AB13FCF09D00EDB448 /* libxml2.dylib in Frameworks */,
 				9CE466B513FCF0E900EDB448 /* MessageUI.framework in Frameworks */,
+				9CE466AB13FCF09D00EDB448 /* libxml2.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3018,14 +3049,13 @@
 		9C767F041564BC5F00A4F397 /* button */ = {
 			isa = PBXGroup;
 			children = (
+				9CF5B3FA15A571410033F908 /* inner */,
 				9C767F051564BCB200A4F397 /* UIButton+YC.h */,
 				9C767F061564BCB200A4F397 /* UIButton+YC.m */,
 				9C767F091564BCC700A4F397 /* YCTexturedButton.h */,
 				9C767F0A1564BCC700A4F397 /* YCTexturedButton.m */,
-				9C767F131564CA6200A4F397 /* YCTexturedButton.png */,
-				9C767F141564CA6200A4F397 /* YCTexturedPressedButton.png */,
-				9C767F0D1564C9E500A4F397 /* YCTexturedButton@2x.png */,
-				9C767F0E1564C9E500A4F397 /* YCTexturedPressedButton@2x.png */,
+				9CF5B3FF15A576480033F908 /* YCTableViewCellButton.h */,
+				9CF5B40015A576480033F908 /* YCTableViewCellButton.m */,
 			);
 			path = button;
 			sourceTree = "<group>";
@@ -3046,6 +3076,7 @@
 				9C0706FD152C189E00AC4207 /* UIButtonBarArrowDownSmall@2x.png */,
 				9C0706F7152C184500AC4207 /* UIButtonBarArrowUpSmall@2x.png */,
 				9C03ABF015A428F700847069 /* s_horizontal_etched_line.png */,
+				9CF5B3AD15A546A40033F908 /* s_horizontal_etched_line@2x.png */,
 				9CF8D03E14FDE13400E87446 /* horizontal_etched_line.png */,
 				9C85F38314FBA99F00B49FF4 /* IAAlarmFindViewController.h */,
 				9C85F38414FBA99F00B49FF4 /* IAAlarmFindViewController.m */,
@@ -4057,6 +4088,23 @@
 			path = Bookmarks;
 			sourceTree = "<group>";
 		};
+		9CF5B3FA15A571410033F908 /* inner */ = {
+			isa = PBXGroup;
+			children = (
+				9C767F131564CA6200A4F397 /* YCTexturedButton.png */,
+				9C767F141564CA6200A4F397 /* YCTexturedPressedButton.png */,
+				9C767F0D1564C9E500A4F397 /* YCTexturedButton@2x.png */,
+				9C767F0E1564C9E500A4F397 /* YCTexturedPressedButton@2x.png */,
+				9CF5B3F415A570F00033F908 /* YCTableViewCellButton.png */,
+				9CF5B3F515A570F00033F908 /* YCTableViewCellButton@2x.png */,
+				9CF5B40715A589D40033F908 /* YCTableViewCellPressedButton.png */,
+				9CF5B40815A589D50033F908 /* YCTableViewCellPressedButton@2x.png */,
+				9CF5B3FB15A5718A0033F908 /* YCFixedImageButton.h */,
+				9CF5B3FC15A5718A0033F908 /* YCFixedImageButton.m */,
+			);
+			path = inner;
+			sourceTree = "<group>";
+		};
 		9CFE83FD14683056004A4BF1 /* MoveArrow */ = {
 			isa = PBXGroup;
 			children = (
@@ -4527,6 +4575,11 @@
 				9C324EAC15A3478D004EDB5D /* YCTableInnerShadowRight.png in Resources */,
 				9C324EAE15A3478D004EDB5D /* YCTableInnerShadowTop.png in Resources */,
 				9C03ABF115A428F700847069 /* s_horizontal_etched_line.png in Resources */,
+				9CF5B3AE15A546A40033F908 /* s_horizontal_etched_line@2x.png in Resources */,
+				9CF5B3F615A570F00033F908 /* YCTableViewCellButton.png in Resources */,
+				9CF5B3F815A570F00033F908 /* YCTableViewCellButton@2x.png in Resources */,
+				9CF5B40915A589D50033F908 /* YCTableViewCellPressedButton.png in Resources */,
+				9CF5B40B15A589D50033F908 /* YCTableViewCellPressedButton@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4918,6 +4971,11 @@
 				9C324EAD15A3478D004EDB5D /* YCTableInnerShadowRight.png in Resources */,
 				9C324EAF15A3478D004EDB5D /* YCTableInnerShadowTop.png in Resources */,
 				9C03ABF215A428F700847069 /* s_horizontal_etched_line.png in Resources */,
+				9CF5B3AF15A546A40033F908 /* s_horizontal_etched_line@2x.png in Resources */,
+				9CF5B3F715A570F00033F908 /* YCTableViewCellButton.png in Resources */,
+				9CF5B3F915A570F00033F908 /* YCTableViewCellButton@2x.png in Resources */,
+				9CF5B40A15A589D50033F908 /* YCTableViewCellPressedButton.png in Resources */,
+				9CF5B40C15A589D50033F908 /* YCTableViewCellPressedButton@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5142,6 +5200,8 @@
 				9C62CAD21597517900722F35 /* IAAddressInfoViewController.m in Sources */,
 				9C62CAD61597517900722F35 /* IAContactManager.m in Sources */,
 				9C62CAD81597517900722F35 /* IAPerson.m in Sources */,
+				9CF5B3FD15A5718A0033F908 /* YCFixedImageButton.m in Sources */,
+				9CF5B40115A576480033F908 /* YCTableViewCellButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5363,6 +5423,8 @@
 				9C62CAD31597517900722F35 /* IAAddressInfoViewController.m in Sources */,
 				9C62CAD71597517900722F35 /* IAContactManager.m in Sources */,
 				9C62CAD91597517900722F35 /* IAPerson.m in Sources */,
+				9CF5B3FE15A5718A0033F908 /* YCFixedImageButton.m in Sources */,
+				9CF5B40215A576480033F908 /* YCTableViewCellButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5407,6 +5469,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: li shiyong (G46T6DCB7F)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: li shiyong (G46T6DCB7F)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -5419,7 +5482,8 @@
 				INFOPLIST_FILE = "iAlarm-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = iAlarm;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0133B129-4BED-4DA2-9135-7FF7858DA6B6";
+				PROVISIONING_PROFILE = "552C16D7-7194-4F6D-8270-EF17D62BE0DC";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "552C16D7-7194-4F6D-8270-EF17D62BE0DC";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -5453,6 +5517,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: li shiyong (G46T6DCB7F)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -5463,6 +5528,7 @@
 				INFOPLIST_FILE = "iAlarm-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = iAlarm;
+				PROVISIONING_PROFILE = "552C16D7-7194-4F6D-8270-EF17D62BE0DC";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = NO;
 			};
@@ -5526,6 +5592,7 @@
 					"$(ARCHS_STANDARD_32_BIT)",
 				);
 				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				CODE_SIGN_IDENTITY = "iPhone Developer: li shiyong (G46T6DCB7F)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -5536,6 +5603,7 @@
 				INFOPLIST_FILE = "iAlarm-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = iAlarm;
+				PROVISIONING_PROFILE = "552C16D7-7194-4F6D-8270-EF17D62BE0DC";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = NO;
 			};
@@ -5652,6 +5720,7 @@
 					"$(ARCHS_STANDARD_32_BIT)",
 				);
 				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				CODE_SIGN_IDENTITY = "iPhone Developer: li shiyong (G46T6DCB7F)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: li shiyong";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -5662,6 +5731,7 @@
 				INFOPLIST_FILE = "iAlarm-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = iAlarm;
+				PROVISIONING_PROFILE = "552C16D7-7194-4F6D-8270-EF17D62BE0DC";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "86C6133B-FF49-4369-A8BE-57703AEB5EA3";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
@@ -5696,6 +5766,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: li shiyong (G46T6DCB7F)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -5708,6 +5779,7 @@
 				INFOPLIST_FILE = "iAlarm-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = iAlarm;
+				PROVISIONING_PROFILE = "552C16D7-7194-4F6D-8270-EF17D62BE0DC";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = "Debug FullVersion";
@@ -5765,6 +5837,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: li shiyong (G46T6DCB7F)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: li shiyong (G46T6DCB7F)";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -5775,6 +5848,7 @@
 				INFOPLIST_FILE = "iAlarm-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = iAlarm;
+				PROVISIONING_PROFILE = "552C16D7-7194-4F6D-8270-EF17D62BE0DC";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0133B129-4BED-4DA2-9135-7FF7858DA6B6";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;

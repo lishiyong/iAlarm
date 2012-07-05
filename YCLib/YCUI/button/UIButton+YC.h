@@ -10,8 +10,9 @@
 
 typedef enum {
     YCButtonTypeTextured = 0,
-    YCButtonTypeGlass,
-    YCButtonTypePopover, 
+    YCButtonTypeGlass,        //未实现
+    YCButtonTypePopover,      //未实现
+    YCButtonTypeTableViewCell 
 } YCButtonType;
 
 

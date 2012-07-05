@@ -753,7 +753,6 @@ cell使用后height竟然会加1。奇怪！
     _buttonCellHeight = self.buttonCell.bounds.size.height;
     _notesCellHeight = 0.0;//根据文本多少调整后才知道
      */
-     
     
     [self registerNotifications];
 }

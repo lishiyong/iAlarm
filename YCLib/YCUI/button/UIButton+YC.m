@@ -6,6 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCTableViewCellButton.h"
 #import "YCTexturedButton.h"
 #import "UIButton+YC.h"
 
@@ -16,6 +17,9 @@
     switch (buttonType) {
         case YCButtonTypeTextured:
             button = [[YCTexturedButton alloc] initWithFrame:CGRectZero];
+            break;
+        case YCButtonTypeTableViewCell:
+            button = [[YCTableViewCellButton alloc] initWithFrame:CGRectZero];
             break;
         default:
             break;
