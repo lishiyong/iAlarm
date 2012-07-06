@@ -63,6 +63,7 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
 
 @interface IAAlarmFindViewController(private)
 
+- (void)setDistanceLabelWithCurrentLocation:(CLLocation*)curLocation;
 - (UIImage*)takePhotoFromTheMapView;
 - (void)loadViewDataWithIndexOfNotifications:(NSInteger)index;
 - (void)reloadTimeIntervalLabel;
@@ -80,7 +81,7 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
 @synthesize tableView;
 @synthesize mapViewCell, takeImageContainerView, containerView, mapView, maskImageView, timeIntervalLabel, watchImageView;
 @synthesize buttonCell, button1, button2, button3;
-@synthesize notesCell, notesLabel;
+@synthesize notesCell, notesLabel, titleLabel;
 @synthesize backgroundTableView, backgroundTableViewCell;
 
 - (id)doneButtonItem{
@@ -113,35 +114,6 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
     }
     return upDownBarItem;
 }
-
-/*
-cell使用后height竟然会加1。奇怪！
-   所以必须每次都重新做它的frame。
- 注意：IBOutlet类型，在view加载后在使用下面属性，才会有正确的frame。
- */
-
-- (id)mapViewCell{
-    mapViewCell.frame = CGRectMake(0, 0, 300, 195);
-    return mapViewCell;
-}
-
-- (id)notesCell{
-    //notesCell.frame = CGRectMake(0, 0, 300, 0);
-    //备注的高度会根据文本的多少自动调整
-    /*
-    CGRect frame = notesCell.frame;
-    frame.origin = CGPointMake(0, 0);
-    frame.size.width = 300;
-     */
-    
-    return notesCell;
-}
-
-- (id)buttonCell{
-    buttonCell.frame = CGRectMake(0, 0, 300, 108);
-    return buttonCell;
-}
- 
  
 #pragma mark - Controll Event
 - (IBAction)tellFriendsButtonPressed:(id)sender{
@@ -311,6 +283,26 @@ cell使用后height竟然会加1。奇怪！
 
 #pragma mark - Utility
 
+- (void)setDistanceLabelWithCurrentLocation:(CLLocation*)curLocation{ 
+    
+    if (curLocation && CLLocationCoordinate2DIsValid(viewedAlarmNotification.alarm.realCoordinate)) {
+        
+        CLLocationCoordinate2D theRealCoordinate = viewedAlarmNotification.alarm.realCoordinate;        
+        NSString *distanceString = [curLocation distanceStringFromCoordinate:theRealCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
+        
+        if (![self.titleLabel.text isEqualToString:distanceString]){
+            
+            [UIView transitionWithView:self.titleLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                self.titleLabel.text = distanceString;
+            } completion:NULL];
+        }
+        
+    }else{
+        self.titleLabel.text = @" . . . ";
+    }
+    
+}
+
 - (UIImage*)takePhotoFromTheMapView{
     //UIGraphicsBeginImageContext(self.takeImageContainerView.frame.size);
     UIGraphicsBeginImageContextWithOptions(self.takeImageContainerView.frame.size,NO,0.0);
@@ -366,7 +358,7 @@ cell使用后height竟然会加1。奇怪！
     NSString *alarmName = alarm.alarmName ? alarm.alarmName : alarm.positionTitle;
     pointAnnotation = [[YCMapPointAnnotation alloc] initWithCoordinate:visualCoordinate title:alarmName subTitle:nil];
     [self.mapView addAnnotation:pointAnnotation];
-    [pointAnnotation setDistanceSubtitleWithCurrentLocation:[YCSystemStatus sharedSystemStatus].lastLocation];//距离
+    //[pointAnnotation setDistanceSubtitleWithCurrentLocation:[YCSystemStatus sharedSystemStatus].lastLocation];//距离
     
     //地图的显示region
     
@@ -398,14 +390,24 @@ cell使用后height竟然会加1。奇怪！
     timer = [[NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(timerFireMethod:) userInfo:nil repeats:YES] retain];
     
     //备注
+    [self setDistanceLabelWithCurrentLocation:[YCSystemStatus sharedSystemStatus].lastLocation];//距离
+    
+    CGFloat oldNotesLabelH = self.notesLabel.bounds.size.height;
     self.notesLabel.text = @"";
-    self.notesLabel.frame = CGRectMake(15, 0, 270, 21);
     self.notesLabel.text = viewedAlarmNotification.alarm.notes;
     [self.notesLabel sizeToFit];
+    CGFloat newNotesLabelH = self.notesLabel.bounds.size.height;
+    newNotesLabelH = newNotesLabelH < 35 ? 35 : newNotesLabelH;
+    
+    CGRect boundsOfnotesLabel = self.notesLabel.bounds;
+    boundsOfnotesLabel.size.height = newNotesLabelH;
+    self.notesLabel.bounds = boundsOfnotesLabel;
+    
+    CGFloat notesCellH = self.notesCell.bounds.size.height + (newNotesLabelH - oldNotesLabelH);
     CGRect boundsOfnotesCell = self.notesCell.bounds;
-    boundsOfnotesCell.size.height = self.notesLabel.bounds.size.height < 21 ? 21 : self.notesLabel.bounds.size.height;
-    self.notesCell.bounds = boundsOfnotesCell;
-    //_notesCellHeight = self.notesCell.bounds.size.height;//notesCell高度调整后，更新
+    boundsOfnotesCell.size.height = notesCellH;
+    _notesCellHeight = notesCellH;//notesCell高度调整后，更新
+
     
 
     //状态栏
@@ -614,19 +616,6 @@ cell使用后height竟然会加1。奇怪！
     return cell;
 }
 
-- (NSString *)tableView:(UITableView *)theTableView titleForHeaderInSection:(NSInteger)section{
-    
-    if (theTableView == self.backgroundTableView) {
-        return nil;
-    }
-    
-    if (section == 1) {
-        return @"备注：";
-    }
-	
-    return nil;
-}
-
 - (CGFloat)tableView:(UITableView *)theTableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if (theTableView == self.backgroundTableView) {
@@ -637,35 +626,19 @@ cell使用后height竟然会加1。奇怪！
     
     switch (indexPath.section) {
         case 0:
-            return self.mapViewCell.frame.size.height;
+            return _mapViewCellHeight;
             break;
         case 1:
-            return self.notesCell.frame.size.height;
+            return _notesCellHeight ;
             break;
         case 2:
-            return self.buttonCell.frame.size.height;
+            return _buttonCellHeight;
             break;
         default:
             return 0.0;
             break;
     }
     
-    /*
-    switch (indexPath.section) {
-        case 0:
-            return _mapViewCellHeight;
-            break;
-        case 1:
-            return _buttonCellHeight;
-            break;
-        case 2:
-            return _notesCellHeight;
-            break;
-        default:
-            return 0.0;
-            break;
-    }
-     */
 }
 
 - (CGFloat)tableView:(UITableView *)theTableView heightForHeaderInSection:(NSInteger)section{
@@ -673,10 +646,41 @@ cell使用后height竟然会加1。奇怪！
         return 0.0;
     }
     
-    if (section == 1) {
-        return 23.0; //备注 上下空太大了，缩小点
+    switch (section) {
+        case 0:
+            return 10.0;
+            break;
+        case 1:
+            return 13.0;
+            break;
+        case 2:
+            return 13.0;
+            break;
+        default:
+            return 10.0;
+            break;
     }
-    return 0.0;
+    
+}
+
+- (CGFloat)tableView:(UITableView *)theTableView heightForFooterInSection:(NSInteger)section{
+    if (theTableView == self.backgroundTableView) {
+        return 0.0;
+    }
+    
+    switch (section) {
+        case 0:
+        case 1:
+            return 0.0;
+            break;
+        case 2:
+            return 10.0;
+            break;
+        default:
+            return 10.0;
+            break;
+    }
+
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -720,20 +724,23 @@ cell使用后height竟然会加1。奇怪！
     [self.backgroundTableViewCell addSubview:self.tableView];
     
     //5.0以下 cell背景设成透明后，显示背景后面竟然是黑的。没搞懂，到底是谁的颜色。所以只好给加个背景view了。
-    //self.tableView.backgroundView = [[[UIView alloc] initWithFrame:self.tableView.frame] autorelease];
-    //self.tableView.backgroundView.backgroundColor = [UIColor iPadGroupTableViewBackgroundColor];
     UIImageView *backgroundView = [[[UIImageView alloc] initWithFrame:self.tableView.bounds] autorelease];
-    backgroundView.image = [UIImage imageNamed:@"YCiPadGroupTableViewBackgroundColor.png"];
+    backgroundView.image = [UIImage imageNamed:@"YCGroupTableViewBackground1.png"];
     self.tableView.backgroundView = backgroundView;
-     
     
-    //containerView 显示阴影。因为mapView，imageView显示阴影均有问题
-    self.mapView.layer.cornerRadius = 4;
+    
+    
+    
+    //地图的圆角和边框，下白边框是containerView多1个像素
     self.maskImageView.layer.cornerRadius = 4;
     self.maskImageView.layer.masksToBounds = YES;
+    
+    self.mapView.layer.cornerRadius = 4;
+    self.mapView.layer.borderColor = [UIColor colorWithIntRed:114 intGreen:121 intBlue:133 intAlpha:255].CGColor;//深色边框，同TextureButton的边框
+    self.mapView.layer.borderWidth = 1.0;
     self.containerView.layer.cornerRadius = 4;
-    self.containerView.layer.borderColor = [UIColor grayColor].CGColor;
-    self.containerView.layer.borderWidth = 1.0;
+    
+    
     
     //把position设置到左下角
     self.timeIntervalLabel.layer.anchorPoint = CGPointMake(1, 1);
@@ -747,12 +754,12 @@ cell使用后height竟然会加1。奇怪！
     [self.button2 setTitle:@"过5分钟再提醒" forState:UIControlStateNormal];
     [self.button3 setTitle:@"过30分钟再提醒" forState:UIControlStateNormal];
     
-    /*
+    
     //留着，tableView的委托要用
     _mapViewCellHeight = self.mapViewCell.bounds.size.height;
     _buttonCellHeight = self.buttonCell.bounds.size.height;
-    _notesCellHeight = 0.0;//根据文本多少调整后才知道
-     */
+    _notesCellHeight = self.notesCell.bounds.size.height;//根据文本多少调整后才知道
+     
     
     [self registerNotifications];
 }
@@ -777,8 +784,7 @@ cell使用后height竟然会加1。奇怪！
     //还没加载
 	if (![self isViewLoaded]) return;
     CLLocation *location = [[notification userInfo] objectForKey:IAStandardLocationKey];
-    [pointAnnotation setDistanceSubtitleWithCurrentLocation:location];
-    
+    [self setDistanceLabelWithCurrentLocation:location];    
 }
 
 - (void)registerNotifications {

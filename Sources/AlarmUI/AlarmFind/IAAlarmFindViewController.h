@@ -27,11 +27,11 @@
     NSTimer *timer;
     UIImageView *clockAlarmImageView;
     
-    /*
+    
     CGFloat _mapViewCellHeight;
     CGFloat _buttonCellHeight;
     CGFloat _notesCellHeight;
-     */
+     
 }
 @property (nonatomic,retain) IBOutlet UITableView *tableView;
 @property(nonatomic,retain,readonly) UIBarButtonItem *doneButtonItem;
@@ -52,6 +52,8 @@
 
 @property (nonatomic,retain) IBOutlet UITableViewCell *notesCell;
 @property (nonatomic,retain) IBOutlet UILabel *notesLabel;
+@property (nonatomic,retain) IBOutlet UILabel *titleLabel;
+
 
 @property (nonatomic,retain) IBOutlet YCShadowTableView *backgroundTableView;
 @property (nonatomic,retain) IBOutlet UITableViewCell *backgroundTableViewCell;

@@ -14,8 +14,6 @@
 		9C022D51136697C9007C1555 /* AlarmDetailFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C022D50136697C9007C1555 /* AlarmDetailFooterView.xib */; };
 		9C022D541366994C007C1555 /* AlarmDetailFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C022D531366994B007C1555 /* AlarmDetailFooterView.m */; };
 		9C02E507157310B6007D2A98 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C02E506157310B6007D2A98 /* AddressBookUI.framework */; };
-		9C03ABF115A428F700847069 /* s_horizontal_etched_line.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C03ABF015A428F700847069 /* s_horizontal_etched_line.png */; };
-		9C03ABF215A428F700847069 /* s_horizontal_etched_line.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C03ABF015A428F700847069 /* s_horizontal_etched_line.png */; };
 		9C04958014F902AF00A89996 /* IARedButtonNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C04957C14F902AF00A89996 /* IARedButtonNormal.png */; };
 		9C04958114F902AF00A89996 /* IARedButtonNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C04957C14F902AF00A89996 /* IARedButtonNormal.png */; };
 		9C04958214F902AF00A89996 /* IARedButtonNormal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C04957D14F902AF00A89996 /* IARedButtonNormal@2x.png */; };
@@ -102,6 +100,14 @@
 		9C21489E135EAF03004D16F1 /* IAFlagOrange.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C21489B135EAF03004D16F1 /* IAFlagOrange.png */; };
 		9C2148A3135EAF2E004D16F1 /* IAFlagBlueDeep@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C2148A0135EAF2E004D16F1 /* IAFlagBlueDeep@2x.png */; };
 		9C2148A4135EAF2E004D16F1 /* IAFlagOrange@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C2148A1135EAF2E004D16F1 /* IAFlagOrange@2x.png */; };
+		9C22553915A6CDE70022A724 /* YCGroupTableViewBackgroundColor1.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C22553715A6CDE70022A724 /* YCGroupTableViewBackgroundColor1.png */; };
+		9C22553A15A6CDE70022A724 /* YCGroupTableViewBackgroundColor1.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C22553715A6CDE70022A724 /* YCGroupTableViewBackgroundColor1.png */; };
+		9C22553E15A6CEAE0022A724 /* YCGroupTableViewBackgroundColor1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C22553D15A6CEAE0022A724 /* YCGroupTableViewBackgroundColor1@2x.png */; };
+		9C22553F15A6CEAE0022A724 /* YCGroupTableViewBackgroundColor1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C22553D15A6CEAE0022A724 /* YCGroupTableViewBackgroundColor1@2x.png */; };
+		9C22556615A6D9240022A724 /* YCGroupTableViewBackground1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C22556415A6D9240022A724 /* YCGroupTableViewBackground1@2x.png */; };
+		9C22556715A6D9240022A724 /* YCGroupTableViewBackground1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C22556415A6D9240022A724 /* YCGroupTableViewBackground1@2x.png */; };
+		9C22556815A6D9240022A724 /* YCGroupTableViewBackground1.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C22556515A6D9240022A724 /* YCGroupTableViewBackground1.png */; };
+		9C22556915A6D9240022A724 /* YCGroupTableViewBackground1.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C22556515A6D9240022A724 /* YCGroupTableViewBackground1.png */; };
 		9C230135150DB1CC005E5E08 /* IAAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C230133150DB1CC005E5E08 /* IAAboutViewController.m */; };
 		9C230136150DB1CC005E5E08 /* IAAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C230133150DB1CC005E5E08 /* IAAboutViewController.m */; };
 		9C2323D614BB206F00A364D8 /* IARegionMonitoringLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2323D514BB206F00A364D8 /* IARegionMonitoringLocationManager.m */; };
@@ -112,10 +118,6 @@
 		9C2B806414F690C000B2CC53 /* AlarmNotesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C2B806014F690C000B2CC53 /* AlarmNotesViewController.xib */; };
 		9C2E7DF6159C1FF300FFCEA1 /* AlarmLRepeatTypeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C2E7DF5159C1FF300FFCEA1 /* AlarmLRepeatTypeViewController.xib */; };
 		9C2E7DF7159C1FF300FFCEA1 /* AlarmLRepeatTypeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C2E7DF5159C1FF300FFCEA1 /* AlarmLRepeatTypeViewController.xib */; };
-		9C324E9F15A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C324E9D15A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor.png */; };
-		9C324EA015A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C324E9D15A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor.png */; };
-		9C324EA115A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C324E9E15A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor@2x.png */; };
-		9C324EA215A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C324E9E15A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor@2x.png */; };
 		9C324EA815A3478D004EDB5D /* YCTableInnerShadowBottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C324EA415A3478D004EDB5D /* YCTableInnerShadowBottom.png */; };
 		9C324EA915A3478D004EDB5D /* YCTableInnerShadowBottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C324EA415A3478D004EDB5D /* YCTableInnerShadowBottom.png */; };
 		9C324EAA15A3478D004EDB5D /* YCTableInnerShadowLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C324EA515A3478D004EDB5D /* YCTableInnerShadowLeft.png */; };
@@ -174,6 +176,8 @@
 		9C3B85AA15221066009A1098 /* version-Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C3B85A615221064009A1098 /* version-Icon-Small@2x.png */; };
 		9C3B85AD15221240009A1098 /* IAShareSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3B85AC1522123E009A1098 /* IAShareSettingViewController.m */; };
 		9C3B85AE15221240009A1098 /* IAShareSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3B85AC1522123E009A1098 /* IAShareSettingViewController.m */; };
+		9C3C9E5515A69C96001CACB7 /* YCStockImageUnderPageBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C3C9E5415A69C96001CACB7 /* YCStockImageUnderPageBackground.png */; };
+		9C3C9E5615A69C96001CACB7 /* YCStockImageUnderPageBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C3C9E5415A69C96001CACB7 /* YCStockImageUnderPageBackground.png */; };
 		9C3CF75213B32DAA005DFB09 /* AlarmTriggerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3CF75113B32DAA005DFB09 /* AlarmTriggerTableViewController.m */; };
 		9C3CF75313B32DAA005DFB09 /* AlarmTriggerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3CF75113B32DAA005DFB09 /* AlarmTriggerTableViewController.m */; };
 		9C3D7FD51339BDDB00A9C4D6 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3D7FD41339BDDB00A9C4D6 /* StoreKit.framework */; };
@@ -280,6 +284,8 @@
 		9C62CAEF1597517900722F35 /* Shadow_IAFlagPurple.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C62CACA1597517900722F35 /* Shadow_IAFlagPurple.png */; };
 		9C62CAF01597517900722F35 /* Shadow_IAFlagPurple@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C62CACB1597517900722F35 /* Shadow_IAFlagPurple@2x.png */; };
 		9C62CAF11597517900722F35 /* Shadow_IAFlagPurple@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C62CACB1597517900722F35 /* Shadow_IAFlagPurple@2x.png */; };
+		9C65335C15A6BE1300981263 /* YCStockImageUnderPageBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C65335B15A6BE1300981263 /* YCStockImageUnderPageBackground@2x.png */; };
+		9C65335D15A6BE1300981263 /* YCStockImageUnderPageBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C65335B15A6BE1300981263 /* YCStockImageUnderPageBackground@2x.png */; };
 		9C67A1E61572625700E53116 /* YCReverseGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C67A1E51572625700E53116 /* YCReverseGeocoder.m */; };
 		9C67A1E71572625700E53116 /* YCReverseGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C67A1E51572625700E53116 /* YCReverseGeocoder.m */; };
 		9C67A1EB1572638000E53116 /* YCPlacemark.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C67A1EA1572638000E53116 /* YCPlacemark.m */; };
@@ -1213,8 +1219,6 @@
 		9CF50EFB1499801800C814AB /* TrackingDotYellow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF50EF71499801800C814AB /* TrackingDotYellow@2x.png */; };
 		9CF50EFD14999D8B00C814AB /* IAGlassMask@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF50EFC14999D8B00C814AB /* IAGlassMask@2x.png */; };
 		9CF50EFE14999D8B00C814AB /* IAGlassMask@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF50EFC14999D8B00C814AB /* IAGlassMask@2x.png */; };
-		9CF5B3AE15A546A40033F908 /* s_horizontal_etched_line@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF5B3AD15A546A40033F908 /* s_horizontal_etched_line@2x.png */; };
-		9CF5B3AF15A546A40033F908 /* s_horizontal_etched_line@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF5B3AD15A546A40033F908 /* s_horizontal_etched_line@2x.png */; };
 		9CF5B3F615A570F00033F908 /* YCTableViewCellButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF5B3F415A570F00033F908 /* YCTableViewCellButton.png */; };
 		9CF5B3F715A570F00033F908 /* YCTableViewCellButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF5B3F415A570F00033F908 /* YCTableViewCellButton.png */; };
 		9CF5B3F815A570F00033F908 /* YCTableViewCellButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF5B3F515A570F00033F908 /* YCTableViewCellButton@2x.png */; };
@@ -1281,7 +1285,6 @@
 		9C022D521366994B007C1555 /* AlarmDetailFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmDetailFooterView.h; sourceTree = "<group>"; };
 		9C022D531366994B007C1555 /* AlarmDetailFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmDetailFooterView.m; sourceTree = "<group>"; };
 		9C02E506157310B6007D2A98 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
-		9C03ABF015A428F700847069 /* s_horizontal_etched_line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = s_horizontal_etched_line.png; sourceTree = "<group>"; };
 		9C04957C14F902AF00A89996 /* IARedButtonNormal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IARedButtonNormal.png; sourceTree = "<group>"; };
 		9C04957D14F902AF00A89996 /* IARedButtonNormal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IARedButtonNormal@2x.png"; sourceTree = "<group>"; };
 		9C04957F14F902AF00A89996 /* IAWhiteButtonNormal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAWhiteButtonNormal@2x.png"; sourceTree = "<group>"; };
@@ -1355,6 +1358,10 @@
 		9C21489B135EAF03004D16F1 /* IAFlagOrange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IAFlagOrange.png; sourceTree = "<group>"; };
 		9C2148A0135EAF2E004D16F1 /* IAFlagBlueDeep@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAFlagBlueDeep@2x.png"; sourceTree = "<group>"; };
 		9C2148A1135EAF2E004D16F1 /* IAFlagOrange@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAFlagOrange@2x.png"; sourceTree = "<group>"; };
+		9C22553715A6CDE70022A724 /* YCGroupTableViewBackgroundColor1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCGroupTableViewBackgroundColor1.png; sourceTree = "<group>"; };
+		9C22553D15A6CEAE0022A724 /* YCGroupTableViewBackgroundColor1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCGroupTableViewBackgroundColor1@2x.png"; sourceTree = "<group>"; };
+		9C22556415A6D9240022A724 /* YCGroupTableViewBackground1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCGroupTableViewBackground1@2x.png"; sourceTree = "<group>"; };
+		9C22556515A6D9240022A724 /* YCGroupTableViewBackground1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCGroupTableViewBackground1.png; sourceTree = "<group>"; };
 		9C230133150DB1CC005E5E08 /* IAAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAAboutViewController.m; sourceTree = "<group>"; };
 		9C230134150DB1CC005E5E08 /* IAAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAAboutViewController.h; sourceTree = "<group>"; };
 		9C2323D414BB206F00A364D8 /* IARegionMonitoringLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IARegionMonitoringLocationManager.h; sourceTree = "<group>"; };
@@ -1364,8 +1371,6 @@
 		9C2B805F14F690C000B2CC53 /* AlarmNotesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmNotesViewController.m; sourceTree = "<group>"; };
 		9C2B806014F690C000B2CC53 /* AlarmNotesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlarmNotesViewController.xib; sourceTree = "<group>"; };
 		9C2E7DF5159C1FF300FFCEA1 /* AlarmLRepeatTypeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlarmLRepeatTypeViewController.xib; sourceTree = "<group>"; };
-		9C324E9D15A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCiPadGroupTableViewBackgroundColor.png; sourceTree = "<group>"; };
-		9C324E9E15A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCiPadGroupTableViewBackgroundColor@2x.png"; sourceTree = "<group>"; };
 		9C324EA415A3478D004EDB5D /* YCTableInnerShadowBottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCTableInnerShadowBottom.png; sourceTree = "<group>"; };
 		9C324EA515A3478D004EDB5D /* YCTableInnerShadowLeft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCTableInnerShadowLeft.png; sourceTree = "<group>"; };
 		9C324EA615A3478D004EDB5D /* YCTableInnerShadowRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCTableInnerShadowRight.png; sourceTree = "<group>"; };
@@ -1396,6 +1401,7 @@
 		9C3B85A615221064009A1098 /* version-Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "version-Icon-Small@2x.png"; sourceTree = "<group>"; };
 		9C3B85AB1522123C009A1098 /* IAShareSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAShareSettingViewController.h; sourceTree = "<group>"; };
 		9C3B85AC1522123E009A1098 /* IAShareSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAShareSettingViewController.m; sourceTree = "<group>"; };
+		9C3C9E5415A69C96001CACB7 /* YCStockImageUnderPageBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCStockImageUnderPageBackground.png; sourceTree = "<group>"; };
 		9C3CF75013B32DAA005DFB09 /* AlarmTriggerTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmTriggerTableViewController.h; sourceTree = "<group>"; };
 		9C3CF75113B32DAA005DFB09 /* AlarmTriggerTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmTriggerTableViewController.m; sourceTree = "<group>"; };
 		9C3D7FD41339BDDB00A9C4D6 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -1468,6 +1474,7 @@
 		9C62CAC91597517900722F35 /* Shadow_IAFlagOrange@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Shadow_IAFlagOrange@2x.png"; sourceTree = "<group>"; };
 		9C62CACA1597517900722F35 /* Shadow_IAFlagPurple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Shadow_IAFlagPurple.png; sourceTree = "<group>"; };
 		9C62CACB1597517900722F35 /* Shadow_IAFlagPurple@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Shadow_IAFlagPurple@2x.png"; sourceTree = "<group>"; };
+		9C65335B15A6BE1300981263 /* YCStockImageUnderPageBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCStockImageUnderPageBackground@2x.png"; sourceTree = "<group>"; };
 		9C67A1E41572625700E53116 /* YCReverseGeocoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCReverseGeocoder.h; path = YCGeocoder/YCReverseGeocoder.h; sourceTree = "<group>"; };
 		9C67A1E51572625700E53116 /* YCReverseGeocoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCReverseGeocoder.m; path = YCGeocoder/YCReverseGeocoder.m; sourceTree = "<group>"; };
 		9C67A1E91572638000E53116 /* YCPlacemark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCPlacemark.h; path = YCGeocoder/YCPlacemark.h; sourceTree = "<group>"; };
@@ -2110,7 +2117,6 @@
 		9CF50EF61499801800C814AB /* TrackingDotYellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TrackingDotYellow.png; sourceTree = "<group>"; };
 		9CF50EF71499801800C814AB /* TrackingDotYellow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TrackingDotYellow@2x.png"; sourceTree = "<group>"; };
 		9CF50EFC14999D8B00C814AB /* IAGlassMask@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAGlassMask@2x.png"; sourceTree = "<group>"; };
-		9CF5B3AD15A546A40033F908 /* s_horizontal_etched_line@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "s_horizontal_etched_line@2x.png"; sourceTree = "<group>"; };
 		9CF5B3F415A570F00033F908 /* YCTableViewCellButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = YCTableViewCellButton.png; path = ../YCTableViewCellButton.png; sourceTree = "<group>"; };
 		9CF5B3F515A570F00033F908 /* YCTableViewCellButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "YCTableViewCellButton@2x.png"; path = "../YCTableViewCellButton@2x.png"; sourceTree = "<group>"; };
 		9CF5B3FB15A5718A0033F908 /* YCFixedImageButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCFixedImageButton.h; sourceTree = "<group>"; };
@@ -3075,9 +3081,9 @@
 				9C070703152C18E300AC4207 /* UIButtonBarArrowUpSmall.png */,
 				9C0706FD152C189E00AC4207 /* UIButtonBarArrowDownSmall@2x.png */,
 				9C0706F7152C184500AC4207 /* UIButtonBarArrowUpSmall@2x.png */,
-				9C03ABF015A428F700847069 /* s_horizontal_etched_line.png */,
-				9CF5B3AD15A546A40033F908 /* s_horizontal_etched_line@2x.png */,
 				9CF8D03E14FDE13400E87446 /* horizontal_etched_line.png */,
+				9C22556415A6D9240022A724 /* YCGroupTableViewBackground1@2x.png */,
+				9C22556515A6D9240022A724 /* YCGroupTableViewBackground1.png */,
 				9C85F38314FBA99F00B49FF4 /* IAAlarmFindViewController.h */,
 				9C85F38414FBA99F00B49FF4 /* IAAlarmFindViewController.m */,
 				9C85F38514FBA99F00B49FF4 /* IAAlarmFindViewController.xib */,
@@ -3425,12 +3431,14 @@
 		9CC472101564F61C00F79985 /* UIColor */ = {
 			isa = PBXGroup;
 			children = (
+				9C3C9E5415A69C96001CACB7 /* YCStockImageUnderPageBackground.png */,
+				9C65335B15A6BE1300981263 /* YCStockImageUnderPageBackground@2x.png */,
 				9CC472211564F76F00F79985 /* YCTexturedButtonTextGradientSmall.png */,
 				9CC472161564F62B00F79985 /* YCTexturedButtonTextGradientSmall@2x.png */,
 				9CC472151564F62B00F79985 /* YCTexturedButtonTextGradient.png */,
 				9CC4721E1564F70B00F79985 /* YCTexturedButtonTextGradient@2x.png */,
-				9C324E9D15A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor.png */,
-				9C324E9E15A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor@2x.png */,
+				9C22553715A6CDE70022A724 /* YCGroupTableViewBackgroundColor1.png */,
+				9C22553D15A6CEAE0022A724 /* YCGroupTableViewBackgroundColor1@2x.png */,
 				9CC472111564F61C00F79985 /* UIColor+YC.h */,
 				9CC472121564F61C00F79985 /* UIColor+YC.m */,
 			);
@@ -4568,18 +4576,20 @@
 				9C52E8A715A2A93E003A74FC /* YCTweetSheetPaperClip@2x.png in Resources */,
 				9C52E8AB15A2ABD7003A74FC /* YCSharingPanelMessageField.png in Resources */,
 				9C52E8AD15A2ABD7003A74FC /* YCSharingPanelMessageField@2x.png in Resources */,
-				9C324E9F15A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor.png in Resources */,
-				9C324EA115A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor@2x.png in Resources */,
 				9C324EA815A3478D004EDB5D /* YCTableInnerShadowBottom.png in Resources */,
 				9C324EAA15A3478D004EDB5D /* YCTableInnerShadowLeft.png in Resources */,
 				9C324EAC15A3478D004EDB5D /* YCTableInnerShadowRight.png in Resources */,
 				9C324EAE15A3478D004EDB5D /* YCTableInnerShadowTop.png in Resources */,
-				9C03ABF115A428F700847069 /* s_horizontal_etched_line.png in Resources */,
-				9CF5B3AE15A546A40033F908 /* s_horizontal_etched_line@2x.png in Resources */,
 				9CF5B3F615A570F00033F908 /* YCTableViewCellButton.png in Resources */,
 				9CF5B3F815A570F00033F908 /* YCTableViewCellButton@2x.png in Resources */,
 				9CF5B40915A589D50033F908 /* YCTableViewCellPressedButton.png in Resources */,
 				9CF5B40B15A589D50033F908 /* YCTableViewCellPressedButton@2x.png in Resources */,
+				9C3C9E5515A69C96001CACB7 /* YCStockImageUnderPageBackground.png in Resources */,
+				9C65335C15A6BE1300981263 /* YCStockImageUnderPageBackground@2x.png in Resources */,
+				9C22553915A6CDE70022A724 /* YCGroupTableViewBackgroundColor1.png in Resources */,
+				9C22553E15A6CEAE0022A724 /* YCGroupTableViewBackgroundColor1@2x.png in Resources */,
+				9C22556615A6D9240022A724 /* YCGroupTableViewBackground1@2x.png in Resources */,
+				9C22556815A6D9240022A724 /* YCGroupTableViewBackground1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4964,18 +4974,20 @@
 				9C52E8A815A2A93E003A74FC /* YCTweetSheetPaperClip@2x.png in Resources */,
 				9C52E8AC15A2ABD7003A74FC /* YCSharingPanelMessageField.png in Resources */,
 				9C52E8AE15A2ABD7003A74FC /* YCSharingPanelMessageField@2x.png in Resources */,
-				9C324EA015A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor.png in Resources */,
-				9C324EA215A33553004EDB5D /* YCiPadGroupTableViewBackgroundColor@2x.png in Resources */,
 				9C324EA915A3478D004EDB5D /* YCTableInnerShadowBottom.png in Resources */,
 				9C324EAB15A3478D004EDB5D /* YCTableInnerShadowLeft.png in Resources */,
 				9C324EAD15A3478D004EDB5D /* YCTableInnerShadowRight.png in Resources */,
 				9C324EAF15A3478D004EDB5D /* YCTableInnerShadowTop.png in Resources */,
-				9C03ABF215A428F700847069 /* s_horizontal_etched_line.png in Resources */,
-				9CF5B3AF15A546A40033F908 /* s_horizontal_etched_line@2x.png in Resources */,
 				9CF5B3F715A570F00033F908 /* YCTableViewCellButton.png in Resources */,
 				9CF5B3F915A570F00033F908 /* YCTableViewCellButton@2x.png in Resources */,
 				9CF5B40A15A589D50033F908 /* YCTableViewCellPressedButton.png in Resources */,
 				9CF5B40C15A589D50033F908 /* YCTableViewCellPressedButton@2x.png in Resources */,
+				9C3C9E5615A69C96001CACB7 /* YCStockImageUnderPageBackground.png in Resources */,
+				9C65335D15A6BE1300981263 /* YCStockImageUnderPageBackground@2x.png in Resources */,
+				9C22553A15A6CDE70022A724 /* YCGroupTableViewBackgroundColor1.png in Resources */,
+				9C22553F15A6CEAE0022A724 /* YCGroupTableViewBackgroundColor1@2x.png in Resources */,
+				9C22556715A6D9240022A724 /* YCGroupTableViewBackground1@2x.png in Resources */,
+				9C22556915A6D9240022A724 /* YCGroupTableViewBackground1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

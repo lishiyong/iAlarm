@@ -57,10 +57,11 @@
 + (UIColor *)tableCellGrayTextYCColor{
     return [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0];
 }
-
+/*
 + (UIColor *)iPadGroupTableViewBackgroundColor{
     return [UIColor colorWithPatternImage:[UIImage imageNamed:@"YCiPadGroupTableViewBackgroundColor.png"]];
 }
+ */
 
 + (UIColor *)iPadTableCellGroupedBackgroundColor{
     return [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.0];
@@ -69,5 +70,23 @@
 + (UIColor *)tableViewBackgroundViewBackgroundColor{
     return [self colorWithIntRed:92 intGreen:99 intBlue:103 intAlpha:255];
 }
+
++ (UIColor *)underPageBackgroundYCColor{
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.99) {// iOS 5.0 才有 underPageBackgroundColor
+        return [UIColor underPageBackgroundColor];
+    }else {
+        return [UIColor colorWithPatternImage:[UIImage imageNamed:@"YCStockImageUnderPageBackground.png"]];
+    }
+}
+
++ (UIColor *)groupTableViewBackgroundColor1{
+    return [UIColor colorWithPatternImage:[UIImage imageNamed:@"YCGroupTableViewBackgroundColor1.png"]];
+}
+
+
+
+
+
+
 
 @end

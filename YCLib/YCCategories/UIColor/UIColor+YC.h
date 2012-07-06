@@ -65,10 +65,11 @@
 
 
 /**
+ 背景图片颜色均匀，不能用做图案颜色
  ipad groupTableViewBackgroundColor
  来自YCiPadGroupTableViewBackgroundColor.png
  **/
-+ (UIColor *)iPadGroupTableViewBackgroundColor;
+//+ (UIColor *)iPadGroupTableViewBackgroundColor;
 
 /**
  源于未文档颜色：tableCellGroupedBackgroundColor(ipad)
@@ -83,6 +84,17 @@
  **/
 + (UIColor *)tableViewBackgroundViewBackgroundColor;
 
+/**
+ 源于未文档颜色：underPageBackgroundColor
+ **/
++ (UIColor *)underPageBackgroundYCColor;
+
+
+/**
+ 对groupTableViewBackgroundColor的补充
+ 来自YCGroupTableViewBackgroundColor1.png
+ **/
++ (UIColor *)groupTableViewBackgroundColor1;
 
 
 @end
