@@ -1300,7 +1300,8 @@
     self.footerView = nil;
     
     //
-    self.title = nil;
+    //self.title = nil;
+    [self performSelector:@selector(setTitle:) withObject:nil afterDelay:0.2];
 }
 
 
