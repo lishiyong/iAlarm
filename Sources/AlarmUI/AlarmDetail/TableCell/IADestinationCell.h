@@ -8,9 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+enum {
+    IADestinationCellStatusNormal = 0,                       //正常状态     
+    IADestinationCellStatusNormalWithoutDistance,            //正常状态,但没有距离
+    IADestinationCellStatusNormalWithoutDistanceAndAddress,  //正常状态,但没有距离和地址
+	IADestinationCellStatusNormalMeasuringDistance,          //正常状态,正在测量与当前位置的距离   
+    IADestinationCellStatusLocating,                         //正在定位状态
+    IADestinationCellStatusReversing                         //正在反转地址状态  
+};
 
+typedef NSUInteger IADestinationCellStatus;
+
+@class IAAlarm;
 @interface IADestinationCell : UITableViewCell {
-	UIImageView *pinImageView;
 	UIImageView *locatingImageView;
 	UILabel *titleLabel;
 	UILabel *locatingLabel;
@@ -20,25 +30,24 @@
     
     UIImageView *moveArrowImageView;
     BOOL moving;
+    
+    
 }
 
-@property (nonatomic, retain) IBOutlet UIImageView *pinImageView;
 @property (nonatomic, retain) IBOutlet UIImageView *locatingImageView;
 @property (nonatomic, retain) IBOutlet UILabel *titleLabel;
 @property (nonatomic, retain) IBOutlet UILabel *locatingLabel;
 @property (nonatomic, retain) IBOutlet UILabel *addressLabel;
 @property (nonatomic, retain) IBOutlet UILabel *distanceLabel;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *distanceActivityIndicatorView;
-
 @property (nonatomic, retain) IBOutlet UIImageView *moveArrowImageView;
 
 
-- (void)setWaiting:(BOOL)waiting andWaitText:(NSString*)waitText;
-- (void)setDistanceWaiting:(BOOL)waiting andDistanceText:(NSString*)distanceTextText;
-- (void)setAddressLabelWithLarge:(BOOL)large;
-- (void)setMoveArrow:(BOOL)moving;
 
 +(id)viewWithXib;
+
+@property (nonatomic, retain) IAAlarm *alarm;
+@property (nonatomic) IADestinationCellStatus cellStatus;
 
 
 @end

@@ -34,8 +34,8 @@
     }
     
     [self setImage:flagImage];
-    [self setCenterOffset:(CGPoint){13,0}];
-    [self setCalloutOffset:(CGPoint){-6,-3}];
+    //[self setCenterOffset:(CGPoint){13,0}];
+    //[self setCalloutOffset:(CGPoint){-6,-3}];
 }
 
 

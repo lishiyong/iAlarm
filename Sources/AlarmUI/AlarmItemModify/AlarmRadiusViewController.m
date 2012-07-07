@@ -592,8 +592,7 @@
 			
 			pinView.canShowCallout = NO;
 			pinView.draggable = NO;
-			//pinView.userInteractionEnabled = NO;
-			pinView.pinColor = MKPinAnnotationColorGreen;
+			pinView.pinColor = MKPinAnnotationColorPurple;
 			
 		}
 		
@@ -602,14 +601,6 @@
 
 	
 }
-
-/*
-- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view{
-	//[self.mapView selectAnnotation:middlePointAnnotion animated:NO];  //必须显示警示距离提示
-	//view.selected = YES;
-	[view setSelected:YES animated:YES];
-}
- */
 
 
 - (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id <MKOverlay>)overlay{

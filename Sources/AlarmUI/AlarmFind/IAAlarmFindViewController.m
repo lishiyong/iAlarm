@@ -498,92 +498,38 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
 #pragma mark - MapView delegate
 
 - (MKAnnotationView *)mapView:(MKMapView *)mv viewForAnnotation:(id <MKAnnotation>)theAnnotation{
-    /*
-    if([theAnnotation isKindOfClass:[MKUserLocation class]])
+    
+    if(![theAnnotation isKindOfClass:[YCMapPointAnnotation class]])
         return nil;
 
     NSString *annotationIdentifier = @"PinViewAnnotation";
     MKPinAnnotationView *pinView = (MKPinAnnotationView *) [mapView dequeueReusableAnnotationViewWithIdentifier:annotationIdentifier];
     
     if (!pinView){
-        
-        IAAlarm *alarm = viewedAlarmNotification.alarm;
-        NSString *imageName = alarm.alarmRadiusType.alarmRadiusTypeImageName;
-        imageName = [NSString stringWithFormat:@"20_%@",imageName]; //使用20像素的图标
-        //UIImageView *sfIconView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)] autorelease];
-        //sfIconView.image = [UIImage imageNamed:imageName];
-        UIImageView *sfIconView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 24, 24)] autorelease];
+
+        UIImageView *leftView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 24, 24)] autorelease];
         UIImage *ringImage = [UIImage imageNamed:@"YCRing.png"];
         UIImage *ringImageClear = [UIImage imageNamed:@"YCRingClear.png"];
         
-        sfIconView.image = ringImage;
-        sfIconView.animationImages = [NSArray arrayWithObjects:ringImage,ringImageClear, nil];
-        sfIconView.animationDuration = 1.75;
-        //[sfIconView startAnimating];
+        leftView.image = ringImage;
+        leftView.animationImages = [NSArray arrayWithObjects:ringImage,ringImageClear, nil];
+        leftView.animationDuration = 1.75;
         
         
         pinView = [[[MKPinAnnotationView alloc]
                                       initWithAnnotation:theAnnotation
                                          reuseIdentifier:annotationIdentifier] autorelease];
         
-        [pinView setPinColor:MKPinAnnotationColorGreen];
+        [pinView setPinColor:MKPinAnnotationColorPurple];
         pinView.canShowCallout = YES;
          
-        pinView.leftCalloutAccessoryView = sfIconView;
+        pinView.leftCalloutAccessoryView = leftView;
         
     }else{
         pinView.annotation = theAnnotation;
     }
     
     return pinView;
-     */
-    
-    if([theAnnotation isKindOfClass:[MKUserLocation class]])
-        return nil;
-    
-    NSString *annotationIdentifier = @"PinViewAnnotation";
-    IAFlagAnnotationView *flagView = (IAFlagAnnotationView *) [mapView dequeueReusableAnnotationViewWithIdentifier:annotationIdentifier];
-    
-    if (!flagView){
-                
-        flagView = [[[IAFlagAnnotationView alloc]
-                     initWithAnnotation:theAnnotation
-                     reuseIdentifier:annotationIdentifier] autorelease];
-        
-        IAFlagAnnotationColor flagColor = IAFlagAnnotationColorOrange;
-        NSString *radiusTypeId = viewedAlarmNotification.alarm.alarmRadiusTypeId;
-        
-        if ([radiusTypeId isEqualToString:@"ar001"]) {
-            flagColor = IAFlagAnnotationColorGreen;
-        }else if ([radiusTypeId isEqualToString:@"ar002"]) {
-            flagColor = IAFlagAnnotationColorOrange;
-        }else if ([radiusTypeId isEqualToString:@"ar003"]) {
-            flagColor = IAFlagAnnotationColorBlueDeep;
-        }else if ([radiusTypeId isEqualToString:@"ar004"]) {
-            flagColor = IAFlagAnnotationColorPurple;
-        }
-        
-        [flagView setFlagColor:flagColor];
-        flagView.canShowCallout = YES;
-
-
-        
-        
-        UIImageView *ringImageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 24, 24)] autorelease];
-        UIImage *ringImage = [UIImage imageNamed:@"YCRing.png"];
-        UIImage *ringImageClear = [UIImage imageNamed:@"YCRingClear.png"];
-        
-        ringImageView.image = ringImage;
-        ringImageView.animationImages = [NSArray arrayWithObjects:ringImage,ringImageClear, nil];
-        ringImageView.animationDuration = 1.75;
-        flagView.leftCalloutAccessoryView = ringImageView;
-
-        
-    }else{
-        flagView.annotation = theAnnotation;
-    }
-    
-    return flagView;
    
 }
 
