@@ -6,6 +6,8 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCLocation.h"
+#import "YCParam.h"
 #import <QuartzCore/QuartzCore.h>
 #import "AlarmPositionMapViewController.h"
 #import <AddressBook/AddressBook.h>
@@ -316,7 +318,7 @@
     //根据情况选择视图
     UIViewController *vc = nil;
     if (!displayingPerson || index == NSNotFound) {
-        displayingPerson = [[[IAPerson alloc] initWithAlarm:theAlarm image:nil] autorelease];
+        displayingPerson = [[[IAPerson alloc] initWithAlarm:_alarm image:nil] autorelease];
         [displayingPerson prepareForUnknownPersonDisplay:_alarm image:nil];
         vc = [self _unknownPersonViewControllerWithIAPerson:displayingPerson];
     }else{
@@ -331,16 +333,22 @@
     
     /////////////////////////////////////////////////////////
     //截图，放到最后
-    NSString *imageName = theAlarm.alarmRadiusType.alarmRadiusTypeImageName;
+    NSString *imageName = _alarm.alarmRadiusType.alarmRadiusTypeImageName;
     imageName = [@"Shadow_" stringByAppendingString:imageName];
     UIImage *flagImage = [UIImage imageNamed:imageName];
     CGPoint imageCenter = {6,12};
     self._mapView.visibleMapRect = MKMapRectWorld;
     CLLocationCoordinate2D lbcoordinate = theAlarm.visualCoordinate;
-    lbcoordinate = CLLocationCoordinate2DIsValid(lbcoordinate) ? lbcoordinate : _mapView.centerCoordinate;
+    
+    //使用最后一次加载地图的中心坐标
+    if(!CLLocationCoordinate2DIsValid(lbcoordinate) && YCMKCoordinateRegionIsValid([YCParam paramSingleInstance].lastLoadMapRegion))        
+        lbcoordinate = [YCParam paramSingleInstance].lastLoadMapRegion.center;
+    
+    //使用缺省坐标
+    lbcoordinate = CLLocationCoordinate2DIsValid(lbcoordinate) ? lbcoordinate : kYCDefaultCoordinate;
 
     //先取一次图
-    if (CLLocationCoordinate2DIsValid(theAlarm.visualCoordinate)) {
+    if (CLLocationCoordinate2DIsValid(lbcoordinate)) {
         MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(lbcoordinate, kDegreesForTakeImage, kDegreesForTakeImage);
         region = [self._mapView regionThatFits:region];
         if (!self._mapView.superview) 
@@ -374,7 +382,7 @@
     //////////////
     
     //把地图加载到界面
-    if (CLLocationCoordinate2DIsValid(theAlarm.visualCoordinate)) {
+    if (CLLocationCoordinate2DIsValid(_alarm.visualCoordinate)) {
         self._mapView.delegate = self;
         if (!self._mapView.superview) 
             [vc.view addSubview:self._mapView];//必须加到界面上，否则数据不加载
@@ -444,6 +452,9 @@
         
         
     }
+    else {//坐标无效,打开地图
+        [self performSelector:@selector(personImageDidPress) withObject:nil afterDelay:0.5];
+    }
     
 }
 
@@ -481,7 +492,6 @@
         
         if ([theAnimation.delegate animationKind] == 1) {
             [(UINavigationController*) _currentViewController pushViewController:_alarmPositionVC animated:NO];
-            [_alarmPositionVC beginWork];
             
             //清理动画现场也需要时间
             [[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:0.2];

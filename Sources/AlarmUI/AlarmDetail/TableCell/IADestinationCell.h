@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 
 enum {
-    IADestinationCellStatusNormal = 0,                       //正常状态     
+    IADestinationCellStatusNone = 0,
+    IADestinationCellStatusNormal,                           //正常状态     
     IADestinationCellStatusNormalWithoutDistance,            //正常状态,但没有距离
     IADestinationCellStatusNormalWithoutDistanceAndAddress,  //正常状态,但没有距离和地址
 	IADestinationCellStatusNormalMeasuringDistance,          //正常状态,正在测量与当前位置的距离   

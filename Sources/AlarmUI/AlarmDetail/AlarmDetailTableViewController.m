@@ -57,7 +57,6 @@
 #pragma mark -
 #pragma mark property
 
-@synthesize lastUpdateDistanceTimestamp;
 @synthesize locationServicesUsableAlert;
 @synthesize newAlarm;
 @synthesize alarm;
@@ -74,25 +73,6 @@
 @synthesize triggerCellDescription; 
 @synthesize destionationCellDescription;
 @synthesize notesCellDescription;
-@synthesize titleForFooter;
-@synthesize footerView;
-
-- (id)footerView{
-    if (footerView == nil) {
-        footerView = [[AlarmDetailFooterView viewWithXib] retain];
-        footerView.waitingAIView.hidden = YES;
-        footerView.distanceLabel.hidden = YES;
-        footerView.promptLabel.hidden = NO;
-        
-        self.footerView.waitingAIView.frame = CGRectMake(20.0,8.0,20.0,20.0);
-        self.footerView.distanceLabel.frame = CGRectMake(22.0,0.0,284.0,33.0);
-        self.footerView.promptLabel.frame = CGRectMake(19.0,5.0,284.0,170.0);//缺省在高位置
-        
-        self.footerView.distanceLabel.text = nil;
-        self.footerView.promptLabel.text = nil;
-    }
-    return footerView;
-}
 
 - (void)setAlarmTemp:(IAAlarm*)obj{
 	[obj retain];
@@ -486,7 +466,6 @@
 			[self endLocation];
 			//界面提示 : 定位失败
 			if (!CLLocationCoordinate2DIsValid(self.alarmTemp.realCoordinate)) {
-				self.titleForFooter = KTextPromptNeedSetLocationByMaps;
                 
                 IADestinationCell* desCell = (IADestinationCell*)self.destionationCellDescription.tableViewCell;
                 desCell.cellStatus = IADestinationCellStatusNormalWithoutDistanceAndAddress; //显示箭头动画
@@ -499,7 +478,6 @@
 			//界面提示 : 定位失败
 			if (!CLLocationCoordinate2DIsValid(self.alarmTemp.realCoordinate)) //在这里 不用也可以吧
             {
-				self.titleForFooter = KTextPromptNeedSetLocationByMaps;
                 IADestinationCell* desCell = (IADestinationCell*)self.destionationCellDescription.tableViewCell;
                 desCell.cellStatus = IADestinationCellStatusNormalWithoutDistanceAndAddress; //显示箭头动画
 
@@ -597,7 +575,7 @@
 		IADestinationCell *cell = [IADestinationCell viewWithXib];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.alarm = self.alarmTemp;
-        cell.cellStatus = IADestinationCellStatusNormal;
+        cell.cellStatus = IADestinationCellStatusNone;
         
 		self->destionationCellDescription.tableViewCell = cell;
 		
@@ -672,36 +650,6 @@
     
 }
 
-
-//等待结束，显示距离当前位置XX公里
-- (void)setDistanceLabelVisibleInFooterViewWithCurrentLocation:(CLLocation*)location{
-    //结束等待
-    self.footerView.waitingAIView.hidden = YES; 
-    self.footerView.distanceLabel.hidden = NO;
-    
-    //设置距离文本
-    self.footerView.distanceLabel.text =  [location distanceStringFromCoordinate:self.alarmTemp.realCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
-    
-    //下面的提示文体向下推
-    self.footerView.promptLabel.frame = CGRectMake(19.0,32.0,284.0,170.0);
-    
-    
-    [self.tableView reloadData];
-}
-
-//等待结束，没有定位数据。把下面的提示文体向上提
-- (void)setDistanceLabelHiddenInFooterView{
-    //结束等待
-    self.footerView.waitingAIView.hidden = YES; 
-    self.footerView.distanceLabel.hidden = YES;
-    
-    //下面的提示文体向上提
-    self.footerView.promptLabel.frame = CGRectMake(19.0,5.0,284.0,170.0);
-    
-    [self.tableView reloadData];
-}
-
-
 #pragma mark -
 #pragma mark Notification
 
@@ -742,19 +690,11 @@
 							   name: UIApplicationDidEnterBackgroundNotification
 							 object: nil];
 	
-	//有新的定位数据产生
-	 [notificationCenter addObserver: self
-							 selector: @selector (handle_standardLocationDidFinish:)
-							 name: IAStandardLocationDidFinishNotification
-							 object: nil];
-	
 	[notificationCenter addObserver: self
 						   selector: @selector (handle_applicationWillResignActive:)
 							   name: UIApplicationWillResignActiveNotification
 							 object: nil];
 	 
-	
-	
 }
 
 - (void) unRegisterNotifications {
@@ -762,7 +702,6 @@
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     
 	[notificationCenter removeObserver:self	name: UIApplicationDidEnterBackgroundNotification object: nil];
-	[notificationCenter removeObserver:self	name: IAStandardLocationDidFinishNotification object: nil];
 	[notificationCenter removeObserver:self	name: UIApplicationWillResignActiveNotification object: nil];
 }
 
@@ -885,11 +824,6 @@
     IADestinationCell* cell = (IADestinationCell*)self.destionationCellDescription.tableViewCell;
     cell.cellStatus = IADestinationCellStatusReversing;
     
-    //界面提示 :
-	self.titleForFooter = nil;
-    self.footerView = nil;
-
-    
     
     self->endingManual = NO;
 	self->locatingAndReversingStatus = IALocatingAndReversingStatusReversing;
@@ -963,10 +897,6 @@
 	
 	[self.tableView reloadData]; //刷新界面
 	
-	//界面提示 :
-	self.titleForFooter = nil;
-    self.footerView = nil;
-	
 	// Start the location manager.
 	self.bestEffortAtLocation = nil; //先赋空相关数据
 	[[self locationManager] startUpdatingLocation];
@@ -1001,8 +931,6 @@
 	{
 		self.cellDescriptions = nil;
 		
-		//界面提示 : 定位失败
-		self.titleForFooter = KTextPromptNeedSetLocationByMaps;
 		//新的cell
 		IADestinationCell* desCell = (IADestinationCell*)self.destionationCellDescription.tableViewCell;
         desCell.cellStatus = IADestinationCellStatusNormalWithoutDistanceAndAddress;//显示箭头动画
@@ -1067,14 +995,6 @@
 	self.navigationItem.leftBarButtonItem = self.cancelButtonItem;
 	self.navigationItem.rightBarButtonItem = self.saveButtonItem;
 	
-    
-    if (CLLocationCoordinate2DIsValid(self.alarmTemp.visualCoordinate)){ //坐标有效
-        if (self.alarmTemp.usedCoordinateAddress){ //使用的是坐标地址
-            [self performSelector:@selector(reverseGeocode) withObject:nil afterDelay:0.1];
-        }
-    }else{
-        [self performSelector:@selector(beginLocation) withObject:nil afterDelay:0.5];
-    }
 
 	if (self.newAlarm && CLLocationCoordinate2DIsValid(self.alarmTemp.realCoordinate) && !self.alarmTemp.usedCoordinateAddress) //新alarm而且不用反转地址
         self.saveButtonItem.enabled = YES;
@@ -1104,47 +1024,37 @@
 		self.title = KViewTitleAddAlarms;
 	else
 		self.title = KViewTitleEditAlarms;
-	
-	if (NO == isFirstShow) {
-		//设置页脚
-		if (!CLLocationCoordinate2DIsValid(self.alarmTemp.realCoordinate)) {
-			self.titleForFooter = KTextPromptNeedSetLocationByMaps;
-            IADestinationCell* cell = (IADestinationCell*)self.destionationCellDescription.tableViewCell;
-            cell.cellStatus = IADestinationCellStatusNormalWithoutDistanceAndAddress;//显示箭头动画
+    
+    
+    IADestinationCell* cell = (IADestinationCell*)self.destionationCellDescription.tableViewCell;
+    
+    if (isFirstShow) {//第一次显示，执行定位、反转
+        
+        if (CLLocationCoordinate2DIsValid(self.alarmTemp.visualCoordinate)){ //坐标有效
             
-		}else if (self.alarmTemp.usedCoordinateAddress ) {
-            BOOL connectedToInternet = [[YCSystemStatus sharedSystemStatus] connectedToInternet];
-			if(!connectedToInternet)
-                self.titleForFooter = KTextPromptNeedInternetToReversing;
-            else
-                self.titleForFooter = nil;
-		}else {
-			self.titleForFooter = nil;
-		}
-    
-	}
-    
-    //重新生成footer中的距离label
-    self.footerView = nil;
-    if (CLLocationCoordinate2DIsValid(self.alarmTemp.realCoordinate) && [YCSystemStatus sharedSystemStatus].lastLocation) {
-        [self setDistanceLabelVisibleInFooterViewWithCurrentLocation:[YCSystemStatus sharedSystemStatus].lastLocation];
+            if (self.alarmTemp.usedCoordinateAddress) {//使用的是坐标地址
+                cell.cellStatus = IADestinationCellStatusNone;
+                [self performSelector:@selector(reverseGeocode) withObject:nil afterDelay:0.1];
+            }else{ 
+                 cell.cellStatus = IADestinationCellStatusNormal;
+            }
+            
+        }else{
+            cell.cellStatus = IADestinationCellStatusNone;
+            [self performSelector:@selector(beginLocation) withObject:nil afterDelay:0.5];
+        }
+        
+    }else {
+        
+        if (CLLocationCoordinate2DIsValid(self.alarmTemp.realCoordinate)) 
+            cell.cellStatus = IADestinationCellStatusNormal;
+        else 
+            cell.cellStatus = IADestinationCellStatusNormalWithoutDistanceAndAddress;//显示箭头动画
+        
     }
-
+    
 	[self.tableView reloadData];
 	
-
-
-	/*
-	//防止因annotation的延时显示或选择，出现crash
-	UIViewController *rediusViewController = (UIViewController*)self.radiusCellDescription.didSelectCellObject;
-	UIViewController *addressViewController = (UIViewController*)self.addressCellDescription.accessoryButtonTappedObject;
-	if ([rediusViewController isViewLoaded] || [addressViewController isViewLoaded]) {
-		self.navigationItem.leftBarButtonItem.enabled = NO;
-		[self.navigationItem.leftBarButtonItem performSelector:@selector(setEnabled:) withInteger:YES afterDelay:0.75];
-	}
-	 */
-	
-    
 	isFirstShow = NO;
 }
 
@@ -1153,11 +1063,6 @@
 	
 	//停止定位
 	[self stopLocationAndReverseRestart:NO];
-	//[self.locationManager stopUpdatingLocation]; //防止定位不结束，加一道保险
-	
-	//页脚的提示－赋空
-	self.titleForFooter = nil;
-    self.footerView = nil;
     
     //
     //self.title = nil;
@@ -1188,15 +1093,6 @@
     cell.backgroundColor = [UIColor whiteColor]; //SDK5.0 cell默认竟然是浅灰
     return cell;
 }
-
-
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section{
-	if (1 == section) {
-		return self.titleForFooter;
-	}
-	return nil;
-}
- 
 
 
 #pragma mark -
@@ -1327,7 +1223,6 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
 	
-    [lastUpdateDistanceTimestamp release];
 	[locationManager release];
 	[bestEffortAtLocation release];
 	
@@ -1347,10 +1242,7 @@
 	[radiusCellDescription release];
 	[triggerCellDescription release];
 	[destionationCellDescription release];
-	
-	[titleForFooter release];
-    [footerView release];
-	
+		
 	[alarm release];
 	
 	//////////////////////////////////

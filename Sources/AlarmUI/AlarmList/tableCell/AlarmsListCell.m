@@ -61,10 +61,15 @@
     theTitle = theTitle ? theTitle : self.alarm.positionTitle; 
     theTitle = theTitle ? theTitle : KDefaultAlarmName;
     
+    NSString *theDetail = nil;
+    if (self.alarm.enabled &&  _distanceString) 
+        theDetail = _distanceString;
+    else 
+        theDetail = self.alarm.position;
+    
+    
     alarmTitleLabel.text = theTitle;
-    alarmDetailLabel.text = self.alarm.enabled ? _distanceString : self.alarm.position;
-    if (!alarmDetailLabel.text) 
-        alarmDetailLabel.text = self.alarm.position;
+    alarmDetailLabel.text = theDetail;
     NSString *imageName = self.alarm.enabled ? self.alarm.alarmRadiusType.alarmRadiusTypeImageName : @"IAFlagGray.png";
     self.flagImageView.image = [UIImage imageNamed:imageName];
     
@@ -164,7 +169,7 @@
                  if (![self.alarmDetailLabel.text isEqualToString:_distanceString])
                      self.alarmDetailLabel.text = _distanceString;
              }else{
-                 self.alarmDetailLabel.text = nil;
+                 self.alarmDetailLabel.text = self.alarm.position;
              }
              
          } completion:NULL];         

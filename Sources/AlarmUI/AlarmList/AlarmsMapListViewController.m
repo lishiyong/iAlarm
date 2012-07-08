@@ -966,18 +966,25 @@
                 [self.maskActivityIndicator startAnimating];
             } completion:NULL];
             
-            //app.isIdleTimerDisabled 作为标识变量
+            //app.isIdleTimerDisabled 作为超时标识变量
             UIApplication *app = [UIApplication sharedApplication];
             BOOL newStatus = !app.isIdleTimerDisabled;
             app.idleTimerDisabled = newStatus;
             [app performSelector:@selector(setIdleTimerDisabled:) onThread:[NSThread currentThread] withInteger:!newStatus waitUntilDone:NO afterDelay:kTimeOutWaitingForUserLocation];
             
-            while (!self.mapView.userLocation.location && app.isIdleTimerDisabled == newStatus) {
+            
+            while (![YCSystemStatus sharedSystemStatus].lastLocation 
+                   && !self.mapView.userLocation.location 
+                   && app.isIdleTimerDisabled == newStatus) {
                 [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
             }
             
-            if (self.mapView.userLocation.location) 
+            if (self.mapView.userLocation.location) {
                 region = MKCoordinateRegionMakeWithDistance(self.mapView.userLocation.location.coordinate,kDefaultLatitudinalMeters,kDefaultLongitudinalMeters);
+            }else if ([YCSystemStatus sharedSystemStatus].lastLocation ){
+                region = MKCoordinateRegionMakeWithDistance([YCSystemStatus sharedSystemStatus].lastLocation.coordinate,kDefaultLatitudinalMeters,kDefaultLongitudinalMeters);
+            }
+            
         }
         
         

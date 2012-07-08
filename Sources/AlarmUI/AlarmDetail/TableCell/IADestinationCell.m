@@ -19,28 +19,44 @@
 - (void)startMoveArrowAnimating;
 - (void)setMoveArrow:(BOOL)theMoving;
 - (void)setAddressLabelWithLarge:(BOOL)large;
-
-- (void)observeValueForKeyPath:(NSString *)keyPath
-                      ofObject:(id)object
-                        change:(NSDictionary *)change
-                       context:(void *)context;
 - (void)handleStandardLocationDidFinish: (NSNotification*) notification;
 - (void)registerNotifications;
 - (void)unRegisterNotifications;
+- (void)setWidthOfAddressLabelAndDistanceLabel;//设置地址label距离label的宽度，根据不同语言“title”的长度
 
 @end
 
 @implementation IADestinationCell
-@synthesize locatingImageView;
-@synthesize titleLabel;
-@synthesize locatingLabel;
-@synthesize addressLabel;
-@synthesize distanceLabel;
-@synthesize distanceActivityIndicatorView;
 
+@synthesize titleLabel, addressLabel, distanceLabel, distanceActivityIndicatorView;
+@synthesize locatingImageView, locatingLabel;
 @synthesize moveArrowImageView;
-
 @synthesize alarm = _alarm, cellStatus = _cellStatus;
+
+- (void)setWidthOfAddressLabelAndDistanceLabel{
+    
+    //修正titleLabel
+    [self.titleLabel sizeToFit];
+    CGPoint titleLabelCenter = (CGPoint){self.titleLabel.center.x,self.contentView.bounds.size.height/2};
+    self.titleLabel.center = titleLabelCenter;
+    
+    CGFloat titleLabelR = self.titleLabel.frame.size.width + self.titleLabel.frame.origin.x;
+    CGFloat newAddressLabelL = titleLabelR + 6.0; //与TitleLable间隔xx.0
+    CGFloat newDistanceLabelL = titleLabelR + 3.0;//与TitleLable间隔xx.0
+    CGFloat oldAddressLabelL = self.addressLabel.frame.origin.x;
+    CGFloat oldDistanceLabelL = self.distanceLabel.frame.origin.x;
+
+    
+    CGRect addressLabelFrame = self.addressLabel.frame;
+    addressLabelFrame.origin.x = newAddressLabelL;
+    addressLabelFrame.size.width = (oldAddressLabelL - newAddressLabelL) + self.addressLabel.frame.size.width;
+    self.addressLabel.frame = addressLabelFrame;
+    
+    CGRect distanceLabelFrame = self.distanceLabel.frame;
+    distanceLabelFrame.origin.x = newDistanceLabelL;
+    distanceLabelFrame.size.width = (oldDistanceLabelL - newDistanceLabelL) + self.distanceLabel.frame.size.width;
+    self.distanceLabel.frame = distanceLabelFrame;
+}
 
 - (void)startMoveArrowAnimating{
     [self.moveArrowImageView stopAnimating];
@@ -67,9 +83,8 @@
 	CGRect largeFrame = CGRectMake(addressLabelX, 0, addressLabelW, 44);
 	
 	if (large) {
-		self.distanceLabel.hidden                 = YES;
-		self.distanceActivityIndicatorView.hidden = YES;
-		
+        CGPoint addressLabelCenter = (CGPoint){self.addressLabel.center.x,self.contentView.bounds.size.height/2};
+        self.addressLabel.center = addressLabelCenter;
 		self.addressLabel.frame = largeFrame;
 		self.addressLabel.font = [UIFont systemFontOfSize:17.0];
 		self.addressLabel.adjustsFontSizeToFitWidth = YES;
@@ -122,8 +137,30 @@
     
     
     switch (_cellStatus) {
+        case IADestinationCellStatusNone:
+        {
+            self.titleLabel.hidden = NO;
+            self.addressLabel.hidden = YES;
+            self.distanceLabel.hidden = YES;            
+            self.distanceActivityIndicatorView.hidden = YES;
+            self.locatingImageView.hidden = YES;
+            self.locatingLabel.hidden = YES;
+            self.moveArrowImageView.hidden = YES;
+            
+            self.accessoryView = nil;
+            self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            break;
+        }
         case IADestinationCellStatusNormal:
         {
+            if (self.distanceLabel.text != nil) {
+                [self setAddressLabelWithLarge:NO]; //地址要缩小
+                self.distanceLabel.hidden = NO;             
+            }else {
+                [self setAddressLabelWithLarge:YES]; //地址要大
+                self.distanceLabel.hidden = YES; 
+            }
+            
             self.titleLabel.hidden = NO;
             self.addressLabel.hidden = NO;
             //self.distanceLabel.hidden = NO;            
@@ -132,22 +169,14 @@
             self.locatingLabel.hidden = YES;
             self.moveArrowImageView.hidden = YES;
             
-            
-            
-            if (self.distanceLabel.text != nil) {
-                [self setAddressLabelWithLarge:NO]; //地址要缩小
-                self.distanceLabel.hidden = NO;             
-            }else {
-                [self setAddressLabelWithLarge:NO]; //地址要大
-                self.distanceLabel.hidden = YES; 
-            }
-            
             self.accessoryView = nil;
             self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
         }   
         case IADestinationCellStatusNormalWithoutDistance:
         {
+            [self setAddressLabelWithLarge:NO]; //地址要大
+
             self.titleLabel.hidden = NO;
             self.addressLabel.hidden = NO;
             self.distanceLabel.hidden = YES;            
@@ -156,7 +185,6 @@
             self.locatingLabel.hidden = YES;
             self.moveArrowImageView.hidden = YES;
             
-            [self setAddressLabelWithLarge:NO]; //地址要大
             
             self.accessoryView = nil;
             self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -180,6 +208,8 @@
         }   
         case IADestinationCellStatusNormalMeasuringDistance:
         {
+            [self setAddressLabelWithLarge:NO]; //地址要缩小
+
             self.titleLabel.hidden = NO;
             self.addressLabel.hidden = NO;
             self.distanceLabel.hidden = YES;            
@@ -188,7 +218,6 @@
             self.locatingLabel.hidden = YES;
             self.moveArrowImageView.hidden = YES;
             
-            [self setAddressLabelWithLarge:NO]; //地址要缩小
             [self.distanceActivityIndicatorView startAnimating]; //测量地址等待
             
             self.accessoryView = nil;
@@ -227,7 +256,7 @@
     
 }
 
-
+/*
 - (void)observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(id)object
                         change:(NSDictionary *)change
@@ -235,7 +264,6 @@
 {
 	
 	if ( [keyPath isEqualToString:@"text"]) {
-		//NSString* newText = (NSString*)[change valueForKey:NSKeyValueChangeNewKey];
 		if (object == self.titleLabel) {
 			CGRect newTitleFrame = [self.titleLabel textRectForBounds:self.titleLabel.frame limitedToNumberOfLines:1];
 			
@@ -259,6 +287,7 @@
 	}
 
 }
+ */
 
 - (void)handleStandardLocationDidFinish: (NSNotification*) notification{
     
@@ -270,8 +299,24 @@
         
         NSString *distanceString = [curLocation distanceStringFromCoordinate:self.alarm.realCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];  
         
-        if (![self.distanceLabel.text isEqualToString:distanceString]) 
+        if (![self.distanceLabel.text isEqualToString:distanceString]) {
             self.distanceLabel.text = distanceString;
+            
+            if (_cellStatus == IADestinationCellStatusNormal 
+             || _cellStatus == IADestinationCellStatusNormalWithoutDistance
+                ) { //正常状态才显示距离文本
+                
+                self.cellStatus = IADestinationCellStatusNormalMeasuringDistance;
+                
+                [self performBlock:^{ //让用户看2秒等待圈
+                    self.cellStatus = IADestinationCellStatusNormal;
+                } afterDelay:2.0];
+                
+            }
+            
+        }
+        
+        
     }else{
         if (_cellStatus != IADestinationCellStatusLocating 
             || _cellStatus != IADestinationCellStatusReversing) {
@@ -290,17 +335,13 @@
 						   selector: @selector (handleStandardLocationDidFinish:)
 							   name: IAStandardLocationDidFinishNotification
 							 object: nil];
-    
-    [self.titleLabel addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)unRegisterNotifications{
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter removeObserver:self	name: IAStandardLocationDidFinishNotification object: nil];
-    
-    [self.titleLabel removeObserver:self forKeyPath:@"text"];
-
 }
+
 
 - (id)initWithCoder:(NSCoder *)aDecoder{
     self = [super initWithCoder:aDecoder];
@@ -309,6 +350,7 @@
     }
     return self;
 }
+ 
 
 +(id)viewWithXib 
 {
@@ -319,15 +361,20 @@
 			cell = (IADestinationCell *)oneObject;
 		}
 	}
-	cell.titleLabel.text = nil;
+	cell.titleLabel.text = KLabelAlarmPostion;
 	cell.addressLabel.text = nil;
 	cell.distanceLabel.text = nil;
 	cell.locatingLabel.text = nil;
     
+    [cell setWidthOfAddressLabelAndDistanceLabel];
+    
     cell.moveArrowImageView.animationImages = [NSArray arrayWithObjects:[UIImage imageNamed:@"IAMoveArrow0.png"], [UIImage imageNamed:@"IAMoveArrow1.png"],[UIImage imageNamed:@"IAMoveArrow2.png"],[UIImage imageNamed:@"IAMoveArrow3.png"],[UIImage imageNamed:@"IAMoveArrow4.png"],[UIImage imageNamed:@"IAMoveArrow5.png"],nil];
     cell.moveArrowImageView.animationDuration = 0.4;
     cell.moveArrowImageView.animationRepeatCount = 2;
-	
+    
+    	
+    [cell registerNotifications];
+    
 	return cell; 
 }
 

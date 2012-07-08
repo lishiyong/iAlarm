@@ -54,14 +54,10 @@ typedef enum {
 	
 	IALocatingAndReversingStatus locatingAndReversingStatus;    
 	
-	NSString  *titleForFooter;  //页脚，用于界面提示
-    AlarmDetailFooterView *footerView;
-    
+	//NSString  *titleForFooter;  //页脚，用于界面提示    
 	BOOL endingManual;          //手动结束定位或反转的标志
-	
 	BOOL isFirstShow;
 
-    NSDate *lastUpdateDistanceTimestamp; //最后更新距离时间
     
     YCSoundPlayer *vibratePlayer;
 	AVAudioPlayer *ringplayer;
@@ -91,11 +87,7 @@ typedef enum {
 @property (nonatomic,retain,readonly) CLLocationManager *locationManager;
 @property (nonatomic,retain) CLLocation *bestEffortAtLocation;
 
-@property (nonatomic,retain) NSString  *titleForFooter;
-@property (nonatomic,retain) AlarmDetailFooterView *footerView;
-
-@property(nonatomic, retain) NSDate *lastUpdateDistanceTimestamp;
-
+//@property (nonatomic,retain) NSString  *titleForFooter;
 
 @property (nonatomic,retain,readonly) YCSoundPlayer *vibratePlayer;
 @property (nonatomic,retain) AVAudioPlayer *ringplayer;

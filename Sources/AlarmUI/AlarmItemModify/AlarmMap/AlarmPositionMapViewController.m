@@ -289,8 +289,8 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
         //使用当前位置 定位得到的
         centerCoordinate = [YCSystemStatus sharedSystemStatus].lastLocation.coordinate;
     }else{
-        //缺省地图中心点 大概是世界地图
-        centerCoordinate = self.mapView.centerCoordinate;
+        //缺省
+        centerCoordinate = kYCDefaultCoordinate;
     }
     
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(centerCoordinate, 1500.0, 1500);
@@ -306,6 +306,29 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
     self.navigationItem.rightBarButtonItem.enabled = NO; //地图返回动画，不能马上执行
     
     [self.navigationItem setHidesBackButton:YES animated:NO];
+    
+    //pin
+    [self performBlock:^{
+        
+        [_annotation release];
+        CLLocationCoordinate2D visualCoordinate = self.alarm.visualCoordinate;
+        visualCoordinate = CLLocationCoordinate2DIsValid(visualCoordinate) ? visualCoordinate : self.mapView.centerCoordinate;
+        _annotation = [[YCMapPointAnnotation alloc] initWithCoordinate:visualCoordinate title:KLabelMapNewAnnotationTitle subTitle:self.alarm.position];
+        [self.mapView addAnnotation:_annotation];
+        
+        if (!CLLocationCoordinate2DIsValid(self.alarm.visualCoordinate)) //反转坐标
+            [self reverseGeocodeWithAnnotation:_annotation];
+        
+        
+    } afterDelay:0.2];
+    
+    
+    
+    //当前位置和Done按钮
+    [self performBlock:^{
+        self.mapView.showsUserLocation = YES;
+        self.navigationItem.rightBarButtonItem.enabled = YES; //地图返回动画，不能马上执行
+    } afterDelay:2.0];
      
 }
 
@@ -325,24 +348,6 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
         [self.mapView removeAnnotations:pins];
     }
 
-}
-
-- (void)beginWork{
-    
-    //pin
-    [_annotation release];
-    CLLocationCoordinate2D visualCoordinate = self.alarm.visualCoordinate;
-    visualCoordinate = CLLocationCoordinate2DIsValid(visualCoordinate) ? visualCoordinate : self.mapView.centerCoordinate;
-    _annotation = [[YCMapPointAnnotation alloc] initWithCoordinate:visualCoordinate title:KLabelMapNewAnnotationTitle subTitle:self.alarm.position];
-    [self.mapView addAnnotation:_annotation];
-    
-    
-    //
-    [self performBlock:^{
-        self.mapView.showsUserLocation = YES;
-        self.navigationItem.rightBarButtonItem.enabled = YES; //地图返回动画，不能马上执行
-    } afterDelay:2.0];
-    
 }
 
 

@@ -1191,8 +1191,6 @@
 		9CF166D115693B4000281A33 /* 20_IAFlagGreenLight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF1669315693B4000281A33 /* 20_IAFlagGreenLight@2x.png */; };
 		9CF166D215693B4000281A33 /* 20_IAFlagOrange@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF1669415693B4000281A33 /* 20_IAFlagOrange@2x.png */; };
 		9CF166D315693B4000281A33 /* 20_IAFlagOrange@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF1669415693B4000281A33 /* 20_IAFlagOrange@2x.png */; };
-		9CF166D615693B4000281A33 /* 20_IAFlagOrange@2x副本.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF1669615693B4000281A33 /* 20_IAFlagOrange@2x副本.png */; };
-		9CF166D715693B4000281A33 /* 20_IAFlagOrange@2x副本.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF1669615693B4000281A33 /* 20_IAFlagOrange@2x副本.png */; };
 		9CF166D815693B4000281A33 /* 20_IAFlagPurple@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF1669715693B4000281A33 /* 20_IAFlagPurple@2x.png */; };
 		9CF166D915693B4000281A33 /* 20_IAFlagPurple@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF1669715693B4000281A33 /* 20_IAFlagPurple@2x.png */; };
 		9CF166DC15693B4000281A33 /* 20_IAFlagPurpleDeep@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF1669915693B4000281A33 /* 20_IAFlagPurpleDeep@2x.png */; };
@@ -2097,7 +2095,6 @@
 		9CF1669115693B4000281A33 /* 20_IAFlagGreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "20_IAFlagGreen@2x.png"; sourceTree = "<group>"; };
 		9CF1669315693B4000281A33 /* 20_IAFlagGreenLight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "20_IAFlagGreenLight@2x.png"; sourceTree = "<group>"; };
 		9CF1669415693B4000281A33 /* 20_IAFlagOrange@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "20_IAFlagOrange@2x.png"; sourceTree = "<group>"; };
-		9CF1669615693B4000281A33 /* 20_IAFlagOrange@2x副本.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "20_IAFlagOrange@2x副本.png"; sourceTree = "<group>"; };
 		9CF1669715693B4000281A33 /* 20_IAFlagPurple@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "20_IAFlagPurple@2x.png"; sourceTree = "<group>"; };
 		9CF1669915693B4000281A33 /* 20_IAFlagPurpleDeep@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "20_IAFlagPurpleDeep@2x.png"; sourceTree = "<group>"; };
 		9CF1669A15693B4000281A33 /* 20_IAFlagRed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "20_IAFlagRed@2x.png"; sourceTree = "<group>"; };
@@ -4055,7 +4052,6 @@
 				9CF1669115693B4000281A33 /* 20_IAFlagGreen@2x.png */,
 				9CF1669315693B4000281A33 /* 20_IAFlagGreenLight@2x.png */,
 				9CF1669415693B4000281A33 /* 20_IAFlagOrange@2x.png */,
-				9CF1669615693B4000281A33 /* 20_IAFlagOrange@2x副本.png */,
 				9CF1669715693B4000281A33 /* 20_IAFlagPurple@2x.png */,
 				9CF1669915693B4000281A33 /* 20_IAFlagPurpleDeep@2x.png */,
 				9CF1669A15693B4000281A33 /* 20_IAFlagRed@2x.png */,
@@ -4527,7 +4523,6 @@
 				9CF166CC15693B4000281A33 /* 20_IAFlagGreen@2x.png in Resources */,
 				9CF166D015693B4000281A33 /* 20_IAFlagGreenLight@2x.png in Resources */,
 				9CF166D215693B4000281A33 /* 20_IAFlagOrange@2x.png in Resources */,
-				9CF166D615693B4000281A33 /* 20_IAFlagOrange@2x副本.png in Resources */,
 				9CF166D815693B4000281A33 /* 20_IAFlagPurple@2x.png in Resources */,
 				9CF166DC15693B4000281A33 /* 20_IAFlagPurpleDeep@2x.png in Resources */,
 				9CF166DE15693B4000281A33 /* 20_IAFlagRed@2x.png in Resources */,
@@ -4921,7 +4916,6 @@
 				9CF166CD15693B4000281A33 /* 20_IAFlagGreen@2x.png in Resources */,
 				9CF166D115693B4000281A33 /* 20_IAFlagGreenLight@2x.png in Resources */,
 				9CF166D315693B4000281A33 /* 20_IAFlagOrange@2x.png in Resources */,
-				9CF166D715693B4000281A33 /* 20_IAFlagOrange@2x副本.png in Resources */,
 				9CF166D915693B4000281A33 /* 20_IAFlagPurple@2x.png in Resources */,
 				9CF166DD15693B4000281A33 /* 20_IAFlagPurpleDeep@2x.png in Resources */,
 				9CF166DF15693B4000281A33 /* 20_IAFlagRed@2x.png in Resources */,
