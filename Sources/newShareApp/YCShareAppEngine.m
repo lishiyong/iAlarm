@@ -213,7 +213,7 @@ static NSString* kFacebookAppId = @"146975985381829";
     if ([buttonTitle isEqualToString:KLabelCellTwitter]) {//Tw
 
         
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 4.9) {
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) {
             //tw iOS 5.x 支持
             
             TWTweetComposeViewController *tweetViewController = [[[TWTweetComposeViewController alloc] init] autorelease];

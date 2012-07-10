@@ -72,7 +72,7 @@
 }
 
 + (UIColor *)underPageBackgroundYCColor{
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.99) {// iOS 5.0 才有 underPageBackgroundColor
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) {// iOS 5.0 才有 underPageBackgroundColor
         return [UIColor underPageBackgroundColor];
     }else {
         return [UIColor colorWithPatternImage:[UIImage imageNamed:@"YCStockImageUnderPageBackground.png"]];

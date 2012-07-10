@@ -75,7 +75,7 @@
 	BOOL connectedToInternet = [[YCSystemStatus sharedSystemStatus] connectedToInternet];
 	if (!connectedToInternet) {
         
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0) {
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) {
             // iOS 5 code
             if (!checkNetAlert) 
                 checkNetAlert = [[UIAlertView alloc] initWithTitle:kAlertNeedInternetTitleAccessMaps

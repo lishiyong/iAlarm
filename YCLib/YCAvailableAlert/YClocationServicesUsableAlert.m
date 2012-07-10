@@ -65,7 +65,7 @@
 	
 	if (!enabledLocation) {
         
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0) {
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) {
             // iOS 5 code
             if (!alert) 
                 alert = [[UIAlertView alloc] initWithTitle:kAlertNeedLocationServicesTitle

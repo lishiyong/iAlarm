@@ -6,44 +6,36 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
-#import "YCMessageComposeControllerDelegate.h"
-#import "SA_OAuthTwitterController.h"
+#import <MessageUI/MessageUI.h>
 #import <UIKit/UIKit.h>
 
-@class IAFeedbackViewController;
 @class YCShareAppEngine;
-@class TableViewCellDescription;
-@interface IAAboutViewController : UITableViewController<SA_OAuthTwitterControllerDelegate,YCMessageComposeControllerDelegate>{
+@interface IAAboutViewController : UITableViewController<MFMailComposeViewControllerDelegate>{
     
-    UIBarButtonItem *cancelButtonItem;
-    YCShareAppEngine *shareAppEngine;
+    UIBarButtonItem *_cancelButtonItem;
+    YCShareAppEngine *_shareAppEngine;
     
-    NSArray *cellDescriptions;
-	TableViewCellDescription *rateAndReviewCellDescription;            //评分
-	TableViewCellDescription *versionCellDescription;                  //版本
-	TableViewCellDescription *buyFullVersionCellDescription;           //购买
-    TableViewCellDescription *feedbackCellDescription;                 //反馈
-    TableViewCellDescription *shareAppCellDescription;                 //分享
     
-    TableViewCellDescription *shareSettingCellDescription;             //共享设置
-    TableViewCellDescription *followTwitterCellDescription;            //关注tw
-    TableViewCellDescription *followFacebookCellDescription;           //关注fb
+    NSMutableArray *_sections; 
+    NSMutableArray *_selectors;
+    NSMutableArray *_sectionFooters;
+    
+    UITableViewCell *_rateAndReviewCell;//评分
+    
+    UITableViewCell *_followUsOnTwitterCell;//关注tw
+    UITableViewCell *_visitUsOnFacebookCell;//关注fb
+    UITableViewCell *_shareAppCell;//分享
+    
+    UITableViewCell *_foundABugCell;//反馈
+    UITableViewCell *_hasACoolIdeaCell;
+    UITableViewCell *_sayHiCell;
+    
+    UITableViewCell *_settingCell;//设置
+    UITableViewCell *_versionCell;//版本
+    UITableViewCell *_buyFullVersionCell;//购买
     
 }
 
-@property(nonatomic,readonly) UIBarButtonItem *cancelButtonItem;
-@property(nonatomic,readonly) YCShareAppEngine *shareAppEngine;
-
-@property(nonatomic,retain) NSArray *cellDescriptions;   
-@property(nonatomic,retain) TableViewCellDescription *rateAndReviewCellDescription;
-@property(nonatomic,retain) TableViewCellDescription *versionCellDescription;
-@property(nonatomic,retain) TableViewCellDescription *buyFullVersionCellDescription;
-@property(nonatomic,retain) TableViewCellDescription *feedbackCellDescription;
-@property(nonatomic,retain) TableViewCellDescription *shareAppCellDescription;  
-
-@property(nonatomic,retain) TableViewCellDescription *shareSettingCellDescription; 
-@property(nonatomic,retain) TableViewCellDescription *followTwitterCellDescription; 
-@property(nonatomic,retain) TableViewCellDescription *followFacebookCellDescription; 
 
 
 @end

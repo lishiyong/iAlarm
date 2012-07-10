@@ -447,7 +447,6 @@
         self->notesCellDescription.tableViewCell.detailTextLabel.text = @"例如：到达后要做什么";
     }
 	
-	
 	return self->notesCellDescription;
 } 
 
@@ -516,6 +515,7 @@
 		 
 		self->radiusCellDescription.tableViewCell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
 		self->radiusCellDescription.tableViewCell.detailTextLabel.minimumFontSize = 12.0;
+        
 	}
 	
 	NSString *radiusName = self.alarmTemp.alarmRadiusType.alarmRadiusName;
@@ -975,7 +975,6 @@
     [super viewDidLoad];
 	isFirstShow = YES;
     self.tableView.showsVerticalScrollIndicator = NO;
-	//self.alarmTemp = [[self.alarm copy] autorelease];  //为了给enable使用
 	
 	[self registerNotifications];
 	
@@ -1013,6 +1012,7 @@
         [IAContactManager sharedManager].currentViewController = self.navigationController;
     } afterDelay:0.1];
     
+
 }
 
 

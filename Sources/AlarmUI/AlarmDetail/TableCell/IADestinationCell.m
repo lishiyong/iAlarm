@@ -78,14 +78,16 @@
 - (void)setAddressLabelWithLarge:(BOOL)large{
 	CGFloat addressLabelX = self.addressLabel.frame.origin.x;
 	CGFloat addressLabelW = self.addressLabel.frame.size.width;
+    CGFloat addressLabelH = self.addressLabel.frame.size.height;
 	
-	CGRect smallFrame = CGRectMake(addressLabelX, 3, addressLabelW, 21);
-	CGRect largeFrame = CGRectMake(addressLabelX, 0, addressLabelW, 44);
+	CGRect smallFrame = CGRectMake(addressLabelX, 2, addressLabelW, addressLabelH);
+	//CGRect largeFrame = CGRectMake(addressLabelX, 0, addressLabelW, addressLabelH);
 	
 	if (large) {
         CGPoint addressLabelCenter = (CGPoint){self.addressLabel.center.x,self.contentView.bounds.size.height/2};
         self.addressLabel.center = addressLabelCenter;
-		self.addressLabel.frame = largeFrame;
+		//self.addressLabel.frame = largeFrame;
+        
 		self.addressLabel.font = [UIFont systemFontOfSize:17.0];
 		self.addressLabel.adjustsFontSizeToFitWidth = YES;
 		self.addressLabel.minimumFontSize = 12.0;
@@ -175,7 +177,7 @@
         }   
         case IADestinationCellStatusNormalWithoutDistance:
         {
-            [self setAddressLabelWithLarge:NO]; //地址要大
+            [self setAddressLabelWithLarge:YES]; //地址要大
 
             self.titleLabel.hidden = NO;
             self.addressLabel.hidden = NO;
@@ -322,6 +324,7 @@
             || _cellStatus != IADestinationCellStatusReversing) {
             
             self.cellStatus = IADestinationCellStatusNormalWithoutDistance; 
+            self.distanceLabel.text = nil;
         }
     }
     

@@ -13,7 +13,7 @@
 @interface AlarmLRepeatTypeViewController : AlarmModifyTableViewController {
     NSIndexPath  *_lastIndexPath;
     NSMutableArray *_sections;
-    NSArray *_beginEndCellArray;
+    NSArray *_beginEndSection;
 }
 
 @property (nonatomic, retain) NSIndexPath * lastIndexPath;

@@ -79,7 +79,7 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 	BOOL connectedToInternet = [[YCSystemStatus sharedSystemStatus] connectedToInternet];
 	if (!connectedToInternet) {
         
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0) {
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) {
             // iOS 5 code
             if (!_checkNetAlert) 
                 _checkNetAlert = [[UIAlertView alloc] initWithTitle:kAlertNeedInternetTitleAccessMaps

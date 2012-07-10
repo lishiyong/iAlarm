@@ -20,4 +20,14 @@
     return mapRect;
 }
 
++ (NSValue *)valueWithSelector:(SEL)aSelector{
+    return [NSValue valueWithBytes:&aSelector objCType:@encode(SEL)];
+}
+
+- (SEL)selectorValue{
+    SEL sel;
+    [self getValue:&sel];
+    return sel;
+}
+
 @end

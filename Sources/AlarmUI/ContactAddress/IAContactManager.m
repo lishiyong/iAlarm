@@ -395,7 +395,7 @@
         CABasicAnimation *animation=[CABasicAnimation animationWithKeyPath: @"opacity"];
         animation.duration = 100;
         animation.timingFunction= [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.4) {//5.0以上
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) {//5.0以上
             animation.fromValue= [NSNumber numberWithFloat:0.0];
         }else{
             animation.fromValue= [NSNumber numberWithFloat:0.05];// iOS 4.x 需要这样 

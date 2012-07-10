@@ -14,4 +14,7 @@
 + (NSValue *)valueWithMapRect:(MKMapRect)mapRect;
 - (MKMapRect)mapRectValue;
 
++ (NSValue *)valueWithSelector:(SEL)aSelector; 
+- (SEL)selectorValue;
+
 @end

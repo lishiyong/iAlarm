@@ -62,6 +62,8 @@ typedef enum {
     YCSoundPlayer *vibratePlayer;
 	AVAudioPlayer *ringplayer;
     
+    //NSMutableArray *_sections;
+    
 }
 @property (nonatomic,retain) YClocationServicesUsableAlert *locationServicesUsableAlert;
 

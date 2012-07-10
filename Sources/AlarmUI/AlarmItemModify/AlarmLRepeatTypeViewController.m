@@ -27,10 +27,10 @@
 
 - (IBAction)switchControlValueDidChange:(id)sender{
     if (self.switchControl.on) {
-        if (NSNotFound == [_sections indexOfObject:_beginEndCellArray]) 
-            [_sections addObject:_beginEndCellArray];
+        if (NSNotFound == [_sections indexOfObject:_beginEndSection]) 
+            [_sections addObject:_beginEndSection];
     }else{
-        [_sections removeObject:_beginEndCellArray];
+        [_sections removeObject:_beginEndSection];
     }
     
     [self.tableView reloadData];
@@ -45,10 +45,10 @@
 	self.title = KViewTitleRepeat;
     
     //重复类型cells
-    NSUInteger repeatTypesCount = [DicManager repeatTypeDictionary].count;
-    NSMutableArray *repeatTypecells = [NSMutableArray arrayWithCapacity:repeatTypesCount];
+    NSUInteger numberOfRepeatTypeSection = [DicManager repeatTypeDictionary].count;
+    NSMutableArray *repeatTypeSection = [NSMutableArray arrayWithCapacity:numberOfRepeatTypeSection];
     
-    for (NSUInteger i = 0; i < repeatTypesCount; i++) {
+    for (NSUInteger i = 0; i < numberOfRepeatTypeSection; i++) {
         YCRepeatType *rep = [DicManager repeatTypeForSortId:i];
         UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"] autorelease];
         
@@ -64,19 +64,19 @@
 			cell.textLabel.textColor = [UIColor tableCellBlueTextYCColor];
 		}
         
-        [repeatTypecells addObject:cell];
+        [repeatTypeSection addObject:cell];
     }
     
     //启用开关cell
-    NSArray *switchCellArray = [NSArray arrayWithObjects:self.switchCell, nil];
+    NSArray *switchSection = [NSArray arrayWithObjects:self.switchCell, nil];
     self.switchCell.textLabel.text = @"启用定时提醒";
     self.switchCell.accessoryView = self.switchControl;
     
-    _sections = [[NSMutableArray arrayWithObjects:repeatTypecells, switchCellArray, nil] retain];
+    _sections = [[NSMutableArray arrayWithObjects:repeatTypeSection, switchSection, nil] retain];
     
     
-    //开始结束cell.到sections中，
-    _beginEndCellArray = [[NSArray arrayWithObjects:self.beginEndCell, nil] retain];
+    //开始结束cell，
+    _beginEndSection = [[NSArray arrayWithObjects:self.beginEndCell, nil] retain];
     self.beginEndCell.textLabel.text = @"开始\r\n结束";
     self.beginEndCell.detailTextLabel.text = @"2:00 AM\r\n4:00 PM";
     self.beginEndCell.textLabel.numberOfLines = 2;
@@ -84,7 +84,7 @@
     
     
     if (self.switchControl.on) {
-        [_sections addObject:_beginEndCellArray];
+        [_sections addObject:_beginEndSection];
     }
 
 }
@@ -107,8 +107,6 @@
     return [[_sections objectAtIndex:section] count];
 }
 
-
-// Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     UITableViewCell *cell = [[_sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
