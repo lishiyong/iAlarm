@@ -12,17 +12,13 @@
 @class TableViewCellDescription;
 @interface IAShareSettingViewController : UITableViewController{
     YCShareAppEngine *shareAppEngine;
-
-    NSArray *cellDescriptions;
-    TableViewCellDescription *facebookCellDescription;                 //facebook
-	TableViewCellDescription *twitterCellDescription;                  //twitter
-    TableViewCellDescription *kxCellDescription;                       //开心网
+    
+    NSMutableArray *_sections;
+    UITableViewCell *_facebookCell;  //facebook
+    UITableViewCell *_twitterCell;   //twitter
+    UITableViewCell *_kxCell;        //开心网
+    
 }
-
-@property(nonatomic,retain) NSArray *cellDescriptions;   
-@property(nonatomic,retain) TableViewCellDescription *facebookCellDescription;
-@property(nonatomic,retain) TableViewCellDescription *twitterCellDescription;
-@property(nonatomic,retain) TableViewCellDescription *kxCellDescription;
 
 - (id)initWithStyle:(UITableViewStyle)style shareAppEngine:(YCShareAppEngine *)theShareAppEngine;
 

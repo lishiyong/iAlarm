@@ -124,7 +124,7 @@
         [addressDic setObject:areasOfInterest forKey:@"AreasOfInterest"];
     
     
-    MKPlacemark *mkPlacemark = [[MKPlacemark alloc] initWithCoordinate:coordinate addressDictionary:addressDic];
+    MKPlacemark *mkPlacemark = [[[MKPlacemark alloc] initWithCoordinate:coordinate addressDictionary:addressDic] autorelease];
     
     self = [self initWithPlacemark:mkPlacemark];
     //[self debug];

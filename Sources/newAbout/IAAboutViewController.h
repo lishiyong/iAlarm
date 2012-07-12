@@ -9,11 +9,12 @@
 #import <MessageUI/MessageUI.h>
 #import <UIKit/UIKit.h>
 
-@class YCShareAppEngine;
+@class YCShareAppEngine, YCPromptView;
 @interface IAAboutViewController : UITableViewController<MFMailComposeViewControllerDelegate>{
     
     UIBarButtonItem *_cancelButtonItem;
     YCShareAppEngine *_shareAppEngine;
+    YCPromptView *_promptView;
     
     
     NSMutableArray *_sections; 

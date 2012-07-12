@@ -19,7 +19,8 @@
 - (id)init{
 	if(self = [super init])
 	{
-		db = [[[DB alloc] database] retain];
+		DB *innerDB = [[[DB alloc] init] autorelease];
+        db = [[innerDB database] retain];
 	}
 	
 	return self;

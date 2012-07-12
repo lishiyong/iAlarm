@@ -257,7 +257,7 @@
 	if (!self->enabledCellDescription) {
 		self->enabledCellDescription = [[TableViewCellDescription alloc] init];
 		
-		BoolCell *cell = [[BoolCell alloc] initWithReuseIdentifier:CellIdentifier];
+		BoolCell *cell = [[[BoolCell alloc] initWithReuseIdentifier:CellIdentifier] autorelease];
 		cell.textLabel.text = KLabelAlarmEnable;
 		[cell.switchCtl addTarget:self action: @selector(didChangedSwitchCtlInEnabledCell:) forControlEvents:UIControlEventValueChanged];
 
@@ -297,7 +297,7 @@
 	if (!self->vibrateCellDescription) {
 		self->vibrateCellDescription = [[TableViewCellDescription alloc] init];
 		
-		BoolCell *cell = [[BoolCell alloc] initWithReuseIdentifier:CellIdentifier];
+		BoolCell *cell = [[[BoolCell alloc] initWithReuseIdentifier:CellIdentifier] autorelease];
 		cell.textLabel.text = KLabelAlarmVibrate;
 		[cell.switchCtl addTarget:self action: @selector(didChangedSwitchCtlInVibrateCell:) forControlEvents:UIControlEventValueChanged];
 		
@@ -344,7 +344,7 @@
 	
 	if (!self->repeatCellDescription) {
 		self->repeatCellDescription = [[TableViewCellDescription alloc] init];
-		UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+		UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
 		cell.textLabel.text = KLabelAlarmRepeat;
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		
@@ -376,7 +376,7 @@
 	
 	if (!self->soundCellDescription) {
 		self->soundCellDescription = [[TableViewCellDescription alloc] init];
-		UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+		UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
 		cell.textLabel.text = KLabelAlarmSound;
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		
@@ -397,7 +397,7 @@
 	
 	if (!self->nameCellDescription) {
 		self->nameCellDescription = [[TableViewCellDescription alloc] init];
-		UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+		UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
 		cell.textLabel.text = KLabelAlarmName;
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		
@@ -428,7 +428,7 @@
 	
 	if (!self->notesCellDescription) {
 		self->notesCellDescription = [[TableViewCellDescription alloc] init];
-		UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+		UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
 		cell.textLabel.text = @"备注";
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		
@@ -497,7 +497,7 @@
 	
 	if (!self->radiusCellDescription) {
 		self->radiusCellDescription = [[TableViewCellDescription alloc] init];
-		UITableViewCell *cell = [[WaitingCell alloc] initWithReuseIdentifier:CellIdentifier];
+		UITableViewCell *cell = [[[WaitingCell alloc] initWithReuseIdentifier:CellIdentifier] autorelease];
 		[(WaitingCell*)cell accessoryImageView1].image = [UIImage imageNamed:@"IAPinPurple.png"];
 		[(WaitingCell*)cell accessoryImageView1].highlightedImage = [UIImage imageNamed:@"IAPinPressedPurple.png"];
 		((WaitingCell*)cell).accessoryImageView1Disabled = [UIImage imageNamed:@"IAPinGray.png"];
@@ -539,7 +539,7 @@
 	
 	if (!self->triggerCellDescription) {
 		self->triggerCellDescription = [[TableViewCellDescription alloc] init];
-		UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+		UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
 		cell.textLabel.text = KLabelAlarmTrigger;
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		

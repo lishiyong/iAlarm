@@ -311,11 +311,6 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 //保存闹钟,不发通知
 - (IASaveInfo*)save{
     
-    //test
-    
-    id a = [[UIApplication sharedApplication].keyWindow.subviews description];
-    NSLog(@"subviews = %@",a);
-    
     NSMutableArray *alarms = (NSMutableArray*)[IAAlarm alarmArray];
 	NSUInteger index = [alarms indexOfObject:self];
 	
@@ -376,6 +371,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	
 	NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kDataFilename];
 	[NSKeyedArchiver archiveRootObject:alarms toFile:filePathName];
+    
     
     return saveInfo;
 

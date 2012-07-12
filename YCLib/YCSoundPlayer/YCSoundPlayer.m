@@ -56,6 +56,9 @@
 
 	if (self= [self initWithSoundName:cfsSoundName soundType:cfsSoundType]) {
 	}
+    
+    CFRelease(cfsSoundName);
+    CFRelease(cfsSoundType);
 	
 	return self;
 }

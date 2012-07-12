@@ -272,6 +272,8 @@
         
         [CATransaction commit];
     
+        CFRelease(thePath);
+    
     
     _animationKind = 1;
     [CATransaction commit];
@@ -788,6 +790,8 @@
     
     _animationKind = 2;
     [CATransaction commit];
+    
+    CFRelease(thePath);
     
 }
 

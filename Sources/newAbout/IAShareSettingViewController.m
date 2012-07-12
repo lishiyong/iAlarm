@@ -21,115 +21,13 @@
 - (void)registerNotifications;
 - (void)unRegisterNotifications;
 
+- (id)facebookCell;
+- (id)twitterCell;
+- (id)kxCell;
+
 @end
 
 @implementation IAShareSettingViewController
-@synthesize cellDescriptions;
-@synthesize facebookCellDescription;
-@synthesize twitterCellDescription;
-@synthesize kxCellDescription;
-
-
-- (id)cellDescriptions{
-	if (!self->cellDescriptions) {
-        NSArray *oneArray = [NSArray arrayWithObjects:
-							 self.twitterCellDescription
-                             ,self.facebookCellDescription
-							 ,nil];
-        
-		self->cellDescriptions = [NSArray arrayWithObjects:oneArray,nil];
-		[self->cellDescriptions retain];
-	}
-    
-    
-	
-	return self->cellDescriptions;
-}
-
-
-- (id)facebookCellDescription{
-	
-	static NSString *CellIdentifier = @"facebookCell";
-	
-	if (!self->facebookCellDescription) {
-		self->facebookCellDescription = [[TableViewCellDescription alloc] init];
-		
-		//UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-        
-        cell.textLabel.text = KLabelCellFacebook;
-		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.imageView.image = [UIImage imageNamed:@"facebook-Icon-Small.png"];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-		self->facebookCellDescription.tableViewCell = cell;
-		
-		cell.accessoryView = [self makeSignButton];
-		
-	}
-    
-    UIButton *button = (UIButton*)self->facebookCellDescription.tableViewCell.accessoryView;
-    [self setSignButton:button forSignIn:!shareAppEngine.isFacebookAuthorized];
-    self->facebookCellDescription.tableViewCell.detailTextLabel.text = shareAppEngine.isFacebookAuthorized ? shareAppEngine.facebookUserName : nil;
-	
-	return self->facebookCellDescription;
-}
-
-
-
-
-- (id)twitterCellDescription{
-	
-	static NSString *CellIdentifier = @"twitterCell";
-	
-	if (!self->twitterCellDescription) {
-		self->twitterCellDescription = [[TableViewCellDescription alloc] init];
-		
-		//UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-		UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-        
-        cell.textLabel.text = KLabelCellTwitter;
-		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.imageView.image = [UIImage imageNamed:@"twitter-Icon-Small.png"];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-		self->twitterCellDescription.tableViewCell = cell;
-        
-        cell.accessoryView = [self makeSignButton];
-	}
-    
-    UIButton *button = (UIButton*)self->twitterCellDescription.tableViewCell.accessoryView;
-    [self setSignButton:button forSignIn:!shareAppEngine.isTwitterAuthorized];
-    self->twitterCellDescription.tableViewCell.detailTextLabel.text = shareAppEngine.isTwitterAuthorized ? shareAppEngine.twitterUserName : nil;
-	
-	return self->twitterCellDescription;
-}
-
-- (id)kxCellDescription{
-	
-	static NSString *CellIdentifier = @"kxCell";
-	
-	if (!self->kxCellDescription) {
-		self->kxCellDescription = [[TableViewCellDescription alloc] init];
-		
-		//UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-		UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-        
-        cell.textLabel.text = @"开心网";
-		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.imageView.image = [UIImage imageNamed:@"kaixin-Icon-Small.png"];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-		self->kxCellDescription.tableViewCell = cell;
-		
-		cell.accessoryView = [self makeSignButton];
-		
-	}
-    
-    UIButton *button = (UIButton*)self->kxCellDescription.tableViewCell.accessoryView;
-    [self setSignButton:button forSignIn:!shareAppEngine.isKaixinAuthorized];
-    self->kxCellDescription.tableViewCell.detailTextLabel.text = shareAppEngine.isKaixinAuthorized ? shareAppEngine.kaixinUserName : nil;
-	
-	return self->kxCellDescription;
-}
-
 
 #pragma mark - Utility
 
@@ -147,7 +45,7 @@
     UIButton *theButton = (UIButton*)theCell.accessoryView;
     BOOL isSigned = YES;
     
-    if (theCell == self.twitterCellDescription.tableViewCell) {
+    if (theCell == self.twitterCell) {
         
         //检查是否登录过
         isSigned = shareAppEngine.isTwitterAuthorized;
@@ -159,7 +57,7 @@
             [shareAppEngine authorizeTwitter];
         }
         
-    }else if(theCell == self.facebookCellDescription.tableViewCell){
+    }else if(theCell == self.facebookCell){
         //检查是否登录过
         isSigned = shareAppEngine.isFacebookAuthorized;
         if (isSigned) {
@@ -171,7 +69,7 @@
         }
         
         
-    }else if(theCell == self.kxCellDescription.tableViewCell){
+    }else if(theCell == self.kxCell){
         
         
     }
@@ -236,7 +134,7 @@
     }
     
     UIImage *newImageNormal = [imageNormal stretchableImageWithLeftCapWidth:5 topCapHeight:5];
-    UIImage *newImagePressed = [imageNormal stretchableImageWithLeftCapWidth:5 topCapHeight:5];
+    UIImage *newImagePressed = [imagePressed stretchableImageWithLeftCapWidth:5 topCapHeight:5];
     [signButton setBackgroundImage:newImageNormal forState:UIControlStateNormal];
     [signButton setBackgroundImage:newImagePressed forState:UIControlStateHighlighted];
     
@@ -246,10 +144,9 @@
 #pragma mark Notification
 
 - (void) handle_shareAppAuthorizeDidChange:(id)notification{
-    [self twitterCellDescription]; //访问一次更新数据
-    [self facebookCellDescription];
-    [self kxCellDescription];
-    
+    [self facebookCell]; //访问一次更新数据
+    [self twitterCell];
+    [self kxCell];
     [self.tableView reloadData];
 }
 
@@ -274,36 +171,91 @@
 
 #pragma mark - View lifecycle
 
+- (id)facebookCell{
+    if (_facebookCell == nil) {
+        _facebookCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"shareAppCell"];
+        
+        _facebookCell.textLabel.text = KLabelCellFacebook;
+		_facebookCell.accessoryType = UITableViewCellAccessoryNone;
+        _facebookCell.imageView.image = [UIImage imageNamed:@"facebook-Icon-Small.png"];
+        _facebookCell.accessoryView = [self makeSignButton];
+    }
+    
+    UIButton *button = (UIButton*)_facebookCell.accessoryView;
+    [self setSignButton:button forSignIn:!shareAppEngine.isFacebookAuthorized];
+    _facebookCell.detailTextLabel.text = shareAppEngine.isFacebookAuthorized ? shareAppEngine.facebookUserName : nil;
+    
+    return _facebookCell;
+}
+
+- (id)twitterCell{
+    if (_twitterCell == nil) {
+        _twitterCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"shareAppCell"];
+        
+        _twitterCell.textLabel.text = KLabelCellTwitter;
+		_twitterCell.accessoryType = UITableViewCellAccessoryNone;
+        _twitterCell.imageView.image = [UIImage imageNamed:@"twitter-Icon-Small.png"];
+        _twitterCell.accessoryView = [self makeSignButton];
+    }
+    
+    UIButton *button = (UIButton*)_twitterCell.accessoryView;
+    [self setSignButton:button forSignIn:!shareAppEngine.isTwitterAuthorized];
+    _twitterCell.detailTextLabel.text = shareAppEngine.isTwitterAuthorized ? shareAppEngine.twitterUserName : nil;
+    
+    return _twitterCell;
+}
+
+- (id)kxCell{
+    if (_kxCell == nil) {
+        _kxCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"shareAppCell"];
+        
+        _kxCell.textLabel.text = @"开心网";
+		_kxCell.accessoryType = UITableViewCellAccessoryNone;
+        _kxCell.imageView.image = [UIImage imageNamed:@"kaixin-Icon-Small.png"];
+        _kxCell.accessoryView = [self makeSignButton];
+    }
+    
+    UIButton *button = (UIButton*)_kxCell.accessoryView;
+    [self setSignButton:button forSignIn:!shareAppEngine.isKaixinAuthorized];
+    _kxCell.detailTextLabel.text = shareAppEngine.isKaixinAuthorized ? shareAppEngine.twitterUserName : nil;
+    
+    return _kxCell;
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.title = @"共享设置";
+    
+    //
+    NSArray *shareSettingSection = nil;
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) {// 5.0以上使用系统的twitter帐户
+        shareSettingSection = [NSArray arrayWithObjects:self.facebookCell, nil];
+    }else {
+        shareSettingSection = [NSArray arrayWithObjects:self.facebookCell, self.twitterCell, nil];
+    }
+    _sections = [[NSMutableArray arrayWithObjects:shareSettingSection, nil] retain];
+    
     [self registerNotifications];
 }
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    // Return the number of sections.
-    return 1;
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return [_sections count];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    // Return the number of rows in the section.
-    return 2;
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [[_sections objectAtIndex:section] count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSArray *sectionArray = [self.cellDescriptions objectAtIndex:indexPath.section];
-    UITableViewCell *cell = ((TableViewCellDescription*)[sectionArray objectAtIndex:indexPath.row]).tableViewCell;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [[_sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     cell.backgroundColor = [UIColor whiteColor]; //SDK5.0 cell默认竟然是浅灰
     return cell;
 }
-
-
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
      return 50.0;
@@ -323,20 +275,18 @@
 {
     [super viewDidUnload];
     [self unRegisterNotifications];
-    self.cellDescriptions = nil;
-    self.facebookCellDescription = nil;
-    self.twitterCellDescription = nil;
-    self.kxCellDescription = nil;
+    [_facebookCell release]; _facebookCell = nil;
+    [_twitterCell release]; _twitterCell = nil;
+    [_kxCell release]; _kxCell = nil;
 }
 
 - (void)dealloc {
     [self unRegisterNotifications];
     [shareAppEngine release];
     
-    [cellDescriptions release];
-    [facebookCellDescription release];
-    [twitterCellDescription release];
-    [kxCellDescription release];
+    [_facebookCell release];
+    [_twitterCell release];
+    [_kxCell release];
     [super dealloc];
 }
 

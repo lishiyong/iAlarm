@@ -6,6 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCLib.h"
 #import "IAGlobal.h"
 #import "YCLog.h"
 #import "YCSystemStatus.h"
@@ -60,6 +61,7 @@ NSString *IARegionKey = @"IARegionKey";
 - (void) handle_alarmsDataListDidChange:(id)notification {
 	
     CLLocation *lastLocation = [YCSystemStatus sharedSystemStatus].lastLocation;
+    /*
     if (lastLocation) {
         NSDate* eventDate = lastLocation.timestamp;
         NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
@@ -67,6 +69,8 @@ NSString *IARegionKey = @"IARegionKey";
             lastLocation = nil;
         }
     }
+     */
+    
     IARegion *region = nil;
 	IASaveInfo *saveInfo = [((NSNotification*)notification).userInfo objectForKey:IASaveInfoKey];
 	if (saveInfo) {
@@ -119,6 +123,20 @@ NSString *IARegionKey = @"IARegionKey";
     
     //生成数组
 	[self genRegionArray];
+    
+    
+    //告知，下次提醒
+    IARegion *theRegion = [self.regions objectForKey:saveInfo.objId];;
+    if (theRegion) {
+        if (IAUserLocationTypeInner == region.userLocationType) {
+            YCPromptView *promptView = [[[YCPromptView alloc] init] autorelease];
+            promptView.promptViewStatus = YCPromptViewStatusWarn;
+            promptView.dismissByTouch = YES;
+            promptView.text = @"由于您现在离这个目的地很近，所以在下次进入目的地区域，才会提醒您！";
+            [promptView performSelector:@selector(show) withObject:nil afterDelay:0.25];
+            [promptView performSelector:@selector(dismissAnimated:) withObject:(id)kCFBooleanTrue afterDelay:8.0];
+        }
+    }
 	
 }
 

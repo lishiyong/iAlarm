@@ -32,7 +32,7 @@
 - (NSString *)organization{
     //显示得时候把标识符号去掉
     NSString *temp = [_organization stringByReplacingOccurrencesOfString:kOrganizationPrefix withString:@""];
-    temp = [_organization stringByReplacingOccurrencesOfString:kOrganizationSuffix withString:@""];
+    temp = [temp stringByReplacingOccurrencesOfString:kOrganizationSuffix withString:@""];
     return temp;    
 }
 
@@ -328,11 +328,11 @@
     if (organization) {
         //先去掉
         NSString *temp = [organization stringByReplacingOccurrencesOfString:kOrganizationPrefix withString:@""];
-        temp = [organization stringByReplacingOccurrencesOfString:kOrganizationSuffix withString:@""];
+        temp = [temp stringByReplacingOccurrencesOfString:kOrganizationSuffix withString:@""];
         
         //再添加一次
         NSMutableString *temp1 = [NSMutableString stringWithString:kOrganizationPrefix];
-        [temp1 appendString:organization];
+        [temp1 appendString:temp];
         [temp1 appendString:kOrganizationSuffix];
         
         [self setOrganization:temp1];

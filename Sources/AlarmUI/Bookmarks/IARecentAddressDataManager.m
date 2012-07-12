@@ -91,7 +91,7 @@
 }
 
 - (NSArray*)all{
-    return [_all copy];
+    return [[_all copy] autorelease];
 }
 
 - (NSUInteger)allCount{

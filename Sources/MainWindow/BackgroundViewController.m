@@ -922,8 +922,8 @@
     //searchBar
 	self.searchBar.placeholder = KTextPromptPlaceholderOfSearchBar;
 	[(YCSearchBar*)self.searchBar setCanResignFirstResponder:YES];
-	self.searchController = [[YCSearchController alloc] initWithDelegate:self
-												 searchDisplayController:self.searchDisplayController];
+	self.searchController = [[[YCSearchController alloc] initWithDelegate:self
+												 searchDisplayController:self.searchDisplayController] autorelease];
 	self.searchController.originalSearchBarHidden = NO;//不自动隐藏
     self.bookmarkManager.searchController = self.searchController;
     

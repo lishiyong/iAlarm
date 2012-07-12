@@ -44,7 +44,7 @@
         // Initialization code.
 		self.accessoryView = self.accessoryViewImageView;        //定义了accessoryView，accessoryView就会自动出现
 		self.selectionStyle = UITableViewCellSelectionStyleNone; //选中时候无颜色变化
-		self.backgroundView = [[UIView alloc] initWithFrame:self.frame];
+		self.backgroundView = [[[UIView alloc] initWithFrame:self.frame] autorelease];
 		self.textLabel.backgroundColor = [UIColor clearColor];
 		
 		UIImageView *picFrame = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"peoplePictureFrame.png"]] autorelease];

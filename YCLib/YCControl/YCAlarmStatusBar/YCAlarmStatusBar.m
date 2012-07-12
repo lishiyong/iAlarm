@@ -81,38 +81,6 @@ static YCAlarmStatusBar *bar = nil;
         alarmIconLayer.hidden = YES;
         [backgroundLayer addSublayer:alarmIconLayer];
 
-        /*
-        oneLabel   = [[UILabel alloc] initWithFrame:(CGRect){kOneNumberOrigin,kNumberSize}];
-        twoLabel   = [[UILabel alloc] initWithFrame:(CGRect){kTwoNumberOrigin,kNumberSize}];
-        threeLabel = [[UILabel alloc] initWithFrame:(CGRect){kThreeNumberOrigin,kNumberSize}];
-        
-        UIFont *xFont = [UIFont boldSystemFontOfSize:11.0];
-        UIColor *xTextColor = [UIColor colorWithRed:100.0/255.0 green:120.0/255.0 blue:128.0/255.0 alpha:1.0]; 
-        UIColor *xShadowColor = [UIColor whiteColor];
-        CGSize xShadowOffset = CGSizeMake(0,1);
-        
-        oneLabel.font = xFont;
-        oneLabel.textColor = xTextColor;
-        oneLabel.shadowColor = xShadowColor;
-        oneLabel.shadowOffset = xShadowOffset;
-        oneLabel.textAlignment = UITextAlignmentRight;
-        oneLabel.baselineAdjustment = UIBaselineAdjustmentNone;
-        oneLabel.backgroundColor = [UIColor clearColor];
-        
-        twoLabel.font = xFont;
-        twoLabel.textColor = xTextColor;
-        twoLabel.shadowColor = xShadowColor;
-        twoLabel.shadowOffset = xShadowOffset;
-        twoLabel.textAlignment = UITextAlignmentRight;
-        twoLabel.backgroundColor = [UIColor clearColor];
-        
-        threeLabel.font = xFont;//[UIFont italicSystemFontOfSize:12.0];
-        threeLabel.textColor = xTextColor;
-        threeLabel.shadowColor = xShadowColor;
-        threeLabel.shadowOffset = xShadowOffset;
-        threeLabel.textAlignment = UITextAlignmentRight;
-        threeLabel.backgroundColor = [UIColor clearColor];
-         */
         
         oneLabel   = [[UILabel alloc] initWithFrame:(CGRect){kOneNumberOrigin,kOneNumberSize}];
         UIFont *xFont = [UIFont boldSystemFontOfSize:11.0];
@@ -221,55 +189,7 @@ static YCAlarmStatusBar *bar = nil;
 }
 
 - (void)setNumber{
-    /*
-    NSString *oneS = nil;
-    NSString *twoS = nil;
-    NSString *threeS = nil;
-    if (alarmCount <= 1) {
-        oneS = nil;
-        twoS = nil;
-        threeS = nil;
-    }else{
-        NSString *alarmCountString = [NSString stringWithFormat:@"%d",alarmCount];
-        switch (alarmCountString.length) {
-            case 1:
-                oneS = alarmCountString;
-                twoS = nil;
-                threeS = nil;
-                break;
-            case 2:
-            {
-                unichar uc = [alarmCountString characterAtIndex:1];
-                oneS = [NSString stringWithCharacters:&uc length:1] ;
-                
-                uc = [alarmCountString characterAtIndex:0];
-                twoS = [NSString stringWithCharacters:&uc length:1];
-                
-                threeS = nil;
-                break;    
-            }
-            default:
-                oneS = @"9";
-                twoS = @"9";
-                threeS = @"+";
-                break;
-        }
-    }
-    
-    [CATransaction begin];
-    CATransition *tranAnimation = [CATransition animation];
-    tranAnimation.type = kCATransitionPush;
-    tranAnimation.subtype = kCATransitionFromTop;
-    tranAnimation.duration = 0.5;
-    tranAnimation.startProgress = 0.75;
-    [oneLabel.layer addAnimation:tranAnimation forKey:@"YCOneTran"];
-    oneLabel.text = oneS;
-    twoLabel.text = twoS;
-    threeLabel.text = threeS;
-    
-    [CATransaction commit];
-     */
-    
+        
     NSString *oneS = nil;
 
     if (alarmCount <= 1) {
@@ -279,8 +199,6 @@ static YCAlarmStatusBar *bar = nil;
     }
     
     oneLabel.text = oneS;
-    
-    
 }
 
 - (void)increaseAlarmCount{

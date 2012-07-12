@@ -16,10 +16,10 @@
     UIButton *button = nil;
     switch (buttonType) {
         case YCButtonTypeTextured:
-            button = [[YCTexturedButton alloc] initWithFrame:CGRectZero];
+            button = [[[YCTexturedButton alloc] initWithFrame:CGRectZero] autorelease];
             break;
         case YCButtonTypeTableViewCell:
-            button = [[YCTableViewCellButton alloc] initWithFrame:CGRectZero];
+            button = [[[YCTableViewCellButton alloc] initWithFrame:CGRectZero] autorelease];
             break;
         default:
             break;

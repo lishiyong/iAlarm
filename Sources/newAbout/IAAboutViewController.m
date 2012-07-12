@@ -146,7 +146,7 @@
         
         _foundABugCell.textLabel.text = @"Found a bug";
 		_foundABugCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        _foundABugCell.imageView.image = [UIImage imageNamed:@"feedback-Icon-Small.png"];
+        _foundABugCell.imageView.image = [UIImage imageNamed:@"foundABug-Icon-Small.png"];
     }
     return _foundABugCell;
 }
@@ -157,7 +157,7 @@
         
         _hasACoolIdeaCell.textLabel.text = @"Have a cool ideal";
 		_hasACoolIdeaCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        _hasACoolIdeaCell.imageView.image = [UIImage imageNamed:@"feedback-Icon-Small.png"];
+        _hasACoolIdeaCell.imageView.image = [UIImage imageNamed:@"hasACoolIdea-Icon-Small.png"];
     }
     return _hasACoolIdeaCell;
 }
@@ -168,7 +168,7 @@
         
         _sayHiCell.textLabel.text = @"Just want to say Hi";
 		_sayHiCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        _sayHiCell.imageView.image = [UIImage imageNamed:@"feedback-Icon-Small.png"];
+        _sayHiCell.imageView.image = [UIImage imageNamed:@"email-Icon-Small.png"];
     }
     return _sayHiCell;
 }
@@ -214,13 +214,30 @@
     return _buyFullVersionCell;
 }
 
-#pragma mark - 
+#pragma mark -
+
+//下面的block需要回到主线程改变_promptView
+- (void)promptViewOKAndCloseWithError:(NSError*)error{
+    if (!error) 
+        _promptView.promptViewStatus = YCPromptViewStatusOK;
+    else 
+        _promptView.promptViewStatus = YCPromptViewStatusFailture;
+    
+    [NSObject cancelPreviousPerformBlockRequestsWithTarget:_promptView];
+    [_promptView performSelector:@selector(dismissAnimated:) withObject:(id)kCFBooleanTrue afterDelay:1.0];
+}
 
 - (void)followOnTwitterByAfterIOS5ForUserName:(NSString*)userName{
     
     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
-    
     ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+    
+    if (_promptView == nil) 
+        _promptView = [[YCPromptView alloc] init];
+    _promptView.promptViewStatus = YCPromptViewStatusWaiting;
+    [_promptView show];
+    [_promptView performSelector:@selector(dismissAnimated:) withObject:(id)kCFBooleanTrue afterDelay:10.0];//超时
+    
     
     [accountStore requestAccessToAccountsWithType:accountType withCompletionHandler:^(BOOL granted, NSError *error) {
         if(granted) {
@@ -230,24 +247,24 @@
             if ([accountsArray count] > 0) {
                 ACAccount *twitterAccount = [accountsArray objectAtIndex:0];
                 
-                NSMutableDictionary *tempDict = [[NSMutableDictionary alloc] init];
+                NSMutableDictionary *tempDict = [[[NSMutableDictionary alloc] init] autorelease];
                 [tempDict setValue:@"sortitapps" forKey:@"screen_name"];
                 [tempDict setValue:@"true" forKey:@"follow"];
                 
-                TWRequest *postRequest = [[TWRequest alloc] initWithURL:[NSURL URLWithString:@"http://api.twitter.com/1/friendships/create.format"] 
+                TWRequest *postRequest = [[[TWRequest alloc] initWithURL:[NSURL URLWithString:@"http://api.twitter.com/1/friendships/create.format"] 
                                                              parameters:tempDict 
-                                                          requestMethod:TWRequestMethodPOST];
+                                                          requestMethod:TWRequestMethodPOST] autorelease];
                 
                 
                 [postRequest setAccount:twitterAccount];
                 
                 [postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
-                    NSString *output = [NSString stringWithFormat:@"HTTP response status: %i", [urlResponse statusCode]];
-                    NSLog(@"%@", output);
-                    NSLog(@"%@",error);
+                    [self performSelectorOnMainThread:@selector(promptViewOKAndCloseWithError:) withObject:error waitUntilDone:NO];
                 }];
                 
             }
+        }else {
+            [_promptView performSelectorOnMainThread:@selector(dismissAnimated:) withObject:(id)kCFBooleanTrue waitUntilDone:NO];
         }
     }];
     
@@ -337,7 +354,37 @@
 }
 
 - (void)didSelectFoundABugCell:(id)sender{
+    MFMailComposeViewController *picker = [[[MFMailComposeViewController alloc] init] autorelease];
+	picker.mailComposeDelegate = self;
     
+    //标题等
+    [picker setToRecipients:[NSArray arrayWithObject:@"iAlarmABC@gmail.com"]];
+	[picker setSubject:@"发现了一个bug"];
+    
+    //内容
+    NSString *deviceInfo=[[[NSString alloc]
+                       initWithFormat:
+                       @"localized model: %@ \nsystem version: %@ \nsystem name: %@ \nmodel: %@",
+                       [[UIDevice currentDevice] localizedModel],
+                       [[UIDevice currentDevice] systemVersion],
+                       [[UIDevice currentDevice] systemName],
+                       [[UIDevice currentDevice] model]] autorelease];
+    
+    NSString *messageBody = [NSString stringWithFormat:@"\n\n\n%@",deviceInfo];
+    [picker setMessageBody:messageBody isHTML:NO];
+    
+    //附件
+    NSString *path = [[[UIApplication sharedApplication] documentsDirectory] stringByAppendingPathComponent:@"alarms.plist"];
+    NSData *attachData = [NSData dataWithContentsOfFile:path];
+    if (attachData) 
+        [picker addAttachmentData:attachData mimeType:@"xml/text" fileName:@""];
+    
+    
+    
+    if ([self.navigationController respondsToSelector:@selector(presentViewController:animated:completion:)]) 
+        [self.navigationController presentViewController:picker animated:YES completion:NO];
+    else 
+        [self.navigationController presentModalViewController:picker animated:YES];
 }
 
 - (void)didSelectHasACoolIdeaCell:(id)sender{
@@ -410,8 +457,7 @@
                                 , [NSValue valueWithSelector:@selector(didSelectSayHiCell:)]
                                 , nil];
     NSArray *otherSelectors = [NSArray arrayWithObjects:
-                                 [NSValue valueWithSelector:@selector(didSelectFeedbackCell:)]
-                               , [NSValue valueWithSelector:@selector(didSelectSettingCell:)]
+                                 [NSValue valueWithSelector:@selector(didSelectSettingCell:)]
                                , [NSNull null]
                                , nil];
     _selectors = [[NSMutableArray arrayWithObjects:rateAndReviewSelectors, followSelectors, feedbackSelectors, otherSelectors, nil] retain];
@@ -508,6 +554,7 @@
     [super viewDidUnload];    
     [_cancelButtonItem release]; _cancelButtonItem = nil;
     [_shareAppEngine release]; _shareAppEngine = nil;
+    [_promptView release]; _promptView = nil;
     
     [_sections release]; _sections = nil;
     [_selectors release]; _selectors = nil;
@@ -528,6 +575,7 @@
 - (void)dealloc {
     [_cancelButtonItem release];
     [_shareAppEngine release];
+    [_promptView release];
     
     [_sections release];
     [_selectors release];

@@ -39,3 +39,5 @@
 #import "YCShadowTableView.h"
 
 #import "YCSoundPlayer.h"
+
+#import "YCPromptView.h"
