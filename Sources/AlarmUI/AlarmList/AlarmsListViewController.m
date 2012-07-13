@@ -286,9 +286,12 @@
     [UIView animateWithDuration:0.0 animations:^{;} completion:^(BOOL finished)
     {
         NSMutableArray *alarms = (NSMutableArray*)[IAAlarm alarmArray];
-
+        
+        NSDate *date = [NSDate date];
         while (self.alarmListTableView.visibleCells.count != alarms.count //如果cell总数小于4，可视cell数目等于所有的cell，说明着移动完成了。
-               && self.alarmListTableView.visibleCells.count != 4) {//可视cell的数目等于4，说明着移动完成了。
+               && self.alarmListTableView.visibleCells.count != 4 //可视cell的数目等于4，说明着移动完成了。
+               && fabs([date timeIntervalSinceNow]) < 5.0) 
+        {
             [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
         }
         

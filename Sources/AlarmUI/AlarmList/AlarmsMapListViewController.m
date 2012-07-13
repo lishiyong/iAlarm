@@ -463,7 +463,7 @@
     
 	switch (saveInfo.saveType) {
 		case IASaveTypeDelete:
-            
+        {    
 			if ([self.mapView.mapPointAnnotations count] == 0) break;//如果地图没有大头针，防系统bug
 			
             [self.mapPointAnnotationViews removeObjectForKey:alarmId];
@@ -503,9 +503,9 @@
 			}
 			
 			break;
-            
+        }    
 		case IASaveTypeUpdate:
-            
+        {    
 			if (notification.object == self) break; //如果是自身视图的大头针拖动，不用做下面的
 			if ([self.mapView.mapPointAnnotations count] == 0) break;//如果地图没有大头针，防系统bug
 			if (!annotation) break;
@@ -522,14 +522,13 @@
             [self.mapView addAnnotation:annotation];
             [self.mapView selectAnnotation:annotation];//刚加上的，竟然无法用动画选中！！
             
-            if ([[[UIDevice currentDevice] systemVersion] floatValue] < 4.2) 
+            NSDate *date = [NSDate date];
+            //if ([[[UIDevice currentDevice] systemVersion] floatValue] < 4.2) 
             {//before 4.2， addAnnotation后 等一会才能选中，等多久，不知道！    
-                [self startOngoingSendingMessageWithTimeInterval:0.1];
-                while (![self.mapView isSelectedForAnnotation:annotation]) {
+                while (![self.mapView isSelectedForAnnotation:annotation] && fabs([date timeIntervalSinceNow]) < 5.0) {
                     [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
                     [self.mapView selectAnnotation:annotation];
                 }
-                [self stopOngoingSendingMessage];
             }
 			
 			if (![self.mapView isVisibleForAnnotation:annotation]) { //如果annotation不在可视范围
@@ -540,9 +539,9 @@
 			}
             
 			break;
-            
+        }
 		case IASaveTypeAdd:
-            
+        {    
 			annotation = [self insertAnnotationWithAlarm:[IAAlarm findForAlarmId:alarmId] atIndex:0];
 			if (!annotation) break;
 			
@@ -554,19 +553,18 @@
             [self.mapView addAnnotation:annotation];
             [self.mapView selectAnnotation:annotation];//刚加上的，竟然无法用动画选中！！
             
+            NSDate *date = [NSDate date];
             //if ([[[UIDevice currentDevice] systemVersion] floatValue] < 4.2) 
             {//before 4.2， addAnnotation后 等一会才能选中，等多久，不知道！所有的版本都检测一下也没坏处 
-                [self startOngoingSendingMessageWithTimeInterval:0.1];
-                while (![self.mapView isSelectedForAnnotation:annotation]) {
+                while (![self.mapView isSelectedForAnnotation:annotation] && fabs([date timeIntervalSinceNow]) < 5.0) {
                     [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
                     [self.mapView selectAnnotation:annotation];
                 }
-                [self stopOngoingSendingMessage];
             }
             
             
 			break;
-            
+        }
 		default:
 			break;
 	}
@@ -966,16 +964,10 @@
                 [self.maskActivityIndicator startAnimating];
             } completion:NULL];
             
-            //app.isIdleTimerDisabled 作为超时标识变量
-            UIApplication *app = [UIApplication sharedApplication];
-            BOOL newStatus = !app.isIdleTimerDisabled;
-            app.idleTimerDisabled = newStatus;
-            [app performSelector:@selector(setIdleTimerDisabled:) onThread:[NSThread currentThread] withInteger:!newStatus waitUntilDone:NO afterDelay:kTimeOutWaitingForUserLocation];
-            
-            
+            NSDate *date = [NSDate date];
             while (![YCSystemStatus sharedSystemStatus].lastLocation 
                    && !self.mapView.userLocation.location 
-                   && app.isIdleTimerDisabled == newStatus) {
+                   && fabs([date timeIntervalSinceNow]) < kTimeOutWaitingForUserLocation) {
                 [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
             }
             
@@ -998,15 +990,15 @@
             id selecting = [self.mapView.mapPointAnnotations objectAtIndex:0];
             [self.mapView selectAnnotation:selecting];
             
+            NSDate *date = [NSDate date];
             //if ([[[UIDevice currentDevice] systemVersion] floatValue] < 4.2) //所有版本都检测一下，也没坏处
             {//before 4.2， addAnnotation后 等一会才能选中，等多久，不知道！
-                [self startOngoingSendingMessageWithTimeInterval:0.1];
-                while (![self.mapView isSelectedForAnnotation:selecting]) 
+                while (![self.mapView isSelectedForAnnotation:selecting]
+                       && fabs([date timeIntervalSinceNow]) < 5.0)
                 {
                     [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
                     [self.mapView selectAnnotation:selecting];
                 }
-                [self stopOngoingSendingMessage];
             }
             
         }

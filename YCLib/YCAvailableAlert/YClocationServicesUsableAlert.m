@@ -45,7 +45,7 @@
 
 //检测定位服务状态。如果不可用或未授权，弹出对话框
 - (void)show{
-    [self showWaitUntilBecomeKeyWindow:nil afterDelay:0.0];
+    [self showWaitUntilBecomeKeyWindow:nil afterDelay:0.1];
 }
 
 - (void)showWaitUntilBecomeKeyWindow:(UIWindow*)waitingWindow afterDelay:(NSTimeInterval)delay{

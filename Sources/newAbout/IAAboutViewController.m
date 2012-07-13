@@ -93,15 +93,12 @@
 		_rateAndReviewCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
         //安上5颗星星	
-        [self performBlock:^{
-            CGRect textFrame = _rateAndReviewCell.textLabel.frame;
-            CGSize realTextSize = [KLabelCellRateAndReview sizeWithFont:_rateAndReviewCell.textLabel.font];
-            
-            UIImageView *starImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"fiveStar.png"]] autorelease];//84*30;
-            CGFloat x = textFrame.origin.x + realTextSize.width + 23.0 + starImageView.frame.size.width/2; //间隔23
-            starImageView.center = CGPointMake(x, 26.0);  //
-            [_rateAndReviewCell addSubview:starImageView];
-        } afterDelay:0.25];
+        CGSize realTextSize = [KLabelCellRateAndReview sizeWithFont:[UIFont boldSystemFontOfSize:17.0]];
+        
+        UIImageView *starImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"fiveStar.png"]] autorelease];//84*30;
+        CGFloat x = 10.0 + realTextSize.width + 23.0 + starImageView.frame.size.width/2; //间隔23,Text从10开始
+        starImageView.center = CGPointMake(x, 26.0);  //
+        [_rateAndReviewCell addSubview:starImageView];
         
     }
     return _rateAndReviewCell;
@@ -142,7 +139,7 @@
 
 - (id)foundABugCell{
     if (_foundABugCell == nil) {
-        _foundABugCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"feedbackCell"];
+        _foundABugCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"foundABugCell"];
         
         _foundABugCell.textLabel.text = @"Found a bug";
 		_foundABugCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -153,7 +150,7 @@
 
 - (id)hasACoolIdeaCell{
     if (_hasACoolIdeaCell == nil) {
-        _hasACoolIdeaCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"feedbackCell"];
+        _hasACoolIdeaCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"hasACoolIdeaCell"];
         
         _hasACoolIdeaCell.textLabel.text = @"Have a cool ideal";
 		_hasACoolIdeaCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -164,7 +161,7 @@
 
 - (id)sayHiCell{
     if (_sayHiCell == nil) {
-        _sayHiCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"feedbackCell"];
+        _sayHiCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"sayHiCell"];
         
         _sayHiCell.textLabel.text = @"Just want to say Hi";
 		_sayHiCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -175,7 +172,7 @@
 
 - (id)settingCell{
     if (_settingCell == nil) {
-        _settingCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"shareAppCell"];
+        _settingCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"settingCell"];
         
         _settingCell.textLabel.text = @"设置";
 		_settingCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -186,7 +183,7 @@
 
 - (id)versionCell{
     if (_versionCell == nil) {
-        _versionCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"shareAppCell"];
+        _versionCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"versionCell"];
         
         _versionCell.selectionStyle = UITableViewCellSelectionStyleNone;    //被选择后，无变化
         _versionCell.textLabel.text = KLabelCellVersion;

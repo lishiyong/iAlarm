@@ -125,9 +125,10 @@ NSString *IARegionKey = @"IARegionKey";
 	[self genRegionArray];
     
     
+    
     //告知，下次提醒
     IARegion *theRegion = [self.regions objectForKey:saveInfo.objId];;
-    if (theRegion) {
+    if (theRegion && lastLocation && [YCSystemStatus sharedSystemStatus].enabledLocation) {
         if (IAUserLocationTypeInner == region.userLocationType) {
             YCPromptView *promptView = [[[YCPromptView alloc] init] autorelease];
             promptView.promptViewStatus = YCPromptViewStatusWarn;

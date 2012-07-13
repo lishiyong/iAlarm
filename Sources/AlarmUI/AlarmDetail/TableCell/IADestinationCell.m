@@ -59,6 +59,9 @@
 }
 
 - (void)startMoveArrowAnimating{
+    if (self.window == nil) //没有显示
+        return;
+    
     [self.moveArrowImageView stopAnimating];
     [self.moveArrowImageView startAnimating];
     if (moving) {
@@ -141,13 +144,13 @@
     switch (_cellStatus) {
         case IADestinationCellStatusNone:
         {
-            self.titleLabel.hidden = NO;
-            self.addressLabel.hidden = YES;
-            self.distanceLabel.hidden = YES;            
-            self.distanceActivityIndicatorView.hidden = YES;
-            self.locatingImageView.hidden = YES;
-            self.locatingLabel.hidden = YES;
-            self.moveArrowImageView.hidden = YES;
+            self.titleLabel.alpha = 1.0;
+            self.addressLabel.alpha = 0.0;
+            self.distanceLabel.alpha = 0.0;            
+            self.distanceActivityIndicatorView.alpha = 0.0;
+            self.locatingImageView.alpha = 0.0;
+            self.locatingLabel.alpha = 0.0;
+            self.moveArrowImageView.alpha = 0.0;
             
             self.accessoryView = nil;
             self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -157,19 +160,19 @@
         {
             if (self.distanceLabel.text != nil) {
                 [self setAddressLabelWithLarge:NO]; //地址要缩小
-                self.distanceLabel.hidden = NO;             
+                self.distanceLabel.alpha = 1.0;             
             }else {
                 [self setAddressLabelWithLarge:YES]; //地址要大
-                self.distanceLabel.hidden = YES; 
+                self.distanceLabel.alpha = 0.0; 
             }
             
-            self.titleLabel.hidden = NO;
-            self.addressLabel.hidden = NO;
-            //self.distanceLabel.hidden = NO;            
-            self.distanceActivityIndicatorView.hidden = YES;
-            self.locatingImageView.hidden = YES;
-            self.locatingLabel.hidden = YES;
-            self.moveArrowImageView.hidden = YES;
+            self.titleLabel.alpha = 1.0;
+            self.addressLabel.alpha = 1.0;
+            //self.distanceLabel.alpha = 1.0;            
+            self.distanceActivityIndicatorView.alpha = 0.0;
+            self.locatingImageView.alpha = 0.0;
+            self.locatingLabel.alpha = 0.0;
+            self.moveArrowImageView.alpha = 0.0;
             
             self.accessoryView = nil;
             self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -178,14 +181,14 @@
         case IADestinationCellStatusNormalWithoutDistance:
         {
             [self setAddressLabelWithLarge:YES]; //地址要大
-
-            self.titleLabel.hidden = NO;
-            self.addressLabel.hidden = NO;
-            self.distanceLabel.hidden = YES;            
-            self.distanceActivityIndicatorView.hidden = YES;
-            self.locatingImageView.hidden = YES;
-            self.locatingLabel.hidden = YES;
-            self.moveArrowImageView.hidden = YES;
+            
+            self.titleLabel.alpha = 1.0;
+            self.addressLabel.alpha = 1.0;
+            self.distanceLabel.alpha = 0.0;            
+            self.distanceActivityIndicatorView.alpha = 0.0;
+            self.locatingImageView.alpha = 0.0;
+            self.locatingLabel.alpha = 0.0;
+            self.moveArrowImageView.alpha = 0.0;
             
             
             self.accessoryView = nil;
@@ -194,13 +197,13 @@
         }   
         case IADestinationCellStatusNormalWithoutDistanceAndAddress:
         {
-            self.titleLabel.hidden = NO;
-            self.addressLabel.hidden = YES;
-            self.distanceLabel.hidden = YES;            
-            self.distanceActivityIndicatorView.hidden = YES;
-            self.locatingImageView.hidden = YES;
-            self.locatingLabel.hidden = YES;
-            self.moveArrowImageView.hidden = NO;
+            self.titleLabel.alpha = 1.0;
+            self.addressLabel.alpha = 0.0;
+            self.distanceLabel.alpha = 0.0;            
+            self.distanceActivityIndicatorView.alpha = 0.0;
+            self.locatingImageView.alpha = 0.0;
+            self.locatingLabel.alpha = 0.0;
+            self.moveArrowImageView.alpha = 1.0;
             
             [self setMoveArrow:YES];//开始播放箭头
             
@@ -211,14 +214,14 @@
         case IADestinationCellStatusNormalMeasuringDistance:
         {
             [self setAddressLabelWithLarge:NO]; //地址要缩小
-
-            self.titleLabel.hidden = NO;
-            self.addressLabel.hidden = NO;
-            self.distanceLabel.hidden = YES;            
-            self.distanceActivityIndicatorView.hidden = NO;
-            self.locatingImageView.hidden = YES;
-            self.locatingLabel.hidden = YES;
-            self.moveArrowImageView.hidden = YES;
+            
+            self.titleLabel.alpha = 1.0;
+            self.addressLabel.alpha = 1.0;
+            self.distanceLabel.alpha = 0.0;            
+            self.distanceActivityIndicatorView.alpha = 1.0;
+            self.locatingImageView.alpha = 0.0;
+            self.locatingLabel.alpha = 0.0;
+            self.moveArrowImageView.alpha = 0.0;
             
             [self.distanceActivityIndicatorView startAnimating]; //测量地址等待
             
@@ -229,13 +232,13 @@
         case IADestinationCellStatusLocating:
         case IADestinationCellStatusReversing:
         {
-            self.titleLabel.hidden = YES;
-            self.addressLabel.hidden = YES;
-            self.distanceLabel.hidden = YES;            
-            self.distanceActivityIndicatorView.hidden = YES;
-            self.locatingImageView.hidden = NO;
-            self.locatingLabel.hidden = NO;
-            self.moveArrowImageView.hidden = YES;
+            self.titleLabel.alpha = 0.0;
+            self.addressLabel.alpha = 0.0;
+            self.distanceLabel.alpha = 0.0;            
+            self.distanceActivityIndicatorView.alpha = 0.0;
+            self.locatingImageView.alpha = 1.0;
+            self.locatingLabel.alpha = 1.0;
+            self.moveArrowImageView.alpha = 0.0;
             
             UIActivityIndicatorView *acView = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
             [acView startAnimating];
@@ -257,39 +260,6 @@
 } completion:NULL];
     
 }
-
-/*
-- (void)observeValueForKeyPath:(NSString *)keyPath
-                      ofObject:(id)object
-                        change:(NSDictionary *)change
-                       context:(void *)context
-{
-	
-	if ( [keyPath isEqualToString:@"text"]) {
-		if (object == self.titleLabel) {
-			CGRect newTitleFrame = [self.titleLabel textRectForBounds:self.titleLabel.frame limitedToNumberOfLines:1];
-			
-			//计算address的frame
-			CGFloat addressLabelX = newTitleFrame.origin.x + newTitleFrame.size.width + 6.0; //两个label间隔xx.0
-			CGFloat addressLabelW = 260.0 - addressLabelX; //addressLabel在260处结束
-			CGFloat addressLabelY = self.addressLabel.frame.origin.y;
-			CGFloat addressLabelH = self.addressLabel.frame.size.height;
-			
-			self.addressLabel.frame = CGRectMake(addressLabelX, addressLabelY, addressLabelW, addressLabelH);
-			
-			
-			//计算distance的frame
-			CGFloat distanceLabelX = newTitleFrame.origin.x + newTitleFrame.size.width + 3.0; //两个label间隔xx.0
-			CGFloat distanceLabelW = 260.0 - distanceLabelX; //addressLabel在260处结束
-			CGFloat distanceLabelY = self.distanceLabel.frame.origin.y;
-			CGFloat distanceLabelH = self.distanceLabel.frame.size.height;
-			
-			self.distanceLabel.frame = CGRectMake(distanceLabelX, distanceLabelY, distanceLabelW, distanceLabelH);
-		}
-	}
-
-}
- */
 
 - (void)handleStandardLocationDidFinish: (NSNotification*) notification{
     
@@ -364,26 +334,28 @@
 			cell = (IADestinationCell *)oneObject;
 		}
 	}
+    
 	cell.titleLabel.text = KLabelAlarmPostion;
 	cell.addressLabel.text = nil;
 	cell.distanceLabel.text = nil;
 	cell.locatingLabel.text = nil;
     
     [cell setWidthOfAddressLabelAndDistanceLabel];
+    [cell setAddressLabelWithLarge:YES];
+    [cell setCellStatus:IADestinationCellStatusNone];
     
     cell.moveArrowImageView.animationImages = [NSArray arrayWithObjects:[UIImage imageNamed:@"IAMoveArrow0.png"], [UIImage imageNamed:@"IAMoveArrow1.png"],[UIImage imageNamed:@"IAMoveArrow2.png"],[UIImage imageNamed:@"IAMoveArrow3.png"],[UIImage imageNamed:@"IAMoveArrow4.png"],[UIImage imageNamed:@"IAMoveArrow5.png"],nil];
     cell.moveArrowImageView.animationDuration = 0.4;
     cell.moveArrowImageView.animationRepeatCount = 2;
     
-    	
-    [cell registerNotifications];
-    
+    	    
 	return cell; 
 }
 
 
 
 - (void)dealloc {
+    NSLog(@"IADestinationCell dealloc");
     [self unRegisterNotifications];
 
 	[locatingImageView release];

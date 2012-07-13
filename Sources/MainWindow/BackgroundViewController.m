@@ -778,21 +778,14 @@
 	NSNotification *aNotification = [NSNotification notificationWithName:IACurrentLocationButtonPressedNotification object:self userInfo:nil];
 	[notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
     
-    //地图移动期间禁止用户操作
-    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-    //加解禁的保险
-    [self performBlock:^{
-        if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
-            [[UIApplication sharedApplication] endIgnoringInteractionEvents];
-    } afterDelay:2.0];
-    
     [UIView animateWithDuration:0.0 animations:^{;} completion:^(BOOL finished)
      {   
-         [self startOngoingSendingMessageWithTimeInterval:0.5];
-         while (self.currentLocationBarButtonItem.enabled && [UIApplication sharedApplication].isIgnoringInteractionEvents) {
+         //地图移动期间禁止用户操作
+         [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+         NSDate *date = [NSDate date];
+         while (self.currentLocationBarButtonItem.enabled && fabs([date timeIntervalSinceNow]) < 2.0) {
              [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
          }
-         [self stopOngoingSendingMessage];
          if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
              [[UIApplication sharedApplication] endIgnoringInteractionEvents];
          
@@ -805,21 +798,14 @@
 	NSNotification *aNotification = [NSNotification notificationWithName:IAFocusButtonPressedNotification object:self userInfo:nil];
 	[notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
     
-    //地图移动期间禁止用户操作
-    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-    //加解禁的保险
-    [self performBlock:^{
-        if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
-            [[UIApplication sharedApplication] endIgnoringInteractionEvents];
-    } afterDelay:2.5];
-    
     [UIView animateWithDuration:0.0 animations:^{;} completion:^(BOOL finished)
      {   
-         [self startOngoingSendingMessageWithTimeInterval:0.5];
-         while (self.focusBarButtonItem.enabled && [UIApplication sharedApplication].isIgnoringInteractionEvents) {
+         //地图移动期间禁止用户操作
+         [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+         NSDate *date = [NSDate date]; 
+         while (self.focusBarButtonItem.enabled && fabs([date timeIntervalSinceNow]) < 2.5) {
              [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
          }
-         [self stopOngoingSendingMessage];
          if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
              [[UIApplication sharedApplication] endIgnoringInteractionEvents];
          

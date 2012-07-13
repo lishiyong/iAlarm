@@ -582,7 +582,6 @@
 		self->destionationCellDescription.didSelectCellSelector = @selector(didSelectNavDestionationCell:); //向上动画，与其他的左右动画cell有区别
         
 	}
-	
 	return self->destionationCellDescription;
 }
 
@@ -635,12 +634,6 @@
 	self.triggerCellDescription.tableViewCell.detailTextLabel.enabled = enabled;
 	
 	self.destionationCellDescription.tableViewCell.userInteractionEnabled = enabled;
-    
-	//self.navigationController.navigationBar.userInteractionEnabled = enabled;
-	/*
-     //addressCellDescription 不变灰，所以只userInteractionEnabled
-     //self.addressCellDescription.tableViewCell.userInteractionEnabled = enabled;
-	 */
     
 	self.notesCellDescription.tableViewCell.userInteractionEnabled = enabled;
 	self.notesCellDescription.tableViewCell.textLabel.enabled = enabled;
@@ -878,9 +871,9 @@
 {
 	self->endingManual = NO;
 	self->locatingAndReversingStatus = IALocatingAndReversingStatusLocating;
-	
+	 
 	//检测定位服务状态。如果不可用或未授权，弹出对话框
-	[self.locationServicesUsableAlert showWaitUntilBecomeKeyWindow:self.view.window afterDelay:0.0];
+	[self.locationServicesUsableAlert showWaitUntilBecomeKeyWindow:self.view.window afterDelay:0.5];
     
     //定位服务没有开启，或没有授权时候：收到失败数据就直接结束定位
 	BOOL enabledLocation = [[YCSystemStatus sharedSystemStatus] enabledLocation];
@@ -888,7 +881,6 @@
 		self.bestEffortAtLocation = nil;
 		[self performSelector:@selector(endLocation) withObject:nil afterDelay:0.1];  //数据更新后，等待x秒
 	}
-	
 	[self setTableCellsUserInteractionEnabled:NO]; //定位结束前不允许操作其他
 	
 	//cell

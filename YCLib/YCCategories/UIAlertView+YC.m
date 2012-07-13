@@ -25,12 +25,19 @@
 }
 
 - (void)showWaitUntilBecomeKeyWindow:(UIWindow*)waitingWindow afterDelay:(NSTimeInterval)delay{
+    
+    if (waitingWindow == nil) 
+        return;
+    
     //
     [self unRegisterNotifications];
     [self registerNotifications];
     
+    
     //
-    while (!waitingWindow.isKeyWindow || UIApplicationStateInactive == [UIApplication sharedApplication].applicationState) 
+    NSDate *date = [NSDate date];
+    while ((!waitingWindow.isKeyWindow || UIApplicationStateInactive == [UIApplication sharedApplication].applicationState)
+           && fabs([date timeIntervalSinceNow]) < 30.0 ) //最长30秒
     {
         if (UIApplicationStateBackground  == [UIApplication sharedApplication].applicationState) //都退到后台了
             return;
@@ -52,7 +59,7 @@
             [self show];
         }else{
             //递归
-            [self performSelector:@selector(showWaitUntilBecomeKeyWindow:afterDelay:) withObject:waitingWindow withDouble:delay afterDelay:0.0];
+            [self performSelector:@selector(showWaitUntilBecomeKeyWindow:afterDelay:) withObject:waitingWindow withDouble:delay afterDelay:0.1];
         }
     } afterDelay:delay];
     
