@@ -159,6 +159,8 @@
         [_window addGestureRecognizer:tapGesture];
         
     }
+    [_lastKeyWindow release];
+    _lastKeyWindow = [[UIApplication sharedApplication].keyWindow retain];
     [_window makeKeyAndVisible];
     
     CGPoint centerPoint = YCRectCenter(_window.bounds);
@@ -185,13 +187,13 @@
         [UIView transitionWithView:_window duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
             [self removeFromSuperview];
         } completion:^(BOOL finished) {
-            [_window resignKeyWindow];
+            [_lastKeyWindow makeKeyWindow];
             [_window release];
             _window = nil;
         }];
     }else {
         [self removeFromSuperview];
-        [_window resignKeyWindow];
+        [_lastKeyWindow makeKeyWindow];
         [_window release];
         _window = nil;
     }
@@ -200,6 +202,7 @@
 - (void)dealloc{
     NSLog(@"YCPromptView dealloc");
     [_window release];
+    [_lastKeyWindow release];
     [_iconView release];
     [_textLabel release];
     [super dealloc];

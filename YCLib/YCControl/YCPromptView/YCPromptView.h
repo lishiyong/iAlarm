@@ -19,6 +19,8 @@ typedef NSUInteger YCPromptViewStatus;
 
 @interface YCPromptView : UIControl <UIGestureRecognizerDelegate>{
     UIWindow *_window;
+    UIWindow *_lastKeyWindow;
+    
     UIView *_iconView;
     UILabel *_textLabel;
 }

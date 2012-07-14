@@ -24,15 +24,16 @@
 	[notificationCenter removeObserver:self	name: UIApplicationDidEnterBackgroundNotification object: nil];
 }
 
-- (void)showWaitUntilBecomeKeyWindow:(UIWindow*)waitingWindow afterDelay:(NSTimeInterval)delay{
+- (void)showWaitUntilBecomeKeyWindow:(UIWindow*)waitingWindow afterDelay:(NSTimeInterval)delay{    
     
-    if (waitingWindow == nil) 
+    if (waitingWindow == nil) {
+        [self show];
         return;
+    }
     
     //
     [self unRegisterNotifications];
     [self registerNotifications];
-    
     
     //
     NSDate *date = [NSDate date];

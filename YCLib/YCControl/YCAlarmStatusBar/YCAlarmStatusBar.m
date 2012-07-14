@@ -64,6 +64,8 @@ static YCAlarmStatusBar *bar = nil;
         self.backgroundColor = [UIColor clearColor];
         autoHide = YES;
         autoHideInterval = 8.0;
+        self.hidden = YES;
+        self.alpha = 0.0;
         
         backgroundLayer = [[CALayer layer] retain];
         backgroundLayer.position = kBackgroundPosition;
@@ -119,12 +121,9 @@ static YCAlarmStatusBar *bar = nil;
     
     [UIView transitionWithView:self
                       duration:0.25
-                       options:UIViewAnimationOptionShowHideTransitionViews | UIViewAnimationOptionTransitionCrossDissolve
-                    animations:^{ 
-                        self.hidden = YES;
-                        [self resignKeyWindow];
-                    }
-                    completion:NULL];
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{self.alpha = 0.0;}
+                    completion:^(BOOL finished) {self.hidden = YES;}];
 
 }
 
@@ -142,24 +141,18 @@ static YCAlarmStatusBar *bar = nil;
     }
     
     if (animated) {
+        if (NO == hidden)  //alpha需要不隐藏
+            self.hidden = hidden;
+        
         [UIView transitionWithView:self
                           duration:0.25
-                           options:UIViewAnimationOptionShowHideTransitionViews | UIViewAnimationOptionTransitionCrossDissolve
-                        animations:^{ 
-                            self.hidden = hidden;
-                            if (hidden) 
-                                [self resignKeyWindow];
-                            else
-                                [self makeKeyWindow];
-                        }
-                        completion:NULL];
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{self.alpha = hidden ? 0.0 : 1.0;}
+                        completion:^(BOOL finished) {self.hidden = hidden;}];
         
     }else{
         self.hidden = hidden;
-        if (hidden) 
-            [self resignKeyWindow];
-        else
-            [self makeKeyWindow];
+        self.alpha = hidden ? 0.0 : 1.0;
     }
     
     
@@ -178,6 +171,7 @@ static YCAlarmStatusBar *bar = nil;
     alarmIconLayer.hidden = hidden;
     oneLabel.text = nil;
     [CATransaction commit];
+    
 }
 
 - (CGPoint)alarmIconCenter{
