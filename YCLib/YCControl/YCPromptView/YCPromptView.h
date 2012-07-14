@@ -17,7 +17,7 @@ enum {
 
 typedef NSUInteger YCPromptViewStatus;
 
-@interface YCPromptView : UIControl{
+@interface YCPromptView : UIControl <UIGestureRecognizerDelegate>{
     UIWindow *_window;
     UIView *_iconView;
     UILabel *_textLabel;

@@ -98,7 +98,7 @@
 
 - (id)initWithCoder:(NSCoder *)aDecoder{
     self = [super initWithCoder:aDecoder];
-    if (self) {        
+    if (self) {
         [self registerNotifications];
     }
     return self;
@@ -125,8 +125,8 @@
 	return cell; 
 }
 
-
 - (void)dealloc {
+    NSLog(@"AlarmsListCell dealloc");
     [self unRegisterNotifications];
     
     [_distanceString release];
@@ -140,8 +140,12 @@
     [super dealloc];
 }
 
-
 - (void)handleStandardLocationDidFinish: (NSNotification*) notification{
+    
+    if (self.window == nil) { //cell 没有在显示
+        self.alarm = nil;
+        return;
+    }
     
     CLLocation *curLocation = [[notification userInfo] objectForKey:IAStandardLocationKey];
     BOOL curLocationAndRealCoordinateIsValid = (curLocation && CLLocationCoordinate2DIsValid(self.alarm.realCoordinate));
@@ -178,6 +182,12 @@
 }
 
 - (void)handleApplicationDidBecomeActive: (NSNotification*) notification{
+    
+    if (self.window == nil) { //cell 没有在显示
+        self.alarm = nil;
+        return;
+    }
+    
     //进入前台，模拟发送定位数据。防止真正的定位数据迟迟不发。
     NSDictionary *userInfo = nil;
     CLLocation *curLocation = [YCSystemStatus sharedSystemStatus].lastLocation;

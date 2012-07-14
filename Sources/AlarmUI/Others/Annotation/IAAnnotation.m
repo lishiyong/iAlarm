@@ -236,6 +236,7 @@
 }
 
 - (void)dealloc {
+    NSLog(@"IAAnnotation dealloc");
     [self unRegisterNotifications];
     [_identifier release];
     [_alarm release];

@@ -278,6 +278,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 }
 
 - (void)dealloc {
+    NSLog(@"IAAlarm dealloc");
 	[alarmId release];
 	[alarmName release];
 	

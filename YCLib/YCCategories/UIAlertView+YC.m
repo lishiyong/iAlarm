@@ -36,9 +36,11 @@
     
     //
     NSDate *date = [NSDate date];
-    while ((!waitingWindow.isKeyWindow || UIApplicationStateInactive == [UIApplication sharedApplication].applicationState)
-           && fabs([date timeIntervalSinceNow]) < 30.0 ) //最长30秒
+    while ((!waitingWindow.isKeyWindow || UIApplicationStateInactive == [UIApplication sharedApplication].applicationState)) 
     {
+        if (fabs([date timeIntervalSinceNow]) > 30.0 ) //最长等30秒
+            return;
+        
         if (UIApplicationStateBackground  == [UIApplication sharedApplication].applicationState) //都退到后台了
             return;
         

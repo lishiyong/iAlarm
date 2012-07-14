@@ -239,8 +239,8 @@
 	AlarmsListCell *cell = (AlarmsListCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	if (cell == nil) {
 		cell = [AlarmsListCell viewWithNibName:nil bundle:nil];
-		cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;//展示按钮
-		cell.selectionStyle = UITableViewCellSelectionStyleNone;  //被选择后，无变化
+		//cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;//展示按钮
+		//cell.selectionStyle = UITableViewCellSelectionStyleNone;  //被选择后，无变化
 	}
 	
 	NSArray *alarms = [IAAlarm alarmArray];

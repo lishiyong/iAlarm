@@ -152,6 +152,12 @@
         _window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
         _window.backgroundColor = [UIColor clearColor];
         _window.windowLevel = UIWindowLevelNormal;
+        
+        UITapGestureRecognizer *tapGesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selfPressed:)] autorelease];
+        tapGesture.delegate = self;
+        tapGesture.numberOfTapsRequired = 1;//单点
+        [_window addGestureRecognizer:tapGesture];
+        
     }
     [_window makeKeyAndVisible];
     
@@ -192,6 +198,7 @@
 }
 
 - (void)dealloc{
+    NSLog(@"YCPromptView dealloc");
     [_window release];
     [_iconView release];
     [_textLabel release];
