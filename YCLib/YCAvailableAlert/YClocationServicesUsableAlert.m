@@ -77,9 +77,7 @@
             
             
         }else {
-            // iOS 4.x code
-            [UIUtility simpleAlertBody:kAlertNeedLocationServicesBody alertTitle:kAlertNeedLocationServicesTitle cancelButtonTitle:kAlertBtnOK delegate:nil];
-            
+            // iOS 4.x code            
             if (!alert) 
                 alert = [[UIAlertView alloc] initWithTitle:kAlertNeedLocationServicesTitle
                                                    message:kAlertNeedLocationServicesBody 

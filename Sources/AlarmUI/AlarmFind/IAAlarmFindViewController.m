@@ -678,6 +678,14 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
 
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    return @" "; //4.2前没这个不行
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section{
+    return @" "; //4.2前没这个不行
+}
+
 #pragma mark - UIScrollViewDelegate
 /*
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset{

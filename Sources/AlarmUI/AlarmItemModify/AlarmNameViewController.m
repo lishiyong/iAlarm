@@ -6,6 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCLib.h"
 #import "UIColor+YC.h"
 #import "NSString+YC.h"
 #import "AlarmModifyTableViewController.h"
@@ -90,8 +91,11 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 65;
+    return 65.0;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    return @" "; //4.2前没这个不行
+}
 
 @end

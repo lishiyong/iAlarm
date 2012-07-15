@@ -1530,20 +1530,24 @@
     
 }
 
-
-
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)annotationView
 {	
     //警示圈
 	IAAnnotation *annotation = (IAAnnotation*)annotationView.annotation;
 	if ([annotation isKindOfClass:[IAAnnotation class]]){
         IAAlarm *theAlarm = annotation.alarm;
-        [_circleOverlay release];
-        _circleOverlay =  [[MKCircle circleWithCenterCoordinate:annotation.coordinate radius:theAlarm.radius] retain];
-        [self.mapView addOverlay:_circleOverlay];
         
-        //圈是否显示
-        [self hideOrShowCircleOverlayView:_circleOverlay];
+        [self performBlock:^{ //4.x 系统会先调用didSelectAnnotationView，在调用didDeselectAnnotationView；5.x与之相反。
+            
+            [_circleOverlay release];
+            _circleOverlay =  [[MKCircle circleWithCenterCoordinate:annotation.coordinate radius:theAlarm.radius] retain];
+            [self.mapView addOverlay:_circleOverlay];
+            
+            //圈是否显示
+            [self hideOrShowCircleOverlayView:_circleOverlay];
+            
+        } afterDelay:0.1];
+        
 	}
 }
 
@@ -1559,14 +1563,13 @@
             _circleOverlay = nil;
         }
 	}  
-     
 }
- 
 
+ 
 #define kTimeOutForReverseUserLocation 30.0
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
-{
+{    
     if (userLocation.location == nil) //ios5.0 没有取得用户位置的时候也回调这个方法
         return;
     

@@ -837,9 +837,6 @@ static id single = nil;
 - (id)init{
     self = [super init];
     if (self) {
-        //提前初始化好，省得打开时候响应的慢
-        [self _unknownPersonViewControllerWithIAPerson:nil];
-        [self _personViewControllerWithIAPerson:nil];
         _currentViewController = nil;
     }
     return self;

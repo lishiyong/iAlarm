@@ -39,6 +39,7 @@
 }
 
 - (void)dealloc{
+    NSLog(@"YCReverseGeocoderBefore5 dealloc");
     if (_resverseGeocoder.querying)
         [_resverseGeocoder cancel];
     [_resverseGeocoder release];
@@ -63,17 +64,16 @@
         return NO;
 }
 
-
-- (void)reverseGeocodeLocation:(CLLocation *)location completionHandler:(YCReverseGeocodeCompletionHandler)completionHandler{
-    
+- (void)reverseGeocodeLocation:(CLLocation *)location completionHandler:(YCReverseGeocodeCompletionHandler)completionHandler{    
     if (_resverseGeocoder.querying) return;
+    [self retain]; //如果调用者没有retain，也可以查询
         
     _reverseGeocodeCompletionHandler = [completionHandler copy] ;
+    [_resverseGeocoder release];
     _resverseGeocoder = [[MKReverseGeocoder alloc] initWithCoordinate:location.coordinate];
     _resverseGeocoder.delegate = self;
     [_resverseGeocoder start];
     [self performSelector:@selector(_doFailReverseGeocodeWithTimeoutError) withObject:nil afterDelay:_timeout]; //
-    
 }
 
 #pragma mark - MKReverseGeocoderDelegate
@@ -83,16 +83,21 @@
         YCPlacemark *ycplacemark = [[[YCPlacemark alloc] initWithPlacemark:placemark] autorelease];
         _reverseGeocodeCompletionHandler(ycplacemark,nil);
     }
-    
     [self _releaseResoure];
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_doFailReverseGeocodeWithTimeoutError) object:nil];
+    
+    //对应开始的retain
+    [self performSelector:@selector(release) withObject:nil afterDelay:0.1];
 }
 
 - (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFailWithError:(NSError *)error{
+        
     if (_reverseGeocodeCompletionHandler) 
         _reverseGeocodeCompletionHandler(nil,error);
     [self _releaseResoure];
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_doFailReverseGeocodeWithTimeoutError) object:nil];
+    
+    [self performSelector:@selector(release) withObject:nil afterDelay:0.1];
 }
 
 #pragma mark - 工具
@@ -105,11 +110,10 @@
 }
 
 - (void)_releaseResoure{
-    if (_resverseGeocoder) {
-        [_resverseGeocoder release];
-        _resverseGeocoder = nil;
-    }
-
+   
+    if (_resverseGeocoder.querying) 
+        [_resverseGeocoder cancel];
+    
     if (_reverseGeocodeCompletionHandler) {
         [_reverseGeocodeCompletionHandler release];
         _reverseGeocodeCompletionHandler = nil;
