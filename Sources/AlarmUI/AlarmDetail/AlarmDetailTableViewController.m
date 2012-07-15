@@ -560,7 +560,7 @@
 }
 
 
-- (void) didSelectNavDestionationCell:(id)sender{
+- (void)didSelectNavDestionationCell:(id)sender{
     
     IAAlarm *theAlarm = self.alarmTemp;
     [IAContactManager sharedManager].currentViewController = self.navigationController;
@@ -770,11 +770,14 @@
     if (alarmMessage) 
         [userInfo setObject:alarmMessage forKey:@"kMessageStringKey"];
     
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 4.2) {// iOS 4.2 带个闹钟的图标
-        NSString *iconString = @"\ue325";//这是铃铛🔔
-        alertTitle =  [NSString stringWithFormat:@"%@%@",iconString,alertTitle]; 
-        [userInfo setObject:iconString forKey:@"kIconStringKey"];
-    }
+    NSString *iconString = nil;//这是铃铛🔔
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) 
+        iconString = @"\U0001F514";
+    else 
+        iconString = @"\ue325";
+    
+    alertTitle =  [NSString stringWithFormat:@"%@ %@",iconString,alertTitle]; 
+    [userInfo setObject:iconString forKey:@"kIconStringKey"];
     
     
     NSString *notificationBody = alertTitle;

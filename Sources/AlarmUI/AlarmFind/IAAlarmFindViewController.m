@@ -225,11 +225,14 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
         if (alarmMessage) 
             [userInfo setObject:alarmMessage forKey:@"kMessageStringKey"];
         
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 4.2) {// iOS 4.2 带个闹钟的图标
-            NSString *iconString = @"\ue02c";//这是钟表🕒
-            alertTitle =  [NSString stringWithFormat:@"%@%@",iconString,alertTitle]; 
-            [userInfo setObject:iconString forKey:@"kIconStringKey"];
-        }
+        NSString *iconString = nil;//这是钟表🕒
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) 
+            iconString = @"\U0001F558";
+        else 
+            iconString = @"\ue02c";
+        
+        alertTitle =  [NSString stringWithFormat:@"%@%@",iconString,alertTitle]; 
+        [userInfo setObject:iconString forKey:@"kIconStringKey"];
         
         
         NSString *notificationBody = alertTitle;
