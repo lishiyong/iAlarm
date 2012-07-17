@@ -333,10 +333,14 @@
 		
 		if (aAnnotationView ==nil ) continue;
         
+        UIApplication *app = [UIApplication sharedApplication];
         if ([self.mapView isVisibleForAnnotation:aAnnotation] 
             && [self.mapView isSelectedForAnnotation:aAnnotation]
-            && [self isViewAppeared]) 
-            [aAnnotationView setEditing:theEditing animated:YES];//可视 && 选中 && 本视图在显示 动画切换
+            && [self isViewAppeared]
+            && app.applicationState == UIApplicationStateActive
+            ) //可视 && 选中 && 本视图在显示 动画切换 && 前台活动
+            
+            [aAnnotationView setEditing:theEditing animated:YES];
         else
             aAnnotationView.editing = theEditing;
 		

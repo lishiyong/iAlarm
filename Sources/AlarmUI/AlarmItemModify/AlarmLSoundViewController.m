@@ -6,8 +6,8 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCLib.h"
 #import "YCSoundPlayer.h"
-#import "UIUtility.h"
 #import "YCSound.h"
 #import "DicManager.h"
 #import "AlarmLSoundViewController.h"
@@ -18,21 +18,6 @@
 @synthesize lastIndexPath;
 @synthesize soundPlayerCurrent;
 
-/*
--(id)soundPlays{
-	if (soundPlays == nil) {
-		NSArray *sounds = [[DicManager soundDictionary] allValues];
-		soundPlays = [[NSMutableDictionary alloc] initWithCapacity:sounds.count];
-		
-		for (int i=0; i<sounds.count;i++) {
-			YCSound *sound = [sounds objectAtIndex:i];
-			YCSoundPlayer *soundPlayer= [YCSoundPlayer soundPlayerWithSoundFileName:sound.soundFileName];
-			[(NSMutableDictionary*)soundPlays setObject:soundPlayer forKey:sound.soundId];
-		}
-	}
-	return soundPlays;
-}
- */
 
 -(id)soundPlays{
 	if (soundPlays == nil) {
@@ -55,8 +40,15 @@
 
 //覆盖父类
 - (void)saveData{	
-	//YCSound *sound = [DicManager soundForSortId:lastIndexPath.row];
-	NSInteger soundSortId = [self gernarlRowInTableView:self.tableView ForIndexPath:lastIndexPath];
+	NSInteger soundSortId = 0;
+    if (lastIndexPath) {
+        if (lastIndexPath.section == 0) {
+            soundSortId = lastIndexPath.row + 1;
+        }else if (lastIndexPath.section == 1){ //无声音
+            soundSortId = 0;
+        }
+    }
+    
 	YCSound *sound = [DicManager soundForSortId:soundSortId];
 	self.alarm.sound = sound;	
 }
@@ -113,10 +105,10 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	switch (section) {
 		case 0:
-			return 1;  //无声音
+            return [DicManager soundDictionary].count - 1;
 			break;
 		case 1:
-			return [DicManager soundDictionary].count - 1;
+            return 1;  //无声音
 			break;
 		default:
 			return 0;
@@ -140,10 +132,10 @@
 	NSInteger soundRow = 0;
 	switch (indexPath.section) {
 		case 0:
-			soundRow = 0;  //无声音
+            soundRow = indexPath.row+1; //从无声音下的第一个开始
 			break;
 		case 1:
-			soundRow = indexPath.row+1; //从无声音下的第一个开始
+            soundRow = 0;  //无声音
 			break;
 		default:
 			break;
@@ -156,11 +148,11 @@
 		
 		if ([rep.soundId isEqualToString:self.alarm.sound.soundId]) {
 			cell.accessoryType = UITableViewCellAccessoryCheckmark;
-			cell.textLabel.textColor = [UIUtility checkedCellTextColor];
+			cell.textLabel.textColor = [UIColor tableCellBlueTextYCColor];
 			self.lastIndexPath = indexPath;
 		}else {
 			cell.accessoryType = UITableViewCellAccessoryNone;
-			cell.textLabel.textColor = [UIUtility defaultCellTextColor];
+			cell.textLabel.textColor = [UIColor darkTextColor];
 		}
 	}
 	
@@ -170,16 +162,6 @@
 
 #pragma mark -
 #pragma mark Table view delegate
-
-//row总数 --目前无用
--(NSInteger)totalRowForTableView:(UITableView *)tableView{
-	NSInteger retVal =0;
-	NSInteger sectionNumber =  [tableView numberOfSections];
-	for (int i =0; i < sectionNumber; i++) {
-		retVal += [tableView numberOfRowsInSection:i];
-	}
-	return retVal;
-}
 
 //在整个tableView中indexPath的row在位置
 -(NSInteger)gernarlRowInTableView:(UITableView *)tableView ForIndexPath:(NSIndexPath *)indexPath {
@@ -193,8 +175,6 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    //int newRow = [indexPath row];
-    //int oldRow = (lastIndexPath != nil) ? [lastIndexPath row] : -1;
 	int newRow = [self gernarlRowInTableView:tableView ForIndexPath:indexPath];
 	int oldRow = (lastIndexPath != nil) ? [self gernarlRowInTableView:tableView ForIndexPath:lastIndexPath] : -1;
     
@@ -202,11 +182,11 @@
     {
         UITableViewCell *newCell = [tableView cellForRowAtIndexPath:indexPath];
         newCell.accessoryType = UITableViewCellAccessoryCheckmark;
-		newCell.textLabel.textColor = [UIUtility checkedCellTextColor];
+		newCell.textLabel.textColor = [UIColor tableCellBlueTextYCColor];
         
         UITableViewCell *oldCell = [tableView cellForRowAtIndexPath:lastIndexPath]; 
         oldCell.accessoryType = UITableViewCellAccessoryNone;
-		oldCell.textLabel.textColor = [UIUtility defaultCellTextColor];
+		oldCell.textLabel.textColor = [UIColor darkTextColor];
 		self.lastIndexPath = indexPath;
     }
     
@@ -216,11 +196,9 @@
 	self.navigationItem.rightBarButtonItem.enabled = YES;
 	
 	//播放声音
-	if (indexPath.section == 0) {//无声音
-		[self.soundPlayerCurrent stop]; //停止当前播放的声音
-		return; 
-	}else {
-		NSInteger soundRow = indexPath.row+1; //从无声音下的第一个开始
+	if (indexPath.section == 0) {
+        
+        NSInteger soundRow = indexPath.row+1; //从无声音下的第一个开始
 		YCSound *sound = [DicManager soundForSortId:soundRow];
 		//YCSoundPlayer *temp = [self.soundPlays objectForKey:sound.soundId];
 		AVAudioPlayer *temp = [self.soundPlays objectForKey:sound.soundId];
@@ -240,8 +218,11 @@
 			[self.soundPlayerCurrent play];
             AudioServicesPlaySystemSound (kSystemSoundID_Vibrate);//同时振动一次
 		}
+        
+	}else {//无声音
+        
+		[self.soundPlayerCurrent stop]; //停止当前播放的声音
 	}
-	
 	
 }
 

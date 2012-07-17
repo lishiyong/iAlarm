@@ -26,6 +26,7 @@
 #import "UIImage+YC.h"
 #import "UIViewController+YC.h"
 #import "CLLocation+YC.h"
+#import "UITableViewCell+YC.h"
 
 #import "YCFunctions.h"
 #import "YCDouble.h"

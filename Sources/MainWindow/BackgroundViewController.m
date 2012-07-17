@@ -472,7 +472,8 @@
 	NSNotification *aNotification = [NSNotification notificationWithName:IAAlarmListEditStateDidChangeNotification 
                                                                   object:self
                                                                 userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:isEditing] forKey:IAEditStatusKey]];
-    [notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
+    //[notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
+    [notificationCenter postNotification:aNotification];
 	
 	//弹出 没有保存的alarm详细视图、About视图
 	[self dismissModalViewControllerAnimated:NO]; 

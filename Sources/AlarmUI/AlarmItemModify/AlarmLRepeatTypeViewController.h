@@ -11,16 +11,21 @@
 
 
 @interface AlarmLRepeatTypeViewController : AlarmModifyTableViewController {
-    NSIndexPath  *_lastIndexPath;
+    NSIndexPath  *_lastIndexPathOfType;
     NSMutableArray *_sections;
     NSArray *_beginEndSection;
+    NSMutableSet *_selectedOfDays;
+    
 }
 
-@property (nonatomic, retain) NSIndexPath * lastIndexPath;
-@property (nonatomic, retain) IBOutlet  UITableViewCell *switchCell;
+@property (nonatomic, retain) IBOutlet  UITableViewCell *beginEndSwitchCell;
 @property (nonatomic, retain) IBOutlet  UITableViewCell *beginEndCell;
-@property (nonatomic, retain) IBOutlet  UISwitch *switchControl;
+@property (nonatomic, retain) IBOutlet  UISwitch *beginEndSwitch;
 
-- (IBAction)switchControlValueDidChange:(id)sender;
+@property (nonatomic, retain) IBOutlet  UITableViewCell *sameSwitchCell;
+@property (nonatomic, retain) IBOutlet  UISwitch *sameSwitch;
+
+- (IBAction)beginEndSwitchValueDidChange:(id)sender;
+- (IBAction)sameSwitchValueDidChange:(id)sender;
 
 @end

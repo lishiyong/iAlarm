@@ -254,6 +254,32 @@
         
 }
 
+- (void)test1{
+    NSLog(@"this is test1!");
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
+    bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
+        // Clean up any unfinished task business by marking where you.
+        // stopped or ending the task outright.
+        [application endBackgroundTask:bgTask];
+        bgTask = UIBackgroundTaskInvalid;
+    }];
+    
+    // Start the long-running task and return immediately.
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        // Do the work associated with the task, preferably in chunks.
+        NSLog(@"this is background task!");
+        [self performSelectorOnMainThread:@selector(test1) withObject:nil waitUntilDone:YES];
+        //[self performSelectorOnMainThread:@selector(test1) withObject:nil waitUntilDone:NO];
+        
+        [application endBackgroundTask:bgTask];
+        bgTask = UIBackgroundTaskInvalid;
+    });
+}
+
 #pragma mark -
 #pragma mark Memory management
 

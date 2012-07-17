@@ -776,6 +776,16 @@
 		9C8AB2D213B0C92100120AD5 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CD2791713470C0B00A7EAAB /* AVFoundation.framework */; };
 		9C90A1371522BD3A00695881 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C90A1361522BD3A00695881 /* Accounts.framework */; };
 		9C90A1391522BD4400695881 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C90A1381522BD4400695881 /* Twitter.framework */; };
+		9C96087115B563EF00144DCC /* UITableViewCell+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C96087015B563EF00144DCC /* UITableViewCell+YC.m */; };
+		9C96087215B563EF00144DCC /* UITableViewCell+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C96087015B563EF00144DCC /* UITableViewCell+YC.m */; };
+		9C96087715B5687400144DCC /* YCPreferencesBlueCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C96087315B5687400144DCC /* YCPreferencesBlueCheck.png */; };
+		9C96087815B5687400144DCC /* YCPreferencesBlueCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C96087315B5687400144DCC /* YCPreferencesBlueCheck.png */; };
+		9C96087915B5687400144DCC /* YCPreferencesBlueCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C96087415B5687400144DCC /* YCPreferencesBlueCheck@2x.png */; };
+		9C96087A15B5687400144DCC /* YCPreferencesBlueCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C96087415B5687400144DCC /* YCPreferencesBlueCheck@2x.png */; };
+		9C96087B15B5687400144DCC /* YCPreferencesWhiteCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C96087515B5687400144DCC /* YCPreferencesWhiteCheck@2x.png */; };
+		9C96087C15B5687400144DCC /* YCPreferencesWhiteCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C96087515B5687400144DCC /* YCPreferencesWhiteCheck@2x.png */; };
+		9C96088015B568B900144DCC /* YCPreferencesWhiteCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C96087F15B568B900144DCC /* YCPreferencesWhiteCheck.png */; };
+		9C96088115B568B900144DCC /* YCPreferencesWhiteCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C96087F15B568B900144DCC /* YCPreferencesWhiteCheck.png */; };
 		9C9BA6FC15A7366400DAA29D /* IAFlagAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9BA6FB15A7366400DAA29D /* IAFlagAnnotationView.m */; };
 		9C9BA6FD15A7366400DAA29D /* IAFlagAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9BA6FB15A7366400DAA29D /* IAFlagAnnotationView.m */; };
 		9CA04E9A155E74280082C1F2 /* IAPin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CA04E8C155E74280082C1F2 /* IAPin@2x.png */; };
@@ -1728,6 +1738,12 @@
 		9C8AB2DA13B0C92100120AD5 /* iAlarm-Info-FullVersion.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iAlarm-Info-FullVersion.plist"; sourceTree = "<group>"; };
 		9C90A1361522BD3A00695881 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		9C90A1381522BD4400695881 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
+		9C96086F15B563EF00144DCC /* UITableViewCell+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+YC.h"; sourceTree = "<group>"; };
+		9C96087015B563EF00144DCC /* UITableViewCell+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+YC.m"; sourceTree = "<group>"; };
+		9C96087315B5687400144DCC /* YCPreferencesBlueCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCPreferencesBlueCheck.png; sourceTree = "<group>"; };
+		9C96087415B5687400144DCC /* YCPreferencesBlueCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCPreferencesBlueCheck@2x.png"; sourceTree = "<group>"; };
+		9C96087515B5687400144DCC /* YCPreferencesWhiteCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCPreferencesWhiteCheck@2x.png"; sourceTree = "<group>"; };
+		9C96087F15B568B900144DCC /* YCPreferencesWhiteCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCPreferencesWhiteCheck.png; sourceTree = "<group>"; };
 		9C9AE0F1155E057F0068DECF /* English */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = English; path = English.lproj/LocalizedString.h; sourceTree = "<group>"; };
 		9C9BA6FA15A7366400DAA29D /* IAFlagAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAFlagAnnotationView.h; sourceTree = "<group>"; };
 		9C9BA6FB15A7366400DAA29D /* IAFlagAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAFlagAnnotationView.m; sourceTree = "<group>"; };
@@ -2579,6 +2595,7 @@
 		9C7484DC1562981F00486793 /* YCCategories */ = {
 			isa = PBXGroup;
 			children = (
+				9C96086E15B563A900144DCC /* UITableViewCell */,
 				9CC472101564F61C00F79985 /* UIColor */,
 				9C7484DF1562981F00486793 /* MKMapView+YC.h */,
 				9C7484E01562981F00486793 /* MKMapView+YC.m */,
@@ -3122,6 +3139,19 @@
 				9C85F38514FBA99F00B49FF4 /* IAAlarmFindViewController.xib */,
 			);
 			path = AlarmFind;
+			sourceTree = "<group>";
+		};
+		9C96086E15B563A900144DCC /* UITableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				9C96087315B5687400144DCC /* YCPreferencesBlueCheck.png */,
+				9C96087F15B568B900144DCC /* YCPreferencesWhiteCheck.png */,
+				9C96087415B5687400144DCC /* YCPreferencesBlueCheck@2x.png */,
+				9C96087515B5687400144DCC /* YCPreferencesWhiteCheck@2x.png */,
+				9C96086F15B563EF00144DCC /* UITableViewCell+YC.h */,
+				9C96087015B563EF00144DCC /* UITableViewCell+YC.m */,
+			);
+			path = UITableViewCell;
 			sourceTree = "<group>";
 		};
 		9CA04E8A155E74280082C1F2 /* pins */ = {
@@ -4617,6 +4647,10 @@
 				9C76794815AECB690035EF6B /* YCPromptViewStop@2x.png in Resources */,
 				9C76794C15AECEA20035EF6B /* YCPromptViewWarn.png in Resources */,
 				9C76794E15AECEA20035EF6B /* YCPromptViewWarn@2x.png in Resources */,
+				9C96087715B5687400144DCC /* YCPreferencesBlueCheck.png in Resources */,
+				9C96087915B5687400144DCC /* YCPreferencesBlueCheck@2x.png in Resources */,
+				9C96087B15B5687400144DCC /* YCPreferencesWhiteCheck@2x.png in Resources */,
+				9C96088015B568B900144DCC /* YCPreferencesWhiteCheck.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5018,6 +5052,10 @@
 				9C76794915AECB690035EF6B /* YCPromptViewStop@2x.png in Resources */,
 				9C76794D15AECEA20035EF6B /* YCPromptViewWarn.png in Resources */,
 				9C76794F15AECEA20035EF6B /* YCPromptViewWarn@2x.png in Resources */,
+				9C96087815B5687400144DCC /* YCPreferencesBlueCheck.png in Resources */,
+				9C96087A15B5687400144DCC /* YCPreferencesBlueCheck@2x.png in Resources */,
+				9C96087C15B5687400144DCC /* YCPreferencesWhiteCheck@2x.png in Resources */,
+				9C96088115B568B900144DCC /* YCPreferencesWhiteCheck.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5246,6 +5284,7 @@
 				9CF5B40115A576480033F908 /* YCTableViewCellButton.m in Sources */,
 				9C9BA6FC15A7366400DAA29D /* IAFlagAnnotationView.m in Sources */,
 				9C78564B15AD6FAB003DEFBD /* YCPromptView.m in Sources */,
+				9C96087115B563EF00144DCC /* UITableViewCell+YC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5471,6 +5510,7 @@
 				9CF5B40215A576480033F908 /* YCTableViewCellButton.m in Sources */,
 				9C9BA6FD15A7366400DAA29D /* IAFlagAnnotationView.m in Sources */,
 				9C78564C15AD6FAB003DEFBD /* YCPromptView.m in Sources */,
+				9C96087215B563EF00144DCC /* UITableViewCell+YC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

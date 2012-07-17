@@ -35,6 +35,8 @@
     NSUInteger indexForView;//查看的index
     BOOL animatedView;
     IAAlarmNotification *alarmNotification_;
+    
+    UIBackgroundTaskIdentifier bgTask;
 }
 
 @property (nonatomic,retain) IBOutlet UIWindow *window;
