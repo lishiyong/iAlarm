@@ -56,10 +56,10 @@
     
     if (_lastIndexPathOfType.row == 0) {//仅闹一次
         //启用开关cell
-        NSArray *switchSection = [NSArray arrayWithObjects:self.beginEndSwitchCell, nil];
+        NSArray *beginEndSwitchSection = [NSArray arrayWithObjects:self.beginEndSwitchCell, nil];
         self.beginEndSwitchCell.textLabel.text = @"启用定时提醒";
         self.beginEndSwitchCell.accessoryView = self.beginEndSwitch;        
-        [_sections addObject:switchSection]; //加
+        [_sections addObject:beginEndSwitchSection]; //+ section
         
         
         //开始结束cell，
@@ -72,25 +72,24 @@
         if (self.beginEndSwitch.on) {
             [_sections addObject:_beginEndSection];//+ section
         }
+        
     }else {//连续闹钟
        
-        
         //星期cell
         NSMutableArray *daysSection = [NSMutableArray array];
         if (_selectedOfDays == nil) {
             _selectedOfDays = [[NSMutableSet setWithObjects: @"星期一", @"星期二", @"星期三", @"星期四", @"星期五", @"星期六", @"星期日",nil] retain];
         }
         for (int i = 0; i<7; i++) {
-            UITableViewCell *dayCell = nil;
+            YCCheckMarkCell *dayCell = nil;
             if (self.sameSwitch.on) {
-                dayCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DayCell"] autorelease];
+                dayCell = [[[YCCheckMarkCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DayCell" checkMarkType:YCCheckMarkTypeRight] autorelease];
             }else {
-                dayCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"DayCell"] autorelease];
-                [dayCell setCellYCType:YCTableViewCellTypeCanCheckDetailDisclosure];
+                dayCell = [[[YCCheckMarkCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"DayCell" checkMarkType:YCCheckMarkTypeLeft] autorelease];
+                dayCell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
                 dayCell.detailTextLabel.text = @"2:00 AM - 4:00 PM";
             }
             [daysSection addObject:dayCell];
-            
             
             NSString *dayString = nil;
             switch (i) {
@@ -127,28 +126,49 @@
         
         [_sections addObject:daysSection];//+ section
         
-        //开始结束cell，
-        if (self.sameSwitch.on) {
-            _beginEndSection = [[NSArray arrayWithObjects:self.beginEndCell, nil] retain];
-            self.beginEndCell.textLabel.text = @"开始\r\n结束";
-            self.beginEndCell.detailTextLabel.text = @"2:00 AM\r\n4:00 PM";
-            self.beginEndCell.textLabel.numberOfLines = 2;
-            self.beginEndCell.detailTextLabel.numberOfLines = 2;
+        //启用开关cell
+        NSArray *beginEndSwitchSection = [NSArray arrayWithObjects:self.beginEndSwitchCell, nil];
+        self.beginEndSwitchCell.textLabel.text = @"启用定时提醒";
+        self.beginEndSwitchCell.accessoryView = self.beginEndSwitch;        
+        
+        //如果日期不连续，必须要启用定时
+        if (_selectedOfDays.count < 7 ) {
+            [self.beginEndSwitch setOn:YES animated:YES];
             
-            [_sections addObject:_beginEndSection];//+ section
+            if ([self.beginEndSwitch respondsToSelector:@selector(setOnTintColor:)]) 
+                self.beginEndSwitch.onTintColor = [UIColor lightGrayColor];
+            self.beginEndSwitch.enabled = NO;
+            self.beginEndSwitchCell.textLabel.enabled = NO;
+        }else {
+            if ([self.beginEndSwitch respondsToSelector:@selector(setOnTintColor:)]) 
+                self.beginEndSwitch.onTintColor = [UIColor switchBlue];
+            self.beginEndSwitch.enabled = YES;
+            self.beginEndSwitchCell.textLabel.enabled = YES;
         }
         
-        //相同提醒时间cell
-        NSArray *sameSection = [NSArray arrayWithObjects:self.sameSwitchCell, nil];
-        self.sameSwitchCell.textLabel.text = @"开始结束时间相同";
-        self.sameSwitchCell.accessoryView = self.sameSwitch;
-        [_sections addObject:sameSection];//+ section
+        [_sections addObject:beginEndSwitchSection]; //+ section
         
-        
-   
+        if (self.beginEndSwitch.on) {
+            
+            //相同提醒时间cell
+            NSArray *sameSection = [NSArray arrayWithObjects:self.sameSwitchCell, nil];
+            self.sameSwitchCell.textLabel.text = @"开始结束时间相同";
+            self.sameSwitchCell.accessoryView = self.sameSwitch;
+            [_sections addObject:sameSection];//+ section
+            
+            //开始结束cell，
+            if (self.sameSwitch.on) {
+                _beginEndSection = [[NSArray arrayWithObjects:self.beginEndCell, nil] retain];
+                self.beginEndCell.textLabel.text = @"开始\r\n结束";
+                self.beginEndCell.detailTextLabel.text = @"2:00 AM\r\n4:00 PM";
+                self.beginEndCell.textLabel.numberOfLines = 2;
+                self.beginEndCell.detailTextLabel.numberOfLines = 2;
+                
+                [_sections addObject:_beginEndSection];//+ section
+            }
 
-        
-        //启用开关cell TODO
+        }
+                
         
         
     }
@@ -165,23 +185,41 @@
  
 
 - (IBAction)beginEndSwitchValueDidChange:(id)sender{
-    /*
-    if (self.beginEndSwitch.on) {
-        if (NSNotFound == [_sections indexOfObject:_beginEndSection]) 
-            [_sections addObject:_beginEndSection];
-    }else{
-        [_sections removeObject:_beginEndSection];
+    if (_lastIndexPathOfType.row == 1) {
+        if (!self.beginEndSwitch.on) { 
+            self.sameSwitch.on = YES;//连续闹钟,不开启定时。必然是使用同一时间
+        }
     }
     
-    [self.tableView reloadData];
-     */
     [self _makeSections];
-    [self.tableView reloadData];
+    [self.tableView reloadDataAnimated:YES];
+    
+    //让最低部分可视
+    if (_lastIndexPathOfType.row == 1) {
+        if (self.beginEndSwitch.on) { 
+            CGFloat x = 0.0;
+            CGFloat y = self.tableView.contentSize.height-1.0;
+            CGRect bottomRect = (CGRect){{x,y},{320.0,1.0}};
+            
+            [self.tableView scrollRectToVisible:bottomRect animated:YES];
+        }
+    }
 }
 
 - (IBAction)sameSwitchValueDidChange:(id)sender{
     [self _makeSections];
-    [self.tableView reloadData];
+    [self.tableView reloadDataAnimated:YES];
+    
+    //让最低部分可视
+    if (_lastIndexPathOfType.row == 1) {
+        if (self.sameSwitch.on) { 
+            CGFloat x = 0.0;
+            CGFloat y = self.tableView.contentSize.height-1.0;
+            CGRect bottomRect = (CGRect){{x,y},{320.0,1.0}};
+            
+            [self.tableView scrollRectToVisible:bottomRect animated:YES];
+        }
+    }
 }
 
 #pragma mark -
@@ -245,16 +283,65 @@
                 
                 
                 [self _makeSections];
-                [self.tableView reloadData];
+                [self.tableView reloadDataAnimated:YES];
             }
             
             break;
         }
         case 1:
         {
+            if (_lastIndexPathOfType.row == 1) { //连续闹钟
+                NSString *dayString = nil;
+                switch (indexPath.row) {
+                    case 0:
+                        dayString = @"星期一";
+                        break;
+                    case 1:
+                        dayString = @"星期二";
+                        break;
+                    case 2:
+                        dayString = @"星期三";
+                        break;
+                    case 3:
+                        dayString = @"星期四";
+                        break;
+                    case 4:
+                        dayString = @"星期五";
+                        break;
+                    case 5:
+                        dayString = @"星期六";
+                        break;
+                    case 6:
+                        dayString = @"星期日";
+                        break;
+                    default:
+                        break;
+                }
+                
+                YCCheckMarkCell *dayCell = (YCCheckMarkCell*)[tableView cellForRowAtIndexPath:indexPath];
+                if (dayCell.checkmark) {
+                    [_selectedOfDays addObject:dayString];
+                }else {
+                    [_selectedOfDays removeObject:dayString];
+                }
+                
+                
+                //让beginEndSwitchCell可视   
+                if (![self.tableView.visibleCells containsObject:self.beginEndSwitchCell])
+                {
+                    NSIndexPath *begionEndCellIndexPath = [NSIndexPath indexPathForRow:0 inSection:2];
+                    [tableView scrollToRowAtIndexPath:begionEndCellIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                }
+                [self _makeSections];
+                [self.tableView reloadDataAnimated:NO];
+
+            }
             
-            UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
-            selectedCell.checkmark = !selectedCell.checkmark;
+            
+            
+            
+            
+            
             
             break;
 
@@ -268,20 +355,16 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    /*
-    UITableViewCell *cell = [[_sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    return cell.bounds.size.height-1;
-     */
     if (indexPath.section == 0) {
          return 44;
     }else {
         if (_lastIndexPathOfType.row == 0) { //仅闹一次
-            if (indexPath.section == 2) 
+            if (indexPath.section == 2) //开始结束cell
                 return 64;
             else 
                 return 44;
         }else {//连续闹钟
-            if (self.sameSwitch.on && indexPath.section == 2) 
+            if (self.sameSwitch.on && indexPath.section == 4) //开始结束cell
                 return 64;
             else 
                 return 44;

@@ -96,5 +96,10 @@
  **/
 + (UIColor *)groupTableViewBackgroundColor1;
 
+/**
+ UISwitch 的蓝色
+ 0, 127, 234, 255
+ **/
++ (UIColor *)switchBlue;
 
 @end

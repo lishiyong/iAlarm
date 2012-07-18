@@ -84,7 +84,9 @@
 }
 
 
-
++ (UIColor *)switchBlue{
+    return [self colorWithIntRed:0 intGreen:127 intBlue:234 intAlpha:255];
+}
 
 
 

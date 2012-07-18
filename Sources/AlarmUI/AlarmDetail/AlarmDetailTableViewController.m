@@ -604,7 +604,10 @@
 	self.enabledCellDescription.tableViewCell.userInteractionEnabled = enabled;
 	self.enabledCellDescription.tableViewCell.textLabel.enabled = enabled;
 	self.enabledCellDescription.tableViewCell.detailTextLabel.enabled = enabled;
-	[(BoolCell*)self.enabledCellDescription.tableViewCell switchCtl].enabled = enabled;
+    UISwitch *switchCtl= [(BoolCell*)self.enabledCellDescription.tableViewCell switchCtl];
+    switchCtl.enabled = enabled;
+    if ([switchCtl respondsToSelector:@selector(setOnTintColor:)]) 
+        switchCtl.onTintColor = enabled ? [UIColor switchBlue] : [UIColor lightGrayColor];
 	
     
 	self.repeatCellDescription.tableViewCell.userInteractionEnabled = enabled;
