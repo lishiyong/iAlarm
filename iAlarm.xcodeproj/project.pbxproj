@@ -249,6 +249,10 @@
 		9C54AD23157B00EB00105BA8 /* YCForwardGeocoderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C54AD21157B00EB00105BA8 /* YCForwardGeocoderManager.m */; };
 		9C54AD34157B12B400105BA8 /* NSValue+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C54AD33157B12B400105BA8 /* NSValue+YC.m */; };
 		9C54AD35157B12B400105BA8 /* NSValue+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C54AD33157B12B400105BA8 /* NSValue+YC.m */; };
+		9C56CD0115B7F0BE00E931DA /* AlarmBeginEndViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C56CCFF15B7F0BD00E931DA /* AlarmBeginEndViewController.m */; };
+		9C56CD0215B7F0BE00E931DA /* AlarmBeginEndViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C56CD0015B7F0BD00E931DA /* AlarmBeginEndViewController.xib */; };
+		9C56CD0315B7F2C800E931DA /* AlarmBeginEndViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C56CCFF15B7F0BD00E931DA /* AlarmBeginEndViewController.m */; };
+		9C56CD0415B7F2CC00E931DA /* AlarmBeginEndViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C56CD0015B7F0BD00E931DA /* AlarmBeginEndViewController.xib */; };
 		9C57EF2B15AD438B005CC90A /* hasACoolIdea-Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C57EF2915AD438B005CC90A /* hasACoolIdea-Icon-Small.png */; };
 		9C57EF2C15AD438B005CC90A /* hasACoolIdea-Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C57EF2915AD438B005CC90A /* hasACoolIdea-Icon-Small.png */; };
 		9C57EF2D15AD438B005CC90A /* hasACoolIdea-Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C57EF2A15AD438B005CC90A /* hasACoolIdea-Icon-Small@2x.png */; };
@@ -1471,6 +1475,9 @@
 		9C54AD21157B00EB00105BA8 /* YCForwardGeocoderManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCForwardGeocoderManager.m; path = YCGeocoder/YCForwardGeocoderManager.m; sourceTree = "<group>"; };
 		9C54AD32157B12B400105BA8 /* NSValue+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValue+YC.h"; sourceTree = "<group>"; };
 		9C54AD33157B12B400105BA8 /* NSValue+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSValue+YC.m"; sourceTree = "<group>"; };
+		9C56CCFE15B7F0BD00E931DA /* AlarmBeginEndViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmBeginEndViewController.h; sourceTree = "<group>"; };
+		9C56CCFF15B7F0BD00E931DA /* AlarmBeginEndViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmBeginEndViewController.m; sourceTree = "<group>"; };
+		9C56CD0015B7F0BD00E931DA /* AlarmBeginEndViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlarmBeginEndViewController.xib; sourceTree = "<group>"; };
 		9C57EF2915AD438B005CC90A /* hasACoolIdea-Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hasACoolIdea-Icon-Small.png"; sourceTree = "<group>"; };
 		9C57EF2A15AD438B005CC90A /* hasACoolIdea-Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hasACoolIdea-Icon-Small@2x.png"; sourceTree = "<group>"; };
 		9C5AF2A7134F38FB00547BB0 /* Harp.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Harp.caf; sourceTree = "<group>"; };
@@ -3875,6 +3882,9 @@
 				9C2B805E14F690C000B2CC53 /* AlarmNotesViewController.h */,
 				9C2B805F14F690C000B2CC53 /* AlarmNotesViewController.m */,
 				9C2B806014F690C000B2CC53 /* AlarmNotesViewController.xib */,
+				9C56CCFE15B7F0BD00E931DA /* AlarmBeginEndViewController.h */,
+				9C56CCFF15B7F0BD00E931DA /* AlarmBeginEndViewController.m */,
+				9C56CD0015B7F0BD00E931DA /* AlarmBeginEndViewController.xib */,
 			);
 			path = AlarmItemModify;
 			sourceTree = "<group>";
@@ -4657,6 +4667,7 @@
 				9C4C7DC315B6A75E00F6F795 /* YCPreferencesBlueCheck@2x.png in Resources */,
 				9C4C7DC515B6A75E00F6F795 /* YCPreferencesWhiteCheck.png in Resources */,
 				9C4C7DC715B6A75E00F6F795 /* YCPreferencesWhiteCheck@2x.png in Resources */,
+				9C56CD0215B7F0BE00E931DA /* AlarmBeginEndViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5062,6 +5073,7 @@
 				9C4C7DC415B6A75E00F6F795 /* YCPreferencesBlueCheck@2x.png in Resources */,
 				9C4C7DC615B6A75E00F6F795 /* YCPreferencesWhiteCheck.png in Resources */,
 				9C4C7DC815B6A75E00F6F795 /* YCPreferencesWhiteCheck@2x.png in Resources */,
+				9C56CD0415B7F2CC00E931DA /* AlarmBeginEndViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5292,6 +5304,7 @@
 				9C78564B15AD6FAB003DEFBD /* YCPromptView.m in Sources */,
 				9C66664215B6737E002385BB /* YCCheckMarkCell.m in Sources */,
 				9C4C7DCB15B6B72900F6F795 /* UITableView+YC.m in Sources */,
+				9C56CD0115B7F0BE00E931DA /* AlarmBeginEndViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5519,6 +5532,7 @@
 				9C78564C15AD6FAB003DEFBD /* YCPromptView.m in Sources */,
 				9C66664315B6737E002385BB /* YCCheckMarkCell.m in Sources */,
 				9C4C7DCC15B6B72900F6F795 /* UITableView+YC.m in Sources */,
+				9C56CD0315B7F2C800E931DA /* AlarmBeginEndViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,13 +9,17 @@
 #import <UIKit/UIKit.h>
 #import "AlarmModifyTableViewController.h"
 
-
+@class AlarmBeginEndViewController;
 @interface AlarmLRepeatTypeViewController : AlarmModifyTableViewController {
     NSIndexPath  *_lastIndexPathOfType;
     NSMutableArray *_sections;
     NSArray *_beginEndSection;
     NSMutableSet *_selectedOfDays;
     
+    
+    NSDate *beginDate;
+    NSDate *endDate;
+    AlarmBeginEndViewController *_alarmBeginEndViewController;
 }
 
 @property (nonatomic, retain) IBOutlet  UITableViewCell *beginEndSwitchCell;

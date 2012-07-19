@@ -22,5 +22,6 @@ typedef NSUInteger YCCheckMarkType;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier checkMarkType:(YCCheckMarkType)checkMarkType;
 @property (nonatomic) BOOL checkmark;
+@property (nonatomic) BOOL changeWhenSelected; //选中时候是否改变checkmark状态
 
 @end

@@ -10,12 +10,13 @@
 #import "YCCheckMarkCell.h"
 
 @implementation YCCheckMarkCell
-@synthesize checkmark = _checkmark;
+@synthesize checkmark = _checkmark, changeWhenSelected = _changeWhenSelected;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier checkMarkType:(YCCheckMarkType)checkMarkType;
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        _changeWhenSelected = YES;
         _checkMarkType = checkMarkType;
         
         if (_checkMarkType == YCCheckMarkTypeLeft) {
@@ -36,7 +37,7 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-    if (selected) 
+    if (selected && _changeWhenSelected) 
         self.checkmark = !self.checkmark;
 }
 

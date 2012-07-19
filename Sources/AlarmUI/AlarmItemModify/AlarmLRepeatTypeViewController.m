@@ -6,6 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "AlarmBeginEndViewController.h"
 #import "YCLib.h"
 #import "AlarmLRepeatTypeViewController.h"
 #import "DicManager.h"
@@ -54,6 +55,16 @@
     [_sections addObject:repeatTypeSection];//+ section
     
     
+    //重置开关
+    if ([self.beginEndSwitch respondsToSelector:@selector(setOnTintColor:)]) 
+        self.beginEndSwitch.onTintColor = [UIColor switchBlue];
+    self.beginEndSwitch.enabled = YES;
+    self.beginEndSwitchCell.textLabel.enabled = YES;
+    if ([self.sameSwitch respondsToSelector:@selector(setOnTintColor:)]) 
+        self.sameSwitch.onTintColor = [UIColor switchBlue];
+    self.sameSwitch.enabled = YES;
+    self.sameSwitchCell.textLabel.enabled = YES;
+    
     if (_lastIndexPathOfType.row == 0) {//仅闹一次
         //启用开关cell
         NSArray *beginEndSwitchSection = [NSArray arrayWithObjects:self.beginEndSwitchCell, nil];
@@ -74,12 +85,34 @@
         }
         
     }else {//连续闹钟
-       
-        //星期cell
-        NSMutableArray *daysSection = [NSMutableArray array];
         if (_selectedOfDays == nil) {
             _selectedOfDays = [[NSMutableSet setWithObjects: @"星期一", @"星期二", @"星期三", @"星期四", @"星期五", @"星期六", @"星期日",nil] retain];
         }
+        
+        //如果日期不连续，必须要启用定时
+        if (!(_selectedOfDays.count == 7 || _selectedOfDays.count == 0)) {
+            
+            [self.beginEndSwitch setOn:YES animated:YES];
+            
+            if ([self.beginEndSwitch respondsToSelector:@selector(setOnTintColor:)]) 
+                self.beginEndSwitch.onTintColor = [UIColor lightGrayColor];
+            self.beginEndSwitch.enabled = NO;
+            self.beginEndSwitchCell.textLabel.enabled = NO;
+        }
+        
+        //一个日期也不选，就是仅闹一次。当然没有不同时间的选项了。
+        if (_selectedOfDays.count == 0) {
+            
+            [self.sameSwitch setOn:YES animated:YES];
+            
+            if ([self.sameSwitch respondsToSelector:@selector(setOnTintColor:)]) 
+                self.sameSwitch.onTintColor = [UIColor lightGrayColor];
+            self.sameSwitch.enabled = NO;
+            self.sameSwitchCell.textLabel.enabled = NO;
+        }
+       
+        //星期cell
+        NSMutableArray *daysSection = [NSMutableArray array];
         for (int i = 0; i<7; i++) {
             YCCheckMarkCell *dayCell = nil;
             if (self.sameSwitch.on) {
@@ -130,23 +163,9 @@
         NSArray *beginEndSwitchSection = [NSArray arrayWithObjects:self.beginEndSwitchCell, nil];
         self.beginEndSwitchCell.textLabel.text = @"启用定时提醒";
         self.beginEndSwitchCell.accessoryView = self.beginEndSwitch;        
-        
-        //如果日期不连续，必须要启用定时
-        if (_selectedOfDays.count < 7 ) {
-            [self.beginEndSwitch setOn:YES animated:YES];
-            
-            if ([self.beginEndSwitch respondsToSelector:@selector(setOnTintColor:)]) 
-                self.beginEndSwitch.onTintColor = [UIColor lightGrayColor];
-            self.beginEndSwitch.enabled = NO;
-            self.beginEndSwitchCell.textLabel.enabled = NO;
-        }else {
-            if ([self.beginEndSwitch respondsToSelector:@selector(setOnTintColor:)]) 
-                self.beginEndSwitch.onTintColor = [UIColor switchBlue];
-            self.beginEndSwitch.enabled = YES;
-            self.beginEndSwitchCell.textLabel.enabled = YES;
-        }
-        
         [_sections addObject:beginEndSwitchSection]; //+ section
+        
+        
         
         if (self.beginEndSwitch.on) {
             
@@ -166,7 +185,7 @@
                 
                 [_sections addObject:_beginEndSection];//+ section
             }
-
+            
         }
                 
         
@@ -234,11 +253,10 @@
     [self _makeSections];
 }
  
-
 - (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
 	[self.tableView reloadData];
 }
-
 
 #pragma mark -
 #pragma mark Table view data source
@@ -253,7 +271,6 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     UITableViewCell *cell = [[_sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     return cell;
 }
@@ -263,6 +280,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+
     switch (indexPath.section) {
         case 0://重复类型
         {
@@ -337,21 +357,27 @@
 
             }
             
-            
-            
-            
-            
-            
-            
             break;
 
         }
         default:
+        {
+            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            if (cell == self.beginEndCell) {
+                if (beginDate == nil) {
+                    beginDate = [[NSDate date] retain];
+                    endDate = [[NSDate date] retain];
+                }
+
+                if (_alarmBeginEndViewController == nil) {
+                    _alarmBeginEndViewController = [[AlarmBeginEndViewController alloc] initWithNibName:@"AlarmBeginEndViewController" bundle:nil beginTime:beginDate endTime:endDate];
+                }
+                [self.navigationController pushViewController:_alarmBeginEndViewController animated:YES];
+            }
             break;
+        }
     }
-    
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+        
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -377,6 +403,7 @@
 
 - (void)dealloc {
 	[_lastIndexPathOfType release];
+    [_alarmBeginEndViewController release];
     [super dealloc];
 }
 
