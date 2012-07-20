@@ -69,6 +69,9 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 @synthesize person;
 @synthesize indexOfPersonAddresses;
 
+@synthesize usedAlarmCalendar;
+@synthesize alarmCalendars;
+
 - (id)init
 {
     self = [super init];
@@ -110,6 +113,9 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
         placemark = nil;
         person = nil;
         indexOfPersonAddresses = -1;
+        
+        usedAlarmCalendar = NO;
+        alarmCalendars = nil;
 	}
 	return self;
 }
@@ -152,6 +158,10 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
     [encoder encodeObject:placemark forKey:kplacemark];
     [encoder encodeObject:person forKey:kPerson];
     [encoder encodeInteger:indexOfPersonAddresses forKey:kIndexOfPersonAddresses];
+    
+    [encoder encodeBool:usedAlarmCalendar forKey:kUsedAlarmCalendar];
+    [encoder encodeObject:alarmCalendars forKey:kAlarmCalendars];
+    
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
@@ -196,6 +206,10 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
         placemark = [[decoder decodeObjectForKey:kplacemark] retain];
         person = [[decoder decodeObjectForKey:kPerson] retain];
         indexOfPersonAddresses = [decoder decodeIntegerForKey:kIndexOfPersonAddresses];
+        
+        usedAlarmCalendar = [decoder decodeBoolForKey:kUsedAlarmCalendar];
+        alarmCalendars = [[decoder decodeObjectForKey:kAlarmCalendars] retain];
+        
         
         //////////////////////////
         //为了兼容以前版本的数据
@@ -273,6 +287,9 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
     
     copy.person = self.person;
     copy.indexOfPersonAddresses = self.indexOfPersonAddresses;
+    
+    copy.usedAlarmCalendar = self.usedAlarmCalendar;
+    copy.alarmCalendars = self.alarmCalendars;
         
     return copy;
 }
@@ -304,7 +321,8 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
     
     [placemark release];
     [person release];
-	
+    
+    [alarmCalendars release];
     [super dealloc];
 }
 

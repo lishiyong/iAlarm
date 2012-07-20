@@ -8,14 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@class IAAlarmCalendar;
+
 @interface AlarmBeginEndViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>{
-    
-    UITableView *_tableView;
-    
     NSMutableArray *_sections;
     NSMutableArray *_heightOfCells;
-    NSDate *_beginTime;
-    NSDate *_endTime;
+    IAAlarmCalendar *_alarmCalendar;
 }
 
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
@@ -23,6 +21,8 @@
 @property (nonatomic, retain) IBOutlet UITableViewCell *endCell;
 @property (nonatomic, retain) IBOutlet UIDatePicker *timePicker;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil beginTime:(NSDate *)beginTime endTime:(NSDate *)endTime;
+- (IBAction)timePickerValueDidChange:(id)sender;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil alarmCalendar:(IAAlarmCalendar *)alarmCalendar;
 
 @end

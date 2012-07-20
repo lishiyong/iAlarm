@@ -48,6 +48,9 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 #define    kPerson                  @"kPerson"
 #define    kIndexOfPersonAddresses  @"kIndexOfPersonAddresses"
 
+#define    kUsedAlarmCalendar        @"kUsedAlarmCalendar"
+#define    kAlarmCalendars          @"kAlarmCalendars"
+
 
 @class IASaveInfo;
 @class YCSound, YCRepeatType, YCPositionType;
@@ -92,6 +95,9 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
     
     IAPerson *person;                        //通讯录中的联系人，2012-6-21添加
     NSInteger indexOfPersonAddresses;       //对应通讯录中人的地址索引
+    
+    BOOL usedAlarmCalendar;
+    NSArray *alarmCalendars;                //仅闹一次（1个），连续闹钟（1－7个）
 
 }
 
@@ -132,7 +138,8 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 @property (nonatomic,retain) IAPerson *person;
 @property (nonatomic,assign) NSInteger indexOfPersonAddresses;
 
-
+@property (nonatomic,assign) BOOL usedAlarmCalendar;
+@property (nonatomic,copy) NSArray *alarmCalendars;
 
 - (void)setRealCoordinateWithVisualCoordinate:(CLLocationCoordinate2D)theVisualCoordinate;
 - (void)setVisualCoordinateWithRealCoordinate:(CLLocationCoordinate2D)theCoordinate;

@@ -6,11 +6,11 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCLib.h"
+#import "IAAlarmCalendar.h"
 #import "AlarmBeginEndViewController.h"
 
 @interface AlarmBeginEndViewController ()
-
-- (void)_saveData;
 
 @end
 
@@ -19,15 +19,22 @@
 @synthesize tableView = _tableView;
 @synthesize beginCell = _beginCell, endCell = _endCell, timePicker = _timePicker;
 
-- (void)_saveData{
+- (IBAction)timePickerValueDidChange:(id)sender{
     
+	NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+	cell.detailTextLabel.text = [self.timePicker.date stringOfTimeShortStyle];
+    if (cell == self.beginCell) {
+        _alarmCalendar.beginTime = [self.timePicker.date retain];
+    }else {
+        _alarmCalendar.endTime = [self.timePicker.date retain];
+    }
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil beginTime:(NSDate *)beginTime endTime:(NSDate *)endTime{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil alarmCalendar:(IAAlarmCalendar*)alarmCalendar{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        _beginTime = [beginTime retain];
-        _endTime = [endTime retain];
+        _alarmCalendar = [alarmCalendar retain];
     }
     return self;
 }
@@ -35,11 +42,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //self.clearsSelectionOnViewWillAppear = NO;
+    self.title = @"开始与结束";
     
+    self.beginCell.detailTextLabel.text = [_alarmCalendar.beginTime stringOfTimeShortStyle];
+    self.endCell.detailTextLabel.text = [_alarmCalendar.endTime stringOfTimeShortStyle];
     self.beginCell.textLabel.text = @"开始";
     self.endCell.textLabel.text = @"结束";
-    //self.beginCell.detailTextLabel.text = [_beginTime ]
     
     _sections = [[NSMutableArray array] retain];
     NSArray *beginEndSection = [NSArray arrayWithObjects:self.beginCell, self.endCell, nil];
@@ -64,15 +72,16 @@
     NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:selectedIndexPath];
     if (cell == self.beginCell) {
-        self.timePicker.date = _beginTime;
+        self.timePicker.date = _alarmCalendar.beginTime;
     }else {
-        self.timePicker.date = _endTime;
+        self.timePicker.date = _alarmCalendar.endTime;
     }
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
+    self.tableView = nil;
     self.beginCell = nil;
     self.endCell = nil;
     self.timePicker = nil;
@@ -110,9 +119,9 @@
 {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if (cell == self.beginCell) {
-        [self.timePicker setDate:_beginTime animated:YES];
+        [self.timePicker setDate:_alarmCalendar.beginTime animated:YES];
     }else if (cell == self.endCell) {
-        [self.timePicker setDate:_endTime animated:YES];
+        [self.timePicker setDate:_alarmCalendar.endTime animated:YES];
     }
 }
 
@@ -125,13 +134,13 @@
 }
 
 - (void)dealloc{
+    [_tableView release];
     [_beginCell release];
     [_endCell release];
     [_timePicker release];
     [_sections release];
     [_heightOfCells release];
-    [_beginTime release];
-    [_endTime release];
+    [_alarmCalendar release];
     [super dealloc];
 }
 

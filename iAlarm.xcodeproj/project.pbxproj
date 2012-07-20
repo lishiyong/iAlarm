@@ -984,6 +984,8 @@
 		9CC472201564F70B00F79985 /* YCTexturedButtonTextGradient@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CC4721E1564F70B00F79985 /* YCTexturedButtonTextGradient@2x.png */; };
 		9CC472221564F76F00F79985 /* YCTexturedButtonTextGradientSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CC472211564F76F00F79985 /* YCTexturedButtonTextGradientSmall.png */; };
 		9CC472231564F76F00F79985 /* YCTexturedButtonTextGradientSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CC472211564F76F00F79985 /* YCTexturedButtonTextGradientSmall.png */; };
+		9CC6E5C415B915F2002D3BD3 /* IAAlarmCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC6E5C315B915F2002D3BD3 /* IAAlarmCalendar.m */; };
+		9CC6E5C515B915F2002D3BD3 /* IAAlarmCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC6E5C315B915F2002D3BD3 /* IAAlarmCalendar.m */; };
 		9CCDAE771312BB4800774FD7 /* IAButtonBarFlag@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CCDAE761312BB4800774FD7 /* IAButtonBarFlag@2x.png */; };
 		9CCEABBB13386CF3001457A6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9CCEABB913386CF3001457A6 /* Localizable.strings */; };
 		9CCF8797157228C6007C7680 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CCF8796157228C6007C7680 /* AddressBook.framework */; };
@@ -1265,6 +1267,8 @@
 		9CF86EC115884C22003582EF /* YCGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF86EBF15884C22003582EF /* YCGeometry.m */; };
 		9CF86EC81588611D003582EF /* UIImage+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF86EC71588611D003582EF /* UIImage+YC.m */; };
 		9CF86EC91588611D003582EF /* UIImage+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF86EC71588611D003582EF /* UIImage+YC.m */; };
+		9CF8832215B95832003EF8AB /* NSDate+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8832115B95832003EF8AB /* NSDate+YC.m */; };
+		9CF8832315B95832003EF8AB /* NSDate+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8832115B95832003EF8AB /* NSDate+YC.m */; };
 		9CF8D03F14FDE13400E87446 /* horizontal_etched_line.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF8D03E14FDE13400E87446 /* horizontal_etched_line.png */; };
 		9CF8D04014FDE13400E87446 /* horizontal_etched_line.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CF8D03E14FDE13400E87446 /* horizontal_etched_line.png */; };
 		9CFBF98C1571C46E003DDE65 /* NSDictionary+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CFBF98B1571C46E003DDE65 /* NSDictionary+YC.m */; };
@@ -1916,6 +1920,8 @@
 		9CC472161564F62B00F79985 /* YCTexturedButtonTextGradientSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCTexturedButtonTextGradientSmall@2x.png"; sourceTree = "<group>"; };
 		9CC4721E1564F70B00F79985 /* YCTexturedButtonTextGradient@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCTexturedButtonTextGradient@2x.png"; sourceTree = "<group>"; };
 		9CC472211564F76F00F79985 /* YCTexturedButtonTextGradientSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCTexturedButtonTextGradientSmall.png; sourceTree = "<group>"; };
+		9CC6E5C215B915F2002D3BD3 /* IAAlarmCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAAlarmCalendar.h; sourceTree = "<group>"; };
+		9CC6E5C315B915F2002D3BD3 /* IAAlarmCalendar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAAlarmCalendar.m; sourceTree = "<group>"; };
 		9CCDAE761312BB4800774FD7 /* IAButtonBarFlag@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAButtonBarFlag@2x.png"; sourceTree = "<group>"; };
 		9CCEABBA13386CF3001457A6 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9CCEABC813386D44001457A6 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -2173,6 +2179,8 @@
 		9CF86EBF15884C22003582EF /* YCGeometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCGeometry.m; sourceTree = "<group>"; };
 		9CF86EC61588611D003582EF /* UIImage+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+YC.h"; sourceTree = "<group>"; };
 		9CF86EC71588611D003582EF /* UIImage+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+YC.m"; sourceTree = "<group>"; };
+		9CF8832015B95832003EF8AB /* NSDate+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+YC.h"; sourceTree = "<group>"; };
+		9CF8832115B95832003EF8AB /* NSDate+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+YC.m"; sourceTree = "<group>"; };
 		9CF8D03E14FDE13400E87446 /* horizontal_etched_line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = horizontal_etched_line.png; sourceTree = "<group>"; };
 		9CFBF98A1571C46E003DDE65 /* NSDictionary+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+YC.h"; sourceTree = "<group>"; };
 		9CFBF98B1571C46E003DDE65 /* NSDictionary+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+YC.m"; sourceTree = "<group>"; };
@@ -2656,6 +2664,8 @@
 				9CF86EC71588611D003582EF /* UIImage+YC.m */,
 				9C4C7DC915B6B72900F6F795 /* UITableView+YC.h */,
 				9C4C7DCA15B6B72900F6F795 /* UITableView+YC.m */,
+				9CF8832015B95832003EF8AB /* NSDate+YC.h */,
+				9CF8832115B95832003EF8AB /* NSDate+YC.m */,
 			);
 			path = YCCategories;
 			sourceTree = "<group>";
@@ -3983,6 +3993,8 @@
 				9C0706DB152C036000AC4207 /* IAAlarmNotification.m */,
 				9C0706DE152C086900AC4207 /* IAAlarmNotificationCenter.h */,
 				9C0706DF152C086900AC4207 /* IAAlarmNotificationCenter.m */,
+				9CC6E5C215B915F2002D3BD3 /* IAAlarmCalendar.h */,
+				9CC6E5C315B915F2002D3BD3 /* IAAlarmCalendar.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -5305,6 +5317,8 @@
 				9C66664215B6737E002385BB /* YCCheckMarkCell.m in Sources */,
 				9C4C7DCB15B6B72900F6F795 /* UITableView+YC.m in Sources */,
 				9C56CD0115B7F0BE00E931DA /* AlarmBeginEndViewController.m in Sources */,
+				9CC6E5C415B915F2002D3BD3 /* IAAlarmCalendar.m in Sources */,
+				9CF8832215B95832003EF8AB /* NSDate+YC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5533,6 +5547,8 @@
 				9C66664315B6737E002385BB /* YCCheckMarkCell.m in Sources */,
 				9C4C7DCC15B6B72900F6F795 /* UITableView+YC.m in Sources */,
 				9C56CD0315B7F2C800E931DA /* AlarmBeginEndViewController.m in Sources */,
+				9CC6E5C515B915F2002D3BD3 /* IAAlarmCalendar.m in Sources */,
+				9CF8832315B95832003EF8AB /* NSDate+YC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

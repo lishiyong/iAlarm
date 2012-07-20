@@ -6,6 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "IAAlarmCalendar.h"
 #import "AlarmBeginEndViewController.h"
 #import "YCLib.h"
 #import "AlarmLRepeatTypeViewController.h"
@@ -16,6 +17,7 @@
 @interface AlarmLRepeatTypeViewController (private)
 
 - (void)_makeSections;
+- (NSIndexSet*)_vaildIndexSetOfAlwaysAlarmCalendars;
 
 @end
 
@@ -26,6 +28,12 @@
 @synthesize sameSwitchCell = _sameSwitchCell, sameSwitch = _sameSwitch;
 
 #pragma mark - private
+
+- (NSIndexSet*)_vaildIndexSetOfAlwaysAlarmCalendars{
+    return [_alwaysAlarmCalendars indexesOfObjectsPassingTest:^BOOL(IAAlarmCalendar *obj, NSUInteger idx, BOOL *stop) {
+        return obj.vaild;
+    }];
+}
 
 - (void)_makeSections{
     [_sections release];
@@ -76,7 +84,7 @@
         //开始结束cell，
         _beginEndSection = [[NSArray arrayWithObjects:self.beginEndCell, nil] retain];
         self.beginEndCell.textLabel.text = @"开始\r\n结束";
-        self.beginEndCell.detailTextLabel.text = @"2:00 AM\r\n4:00 PM";
+        self.beginEndCell.detailTextLabel.text = [NSString stringWithFormat:@"%@\r\n%@",[_onceAlarmCalendar.beginTime stringOfTimeShortStyle],[_onceAlarmCalendar.endTime stringOfTimeShortStyle]]; //@"8:00 AM\r\n21:00 PM"
         self.beginEndCell.textLabel.numberOfLines = 2;
         self.beginEndCell.detailTextLabel.numberOfLines = 2;
         
@@ -85,12 +93,9 @@
         }
         
     }else {//连续闹钟
-        if (_selectedOfDays == nil) {
-            _selectedOfDays = [[NSMutableSet setWithObjects: @"星期一", @"星期二", @"星期三", @"星期四", @"星期五", @"星期六", @"星期日",nil] retain];
-        }
         
         //如果日期不连续，必须要启用定时
-        if (!(_selectedOfDays.count == 7 || _selectedOfDays.count == 0)) {
+        if (!([self _vaildIndexSetOfAlwaysAlarmCalendars].count == 7 || [self _vaildIndexSetOfAlwaysAlarmCalendars].count == 0)) {
             
             [self.beginEndSwitch setOn:YES animated:YES];
             
@@ -101,7 +106,7 @@
         }
         
         //一个日期也不选，就是仅闹一次。当然没有不同时间的选项了。
-        if (_selectedOfDays.count == 0) {
+        if ([self _vaildIndexSetOfAlwaysAlarmCalendars].count == 0) {
             
             [self.sameSwitch setOn:YES animated:YES];
             
@@ -114,47 +119,19 @@
         //星期cell
         NSMutableArray *daysSection = [NSMutableArray array];
         for (int i = 0; i<7; i++) {
+            IAAlarmCalendar *aCalendar = (IAAlarmCalendar *)[_alwaysAlarmCalendars objectAtIndex:i];
             YCCheckMarkCell *dayCell = nil;
             if (self.sameSwitch.on) {
                 dayCell = [[[YCCheckMarkCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DayCell" checkMarkType:YCCheckMarkTypeRight] autorelease];
             }else {
                 dayCell = [[[YCCheckMarkCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"DayCell" checkMarkType:YCCheckMarkTypeLeft] autorelease];
                 dayCell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-                dayCell.detailTextLabel.text = @"2:00 AM - 4:00 PM";
+                dayCell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@",[aCalendar.beginTime stringOfTimeShortStyle],[aCalendar.endTime stringOfTimeShortStyle]]; //8:00 - 21:00
             }
             [daysSection addObject:dayCell];
             
-            NSString *dayString = nil;
-            switch (i) {
-                case 0:
-                    dayString = @"星期一";
-                    break;
-                case 1:
-                    dayString = @"星期二";
-                    break;
-                case 2:
-                    dayString = @"星期三";
-                    break;
-                case 3:
-                    dayString = @"星期四";
-                    break;
-                case 4:
-                    dayString = @"星期五";
-                    break;
-                case 5:
-                    dayString = @"星期六";
-                    break;
-                case 6:
-                    dayString = @"星期日";
-                    break;
-                default:
-                    break;
-            }
-
-            dayCell.textLabel.text = dayString;
-            dayCell.checkmark = [_selectedOfDays containsObject:dayString];
-            
-            
+            dayCell.textLabel.text = aCalendar.name;  //每周一，每周二 ...每周日          
+            dayCell.checkmark = [[self _vaildIndexSetOfAlwaysAlarmCalendars] containsIndex:i] ;
         }
         
         [_sections addObject:daysSection];//+ section
@@ -179,7 +156,7 @@
             if (self.sameSwitch.on) {
                 _beginEndSection = [[NSArray arrayWithObjects:self.beginEndCell, nil] retain];
                 self.beginEndCell.textLabel.text = @"开始\r\n结束";
-                self.beginEndCell.detailTextLabel.text = @"2:00 AM\r\n4:00 PM";
+                self.beginEndCell.detailTextLabel.text = [NSString stringWithFormat:@"%@\r\n%@",[_onceAlarmCalendar.beginTime stringOfTimeShortStyle],[_onceAlarmCalendar.endTime stringOfTimeShortStyle]]; //@"8:00 AM\r\n21:00 PM";
                 self.beginEndCell.textLabel.numberOfLines = 2;
                 self.beginEndCell.detailTextLabel.numberOfLines = 2;
                 
@@ -187,8 +164,6 @@
             }
             
         }
-                
-        
         
     }
    
@@ -245,17 +220,71 @@
 #pragma mark View lifecycle
 
 - (void)viewDidLoad{
-    
     [super viewDidLoad];
-	self.title = KViewTitleRepeat;
-    
     _lastIndexPathOfType = [[NSIndexPath indexPathForRow:self.alarm.repeatType.sortId inSection:0] retain];
     [self _makeSections];
+    
+    //临时的日历
+    if (self.alarm.usedAlarmCalendar) {
+        if (self.alarm.alarmCalendars.count == 1) {
+            _onceAlarmCalendar = [[self.alarm.alarmCalendars objectAtIndex:0] retain];
+        }else if (self.alarm.alarmCalendars.count == 7){
+            _alwaysAlarmCalendars = [self.alarm.alarmCalendars retain];
+        }
+    }
+    
+    //如果空
+    if (_onceAlarmCalendar == nil) 
+        _onceAlarmCalendar = [[IAAlarmCalendar alloc] init];
+    if (_alwaysAlarmCalendars == nil) {
+        NSMutableArray *temps =  [NSMutableArray arrayWithCapacity:7];
+        for (int i = 0; i < 7; i++) {
+            IAAlarmCalendar *anAlarmCalendar = [[[IAAlarmCalendar alloc] init] autorelease];
+            [temps addObject:anAlarmCalendar];
+            
+            NSString *dayString = nil;
+            switch (i) {
+                case 0:
+                    dayString = @"星期一";
+                    break;
+                case 1:
+                    dayString = @"星期二";
+                    break;
+                case 2:
+                    dayString = @"星期三";
+                    break;
+                case 3:
+                    dayString = @"星期四";
+                    break;
+                case 4:
+                    dayString = @"星期五";
+                    break;
+                case 5:
+                    dayString = @"星期六";
+                    break;
+                case 6:
+                    dayString = @"星期日";
+                    break;
+                default:
+                    break;
+            }
+            anAlarmCalendar.name = dayString;
+            
+        }
+        _alwaysAlarmCalendars = [[NSArray arrayWithArray:temps] retain];
+    }
+    
 }
  
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    self.title = KViewTitleRepeat;
 	[self.tableView reloadData];
+}
+
+- (void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    self.title = nil;
 }
 
 #pragma mark -
@@ -311,40 +340,11 @@
         case 1:
         {
             if (_lastIndexPathOfType.row == 1) { //连续闹钟
-                NSString *dayString = nil;
-                switch (indexPath.row) {
-                    case 0:
-                        dayString = @"星期一";
-                        break;
-                    case 1:
-                        dayString = @"星期二";
-                        break;
-                    case 2:
-                        dayString = @"星期三";
-                        break;
-                    case 3:
-                        dayString = @"星期四";
-                        break;
-                    case 4:
-                        dayString = @"星期五";
-                        break;
-                    case 5:
-                        dayString = @"星期六";
-                        break;
-                    case 6:
-                        dayString = @"星期日";
-                        break;
-                    default:
-                        break;
-                }
                 
                 YCCheckMarkCell *dayCell = (YCCheckMarkCell*)[tableView cellForRowAtIndexPath:indexPath];
-                if (dayCell.checkmark) {
-                    [_selectedOfDays addObject:dayString];
-                }else {
-                    [_selectedOfDays removeObject:dayString];
-                }
-                
+                IAAlarmCalendar *alarmCalendar = (IAAlarmCalendar*)[_alwaysAlarmCalendars objectAtIndex:indexPath.row];
+                alarmCalendar.vaild = dayCell.checkmark;
+
                 
                 //让beginEndSwitchCell可视   
                 if (![self.tableView.visibleCells containsObject:self.beginEndSwitchCell])
@@ -364,13 +364,9 @@
         {
             UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             if (cell == self.beginEndCell) {
-                if (beginDate == nil) {
-                    beginDate = [[NSDate date] retain];
-                    endDate = [[NSDate date] retain];
-                }
-
+                                
                 if (_alarmBeginEndViewController == nil) {
-                    _alarmBeginEndViewController = [[AlarmBeginEndViewController alloc] initWithNibName:@"AlarmBeginEndViewController" bundle:nil beginTime:beginDate endTime:endDate];
+                    _alarmBeginEndViewController = [[AlarmBeginEndViewController alloc] initWithNibName:@"AlarmBeginEndViewController" bundle:nil alarmCalendar:_onceAlarmCalendar];
                 }
                 [self.navigationController pushViewController:_alarmBeginEndViewController animated:YES];
             }
