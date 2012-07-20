@@ -8,14 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@interface IAAlarmCalendar : NSObject <NSCoding>
+@interface IAAlarmCalendar : NSObject <NSCoding, NSCopying>
 
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic) BOOL vaild;
-@property (nonatomic, retain) NSDate *beginTime;
-@property (nonatomic, retain) NSDate *endTime;
+@property (nonatomic, copy) NSDate *beginTime;
+@property (nonatomic, copy) NSDate *endTime;
 @property (nonatomic) NSCalendarUnit repeatInterval;
-@property (nonatomic, retain) NSDate *firstFireDate;
+@property (nonatomic, readonly) NSDate *firstFireDate;
 
 
 @end

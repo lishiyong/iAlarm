@@ -18,6 +18,8 @@
     AlarmBeginEndViewController *_alarmBeginEndViewController;
     IAAlarmCalendar *_onceAlarmCalendar;
     NSArray *_alwaysAlarmCalendars;
+    
+    BOOL _saveData;
 }
 
 @property (nonatomic, retain) IBOutlet  UITableViewCell *beginEndSwitchCell;

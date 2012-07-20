@@ -102,6 +102,8 @@
             [alarmTemp addObserver:self forKeyPath:@"notes" options:0 context:nil];
             [alarmTemp addObserver:self forKeyPath:@"person" options:0 context:nil];
             [alarmTemp addObserver:self forKeyPath:@"indexOfPersonAddresses" options:0 context:nil];
+            [alarmTemp addObserver:self forKeyPath:@"usedAlarmCalendar" options:0 context:nil];
+            [alarmTemp addObserver:self forKeyPath:@"alarmCalendars" options:0 context:nil];
 		//}
 		
 	}
@@ -741,6 +743,9 @@
     
     self.alarm.person = self.alarmTemp.person;
     self.alarm.indexOfPersonAddresses = self.alarmTemp.indexOfPersonAddresses;
+    
+    self.alarm.usedAlarmCalendar = self.alarmTemp.usedAlarmCalendar;
+    self.alarm.alarmCalendars = self.alarmTemp.alarmCalendars;
 	
 	[self.alarm saveFromSender:self];
 
@@ -1263,6 +1268,8 @@
             [alarmTemp removeObserver:self forKeyPath:@"notes"];
             [alarmTemp removeObserver:self forKeyPath:@"person"];
             [alarmTemp removeObserver:self forKeyPath:@"indexOfPersonAddresses"];
+            [alarmTemp removeObserver:self forKeyPath:@"usedAlarmCalendar"];
+            [alarmTemp removeObserver:self forKeyPath:@"alarmCalendars"];
         
 		//}
 	}

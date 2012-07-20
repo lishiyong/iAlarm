@@ -19,6 +19,18 @@
 
 @synthesize name = _name, vaild = _vaild, beginTime = _beginTime, endTime = _endTime, repeatInterval = _repeatInterval, firstFireDate = _firstFireDate;
 
+- (void)setBeginTime:(NSDate *)beginTime{
+    [beginTime retain];
+    [_beginTime release];
+    _beginTime = [beginTime copy];
+    [beginTime release];
+    
+    NSDate *now = [NSDate date];
+    if ([_beginTime compare:now] == NSOrderedDescending){//_beginTime比现在晚
+        //TODO
+    }
+}
+
 - (id)init{
     self = [super init];
     if (self) {
@@ -55,6 +67,20 @@
     }
     return self;
 }
+
+#pragma mark NSCopying
+
+- (id)copyWithZone:(NSZone *)zone {
+	
+	IAAlarmCalendar *copy = [[[self class] allocWithZone: zone] init];
+    copy.name = _name;
+    copy.vaild = _vaild;
+    copy.beginTime = _beginTime;
+    copy.endTime = _endTime;
+    copy.repeatInterval = _repeatInterval;
+    return copy;
+}
+
 
 - (void)dealloc{
     [_name release];

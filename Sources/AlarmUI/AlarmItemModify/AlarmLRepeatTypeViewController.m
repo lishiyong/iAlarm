@@ -18,6 +18,7 @@
 
 - (void)_makeSections;
 - (NSIndexSet*)_vaildIndexSetOfAlwaysAlarmCalendars;
+- (BOOL)_isSameOfAlwaysAlarmCalendars;
 
 @end
 
@@ -33,6 +34,24 @@
     return [_alwaysAlarmCalendars indexesOfObjectsPassingTest:^BOOL(IAAlarmCalendar *obj, NSUInteger idx, BOOL *stop) {
         return obj.vaild;
     }];
+}
+
+- (BOOL)_isSameOfAlwaysAlarmCalendars{
+    //用第一个元素和其他的比较
+    IAAlarmCalendar *firstObj = [_alwaysAlarmCalendars objectAtIndex:0];
+    
+    NSIndexSet *set = [_alwaysAlarmCalendars indexesOfObjectsPassingTest:^BOOL(IAAlarmCalendar *obj, NSUInteger idx, BOOL *stop) {
+        BOOL isEqualBegin = [firstObj.beginTime isEqualToDate:obj.beginTime];
+        BOOL isEqualEnd   = [firstObj.endTime   isEqualToDate:obj.endTime];
+        if (isEqualBegin && isEqualEnd) {
+            return YES;
+        }else {
+            *stop = YES;
+            return NO;
+        }
+    }];
+    
+    return (set.count == _alwaysAlarmCalendars.count);
 }
 
 - (void)_makeSections{
@@ -169,14 +188,49 @@
    
 }
 
-#pragma mark -
+#pragma mark - 覆盖父类
 
-//覆盖父类
-- (void)saveData{	    
-	YCRepeatType *rep = [DicManager repeatTypeForSortId:_lastIndexPathOfType.row];
+- (void)saveData{	
+    
+    if (_saveData == NO) {
+        return;
+    }
+    
+    //一个也不选中，也等于仅闹一次
+    BOOL once = (_lastIndexPathOfType.row == 0) || ([self _vaildIndexSetOfAlwaysAlarmCalendars].count == 0);
+    
+    //
+    YCRepeatType *rep = [DicManager repeatTypeForSortId:once ? 0 : 1];
 	self.alarm.repeatType = rep;
+    
+    //
+    self.alarm.usedAlarmCalendar = self.beginEndSwitch.on;
+    
+    //
+    if (self.alarm.usedAlarmCalendar) {
+    
+        if (once) {
+            _onceAlarmCalendar.repeatInterval = 0; //不重复
+            self.alarm.alarmCalendars = [NSArray arrayWithObjects:_onceAlarmCalendar, nil];
+        }else {
+            [_alwaysAlarmCalendars enumerateObjectsUsingBlock:^(IAAlarmCalendar *obj, NSUInteger idx, BOOL *stop) {
+                obj.repeatInterval = NSWeekCalendarUnit;
+                if (self.sameSwitch.on) { //使用相同的开始结束
+                    obj.beginTime = _onceAlarmCalendar.beginTime;
+                    obj.endTime = _onceAlarmCalendar.endTime;
+                }
+            }];
+            
+            self.alarm.alarmCalendars = _alwaysAlarmCalendars;
+        }
+        
+    }else {
+        self.alarm.alarmCalendars = nil;
+    }
+    
 }
- 
+
+#pragma mark - 
 
 - (IBAction)beginEndSwitchValueDidChange:(id)sender{
     if (_lastIndexPathOfType.row == 1) {
@@ -221,6 +275,7 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+    self.beginEndSwitch.on = self.alarm.usedAlarmCalendar;
     _lastIndexPathOfType = [[NSIndexPath indexPathForRow:self.alarm.repeatType.sortId inSection:0] retain];
     [self _makeSections];
     
@@ -230,12 +285,13 @@
             _onceAlarmCalendar = [[self.alarm.alarmCalendars objectAtIndex:0] retain];
         }else if (self.alarm.alarmCalendars.count == 7){
             _alwaysAlarmCalendars = [self.alarm.alarmCalendars retain];
+            _onceAlarmCalendar = [[_alwaysAlarmCalendars objectAtIndex:0] copy];//
+            
+            self.sameSwitch.on = [self _isSameOfAlwaysAlarmCalendars];//
         }
     }
     
     //如果空
-    if (_onceAlarmCalendar == nil) 
-        _onceAlarmCalendar = [[IAAlarmCalendar alloc] init];
     if (_alwaysAlarmCalendars == nil) {
         NSMutableArray *temps =  [NSMutableArray arrayWithCapacity:7];
         for (int i = 0; i < 7; i++) {
@@ -279,7 +335,10 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.title = KViewTitleRepeat;
+    [self _makeSections];
 	[self.tableView reloadData];
+    
+    _saveData = YES;
 }
 
 - (void)viewDidDisappear:(BOOL)animated{
@@ -306,6 +365,18 @@
 
 #pragma mark -
 #pragma mark Table view delegate
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath{
+    if (_lastIndexPathOfType.row == 1) { //连续闹钟
+        if (indexPath.section == 1) {
+            //打开开始与结束视图， 每次都新创建一个
+            IAAlarmCalendar *anAlarmCalendar = [_alwaysAlarmCalendars objectAtIndex:indexPath.row];
+            AlarmBeginEndViewController *beVC = [[[AlarmBeginEndViewController alloc] initWithNibName:@"AlarmBeginEndViewController" bundle:nil alarmCalendar:anAlarmCalendar] autorelease];
+             _saveData = NO;//不保存数据
+            [self.navigationController pushViewController:beVC animated:YES];
+        }
+    }
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -364,10 +435,12 @@
         {
             UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             if (cell == self.beginEndCell) {
-                                
+                
+                //打开开始与结束视图， 共用一个
                 if (_alarmBeginEndViewController == nil) {
                     _alarmBeginEndViewController = [[AlarmBeginEndViewController alloc] initWithNibName:@"AlarmBeginEndViewController" bundle:nil alarmCalendar:_onceAlarmCalendar];
                 }
+                _saveData = NO;//不保存数据
                 [self.navigationController pushViewController:_alarmBeginEndViewController animated:YES];
             }
             break;
