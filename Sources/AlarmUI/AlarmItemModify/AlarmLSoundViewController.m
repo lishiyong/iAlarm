@@ -231,6 +231,7 @@
 #pragma mark Memory management
 
 - (void)viewDidUnload {
+    [super viewDidUnload];
 	[soundPlays release];
 	soundPlays = nil;
 }

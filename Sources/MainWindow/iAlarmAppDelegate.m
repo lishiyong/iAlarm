@@ -12,9 +12,7 @@
 #import "IAAlarmFindViewController.h"
 #import "IAAlarmNotification.h"
 #import "IAAlarmNotificationCenter.h"
-#import "LocationManagerFactory.h"
-#import "IABasicLocationManager.h"
-#import "IARegionMonitoringLocationManager.h"
+#import "IALocationAlarmManager.h"
 #import "NSObject+YC.h"
 #import "ShareAppConfig.h"
 #import "LocalizedStringAbout.h"
@@ -32,7 +30,6 @@
 #import "YCSound.h"
 #import "AlarmsMapListViewController.h"
 #import "IAAlarm.h"
-#import "IALocationManager.h"
 #import "YCLog.h"
 #import "UIUtility.h"
 #import "iAlarmAppDelegate.h"
@@ -169,8 +166,7 @@
     [self.window makeKeyAndVisible];	
 	
     
-    self->locationManager = [LocationManagerFactory locationManagerInstanceWithDelegate:self];
-    [self->locationManager start];
+    self->locationManager = [[IALocationAlarmManager alloc] initWithDelegate:self];
     
 	
 	//不停止其他程序的音乐播放
@@ -394,7 +390,7 @@
 
 }
 
-- (void)locationManager:(IALocationManager *)manager didEnterRegion:(IARegion *)region
+- (void)locationManager:(IALocationAlarmManager *)manager didEnterRegion:(IARegion *)region
 {
 	IAAlarm *alarm = region.alarm;
 	if ([alarm.positionType.positionTypeId isEqualToString:@"p001"]) { //是 “离开时候”提醒
@@ -406,7 +402,7 @@
     //YCSystemStatus *systmStaus = [YCSystemStatus deviceStatusSingleInstance];
     //[systmStaus.localNotificationIdentifiers addObject:region.alarm.alarmId];
     
-	[self alertRegion:region arrived:YES atCurrentLocation:manager.standardLocationManager.location];
+	[self alertRegion:region arrived:YES atCurrentLocation:manager.location];
 	
 	//只闹一次
 	if ([alarm.repeatType.repeatTypeId isEqualToString:@"r001"]) 
@@ -417,7 +413,7 @@
 	
 }
 
-- (void)locationManager:(IALocationManager *)manager didExitRegion:(IARegion *)region
+- (void)locationManager:(IALocationAlarmManager *)manager didExitRegion:(IARegion *)region
 {	
 	//关闭离开通知
 	//if([YCParam paramSingleInstance].closeLeaveNotify) return;
@@ -432,7 +428,7 @@
     //YCSystemStatus *systmStaus = [YCSystemStatus deviceStatusSingleInstance];
     //[systmStaus.localNotificationIdentifiers addObject:region.alarm.alarmId];
     
-	[self alertRegion:region arrived:NO atCurrentLocation:manager.standardLocationManager.location];
+	[self alertRegion:region arrived:NO atCurrentLocation:manager.location];
 	
 	//只闹一次
 	if ([alarm.repeatType.repeatTypeId isEqualToString:@"r001"]) 

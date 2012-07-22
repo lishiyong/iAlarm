@@ -101,14 +101,14 @@
         
         
         //开始结束cell，
-        _beginEndSection = [[NSArray arrayWithObjects:self.beginEndCell, nil] retain];
+        NSArray *beginEndSection = [NSArray arrayWithObjects:self.beginEndCell, nil];
         self.beginEndCell.textLabel.text = @"开始\r\n结束";
         self.beginEndCell.detailTextLabel.text = [NSString stringWithFormat:@"%@\r\n%@",[_onceAlarmCalendar.beginTime stringOfTimeShortStyle],[_onceAlarmCalendar.endTime stringOfTimeShortStyle]]; //@"8:00 AM\r\n21:00 PM"
         self.beginEndCell.textLabel.numberOfLines = 2;
         self.beginEndCell.detailTextLabel.numberOfLines = 2;
         
         if (self.beginEndSwitch.on) {
-            [_sections addObject:_beginEndSection];//+ section
+            [_sections addObject:beginEndSection];//+ section
         }
         
     }else {//连续闹钟
@@ -173,13 +173,13 @@
             
             //开始结束cell，
             if (self.sameSwitch.on) {
-                _beginEndSection = [[NSArray arrayWithObjects:self.beginEndCell, nil] retain];
+                NSArray *beginEndSection = [NSArray arrayWithObjects:self.beginEndCell, nil];
                 self.beginEndCell.textLabel.text = @"开始\r\n结束";
                 self.beginEndCell.detailTextLabel.text = [NSString stringWithFormat:@"%@\r\n%@",[_onceAlarmCalendar.beginTime stringOfTimeShortStyle],[_onceAlarmCalendar.endTime stringOfTimeShortStyle]]; //@"8:00 AM\r\n21:00 PM";
                 self.beginEndCell.textLabel.numberOfLines = 2;
                 self.beginEndCell.detailTextLabel.numberOfLines = 2;
                 
-                [_sections addObject:_beginEndSection];//+ section
+                [_sections addObject:beginEndSection];//+ section
             }
             
         }
@@ -191,11 +191,7 @@
 #pragma mark - 覆盖父类
 
 - (void)saveData{	
-    
-    if (_saveData == NO) {
-        return;
-    }
-    
+  
     //一个也不选中，也等于仅闹一次
     BOOL once = (_lastIndexPathOfType.row == 0) || ([self _vaildIndexSetOfAlwaysAlarmCalendars].count == 0);
     
@@ -291,7 +287,11 @@
         }
     }
     
+    
     //如果空
+    if (_onceAlarmCalendar == nil) {
+        _onceAlarmCalendar = [[IAAlarmCalendar alloc] init];
+    }
     if (_alwaysAlarmCalendars == nil) {
         NSMutableArray *temps =  [NSMutableArray arrayWithCapacity:7];
         for (int i = 0; i < 7; i++) {
@@ -338,7 +338,6 @@
     [self _makeSections];
 	[self.tableView reloadData];
     
-    _saveData = YES;
 }
 
 - (void)viewDidDisappear:(BOOL)animated{
@@ -372,7 +371,6 @@
             //打开开始与结束视图， 每次都新创建一个
             IAAlarmCalendar *anAlarmCalendar = [_alwaysAlarmCalendars objectAtIndex:indexPath.row];
             AlarmBeginEndViewController *beVC = [[[AlarmBeginEndViewController alloc] initWithNibName:@"AlarmBeginEndViewController" bundle:nil alarmCalendar:anAlarmCalendar] autorelease];
-             _saveData = NO;//不保存数据
             [self.navigationController pushViewController:beVC animated:YES];
         }
     }
@@ -381,7 +379,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
 
     switch (indexPath.section) {
         case 0://重复类型
@@ -417,14 +414,19 @@
                 alarmCalendar.vaild = dayCell.checkmark;
 
                 
-                //让beginEndSwitchCell可视   
-                if (![self.tableView.visibleCells containsObject:self.beginEndSwitchCell])
-                {
-                    NSIndexPath *begionEndCellIndexPath = [NSIndexPath indexPathForRow:0 inSection:2];
-                    [tableView scrollToRowAtIndexPath:begionEndCellIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-                }
+                BOOL beginEndSwitchEnabled = self.beginEndSwitch.enabled; //因为_makeSections会改变它，所以先临时存储在这
                 [self _makeSections];
                 [self.tableView reloadDataAnimated:NO];
+                
+                
+                //不是每个日期都被选中 && beginEndSwitch可用（日期第一次缺失）&& beginEndSwitchCell不在可视范围 && 使用相同时间
+                if ([self _vaildIndexSetOfAlwaysAlarmCalendars].count != 7 && beginEndSwitchEnabled && ![self.tableView.visibleCells containsObject:self.beginEndSwitchCell] && self.sameSwitch.on)
+                {
+                    [self performBlock:^{
+                        NSIndexPath *begionEndCellIndexPath = [NSIndexPath indexPathForRow:0 inSection:4];//最后一个cell(设开始与结束时间cell);
+                       [tableView scrollToRowAtIndexPath:begionEndCellIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                    } afterDelay:0.1];
+                }
 
             }
             
@@ -440,7 +442,6 @@
                 if (_alarmBeginEndViewController == nil) {
                     _alarmBeginEndViewController = [[AlarmBeginEndViewController alloc] initWithNibName:@"AlarmBeginEndViewController" bundle:nil alarmCalendar:_onceAlarmCalendar];
                 }
-                _saveData = NO;//不保存数据
                 [self.navigationController pushViewController:_alarmBeginEndViewController animated:YES];
             }
             break;
@@ -470,8 +471,33 @@
 #pragma mark -
 #pragma mark Memory management
 
+- (void)viewDidUnload {
+    [super viewDidUnload];
+	self.beginEndSwitchCell = nil;
+    self.beginEndCell = nil;
+    self.beginEndSwitch = nil;
+    self.sameSwitchCell = nil;
+    self.sameSwitch = nil;
+    [_lastIndexPathOfType release]; _lastIndexPathOfType = nil;
+    [_sections release]; _sections = nil;
+    [_onceAlarmCalendar release]; _onceAlarmCalendar= nil;
+    [_alwaysAlarmCalendars release]; _alwaysAlarmCalendars = nil;
+    [_alarmBeginEndViewController release]; _alarmBeginEndViewController = nil;
+    
+}
+
 - (void)dealloc {
-	[_lastIndexPathOfType release];
+    NSLog(@"AlarmLRepeatTypeViewController dealloc");
+    [_beginEndSwitchCell release];
+    [_beginEndCell release];
+    [_beginEndSwitch release];
+    [_sameSwitchCell release];
+    [_sameSwitch release];
+    
+    [_lastIndexPathOfType release];
+    [_sections release];
+    [_onceAlarmCalendar release];
+    [_alwaysAlarmCalendars release];
     [_alarmBeginEndViewController release];
     [super dealloc];
 }

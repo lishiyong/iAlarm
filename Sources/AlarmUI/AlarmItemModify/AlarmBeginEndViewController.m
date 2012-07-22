@@ -78,21 +78,6 @@
     }
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    self.tableView = nil;
-    self.beginCell = nil;
-    self.endCell = nil;
-    self.timePicker = nil;
-    [_sections release]; _sections = nil;
-    [_heightOfCells release];_heightOfCells = nil;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
 
 #pragma mark - Table view data source and delegate
 
@@ -131,6 +116,17 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     return @" "; //4.2前没这个不行
+}
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    self.tableView = nil;
+    self.beginCell = nil;
+    self.endCell = nil;
+    self.timePicker = nil;
+    [_sections release]; _sections = nil;
+    [_heightOfCells release];_heightOfCells = nil;
 }
 
 - (void)dealloc{

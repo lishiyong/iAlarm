@@ -125,7 +125,7 @@ NSString *IARegionKey = @"IARegionKey";
 	[self genRegionArray];
     
     
-    
+    /*
     //告知，下次提醒
     IARegion *theRegion = [self.regions objectForKey:saveInfo.objId];;
     if (theRegion && lastLocation && [YCSystemStatus sharedSystemStatus].enabledLocation) {
@@ -138,6 +138,9 @@ NSString *IARegionKey = @"IARegionKey";
             [promptView performSelector:@selector(dismissAnimated:) withObject:(id)kCFBooleanTrue afterDelay:8.0];
         }
     }
+     */
+    
+    
 	
 }
 

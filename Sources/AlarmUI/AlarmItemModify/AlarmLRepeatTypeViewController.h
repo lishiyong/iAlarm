@@ -11,15 +11,13 @@
 
 @class AlarmBeginEndViewController, IAAlarmCalendar;
 @interface AlarmLRepeatTypeViewController : AlarmModifyTableViewController {
+    
     NSIndexPath  *_lastIndexPathOfType;
     NSMutableArray *_sections;
-    NSArray *_beginEndSection;
-    
-    AlarmBeginEndViewController *_alarmBeginEndViewController;
     IAAlarmCalendar *_onceAlarmCalendar;
     NSArray *_alwaysAlarmCalendars;
+    AlarmBeginEndViewController *_alarmBeginEndViewController;
     
-    BOOL _saveData;
 }
 
 @property (nonatomic, retain) IBOutlet  UITableViewCell *beginEndSwitchCell;

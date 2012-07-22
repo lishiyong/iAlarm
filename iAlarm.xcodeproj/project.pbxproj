@@ -11,6 +11,14 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		28D801B40F44B63D00FB423F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D801B30F44B63D00FB423F /* CoreData.framework */; };
+		9C01AC0415BBCE7900A2ADE0 /* IALocationAlarmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C01AC0315BBCE7900A2ADE0 /* IALocationAlarmManager.m */; };
+		9C01AC0515BBCE7900A2ADE0 /* IALocationAlarmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C01AC0315BBCE7900A2ADE0 /* IALocationAlarmManager.m */; };
+		9C01AC1D15BBE58A00A2ADE0 /* IABasicLocationAlarmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C01AC1A15BBE58A00A2ADE0 /* IABasicLocationAlarmManager.m */; };
+		9C01AC1E15BBE58A00A2ADE0 /* IABasicLocationAlarmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C01AC1A15BBE58A00A2ADE0 /* IABasicLocationAlarmManager.m */; };
+		9C01AC1F15BBE58A00A2ADE0 /* IAPlaceholderLocationAlarmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C01AC1C15BBE58A00A2ADE0 /* IAPlaceholderLocationAlarmManager.m */; };
+		9C01AC2015BBE58A00A2ADE0 /* IAPlaceholderLocationAlarmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C01AC1C15BBE58A00A2ADE0 /* IAPlaceholderLocationAlarmManager.m */; };
+		9C01AC2315BBE67B00A2ADE0 /* IALocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C01AC2215BBE67B00A2ADE0 /* IALocationManager.m */; };
+		9C01AC2415BBE67B00A2ADE0 /* IALocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C01AC2215BBE67B00A2ADE0 /* IALocationManager.m */; };
 		9C022D51136697C9007C1555 /* AlarmDetailFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C022D50136697C9007C1555 /* AlarmDetailFooterView.xib */; };
 		9C022D541366994C007C1555 /* AlarmDetailFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C022D531366994B007C1555 /* AlarmDetailFooterView.m */; };
 		9C02E507157310B6007D2A98 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C02E506157310B6007D2A98 /* AddressBookUI.framework */; };
@@ -112,8 +120,6 @@
 		9C22557D15A72C5B0022A724 /* IAMapPinGray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C22557B15A72C4C0022A724 /* IAMapPinGray@2x.png */; };
 		9C230135150DB1CC005E5E08 /* IAAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C230133150DB1CC005E5E08 /* IAAboutViewController.m */; };
 		9C230136150DB1CC005E5E08 /* IAAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C230133150DB1CC005E5E08 /* IAAboutViewController.m */; };
-		9C2323D614BB206F00A364D8 /* IARegionMonitoringLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2323D514BB206F00A364D8 /* IARegionMonitoringLocationManager.m */; };
-		9C2323D714BB206F00A364D8 /* IARegionMonitoringLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2323D514BB206F00A364D8 /* IARegionMonitoringLocationManager.m */; };
 		9C2B806114F690C000B2CC53 /* AlarmNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2B805F14F690C000B2CC53 /* AlarmNotesViewController.m */; };
 		9C2B806214F690C000B2CC53 /* AlarmNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2B805F14F690C000B2CC53 /* AlarmNotesViewController.m */; };
 		9C2B806314F690C000B2CC53 /* AlarmNotesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C2B806014F690C000B2CC53 /* AlarmNotesViewController.xib */; };
@@ -213,8 +219,6 @@
 		9C410ED1156E5907007F3761 /* AlarmDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C410ECE156E5907007F3761 /* AlarmDetailTableViewController.m */; };
 		9C410ED3156E594F007F3761 /* AlarmRadiusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C410ED2156E594F007F3761 /* AlarmRadiusViewController.m */; };
 		9C410ED4156E594F007F3761 /* AlarmRadiusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C410ED2156E594F007F3761 /* AlarmRadiusViewController.m */; };
-		9C4A29E614F2AE4700949794 /* IABasicLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4A29E514F2AE4700949794 /* IABasicLocationManager.m */; };
-		9C4A29E714F2AE4700949794 /* IABasicLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4A29E514F2AE4700949794 /* IABasicLocationManager.m */; };
 		9C4C7DC115B6A75E00F6F795 /* YCPreferencesBlueCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C4C7DBD15B6A75E00F6F795 /* YCPreferencesBlueCheck.png */; };
 		9C4C7DC215B6A75E00F6F795 /* YCPreferencesBlueCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C4C7DBD15B6A75E00F6F795 /* YCPreferencesBlueCheck.png */; };
 		9C4C7DC315B6A75E00F6F795 /* YCPreferencesBlueCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C4C7DBE15B6A75E00F6F795 /* YCPreferencesBlueCheck@2x.png */; };
@@ -746,7 +750,6 @@
 		9C8AB27A13B0C92100120AD5 /* AlarmsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE894BD12FFFFD2008FBD45 /* AlarmsListViewController.m */; };
 		9C8AB27B13B0C92100120AD5 /* AlarmsListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE894C112FFFFD2008FBD45 /* AlarmsListCell.m */; };
 		9C8AB27C13B0C92100120AD5 /* IARegionsCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8950312FFFFD2008FBD45 /* IARegionsCenter.m */; };
-		9C8AB27D13B0C92100120AD5 /* IALocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8950912FFFFD2008FBD45 /* IALocationManager.m */; };
 		9C8AB27E13B0C92100120AD5 /* iAlarmAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8950F12FFFFD2008FBD45 /* iAlarmAppDelegate.m */; };
 		9C8AB27F13B0C92100120AD5 /* IAAlarmRadiusType.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8951712FFFFD2008FBD45 /* IAAlarmRadiusType.m */; };
 		9C8AB28013B0C92100120AD5 /* IAAlarm.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8951912FFFFD2008FBD45 /* IAAlarm.m */; };
@@ -775,7 +778,6 @@
 		9C8AB2AE13B0C92100120AD5 /* IASaveInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC103C01307BBEC009C42BC /* IASaveInfo.m */; };
 		9C8AB2B413B0C92100120AD5 /* IARegion.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CFD5D51131DF41700C01B38 /* IARegion.m */; };
 		9C8AB2BA13B0C92100120AD5 /* IABuyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD8350A133A356A00B081E2 /* IABuyManager.m */; };
-		9C8AB2C013B0C92100120AD5 /* YCDistanceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5618A135840D100FE6EA1 /* YCDistanceManager.m */; };
 		9C8AB2C113B0C92100120AD5 /* IANotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD3E35913666BC40032321A /* IANotifications.m */; };
 		9C8AB2C213B0C92100120AD5 /* AlarmDetailFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C022D531366994B007C1555 /* AlarmDetailFooterView.m */; };
 		9C8AB2C613B0C92100120AD5 /* IAGlobal.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2D263138376FB006FD30C /* IAGlobal.m */; };
@@ -991,7 +993,6 @@
 		9CCF8797157228C6007C7680 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CCF8796157228C6007C7680 /* AddressBook.framework */; };
 		9CD2791813470C0B00A7EAAB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CD2791713470C0B00A7EAAB /* AVFoundation.framework */; };
 		9CD3E35A13666BC40032321A /* IANotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD3E35913666BC40032321A /* IANotifications.m */; };
-		9CD5618B135840D100FE6EA1 /* YCDistanceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5618A135840D100FE6EA1 /* YCDistanceManager.m */; };
 		9CD5AF0113F2561B00A718B6 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CD5AF0013F2561B00A718B6 /* Security.framework */; };
 		9CD5AF1413F2567200A718B6 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CD5AF1313F2567200A718B6 /* MessageUI.framework */; };
 		9CD614DF1369A86A0029B7BC /* IAFlagGray.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD614DE1369A86A0029B7BC /* IAFlagGray.png */; };
@@ -1033,8 +1034,6 @@
 		9CE00F0814985412000B0546 /* TrackingDotHaloSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE00EFB14985412000B0546 /* TrackingDotHaloSmall@2x.png */; };
 		9CE00F0914985412000B0546 /* TrackingDotHaloSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE00EFB14985412000B0546 /* TrackingDotHaloSmall@2x.png */; };
 		9CE0B51F13776F1F00D15BC7 /* IAMap.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE0B51E13776F1F00D15BC7 /* IAMap.png */; };
-		9CE12CEC14F4CF680086D16B /* LocationManagerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE12CEB14F4CF680086D16B /* LocationManagerFactory.m */; };
-		9CE12CED14F4CF680086D16B /* LocationManagerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE12CEB14F4CF680086D16B /* LocationManagerFactory.m */; };
 		9CE12D0314F4FBF10086D16B /* IAGreenButtonNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE12D0114F4FBF10086D16B /* IAGreenButtonNormal.png */; };
 		9CE12D0414F4FBF10086D16B /* IAGreenButtonNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE12D0114F4FBF10086D16B /* IAGreenButtonNormal.png */; };
 		9CE12D0514F4FBF10086D16B /* IAGreenButtonNormal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE12D0214F4FBF10086D16B /* IAGreenButtonNormal@2x.png */; };
@@ -1114,7 +1113,6 @@
 		9CE895C612FFFFD2008FBD45 /* AlarmsListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE894C112FFFFD2008FBD45 /* AlarmsListCell.m */; };
 		9CE895C712FFFFD2008FBD45 /* AlarmsListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CE894C212FFFFD2008FBD45 /* AlarmsListCell.xib */; };
 		9CE895E312FFFFD2008FBD45 /* IARegionsCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8950312FFFFD2008FBD45 /* IARegionsCenter.m */; };
-		9CE895E612FFFFD2008FBD45 /* IALocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8950912FFFFD2008FBD45 /* IALocationManager.m */; };
 		9CE895E812FFFFD2008FBD45 /* iAlarmAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8950F12FFFFD2008FBD45 /* iAlarmAppDelegate.m */; };
 		9CE895E912FFFFD2008FBD45 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8951012FFFFD2008FBD45 /* MainWindow.xib */; };
 		9CE895EC12FFFFD2008FBD45 /* IAAlarmRadiusType.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8951712FFFFD2008FBD45 /* IAAlarmRadiusType.m */; };
@@ -1311,6 +1309,15 @@
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		28D801B30F44B63D00FB423F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* iAlarm-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "iAlarm-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		9C01ABFC15BBCC4600A2ADE0 /* IALocationManagerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IALocationManagerDelegate.h; sourceTree = "<group>"; };
+		9C01AC0215BBCE7900A2ADE0 /* IALocationAlarmManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IALocationAlarmManager.h; sourceTree = "<group>"; };
+		9C01AC0315BBCE7900A2ADE0 /* IALocationAlarmManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IALocationAlarmManager.m; sourceTree = "<group>"; };
+		9C01AC1915BBE58A00A2ADE0 /* IABasicLocationAlarmManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IABasicLocationAlarmManager.h; sourceTree = "<group>"; };
+		9C01AC1A15BBE58A00A2ADE0 /* IABasicLocationAlarmManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IABasicLocationAlarmManager.m; sourceTree = "<group>"; };
+		9C01AC1B15BBE58A00A2ADE0 /* IAPlaceholderLocationAlarmManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAPlaceholderLocationAlarmManager.h; sourceTree = "<group>"; };
+		9C01AC1C15BBE58A00A2ADE0 /* IAPlaceholderLocationAlarmManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAPlaceholderLocationAlarmManager.m; sourceTree = "<group>"; };
+		9C01AC2115BBE67B00A2ADE0 /* IALocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IALocationManager.h; sourceTree = "<group>"; };
+		9C01AC2215BBE67B00A2ADE0 /* IALocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IALocationManager.m; sourceTree = "<group>"; };
 		9C022D50136697C9007C1555 /* AlarmDetailFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlarmDetailFooterView.xib; sourceTree = "<group>"; };
 		9C022D521366994B007C1555 /* AlarmDetailFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmDetailFooterView.h; sourceTree = "<group>"; };
 		9C022D531366994B007C1555 /* AlarmDetailFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmDetailFooterView.m; sourceTree = "<group>"; };
@@ -1395,9 +1402,6 @@
 		9C22557B15A72C4C0022A724 /* IAMapPinGray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAMapPinGray@2x.png"; sourceTree = "<group>"; };
 		9C230133150DB1CC005E5E08 /* IAAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAAboutViewController.m; sourceTree = "<group>"; };
 		9C230134150DB1CC005E5E08 /* IAAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAAboutViewController.h; sourceTree = "<group>"; };
-		9C2323D414BB206F00A364D8 /* IARegionMonitoringLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IARegionMonitoringLocationManager.h; sourceTree = "<group>"; };
-		9C2323D514BB206F00A364D8 /* IARegionMonitoringLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IARegionMonitoringLocationManager.m; sourceTree = "<group>"; };
-		9C2323D814BB232A00A364D8 /* IALocationManagerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IALocationManagerInterface.h; sourceTree = "<group>"; };
 		9C2B805E14F690C000B2CC53 /* AlarmNotesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmNotesViewController.h; sourceTree = "<group>"; };
 		9C2B805F14F690C000B2CC53 /* AlarmNotesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmNotesViewController.m; sourceTree = "<group>"; };
 		9C2B806014F690C000B2CC53 /* AlarmNotesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlarmNotesViewController.xib; sourceTree = "<group>"; };
@@ -1452,8 +1456,6 @@
 		9C410ECE156E5907007F3761 /* AlarmDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmDetailTableViewController.m; sourceTree = "<group>"; };
 		9C410ECF156E5907007F3761 /* AlarmDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmDetailTableViewController.h; sourceTree = "<group>"; };
 		9C410ED2156E594F007F3761 /* AlarmRadiusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmRadiusViewController.m; sourceTree = "<group>"; };
-		9C4A29E414F2AE4700949794 /* IABasicLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IABasicLocationManager.h; sourceTree = "<group>"; };
-		9C4A29E514F2AE4700949794 /* IABasicLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IABasicLocationManager.m; sourceTree = "<group>"; };
 		9C4C7DBD15B6A75E00F6F795 /* YCPreferencesBlueCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCPreferencesBlueCheck.png; sourceTree = "<group>"; };
 		9C4C7DBE15B6A75E00F6F795 /* YCPreferencesBlueCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCPreferencesBlueCheck@2x.png"; sourceTree = "<group>"; };
 		9C4C7DBF15B6A75E00F6F795 /* YCPreferencesWhiteCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCPreferencesWhiteCheck.png; sourceTree = "<group>"; };
@@ -1932,8 +1934,6 @@
 		9CD3E35813666BC40032321A /* IANotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IANotifications.h; sourceTree = "<group>"; };
 		9CD3E35913666BC40032321A /* IANotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IANotifications.m; sourceTree = "<group>"; };
 		9CD4466B133DADCF00407732 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
-		9CD56189135840D100FE6EA1 /* YCDistanceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCDistanceManager.h; sourceTree = "<group>"; };
-		9CD5618A135840D100FE6EA1 /* YCDistanceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCDistanceManager.m; sourceTree = "<group>"; };
 		9CD5AF0013F2561B00A718B6 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		9CD5AF1313F2567200A718B6 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		9CD614DE1369A86A0029B7BC /* IAFlagGray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IAFlagGray.png; sourceTree = "<group>"; };
@@ -1959,8 +1959,6 @@
 		9CE00EFA14985412000B0546 /* TrackingDotHaloSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TrackingDotHaloSmall.png; sourceTree = "<group>"; };
 		9CE00EFB14985412000B0546 /* TrackingDotHaloSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TrackingDotHaloSmall@2x.png"; sourceTree = "<group>"; };
 		9CE0B51E13776F1F00D15BC7 /* IAMap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IAMap.png; sourceTree = "<group>"; };
-		9CE12CEA14F4CF680086D16B /* LocationManagerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationManagerFactory.h; sourceTree = "<group>"; };
-		9CE12CEB14F4CF680086D16B /* LocationManagerFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationManagerFactory.m; sourceTree = "<group>"; };
 		9CE12D0114F4FBF10086D16B /* IAGreenButtonNormal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IAGreenButtonNormal.png; sourceTree = "<group>"; };
 		9CE12D0214F4FBF10086D16B /* IAGreenButtonNormal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAGreenButtonNormal@2x.png"; sourceTree = "<group>"; };
 		9CE1453B141200FE003A1D96 /* IADestinationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IADestinationCell.h; sourceTree = "<group>"; };
@@ -2047,9 +2045,6 @@
 		9CE894C212FFFFD2008FBD45 /* AlarmsListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AlarmsListCell.xib; sourceTree = "<group>"; };
 		9CE8950212FFFFD2008FBD45 /* IARegionsCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IARegionsCenter.h; sourceTree = "<group>"; };
 		9CE8950312FFFFD2008FBD45 /* IARegionsCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IARegionsCenter.m; sourceTree = "<group>"; };
-		9CE8950812FFFFD2008FBD45 /* IALocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IALocationManager.h; sourceTree = "<group>"; };
-		9CE8950912FFFFD2008FBD45 /* IALocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IALocationManager.m; sourceTree = "<group>"; };
-		9CE8950C12FFFFD2008FBD45 /* IALocationManagerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IALocationManagerDelegate.h; sourceTree = "<group>"; };
 		9CE8950E12FFFFD2008FBD45 /* iAlarmAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iAlarmAppDelegate.h; sourceTree = "<group>"; };
 		9CE8950F12FFFFD2008FBD45 /* iAlarmAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iAlarmAppDelegate.m; sourceTree = "<group>"; };
 		9CE8951012FFFFD2008FBD45 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
@@ -2322,6 +2317,17 @@
 			name = Frameworks;
 			path = /Users/lishiyong/lsyWorks/iAlarm;
 			sourceTree = "<absolute>";
+		};
+		9C01AC1815BBE58A00A2ADE0 /* IALocationAlarmManager */ = {
+			isa = PBXGroup;
+			children = (
+				9C01AC1915BBE58A00A2ADE0 /* IABasicLocationAlarmManager.h */,
+				9C01AC1A15BBE58A00A2ADE0 /* IABasicLocationAlarmManager.m */,
+				9C01AC1B15BBE58A00A2ADE0 /* IAPlaceholderLocationAlarmManager.h */,
+				9C01AC1C15BBE58A00A2ADE0 /* IAPlaceholderLocationAlarmManager.m */,
+			);
+			path = IALocationAlarmManager;
+			sourceTree = "<group>";
 		};
 		9C14466E153C79090071EFF2 /* OAuth */ = {
 			isa = PBXGroup;
@@ -3930,16 +3936,9 @@
 			isa = PBXGroup;
 			children = (
 				9CE894FF12FFFFD2008FBD45 /* Inner */,
-				9CE8950C12FFFFD2008FBD45 /* IALocationManagerDelegate.h */,
-				9C2323D814BB232A00A364D8 /* IALocationManagerInterface.h */,
-				9CE8950812FFFFD2008FBD45 /* IALocationManager.h */,
-				9CE8950912FFFFD2008FBD45 /* IALocationManager.m */,
-				9C4A29E414F2AE4700949794 /* IABasicLocationManager.h */,
-				9C4A29E514F2AE4700949794 /* IABasicLocationManager.m */,
-				9C2323D414BB206F00A364D8 /* IARegionMonitoringLocationManager.h */,
-				9C2323D514BB206F00A364D8 /* IARegionMonitoringLocationManager.m */,
-				9CE12CEA14F4CF680086D16B /* LocationManagerFactory.h */,
-				9CE12CEB14F4CF680086D16B /* LocationManagerFactory.m */,
+				9C01ABFC15BBCC4600A2ADE0 /* IALocationManagerDelegate.h */,
+				9C01AC0215BBCE7900A2ADE0 /* IALocationAlarmManager.h */,
+				9C01AC0315BBCE7900A2ADE0 /* IALocationAlarmManager.m */,
 			);
 			path = Location;
 			sourceTree = "<group>";
@@ -3947,12 +3946,13 @@
 		9CE894FF12FFFFD2008FBD45 /* Inner */ = {
 			isa = PBXGroup;
 			children = (
+				9C01AC1815BBE58A00A2ADE0 /* IALocationAlarmManager */,
 				9CFD5D50131DF41700C01B38 /* IARegion.h */,
 				9CFD5D51131DF41700C01B38 /* IARegion.m */,
 				9CE8950212FFFFD2008FBD45 /* IARegionsCenter.h */,
 				9CE8950312FFFFD2008FBD45 /* IARegionsCenter.m */,
-				9CD56189135840D100FE6EA1 /* YCDistanceManager.h */,
-				9CD5618A135840D100FE6EA1 /* YCDistanceManager.m */,
+				9C01AC2115BBE67B00A2ADE0 /* IALocationManager.h */,
+				9C01AC2215BBE67B00A2ADE0 /* IALocationManager.m */,
 			);
 			path = Inner;
 			sourceTree = "<group>";
@@ -5106,7 +5106,6 @@
 				9CE895C412FFFFD2008FBD45 /* AlarmsListViewController.m in Sources */,
 				9CE895C612FFFFD2008FBD45 /* AlarmsListCell.m in Sources */,
 				9CE895E312FFFFD2008FBD45 /* IARegionsCenter.m in Sources */,
-				9CE895E612FFFFD2008FBD45 /* IALocationManager.m in Sources */,
 				9CE895E812FFFFD2008FBD45 /* iAlarmAppDelegate.m in Sources */,
 				9CE895EC12FFFFD2008FBD45 /* IAAlarmRadiusType.m in Sources */,
 				9CE895ED12FFFFD2008FBD45 /* IAAlarm.m in Sources */,
@@ -5135,16 +5134,12 @@
 				9CC103C11307BBEC009C42BC /* IASaveInfo.m in Sources */,
 				9CFD5D52131DF41700C01B38 /* IARegion.m in Sources */,
 				9CD8350B133A356A00B081E2 /* IABuyManager.m in Sources */,
-				9CD5618B135840D100FE6EA1 /* YCDistanceManager.m in Sources */,
 				9CD3E35A13666BC40032321A /* IANotifications.m in Sources */,
 				9C022D541366994C007C1555 /* AlarmDetailFooterView.m in Sources */,
 				9CE2D264138376FB006FD30C /* IAGlobal.m in Sources */,
 				9C3CF75213B32DAA005DFB09 /* AlarmTriggerTableViewController.m in Sources */,
 				9CC011EF13C6E3ED0042D744 /* BackgroundViewController.m in Sources */,
 				9CE1453D141200FE003A1D96 /* IADestinationCell.m in Sources */,
-				9C2323D614BB206F00A364D8 /* IARegionMonitoringLocationManager.m in Sources */,
-				9C4A29E614F2AE4700949794 /* IABasicLocationManager.m in Sources */,
-				9CE12CEC14F4CF680086D16B /* LocationManagerFactory.m in Sources */,
 				9C2B806114F690C000B2CC53 /* AlarmNotesViewController.m in Sources */,
 				9C85F38614FBA99F00B49FF4 /* IAAlarmFindViewController.m in Sources */,
 				9C230135150DB1CC005E5E08 /* IAAboutViewController.m in Sources */,
@@ -5319,6 +5314,10 @@
 				9C56CD0115B7F0BE00E931DA /* AlarmBeginEndViewController.m in Sources */,
 				9CC6E5C415B915F2002D3BD3 /* IAAlarmCalendar.m in Sources */,
 				9CF8832215B95832003EF8AB /* NSDate+YC.m in Sources */,
+				9C01AC0415BBCE7900A2ADE0 /* IALocationAlarmManager.m in Sources */,
+				9C01AC1D15BBE58A00A2ADE0 /* IABasicLocationAlarmManager.m in Sources */,
+				9C01AC1F15BBE58A00A2ADE0 /* IAPlaceholderLocationAlarmManager.m in Sources */,
+				9C01AC2315BBE67B00A2ADE0 /* IALocationManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5336,7 +5335,6 @@
 				9C8AB27A13B0C92100120AD5 /* AlarmsListViewController.m in Sources */,
 				9C8AB27B13B0C92100120AD5 /* AlarmsListCell.m in Sources */,
 				9C8AB27C13B0C92100120AD5 /* IARegionsCenter.m in Sources */,
-				9C8AB27D13B0C92100120AD5 /* IALocationManager.m in Sources */,
 				9C8AB27E13B0C92100120AD5 /* iAlarmAppDelegate.m in Sources */,
 				9C8AB27F13B0C92100120AD5 /* IAAlarmRadiusType.m in Sources */,
 				9C8AB28013B0C92100120AD5 /* IAAlarm.m in Sources */,
@@ -5365,16 +5363,12 @@
 				9C8AB2AE13B0C92100120AD5 /* IASaveInfo.m in Sources */,
 				9C8AB2B413B0C92100120AD5 /* IARegion.m in Sources */,
 				9C8AB2BA13B0C92100120AD5 /* IABuyManager.m in Sources */,
-				9C8AB2C013B0C92100120AD5 /* YCDistanceManager.m in Sources */,
 				9C8AB2C113B0C92100120AD5 /* IANotifications.m in Sources */,
 				9C8AB2C213B0C92100120AD5 /* AlarmDetailFooterView.m in Sources */,
 				9C8AB2C613B0C92100120AD5 /* IAGlobal.m in Sources */,
 				9C3CF75313B32DAA005DFB09 /* AlarmTriggerTableViewController.m in Sources */,
 				9CC011F113C6E3ED0042D744 /* BackgroundViewController.m in Sources */,
 				9CE1453E141200FE003A1D96 /* IADestinationCell.m in Sources */,
-				9C2323D714BB206F00A364D8 /* IARegionMonitoringLocationManager.m in Sources */,
-				9C4A29E714F2AE4700949794 /* IABasicLocationManager.m in Sources */,
-				9CE12CED14F4CF680086D16B /* LocationManagerFactory.m in Sources */,
 				9C2B806214F690C000B2CC53 /* AlarmNotesViewController.m in Sources */,
 				9C85F38714FBA99F00B49FF4 /* IAAlarmFindViewController.m in Sources */,
 				9C230136150DB1CC005E5E08 /* IAAboutViewController.m in Sources */,
@@ -5549,6 +5543,10 @@
 				9C56CD0315B7F2C800E931DA /* AlarmBeginEndViewController.m in Sources */,
 				9CC6E5C515B915F2002D3BD3 /* IAAlarmCalendar.m in Sources */,
 				9CF8832315B95832003EF8AB /* NSDate+YC.m in Sources */,
+				9C01AC0515BBCE7900A2ADE0 /* IALocationAlarmManager.m in Sources */,
+				9C01AC1E15BBE58A00A2ADE0 /* IABasicLocationAlarmManager.m in Sources */,
+				9C01AC2015BBE58A00A2ADE0 /* IAPlaceholderLocationAlarmManager.m in Sources */,
+				9C01AC2415BBE67B00A2ADE0 /* IALocationManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

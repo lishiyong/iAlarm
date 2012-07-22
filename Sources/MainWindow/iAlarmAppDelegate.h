@@ -6,21 +6,20 @@
 //  Copyright __MyCompanyName__ 2010. All rights reserved.
 //
 
+#import "IALocationManagerDelegate.h"
 #import <AVFoundation/AVFoundation.h>
 #import <UIKit/UIKit.h>
-#import "IALocationManagerInterface.h"
 
-@class YCSoundPlayer, YClocationServicesUsableAlert, BackgroundViewController, IAAlarmNotification;
+@class YCSoundPlayer, YClocationServicesUsableAlert, BackgroundViewController, IAAlarmNotification, IALocationAlarmManager;
 @interface iAlarmAppDelegate : NSObject 
-<UIApplicationDelegate,IALocationManagerDelegate,UIAlertViewDelegate,AVAudioPlayerDelegate> 
+<UIApplicationDelegate,IALocationAlarmManagerDelegate,UIAlertViewDelegate,AVAudioPlayerDelegate> 
 {
     UIWindow *window;
 	//BackgroundViewController *viewController;
 	UINavigationController *viewController;
 
 	
-	//IALocationManager *locationManager;
-    id<IALocationManagerInterface> locationManager;
+    IALocationAlarmManager *locationManager;
 
 	
 	YCSoundPlayer *soundPlayer ;

@@ -23,6 +23,7 @@
 @property(nonatomic,retain) IBOutlet UIImageView *flagImageView;
 @property(nonatomic,retain) IBOutlet UIView *topShadowView;
 @property(nonatomic,retain) IBOutlet UIView *bottomShadowView;
+@property(nonatomic,retain) IBOutlet UIImageView *clockImageView;
 
 + (id)viewWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle;
 

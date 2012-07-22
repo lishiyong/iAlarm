@@ -87,7 +87,6 @@
 								<string key="NSFrame">{{207, 0}, {75, 93}}</string>
 								<reference key="NSSuperview" ref="1068893902"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -175,7 +174,7 @@
 								<string key="NSFrame">{{-100, -37}, {520, 37}}</string>
 								<reference key="NSSuperview" ref="1068893902"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="753213375"/>
+								<reference key="NSNextKeyView" ref="6410010"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
@@ -195,6 +194,21 @@
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">YCTableCellShadowBottom.png</string>
+								</object>
+							</object>
+							<object class="IBUIImageView" id="6410010">
+								<reference key="NSNextResponder" ref="1068893902"/>
+								<int key="NSvFlags">-2147483356</int>
+								<string key="NSFrame">{{9, 22}, {20, 20}}</string>
+								<reference key="NSSuperview" ref="1068893902"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="753213375"/>
+								<reference key="IBUIBackgroundColor" ref="1044787284"/>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">YCClockAlarm.png</string>
 								</object>
 							</object>
 						</object>
@@ -272,6 +286,14 @@
 					</object>
 					<int key="connectionID">29</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">clockImageView</string>
+						<reference key="source" ref="711273925"/>
+						<reference key="destination" ref="6410010"/>
+					</object>
+					<int key="connectionID">31</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -306,6 +328,7 @@
 							<reference ref="915098525"/>
 							<reference ref="859007277"/>
 							<reference ref="753213375"/>
+							<reference ref="6410010"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -343,6 +366,12 @@
 						<reference key="parent" ref="711273925"/>
 						<string key="objectName">flagImageView</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">30</int>
+						<reference key="object" ref="6410010"/>
+						<reference key="parent" ref="711273925"/>
+						<string key="objectName">clockImageView</string>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -358,6 +387,7 @@
 					<string>2.IBPluginDependency</string>
 					<string>20.IBPluginDependency</string>
 					<string>3.IBPluginDependency</string>
+					<string>30.IBPluginDependency</string>
 					<string>4.IBPluginDependency</string>
 					<string>5.IBPluginDependency</string>
 				</object>
@@ -369,6 +399,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>AlarmsListCell</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -388,7 +419,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">29</int>
+			<int key="maxID">31</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -403,6 +434,7 @@
 							<string>alarmDetailLabel</string>
 							<string>alarmTitleLabel</string>
 							<string>bottomShadowView</string>
+							<string>clockImageView</string>
 							<string>flagImageView</string>
 							<string>isEnabledLabel</string>
 							<string>topShadowView</string>
@@ -412,6 +444,7 @@
 							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UIView</string>
+							<string>UIImageView</string>
 							<string>UIImageView</string>
 							<string>UILabel</string>
 							<string>UIView</string>
@@ -424,6 +457,7 @@
 							<string>alarmDetailLabel</string>
 							<string>alarmTitleLabel</string>
 							<string>bottomShadowView</string>
+							<string>clockImageView</string>
 							<string>flagImageView</string>
 							<string>isEnabledLabel</string>
 							<string>topShadowView</string>
@@ -441,6 +475,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">bottomShadowView</string>
 								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">clockImageView</string>
+								<string key="candidateClassName">UIImageView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">flagImageView</string>
@@ -480,12 +518,14 @@
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>IAFlagPurple.png</string>
+				<string>YCClockAlarm.png</string>
 				<string>YCTableCellShadowBottom.png</string>
 				<string>YCTableCellShadowTop.png</string>
 			</object>
 			<object class="NSArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>{16, 16}</string>
+				<string>{32, 32}</string>
 				<string>{3, 19}</string>
 				<string>{3, 19}</string>
 			</object>

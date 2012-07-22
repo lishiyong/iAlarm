@@ -9,52 +9,26 @@
 #import <Availability.h>
 #import <Foundation/Foundation.h>
 
-@class IARegion;
-//@class IALocationManager;
-@protocol IALocationManagerInterface;
+@class IARegion, IALocationAlarmManager;
 
-
-@protocol IALocationManagerDelegate<NSObject>
+@protocol IALocationAlarmManagerDelegate<NSObject>
 
 @required
 
-/*
- *  locationManager:didEnterRegion:
- *
- *  Discussion:
- *    Invoked when the user enters a monitored region.  This callback will be invoked for every allocated
- *    CLLocationManager instance with a non-nil delegate that implements this method.
- */
-- (void)locationManager:(id<IALocationManagerInterface>)manager
+- (void)locationManager:(IALocationAlarmManager*)manager
 		 didEnterRegion:(IARegion *)region ;
 
-/*
- *  locationManager:didExitRegion:
- *
- *  Discussion:
- *    Invoked when the user exits a monitored region.  This callback will be invoked for every allocated
- *    CLLocationManager instance with a non-nil delegate that implements this method.
- */
-- (void)locationManager:(id<IALocationManagerInterface>)manager
+
+- (void)locationManager:(IALocationAlarmManager*)manager
 		  didExitRegion:(IARegion *)region ;
 
 @optional
-/*
- *  locationManager:didFailWithError:
- *  
- *  Discussion:
- *    Invoked when an error has occurred. Error types are defined in "CLError.h".
- */
-- (void)locationManager:(id<IALocationManagerInterface>)manager
+
+- (void)locationManager:(IALocationAlarmManager*)manager
 	   didFailWithError:(NSError *)error;
 
-/*
- *  locationManager:monitoringDidFailForRegion:withError:
- *  
- *  Discussion:
- *    Invoked when a region monitoring error has occurred. Error types are defined in "CLError.h".
- */
-- (void)locationManager:(id<IALocationManagerInterface>)manager
+
+- (void)locationManager:(IALocationAlarmManager*)manager
 monitoringDidFailForRegion:(IARegion *)region
 			  withError:(NSError *)error ;
 

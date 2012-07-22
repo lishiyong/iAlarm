@@ -28,7 +28,7 @@
 @implementation AlarmsListCell
 
 @synthesize alarm = _alarm;
-@synthesize alarmTitleLabel, alarmDetailLabel, isEnabledLabel, flagImageView, topShadowView, bottomShadowView;
+@synthesize alarmTitleLabel, alarmDetailLabel, isEnabledLabel, flagImageView, topShadowView, bottomShadowView, clockImageView;
 
 - (void)setAlarm:(IAAlarm *)alarm{
     [alarm retain];
@@ -48,6 +48,21 @@
 }
 
 - (void)updateCell{
+    /*
+    if (self.alarm.usedAlarmCalendar && self.alarm.enabled) {
+        self.clockImageView.hidden = NO;
+        self.flagImageView.hidden = YES;
+    }else {
+        self.clockImageView.hidden = YES;
+        self.flagImageView.hidden = NO;
+    }
+     
+     NSString *iconString = nil;//这是钟表🕘
+     if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) 
+     iconString = @"\U0001F558";
+     else 
+     iconString = @"\ue02c";
+     */
     
     //可用状态时候就更新距离
     _subTitleIsDistanceString = self.alarm.enabled;
@@ -71,7 +86,9 @@
     alarmTitleLabel.text = theTitle;
     alarmDetailLabel.text = theDetail;
     NSString *imageName = self.alarm.enabled ? self.alarm.alarmRadiusType.alarmRadiusTypeImageName : @"IAFlagGray.png";
+    
     self.flagImageView.image = [UIImage imageNamed:imageName];
+    
     
     if (self.alarm.enabled) {
         self.isEnabledLabel.text = KDicOn; 
@@ -84,7 +101,8 @@
         self.isEnabledLabel.text = KDicOff; //文字:关闭
         self.alarmTitleLabel.textColor = [UIColor darkGrayColor];
         self.alarmDetailLabel.textColor = [UIColor darkGrayColor];
-        self.isEnabledLabel.textColor = [UIColor grayColor];
+        //self.isEnabledLabel.textColor = [UIColor grayColor];
+        self.isEnabledLabel.textColor = [UIColor darkGrayColor];
     }
 
 }

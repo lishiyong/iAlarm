@@ -357,18 +357,18 @@
         
 		self->repeatCellDescription.didSelectCellObject = viewCtler;
 	}
-	self->repeatCellDescription.tableViewCell.detailTextLabel.text = self.alarmTemp.repeatType.repeatTypeName;
     
-	
-	/*
-	NSLog(@"textLabel:%@",self->repeatCellDescription.tableViewCell.textLabel.font);
-	NSLog(@"textLabel:%@",self->repeatCellDescription.tableViewCell.textLabel.textColor);
-	
-	UIFont *f = self->repeatCellDescription.tableViewCell.detailTextLabel.font;
-	NSLog(@"detailTextLabel:%f",[self->repeatCellDescription.tableViewCell.detailTextLabel.font fontSize]);
-	NSLog(@"detailTextLabel:%@",self->repeatCellDescription.tableViewCell.detailTextLabel.textColor);
-	*/
-	
+    NSString *detailText = self.alarmTemp.repeatType.repeatTypeName;
+    if (self.alarmTemp.usedAlarmCalendar) {
+        NSString *iconString = nil;//这是钟表🕘
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) 
+            iconString = @"\U0001F558";
+        else 
+            iconString = @"\ue02c";
+        
+        detailText = [NSString stringWithFormat:@"%@ %@",detailText,iconString];
+    }
+	self->repeatCellDescription.tableViewCell.detailTextLabel.text = detailText;
 	return self->repeatCellDescription;
 }
 

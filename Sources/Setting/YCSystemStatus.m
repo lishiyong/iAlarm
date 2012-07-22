@@ -10,10 +10,9 @@
 #import "YCLog.h"
 #import "IAAlarm.h"
 #import "IANotifications.h"
-#import "IALocationManager.h"
 #import "iAlarmAppDelegate.h"
 #import "YCSystemStatus.h"
-#import "IALocationManager.h"
+#import "IALocationAlarmManager.h"
 #import "Reachability.h"
 
 #define kSystemStatusFilename @"systemStatus.plist"

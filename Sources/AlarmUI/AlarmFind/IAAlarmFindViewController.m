@@ -225,7 +225,7 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
         if (alarmMessage) 
             [userInfo setObject:alarmMessage forKey:@"kMessageStringKey"];
         
-        NSString *iconString = nil;//这是钟表🕒
+        NSString *iconString = nil;//这是钟表🕘
         if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) 
             iconString = @"\U0001F558";
         else 
