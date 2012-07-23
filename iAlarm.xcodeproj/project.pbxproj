@@ -219,6 +219,8 @@
 		9C410ED1156E5907007F3761 /* AlarmDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C410ECE156E5907007F3761 /* AlarmDetailTableViewController.m */; };
 		9C410ED3156E594F007F3761 /* AlarmRadiusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C410ED2156E594F007F3761 /* AlarmRadiusViewController.m */; };
 		9C410ED4156E594F007F3761 /* AlarmRadiusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C410ED2156E594F007F3761 /* AlarmRadiusViewController.m */; };
+		9C4BE34E15BD321E00773E3F /* NSDateComponents+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4BE34D15BD321E00773E3F /* NSDateComponents+YC.m */; };
+		9C4BE34F15BD361600773E3F /* NSDateComponents+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4BE34D15BD321E00773E3F /* NSDateComponents+YC.m */; };
 		9C4C7DC115B6A75E00F6F795 /* YCPreferencesBlueCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C4C7DBD15B6A75E00F6F795 /* YCPreferencesBlueCheck.png */; };
 		9C4C7DC215B6A75E00F6F795 /* YCPreferencesBlueCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C4C7DBD15B6A75E00F6F795 /* YCPreferencesBlueCheck.png */; };
 		9C4C7DC315B6A75E00F6F795 /* YCPreferencesBlueCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C4C7DBE15B6A75E00F6F795 /* YCPreferencesBlueCheck@2x.png */; };
@@ -1456,6 +1458,8 @@
 		9C410ECE156E5907007F3761 /* AlarmDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmDetailTableViewController.m; sourceTree = "<group>"; };
 		9C410ECF156E5907007F3761 /* AlarmDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmDetailTableViewController.h; sourceTree = "<group>"; };
 		9C410ED2156E594F007F3761 /* AlarmRadiusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmRadiusViewController.m; sourceTree = "<group>"; };
+		9C4BE34C15BD321E00773E3F /* NSDateComponents+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateComponents+YC.h"; sourceTree = "<group>"; };
+		9C4BE34D15BD321E00773E3F /* NSDateComponents+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateComponents+YC.m"; sourceTree = "<group>"; };
 		9C4C7DBD15B6A75E00F6F795 /* YCPreferencesBlueCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCPreferencesBlueCheck.png; sourceTree = "<group>"; };
 		9C4C7DBE15B6A75E00F6F795 /* YCPreferencesBlueCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCPreferencesBlueCheck@2x.png"; sourceTree = "<group>"; };
 		9C4C7DBF15B6A75E00F6F795 /* YCPreferencesWhiteCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCPreferencesWhiteCheck.png; sourceTree = "<group>"; };
@@ -2672,6 +2676,8 @@
 				9C4C7DCA15B6B72900F6F795 /* UITableView+YC.m */,
 				9CF8832015B95832003EF8AB /* NSDate+YC.h */,
 				9CF8832115B95832003EF8AB /* NSDate+YC.m */,
+				9C4BE34C15BD321E00773E3F /* NSDateComponents+YC.h */,
+				9C4BE34D15BD321E00773E3F /* NSDateComponents+YC.m */,
 			);
 			path = YCCategories;
 			sourceTree = "<group>";
@@ -5318,6 +5324,7 @@
 				9C01AC1D15BBE58A00A2ADE0 /* IABasicLocationAlarmManager.m in Sources */,
 				9C01AC1F15BBE58A00A2ADE0 /* IAPlaceholderLocationAlarmManager.m in Sources */,
 				9C01AC2315BBE67B00A2ADE0 /* IALocationManager.m in Sources */,
+				9C4BE34E15BD321E00773E3F /* NSDateComponents+YC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5547,6 +5554,7 @@
 				9C01AC1E15BBE58A00A2ADE0 /* IABasicLocationAlarmManager.m in Sources */,
 				9C01AC2015BBE58A00A2ADE0 /* IAPlaceholderLocationAlarmManager.m in Sources */,
 				9C01AC2415BBE67B00A2ADE0 /* IALocationManager.m in Sources */,
+				9C4BE34F15BD361600773E3F /* NSDateComponents+YC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

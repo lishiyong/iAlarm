@@ -6,6 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "IAAlarmCalendar.h"
 #import "YCLib.h"
 #import "YCPlacemark.h"
 #import "IAPerson.h"
@@ -608,6 +609,32 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
     theTitle = theTitle ? theTitle : KDefaultAlarmName;
     
     return theTitle;
+}
+
+- (BOOL)shouldWorking{
+    if (self.enabled) {
+        if (self.usedAlarmCalendar) {
+            
+            NSDate *now = [NSDate date];
+            for (IAAlarmCalendar *anCalendar in self.alarmCalendars) {
+                
+                NSComparisonResult r1 = [anCalendar.beginTime compare:now];
+                NSComparisonResult r2 = [anCalendar.endTime compare:now];
+                
+                if ((NSOrderedSame == r1 || NSOrderedAscending == r1) 
+                    && (NSOrderedSame == r2 || NSOrderedDescending == r2)) {
+                    return YES;
+                }
+            }
+            
+            return NO;
+            
+        }else {
+            return YES;
+        }
+    }else {
+        return NO;
+    }
 }
 
 

@@ -98,17 +98,58 @@
      
 }
 
+- (BOOL)didReceiveLaunchIAlarmLocalNotification:(UILocalNotification *)notification{
+    
+     //启动闹钟
+     NSString *alarmId = [notification.userInfo objectForKey:@"kLaunchIAlarmLocalNotificationKey"];
+     if (alarmId) {
+     
+         IAAlarm *alarm = [IAAlarm findForAlarmId:alarmId];
+         IARegion *region = [[[IARegion alloc] initWithAlarm:alarm currentLocation:nil] autorelease];
+         if (alarm.shouldWorking) {//判断是否启用
+             [[IARegionsCenter sharedRegionCenter] addRegion:region];
+         }
+          
+         
+         UIApplicationState state = [UIApplication sharedApplication].applicationState;
+         
+         if (UIApplicationStateActive != state) {
+             //界面提示
+             YCPromptView *promptView = [[[YCPromptView alloc] init] autorelease];
+             promptView.promptViewStatus = YCPromptViewStatusOK;
+             promptView.dismissByTouch = YES;
+             [promptView performSelector:@selector(show) withObject:nil afterDelay:0.5];
+             [promptView performSelector:@selector(dismissAnimated:) withObject:(id)kCFBooleanTrue afterDelay:5.0];
+         }
+         
+         //
+         [[UIApplication sharedApplication] cancelLocalNotification:notification];
+   
+         return YES;
+     }
+    
+    return NO;
+     
+}
+
+
 #pragma mark -
 #pragma mark Application lifecycle
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
+    NSLog(@"didReceiveLocalNotification ");
+    
     //测试按钮会禁用
     if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
         [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     
     UIApplicationState state = application.applicationState;
     [application performSelector:@selector(setApplicationIconBadgeNumber:) withInteger:0 afterDelay:0.1];//为评分判断留时间
+    
+    if ([self didReceiveLaunchIAlarmLocalNotification:notification]) { //是定时启动通知
+        return;
+    }
     
     [self setAlarmNotificationWithLocalNotification:notification];
     if (UIApplicationStateActive == state) {//第五种情况：程序在激活状态下收到本地通知
@@ -179,7 +220,9 @@
     //因为响应本地通知到达而启动的
     id theLocalNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
     if (theLocalNotification) { //第一种情况：程序因响应本地通知的到达而启动
-        [self setAlarmNotificationWithLocalNotification:theLocalNotification];
+        if (![self didReceiveLaunchIAlarmLocalNotification:theLocalNotification]) { //不是是定时启动通知
+            [self setAlarmNotificationWithLocalNotification:theLocalNotification];;
+        }
     }else{//第二种情况：程序直接启动
         indexForView = 0;
     }

@@ -176,6 +176,12 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
  **/
 - (NSString*)title;
 
+/*
+ *先判断enabled，再判断alarmCalendars中的开始与结束时间。
+ *如果不在开始结束时间范围内－NO
+ */
+- (BOOL)shouldWorking;
+
 
 @end
 

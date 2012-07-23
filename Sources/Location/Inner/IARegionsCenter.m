@@ -6,6 +6,8 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "IAAlarmCalendar.h"
+#import "YCSound.h"
 #import "YCLib.h"
 #import "IAGlobal.h"
 #import "YCLog.h"
@@ -41,6 +43,55 @@ NSString *IARegionKey = @"IARegionKey";
 	return allRegions;
 }
 
+- (void)addRegion:(IARegion*)region{
+    [(NSMutableDictionary*)self.regions setObject:region forKey:region.alarm.alarmId];
+    
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    NSNotification *aNotification = [NSNotification notificationWithName:IARegionsDidChangeNotification 
+                                                                  object:self 
+                                                                userInfo:nil];
+    [notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
+    
+    CLLocation *lastLocation = [YCSystemStatus sharedSystemStatus].lastLocation;
+    
+    //生成allRegions
+	NSMutableDictionary* theAllRegions = (NSMutableDictionary*)self.allRegions;	
+	[theAllRegions removeAllObjects];
+	for (IAAlarm *oneAlarm in [IAAlarm alarmArray]) {
+		IARegion *region = [[[IARegion alloc] initWithAlarm:oneAlarm currentLocation:lastLocation] autorelease];
+		[theAllRegions setObject:region forKey:oneAlarm.alarmId];
+	}
+    
+    //生成数组
+	[self genRegionArray];
+    
+}
+
+- (void)removeRegion:(IARegion*)region{
+    [(NSMutableDictionary*)self.regions removeObjectForKey:region.alarm.alarmId];
+    
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    NSNotification *aNotification = [NSNotification notificationWithName:IARegionsDidChangeNotification 
+                                                                  object:self 
+                                                                userInfo:nil];
+    [notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
+    
+    
+    CLLocation *lastLocation = [YCSystemStatus sharedSystemStatus].lastLocation;
+    //生成allRegions
+	NSMutableDictionary* theAllRegions = (NSMutableDictionary*)self.allRegions;	
+	[theAllRegions removeAllObjects];
+	for (IAAlarm *oneAlarm in [IAAlarm alarmArray]) {
+		IARegion *region = [[[IARegion alloc] initWithAlarm:oneAlarm currentLocation:lastLocation] autorelease];
+		[theAllRegions setObject:region forKey:oneAlarm.alarmId];
+	}
+    
+    //生成数组
+	[self genRegionArray];
+
+}
+
+
 #pragma mark -
 #pragma mark uitilty
 
@@ -57,72 +108,54 @@ NSString *IARegionKey = @"IARegionKey";
 #pragma mark -
 #pragma mark Notification
 
+
+
 //闹钟列表发生变化
 - (void) handle_alarmsDataListDidChange:(id)notification {
 	
     CLLocation *lastLocation = [YCSystemStatus sharedSystemStatus].lastLocation;
-    /*
-    if (lastLocation) {
-        NSDate* eventDate = lastLocation.timestamp;
-        NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
-        if (abs(howRecent) > 30.0) { //30秒前的数据就当没有
-            lastLocation = nil;
-        }
-    }
-     */
     
     IARegion *region = nil;
+    IAAlarm *alarm = nil;
 	IASaveInfo *saveInfo = [((NSNotification*)notification).userInfo objectForKey:IASaveInfoKey];
 	if (saveInfo) {
 		
 		if (IASaveTypeUpdate == saveInfo.saveType) {
 			
-			//先删除
-			[self->regions removeObjectForKey:saveInfo.objId]; 
-			//再增加
-			IAAlarm *alarm = [IAAlarm findForAlarmId:saveInfo.objId];
+            alarm = [IAAlarm findForAlarmId:saveInfo.objId];
             region = [[[IARegion alloc] initWithAlarm:alarm currentLocation:lastLocation] autorelease];
-			if (alarm.enabled) {//判断是否启用
-				[(NSMutableDictionary*)self.regions setObject:region forKey:saveInfo.objId];
+            
+            //先删除
+            //[self->regions removeObjectForKey:saveInfo.objId];
+			[self removeRegion:region];
+            //再增加
+            if (alarm.shouldWorking) {//判断是否启用
+				//[(NSMutableDictionary*)self.regions setObject:region forKey:saveInfo.objId];
+                [self addRegion:region];
 			}
 			
 		}else if(IASaveTypeAdd == saveInfo.saveType){
 			
 			//增加
-			IAAlarm *alarm = [IAAlarm findForAlarmId:saveInfo.objId];
-            region = [[[IARegion alloc] initWithAlarm:alarm currentLocation:lastLocation] autorelease]; 
-			if (alarm.enabled) {//判断是否启用
-				[(NSMutableDictionary*)self.regions setObject:region forKey:saveInfo.objId];
+			alarm = [IAAlarm findForAlarmId:saveInfo.objId];
+            region = [[[IARegion alloc] initWithAlarm:alarm currentLocation:lastLocation] autorelease];
+			if (alarm.shouldWorking) {//判断是否启用
+				//[(NSMutableDictionary*)self.regions setObject:region forKey:saveInfo.objId];
+                [self addRegion:region];
 			}
 			
 		}else if(IASaveTypeDelete == saveInfo.saveType){
 			
             region = [self.allRegions objectForKey:saveInfo.objId];
 			//删除
-			[(NSMutableDictionary*)self.regions removeObjectForKey:saveInfo.objId];
-			
+			//[(NSMutableDictionary*)self.regions removeObjectForKey:saveInfo.objId];
+            [self removeRegion:region];
+            			
 		}
-		
-        NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:saveInfo,IASaveInfoKey,region,IARegionKey,nil];
-		NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-		NSNotification *aNotification = [NSNotification notificationWithName:IARegionsDidChangeNotification 
-																	  object:self 
-																	userInfo:userInfo];
-		[notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
 		
 		
 	}
 	
-	//生成allRegions
-	NSMutableDictionary* theAllRegions = (NSMutableDictionary*)self.allRegions;	
-	[theAllRegions removeAllObjects];
-	for (IAAlarm *oneAlarm in [IAAlarm alarmArray]) {
-		IARegion *region = [[[IARegion alloc] initWithAlarm:oneAlarm currentLocation:lastLocation] autorelease];
-		[theAllRegions setObject:region forKey:oneAlarm.alarmId];
-	}
-    
-    //生成数组
-	[self genRegionArray];
     
     
     /*
@@ -140,8 +173,37 @@ NSString *IARegionKey = @"IARegionKey";
     }
      */
     
+    if (alarm.usedAlarmCalendar) {
+        
+        NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
+        [userInfo setObject:alarm.alarmId forKey:@"kLaunchIAlarmLocalNotificationKey"];
+        
+        NSString *iconString = nil;//这是钟表🕘
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) 
+            iconString = @"\U0001F558";
+        else 
+            iconString = @"\ue02c";
+        
+        NSString *alarmName = alarm.alarmName ? alarm.alarmName : alarm.positionTitle;
+        NSString *alertTitle =  [NSString stringWithFormat:@"%@%@",iconString,alarmName]; 
+        NSString *alertMessage = @"单点这条消息，来启动位置闹钟！";
+        NSString *notificationBody = [NSString stringWithFormat:@"%@: %@",alertTitle,alertMessage];
+        
+        UIApplication *app = [UIApplication sharedApplication];
+        
+        for (IAAlarmCalendar * anCalender in alarm.alarmCalendars) {
+            UILocalNotification *notification = [[[UILocalNotification alloc] init] autorelease];
+            notification.fireDate = anCalender.firstFireDate;
+            notification.timeZone = [NSTimeZone defaultTimeZone];
+            notification.repeatInterval = anCalender.repeatInterval;
+            notification.soundName = alarm.sound.soundFileName;
+            notification.alertBody = notificationBody;
+            notification.userInfo = userInfo;
+            [app scheduleLocalNotification:notification];
+        }
+
+    }
     
-	
 }
 
 - (void)resetRegionsWithCurrentLocation:(CLLocation*)currentLocation{

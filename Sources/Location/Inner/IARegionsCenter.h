@@ -14,6 +14,7 @@
 extern NSString *IARegionsDidChangeNotification;
 extern NSString *IARegionKey;
 
+@class IARegion;
 
 @interface IARegionsCenter : NSObject {
 	NSMutableDictionary *regions;                    //所有需要监控的区域
@@ -32,12 +33,6 @@ extern NSString *IARegionKey;
 
 + (IARegionsCenter*)sharedRegionCenter;
 
-/*
-//坐标是否在任何一个预警范围中
-- (BOOL)preAlarmRegionsContainCoordinate:(CLLocationCoordinate2D)coordinate;
-//坐标是否在任何一个大预警范围中
-- (BOOL)bigPreAlarmRegionsContainCoordinate:(CLLocationCoordinate2D)coordinate;
- */
 
 //包含这个坐标的区域。没有返回nil
 - (NSArray*)containsRegionsWithCoordinate:(CLLocationCoordinate2D)coordinate;
@@ -60,5 +55,10 @@ extern NSString *IARegionKey;
 
 //正在运行中：到达时候提醒 且 类型 == IAUserLocationTypeOuter ; 离开时候提醒 且 类型 == IAUserLocationTypeInner
 - (BOOL)isDetectingWithAlarm:(IAAlarm*)alarm;
+
+
+- (void)addRegion:(IARegion*)region;
+- (void)removeRegion:(IARegion*)region;
+
 
 @end

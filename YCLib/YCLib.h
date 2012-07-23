@@ -27,6 +27,7 @@
 #import "UIViewController+YC.h"
 #import "CLLocation+YC.h"
 #import "NSDate+YC.h"
+#import "NSDateComponents+YC.h"
 
 #import "YCFunctions.h"
 #import "YCDouble.h"

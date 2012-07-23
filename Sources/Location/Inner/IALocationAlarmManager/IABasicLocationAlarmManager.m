@@ -149,10 +149,11 @@
 
 - (void) handle_regionsDidChange:(NSNotification*)notification {
     IARegionsCenter *regionsCenter = [IARegionsCenter sharedRegionCenter];
-    if ([regionsCenter.regions count] <= 0) {
-        [self stop];
-    }else{
+    UIApplication *app = [UIApplication sharedApplication];
+    if ([regionsCenter.regions count] > 0 || app.applicationState == UIApplicationStateActive) {
         [self start];
+    }else{
+        [self stop];
     }
 }
 

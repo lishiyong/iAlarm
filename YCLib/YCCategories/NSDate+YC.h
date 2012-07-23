@@ -15,4 +15,9 @@
  **/
 - (NSString *)stringOfTimeShortStyle;
 
+/*
+ *创建一个新的NSDate,日期，时间分别来自不同部分
+ */
++ (NSDate *)dateWithDate:(NSDate *)date time:(NSDate *)time;
+
 @end
