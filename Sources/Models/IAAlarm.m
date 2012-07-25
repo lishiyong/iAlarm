@@ -323,6 +323,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
     [placemark release];
     [person release];
     
+    NSLog(@"alarmCalendars.retainCount = %d",alarmCalendars.retainCount);
     [alarmCalendars release];
     [super dealloc];
 }
@@ -356,6 +357,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	}
 	saveInfo.saveType = saveType;
     
+    //联系人
     if (person) {
         [self performBlock:^{
         
@@ -389,8 +391,28 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
     }
     
 	
+    //保存到文件
 	NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kDataFilename];
 	[NSKeyedArchiver archiveRootObject:alarms toFile:filePathName];
+    
+    //发送、取消定时启动通知
+    if (self.enabled && self.usedAlarmCalendar) {
+        
+        NSString *alertTitle = self.alarmName ? self.alarmName : self.positionTitle;
+        for (IAAlarmCalendar * aCalender in self.alarmCalendars) {
+            
+            if (aCalender.vaild) 
+                [aCalender scheduleLocalNotificationWithAlarmId:self.alarmId title:alertTitle message:nil soundName:self.sound.soundFileName];
+            else 
+                [aCalender cancelLocalNotification];
+            
+        }
+        
+    }else {
+        for (IAAlarmCalendar * aCalender in self.alarmCalendars) {
+            [aCalender cancelLocalNotification];
+        }
+    }
     
     
     return saveInfo;
@@ -420,18 +442,25 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	NSUInteger index = [alarms indexOfObject:self];
 	
 	if (NSNotFound != index) { 
+        
+        //取消定时启动通知
+        for (IAAlarmCalendar * aCalender in self.alarmCalendars) {
+            [aCalender cancelLocalNotification];
+        }
+        
+        //
 		IASaveInfo *saveInfo = [[[IASaveInfo alloc] init] autorelease];
 		saveInfo.objId = self.alarmId;
 		saveInfo.saveType = IASaveTypeDelete;
 		
 		[alarms removeObject:self];
 		
-		//NSString *filePathName =  [[YCParam paramSingleInstance].applicationDocumentsDirectory stringByAppendingPathComponent:kDataFilename];
+        //保存到文件
 		NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kDataFilename];
 		[NSKeyedArchiver archiveRootObject:alarms toFile:filePathName];
 		
 
-		
+		//发送通知
 		NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 		NSNotification *aNotification = [NSNotification notificationWithName:IAAlarmsDataListDidChangeNotification 
 																	  object:sender 
@@ -488,43 +517,6 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
     NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kDataFilename];
 	[NSKeyedArchiver archiveRootObject:alarms toFile:filePathName];
 }
-
-/*
-- (void)setCoordinate:(CLLocationCoordinate2D)theCoordinate{
-    coordinate = theCoordinate;
-    visualCoordinate = kCLLocationCoordinate2DInvalid;//要重新计算它。
-}
-
-
-- (CLLocationCoordinate2D)visualCoordinate{
-    
-    if (!CLLocationCoordinate2DIsValid(visualCoordinate)) {//从真实坐标转换
-        if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled] && [[YCLocationManager sharedLocationManager] isInChinaWithCoordinate:coordinate]) { //开启了转换选项 并且 坐标在中国境内
-            
-            visualCoordinate = [[YCLocationManager sharedLocationManager] convertToMarsCoordinateFromCoordinate:coordinate];
-            
-        }else{
-            visualCoordinate = coordinate;
-        }
-    }
-    
-    return visualCoordinate;
-}
-
-- (void)setVisualCoordinate:(CLLocationCoordinate2D)theVisualCoordinate{
-    
-    //通过设置coordinate来更新visualCoordinate
-    if ([[YCLocationManager sharedLocationManager] chinaShiftEnabled] && [[YCLocationManager sharedLocationManager] isInChinaWithCoordinate:theVisualCoordinate]) { //开启了转换选项 并且 坐标在中国境内
-        
-        coordinate = [[YCLocationManager sharedLocationManager] convertToCoordinateFromMarsCoordinate:theVisualCoordinate];
-        
-    }else{
-        coordinate = theVisualCoordinate;
-    }
-    
-    visualCoordinate = theVisualCoordinate;
-}
- */
 
 - (CLLocationCoordinate2D)visualCoordinate{
     
@@ -616,18 +608,30 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
         if (self.usedAlarmCalendar) {
             
             NSDate *now = [NSDate date];
-            for (IAAlarmCalendar *anCalendar in self.alarmCalendars) {
-                
-                NSComparisonResult r1 = [anCalendar.beginTime compare:now];
-                NSComparisonResult r2 = [anCalendar.endTime compare:now];
-                
-                if ((NSOrderedSame == r1 || NSOrderedAscending == r1) 
-                    && (NSOrderedSame == r2 || NSOrderedDescending == r2)) {
-                    return YES;
-                }
+            IAAlarmCalendar *anCalendar = nil;
+            if(self.alarmCalendars.count == 1)  {
+                //仅提醒一次
+                anCalendar = [self.alarmCalendars objectAtIndex:0];
+            }else if(self.alarmCalendars.count == 7){
+                //连续闹钟
+                NSCalendar *currentCalendar = [NSCalendar currentCalendar];
+                currentCalendar.firstWeekday = 2;//一周从周一开始
+                int weekday = [currentCalendar ordinalityOfUnit:NSWeekdayCalendarUnit inUnit:NSWeekCalendarUnit forDate:now];
+                weekday = weekday -1;//周一 weekday = 1
+                anCalendar = [self.alarmCalendars objectAtIndex:weekday];
             }
             
-            return NO;
+            NSComparisonResult r1 = [anCalendar.beginTime compare:now];
+            NSComparisonResult r2 = [anCalendar.endTime compare:now];
+            
+            //anCalendar被选中了 && now在开始和结束之间
+            if (anCalendar.vaild && (NSOrderedSame == r1 || NSOrderedAscending == r1) 
+                && (NSOrderedSame == r2 || NSOrderedDescending == r2)) {
+                return YES;
+            }else {
+                return NO;
+            }
+            
             
         }else {
             return YES;
@@ -636,6 +640,17 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
         return NO;
     }
 }
+
+- (NSString *)description{
+    return self.alarmName;
+}
+
+/*
+- (id)retain{
+    return [super retain];
+    
+}
+ */
 
 
 @end

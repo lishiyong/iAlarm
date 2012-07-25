@@ -105,7 +105,8 @@
      if (alarmId) {
      
          IAAlarm *alarm = [IAAlarm findForAlarmId:alarmId];
-         IARegion *region = [[[IARegion alloc] initWithAlarm:alarm currentLocation:nil] autorelease];
+         IAUserLocationType type = [alarm.positionType.positionTypeId isEqualToString:@"p002"] ? IAUserLocationTypeOuter : IAUserLocationTypeInner; //p002 到达提醒。把区域类型设置成马上触发的情况
+         IARegion *region = [[[IARegion alloc] initWithAlarm:alarm userLocationType:type] autorelease];
          if (alarm.shouldWorking) {//判断是否启用
              [[IARegionsCenter sharedRegionCenter] addRegion:region];
          }
@@ -197,17 +198,16 @@
  
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {  
-    [[YCLog logSingleInstance] addlog:@"系统启动 application didFinishLaunchingWithOptions"];
+    NSLog(@"didFinishLaunchingWithOptions ");
 	[application registerNotifications];
 	[YCSystemStatus sharedSystemStatus]; //一定要有这个初始化
-    [[IARegionsCenter sharedRegionCenter] regions];  //一定要有这个初始化,而且要放到YCSystemStatus的后面
     
     self.window.backgroundColor = [UIColor clearColor]; //为了自定义状态栏
 	self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];	
 	
     
-    self->locationManager = [[IALocationAlarmManager alloc] initWithDelegate:self];
+    locationManager = [[IALocationAlarmManager alloc] initWithDelegate:self];
     
 	
 	//不停止其他程序的音乐播放
@@ -219,6 +219,7 @@
     
     //因为响应本地通知到达而启动的
     id theLocalNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+    NSLog(@"通知数据 theLocalNotification = %@",theLocalNotification);
     if (theLocalNotification) { //第一种情况：程序因响应本地通知的到达而启动
         if (![self didReceiveLaunchIAlarmLocalNotification:theLocalNotification]) { //不是是定时启动通知
             [self setAlarmNotificationWithLocalNotification:theLocalNotification];;

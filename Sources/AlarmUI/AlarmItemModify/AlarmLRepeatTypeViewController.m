@@ -55,8 +55,43 @@
 }
 
 - (void)_makeSections{
+
     [_sections release];
     _sections = [[NSMutableArray array] retain];
+    
+    
+    //重置开关
+    if ([self.beginEndSwitch respondsToSelector:@selector(setOnTintColor:)]) 
+        self.beginEndSwitch.onTintColor = [UIColor switchBlue];
+    self.beginEndSwitch.enabled = YES;
+    self.beginEndSwitchCell.textLabel.enabled = YES;
+    if ([self.sameSwitch respondsToSelector:@selector(setOnTintColor:)]) 
+        self.sameSwitch.onTintColor = [UIColor switchBlue];
+    self.sameSwitch.enabled = YES;
+    self.sameSwitchCell.textLabel.enabled = YES;
+    
+    
+    //开始结束cell
+    self.beginEndCell.textLabel.text = @"开始\r\n结束";    
+    if (_onceAlarmCalendar.endTimeInNextDay) { //endTime 比 beginTime早
+        self.beginEndCell.detailTextLabel.text = [NSString stringWithFormat:@"%@\r\n%@, %@",[_onceAlarmCalendar.beginTime stringOfTimeShortStyle],@"次日",[_onceAlarmCalendar.endTime stringOfTimeShortStyle]];//@"8:00 AM 次日, 21:00 PM"
+    }else {
+        self.beginEndCell.detailTextLabel.text = [NSString stringWithFormat:@"%@\r\n%@",[_onceAlarmCalendar.beginTime stringOfTimeShortStyle],[_onceAlarmCalendar.endTime stringOfTimeShortStyle]]; //@"8:00 AM 21:00 PM"
+    }
+    self.beginEndCell.textLabel.numberOfLines = 2;
+    self.beginEndCell.detailTextLabel.numberOfLines = 2;
+    
+    //启用开关cell
+    self.beginEndSwitchCell.textLabel.text = @"启用定时提醒";
+    self.beginEndSwitchCell.accessoryView = self.beginEndSwitch; 
+    
+    //相同提醒时间cell
+    self.sameSwitchCell.textLabel.text = @"开始结束时间相同";
+    self.sameSwitchCell.accessoryView = self.sameSwitch;
+    
+    
+    ///////////////////////////////////////////////////////////
+    
     
     //重复类型cells
     NSUInteger numberOfRepeatTypeSection = [DicManager repeatTypeDictionary].count;
@@ -82,31 +117,14 @@
     [_sections addObject:repeatTypeSection];//+ section
     
     
-    //重置开关
-    if ([self.beginEndSwitch respondsToSelector:@selector(setOnTintColor:)]) 
-        self.beginEndSwitch.onTintColor = [UIColor switchBlue];
-    self.beginEndSwitch.enabled = YES;
-    self.beginEndSwitchCell.textLabel.enabled = YES;
-    if ([self.sameSwitch respondsToSelector:@selector(setOnTintColor:)]) 
-        self.sameSwitch.onTintColor = [UIColor switchBlue];
-    self.sameSwitch.enabled = YES;
-    self.sameSwitchCell.textLabel.enabled = YES;
-    
     if (_lastIndexPathOfType.row == 0) {//仅闹一次
         //启用开关cell
-        NSArray *beginEndSwitchSection = [NSArray arrayWithObjects:self.beginEndSwitchCell, nil];
-        self.beginEndSwitchCell.textLabel.text = @"启用定时提醒";
-        self.beginEndSwitchCell.accessoryView = self.beginEndSwitch;        
+        NSArray *beginEndSwitchSection = [NSArray arrayWithObjects:self.beginEndSwitchCell, nil];       
         [_sections addObject:beginEndSwitchSection]; //+ section
         
         
         //开始结束cell，
         NSArray *beginEndSection = [NSArray arrayWithObjects:self.beginEndCell, nil];
-        self.beginEndCell.textLabel.text = @"开始\r\n结束";
-        self.beginEndCell.detailTextLabel.text = [NSString stringWithFormat:@"%@\r\n%@",[_onceAlarmCalendar.beginTime stringOfTimeShortStyle],[_onceAlarmCalendar.endTime stringOfTimeShortStyle]]; //@"8:00 AM\r\n21:00 PM"
-        self.beginEndCell.textLabel.numberOfLines = 2;
-        self.beginEndCell.detailTextLabel.numberOfLines = 2;
-        
         if (self.beginEndSwitch.on) {
             [_sections addObject:beginEndSection];//+ section
         }
@@ -145,7 +163,14 @@
             }else {
                 dayCell = [[[YCCheckMarkCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"DayCell" checkMarkType:YCCheckMarkTypeLeft] autorelease];
                 dayCell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-                dayCell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@",[aCalendar.beginTime stringOfTimeShortStyle],[aCalendar.endTime stringOfTimeShortStyle]]; //8:00 - 21:00
+
+                NSDate *endTime = aCalendar.endTime;
+                NSDate *beginTime = aCalendar.beginTime;
+                if (aCalendar.endTimeInNextDay) { //endTime 比 beginTime早
+                    dayCell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@",[beginTime stringOfTimeShortStyle],[endTime stringOfTimeWeekDayShortStyle]]; //8:00 - 周五21:00
+                }else {
+                    dayCell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@",[beginTime stringOfTimeShortStyle],[endTime stringOfTimeShortStyle]]; //8:00 - 21:00
+                }
             }
             [daysSection addObject:dayCell];
             
@@ -157,8 +182,6 @@
         
         //启用开关cell
         NSArray *beginEndSwitchSection = [NSArray arrayWithObjects:self.beginEndSwitchCell, nil];
-        self.beginEndSwitchCell.textLabel.text = @"启用定时提醒";
-        self.beginEndSwitchCell.accessoryView = self.beginEndSwitch;        
         [_sections addObject:beginEndSwitchSection]; //+ section
         
         
@@ -167,18 +190,11 @@
             
             //相同提醒时间cell
             NSArray *sameSection = [NSArray arrayWithObjects:self.sameSwitchCell, nil];
-            self.sameSwitchCell.textLabel.text = @"开始结束时间相同";
-            self.sameSwitchCell.accessoryView = self.sameSwitch;
             [_sections addObject:sameSection];//+ section
             
             //开始结束cell，
             if (self.sameSwitch.on) {
                 NSArray *beginEndSection = [NSArray arrayWithObjects:self.beginEndCell, nil];
-                self.beginEndCell.textLabel.text = @"开始\r\n结束";
-                self.beginEndCell.detailTextLabel.text = [NSString stringWithFormat:@"%@\r\n%@",[_onceAlarmCalendar.beginTime stringOfTimeShortStyle],[_onceAlarmCalendar.endTime stringOfTimeShortStyle]]; //@"8:00 AM\r\n21:00 PM";
-                self.beginEndCell.textLabel.numberOfLines = 2;
-                self.beginEndCell.detailTextLabel.numberOfLines = 2;
-                
                 [_sections addObject:beginEndSection];//+ section
             }
             
@@ -207,9 +223,16 @@
     
         if (once) {
             _onceAlarmCalendar.repeatInterval = 0; //不重复
+            _onceAlarmCalendar.weekDay = -1;
             self.alarm.alarmCalendars = [NSArray arrayWithObjects:_onceAlarmCalendar, nil];
         }else {
             [_alwaysAlarmCalendars enumerateObjectsUsingBlock:^(IAAlarmCalendar *obj, NSUInteger idx, BOOL *stop) {
+                
+                if (6 == idx) //1：周日 2：周1 ... 7：周六. 
+                    obj.weekDay = 1;
+                else 
+                    obj.weekDay = idx + 2;
+                
                 obj.repeatInterval = NSWeekCalendarUnit;
                 if (self.sameSwitch.on) { //使用相同的开始结束
                     obj.beginTime = _onceAlarmCalendar.beginTime;
@@ -301,25 +324,25 @@
             NSString *dayString = nil;
             switch (i) {
                 case 0:
-                    dayString = @"星期一";
+                    dayString = @"每周一";
                     break;
                 case 1:
-                    dayString = @"星期二";
+                    dayString = @"每周二";
                     break;
                 case 2:
-                    dayString = @"星期三";
+                    dayString = @"每周三";
                     break;
                 case 3:
-                    dayString = @"星期四";
+                    dayString = @"每周四";
                     break;
                 case 4:
-                    dayString = @"星期五";
+                    dayString = @"每周五";
                     break;
                 case 5:
-                    dayString = @"星期六";
+                    dayString = @"每周六";
                     break;
                 case 6:
-                    dayString = @"星期日";
+                    dayString = @"每周日";
                     break;
                 default:
                     break;

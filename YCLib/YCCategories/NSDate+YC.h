@@ -11,9 +11,15 @@
 @interface NSDate (YC)
 
 /**
- "上午 10:5" 或 "10:5 AM"
+ "上午10:5" 或 "10:5 AM"
  **/
 - (NSString *)stringOfTimeShortStyle;
+
+/**
+ "周日上午10:5" 或 "Sunday 10:5 AM"
+ **/
+
+- (NSString *)stringOfTimeWeekDayShortStyle;
 
 /*
  *创建一个新的NSDate,日期，时间分别来自不同部分

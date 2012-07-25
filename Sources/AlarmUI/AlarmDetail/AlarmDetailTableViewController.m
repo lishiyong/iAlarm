@@ -70,7 +70,6 @@
 @synthesize vibrateCellDescription;
 @synthesize nameCellDescription;
 @synthesize radiusCellDescription;
-@synthesize triggerCellDescription; 
 @synthesize destionationCellDescription;
 @synthesize notesCellDescription;
 
@@ -84,30 +83,29 @@
 
 	if (alarmTemp == nil) {
 		alarmTemp = [self.alarm copy];
-		//if (!self.newAlarm) {
-			[alarmTemp addObserver:self forKeyPath:@"alarmName" options:0 context:nil];
-            [alarmTemp addObserver:self forKeyPath:@"positionTitle" options:0 context:nil];
-            [alarmTemp addObserver:self forKeyPath:@"positionShort" options:0 context:nil];
-            [alarmTemp addObserver:self forKeyPath:@"position" options:0 context:nil];
-			[alarmTemp addObserver:self forKeyPath:@"placemark" options:0 context:nil];
-			[alarmTemp addObserver:self forKeyPath:@"enabled" options:0 context:nil];
-			[alarmTemp addObserver:self forKeyPath:@"realCoordinate" options:0 context:nil];
-            [alarmTemp addObserver:self forKeyPath:@"visualCoordinate" options:0 context:nil];
-			[alarmTemp addObserver:self forKeyPath:@"vibrate" options:0 context:nil];
-			[alarmTemp addObserver:self forKeyPath:@"sound" options:0 context:nil];
-			[alarmTemp addObserver:self forKeyPath:@"repeatType" options:0 context:nil];
-			[alarmTemp addObserver:self forKeyPath:@"alarmRadiusType" options:0 context:nil];
-			[alarmTemp addObserver:self forKeyPath:@"radius" options:0 context:nil];
-			[alarmTemp addObserver:self forKeyPath:@"positionType" options:0 context:nil];
-            [alarmTemp addObserver:self forKeyPath:@"notes" options:0 context:nil];
-            [alarmTemp addObserver:self forKeyPath:@"person" options:0 context:nil];
-            [alarmTemp addObserver:self forKeyPath:@"indexOfPersonAddresses" options:0 context:nil];
-            [alarmTemp addObserver:self forKeyPath:@"usedAlarmCalendar" options:0 context:nil];
-            [alarmTemp addObserver:self forKeyPath:@"alarmCalendars" options:0 context:nil];
-		//}
-		
+        
+        [alarmTemp addObserver:self forKeyPath:@"alarmName" options:0 context:nil];
+        [alarmTemp addObserver:self forKeyPath:@"positionTitle" options:0 context:nil];
+        [alarmTemp addObserver:self forKeyPath:@"positionShort" options:0 context:nil];
+        [alarmTemp addObserver:self forKeyPath:@"position" options:0 context:nil];
+        [alarmTemp addObserver:self forKeyPath:@"placemark" options:0 context:nil];
+        [alarmTemp addObserver:self forKeyPath:@"enabled" options:0 context:nil];
+        [alarmTemp addObserver:self forKeyPath:@"realCoordinate" options:0 context:nil];
+        [alarmTemp addObserver:self forKeyPath:@"visualCoordinate" options:0 context:nil];
+        [alarmTemp addObserver:self forKeyPath:@"vibrate" options:0 context:nil];
+        [alarmTemp addObserver:self forKeyPath:@"sound" options:0 context:nil];
+        [alarmTemp addObserver:self forKeyPath:@"repeatType" options:0 context:nil];
+        [alarmTemp addObserver:self forKeyPath:@"alarmRadiusType" options:0 context:nil];
+        [alarmTemp addObserver:self forKeyPath:@"radius" options:0 context:nil];
+        [alarmTemp addObserver:self forKeyPath:@"positionType" options:0 context:nil];
+        [alarmTemp addObserver:self forKeyPath:@"notes" options:0 context:nil];
+        [alarmTemp addObserver:self forKeyPath:@"person" options:0 context:nil];
+        [alarmTemp addObserver:self forKeyPath:@"indexOfPersonAddresses" options:0 context:nil];
+        [alarmTemp addObserver:self forKeyPath:@"usedAlarmCalendar" options:0 context:nil];
+        [alarmTemp addObserver:self forKeyPath:@"alarmCalendars" options:0 context:nil];
+         
 	}
-	
+    NSLog(@"alarmTemp.retainCount = %d",alarmTemp.retainCount);
 	return alarmTemp;
 	
 }
@@ -213,7 +211,6 @@
             twoArray = [NSArray arrayWithObjects:
                         self.repeatCellDescription
                         ,self.soundCellDescription
-                        ,self.triggerCellDescription
                         ,self.radiusCellDescription
                         ,self.notesCellDescription
                         ,self.nameCellDescription
@@ -535,33 +532,6 @@
 	return self->radiusCellDescription;
 }
 
-- (id)triggerCellDescription{
-	
-	static NSString *CellIdentifier = @"triggerCellDescription";
-	
-	if (!self->triggerCellDescription) {
-		self->triggerCellDescription = [[TableViewCellDescription alloc] init];
-		UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
-		cell.textLabel.text = KLabelAlarmTrigger;
-		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-		
-		self->triggerCellDescription.tableViewCell = cell;
-		self->triggerCellDescription.didSelectCellSelector = @selector(didSelectNavCell:);
-		AlarmTriggerTableViewController *viewCtler = [[[AlarmTriggerTableViewController alloc] initWithStyle:UITableViewStyleGrouped alarm:self.alarmTemp] autorelease];
-		self->triggerCellDescription.didSelectCellObject = viewCtler;
-		
-	}
-	if (self.alarmTemp.positionType) {
-		self->triggerCellDescription.tableViewCell.detailTextLabel.text = self.alarmTemp.positionType.positionTypeName;
-	}else {
-		self->triggerCellDescription.tableViewCell.detailTextLabel.text = kDicTriggerTypeNameWhenArrive; //兼容1.3版本前
-	}
-
-	
-	return self->triggerCellDescription;
-}
-
-
 - (void)didSelectNavDestionationCell:(id)sender{
     
     IAAlarm *theAlarm = self.alarmTemp;
@@ -569,6 +539,7 @@
     [[IAContactManager sharedManager] pushContactViewControllerWithAlarm:theAlarm];
 	
 }
+
 - (id)destionationCellDescription{
 		
 	if (!self->destionationCellDescription) {
@@ -633,10 +604,6 @@
 	self.nameCellDescription.tableViewCell.userInteractionEnabled = enabled;
 	self.nameCellDescription.tableViewCell.textLabel.enabled = enabled;
 	self.nameCellDescription.tableViewCell.detailTextLabel.enabled = enabled;
-	
-	self.triggerCellDescription.tableViewCell.userInteractionEnabled = enabled;
-	self.triggerCellDescription.tableViewCell.textLabel.enabled = enabled;
-	self.triggerCellDescription.tableViewCell.detailTextLabel.enabled = enabled;
 	
 	self.destionationCellDescription.tableViewCell.userInteractionEnabled = enabled;
     
@@ -975,6 +942,7 @@
 #pragma mark View lifecycle
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
 	isFirstShow = YES;
     self.tableView.showsVerticalScrollIndicator = NO;
@@ -1243,36 +1211,34 @@
 	[notesCellDescription release];
 	
 	[radiusCellDescription release];
-	[triggerCellDescription release];
 	[destionationCellDescription release];
 		
 	[alarm release];
 	
 	//////////////////////////////////
+    
 	if (alarmTemp) {
-		//if (!self.newAlarm) {
-			[alarmTemp removeObserver:self forKeyPath:@"alarmName"];
-            [alarmTemp removeObserver:self forKeyPath:@"positionTitle"];
-            [alarmTemp removeObserver:self forKeyPath:@"positionShort"];
-            [alarmTemp removeObserver:self forKeyPath:@"position"];
-			[alarmTemp removeObserver:self forKeyPath:@"placemark"];
-			[alarmTemp removeObserver:self forKeyPath:@"enabled"];
-			[alarmTemp removeObserver:self forKeyPath:@"realCoordinate"];
-            [alarmTemp removeObserver:self forKeyPath:@"visualCoordinate"];
-			[alarmTemp removeObserver:self forKeyPath:@"vibrate"];
-			[alarmTemp removeObserver:self forKeyPath:@"sound"];
-			[alarmTemp removeObserver:self forKeyPath:@"repeatType"];
-			[alarmTemp removeObserver:self forKeyPath:@"alarmRadiusType"];
-			[alarmTemp removeObserver:self forKeyPath:@"radius"];
-			[alarmTemp removeObserver:self forKeyPath:@"positionType"];
-            [alarmTemp removeObserver:self forKeyPath:@"notes"];
-            [alarmTemp removeObserver:self forKeyPath:@"person"];
-            [alarmTemp removeObserver:self forKeyPath:@"indexOfPersonAddresses"];
-            [alarmTemp removeObserver:self forKeyPath:@"usedAlarmCalendar"];
-            [alarmTemp removeObserver:self forKeyPath:@"alarmCalendars"];
-        
-		//}
+        [alarmTemp removeObserver:self forKeyPath:@"alarmName"];
+        [alarmTemp removeObserver:self forKeyPath:@"positionTitle"];
+        [alarmTemp removeObserver:self forKeyPath:@"positionShort"];
+        [alarmTemp removeObserver:self forKeyPath:@"position"];
+        [alarmTemp removeObserver:self forKeyPath:@"placemark"];
+        [alarmTemp removeObserver:self forKeyPath:@"enabled"];
+        [alarmTemp removeObserver:self forKeyPath:@"realCoordinate"];
+        [alarmTemp removeObserver:self forKeyPath:@"visualCoordinate"];
+        [alarmTemp removeObserver:self forKeyPath:@"vibrate"];
+        [alarmTemp removeObserver:self forKeyPath:@"sound"];
+        [alarmTemp removeObserver:self forKeyPath:@"repeatType"];
+        [alarmTemp removeObserver:self forKeyPath:@"alarmRadiusType"];
+        [alarmTemp removeObserver:self forKeyPath:@"radius"];
+        [alarmTemp removeObserver:self forKeyPath:@"positionType"];
+        [alarmTemp removeObserver:self forKeyPath:@"notes"];
+        [alarmTemp removeObserver:self forKeyPath:@"person"];
+        [alarmTemp removeObserver:self forKeyPath:@"indexOfPersonAddresses"];
+        [alarmTemp removeObserver:self forKeyPath:@"usedAlarmCalendar"];
+        [alarmTemp removeObserver:self forKeyPath:@"alarmCalendars"];        
 	}
+     
 	[alarmTemp release];
 	//////////////////////////////////
     

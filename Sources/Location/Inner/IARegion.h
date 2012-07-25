@@ -21,44 +21,22 @@ typedef NSUInteger IAUserLocationType;
 @class IAAlarm;
 @class CLRegion;
 @interface IARegion : NSObject {
-	IAAlarm *alarm;
-	CLRegion *region;
-	IAUserLocationType userLocationType;
-	
-	//先创建好，不用每次都创建，节电
-	CLRegion *regionInner;
-	CLRegion *regionOuter;
-	CLRegion *preAlarmRegion;
-	CLRegion *bigPreAlarmRegion; 
-	
-	CLLocation *location;
-	
-    //BOOL userLocationTypeUpdated; //是否被更新过
+	IAAlarm *_alarm;
+	CLRegion *_region;
+	CLRegion *_regionInner;
+	CLRegion *_regionOuter;
+	CLRegion *_preAlarmRegion;
+	CLRegion *_bigPreAlarmRegion; 
 }
 
-@property (nonatomic,retain,readonly) IAAlarm *alarm;
-@property (nonatomic,retain,readonly) CLRegion *region;
 @property (nonatomic,assign) IAUserLocationType userLocationType;
-
-@property (nonatomic,retain,readonly) CLRegion *regionInner;
-@property (nonatomic,retain,readonly) CLRegion *regionOuter;
-@property (nonatomic,retain,readonly) CLRegion *preAlarmRegion;
-@property (nonatomic,retain,readonly) CLRegion *bigPreAlarmRegion;
-
-@property (nonatomic,retain,readonly) CLLocation *location;
+@property (nonatomic,readonly) IAAlarm *alarm;
 
 - (IAUserLocationType)containsCoordinate:(CLLocationCoordinate2D)coodinate;
 
-- (CLLocationDistance)distanceFromLocation:(const CLLocation *)theLocation;
-
-//正在运行中：到达时候提醒 且 类型 == IAUserLocationTypeOuter ; 离开时候提醒 且 类型 == IAUserLocationTypeInner
-- (BOOL)isDetecting;
-
+- (id)initWithAlarm:(IAAlarm*)theAlarm userLocationType:(IAUserLocationType)userLocationType;
 - (id)initWithAlarm:(IAAlarm*)theAlarm currentLocation:(CLLocation*)currentLocation;
 
-
-
-@property (nonatomic,readonly)CLLocationAccuracy monitoringForRegionDesiredAccuracy;
 
 
 @end

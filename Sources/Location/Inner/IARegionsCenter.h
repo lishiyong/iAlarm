@@ -17,48 +17,25 @@ extern NSString *IARegionKey;
 @class IARegion;
 
 @interface IARegionsCenter : NSObject {
-	NSMutableDictionary *regions;                    //所有需要监控的区域
-    NSArray *regionArray;  //内部使用，为了节约资源
-	
-	//所有区域，包括未启用的
-	NSMutableDictionary *allRegions;
-	NSArray *allRegionArray;
+	NSMutableDictionary *_regions;      //所有需要监控的区域
 }
 
 @property(nonatomic,readonly)NSDictionary *regions;
-@property(nonatomic,readonly)NSArray *regionArray;
 
-@property(nonatomic,readonly)NSDictionary *allRegions;
-
-
-+ (IARegionsCenter*)sharedRegionCenter;
-
-
-//包含这个坐标的区域。没有返回nil
-- (NSArray*)containsRegionsWithCoordinate:(CLLocationCoordinate2D)coordinate;
-- (NSInteger)numberOfContainsRegionsWithCoordinate:(CLLocationCoordinate2D)coordinate;
-
-//包含这个坐标的的预警区域。没有返回nil
-- (NSArray*)containsPreAlarmRegionsWithCoordinate:(CLLocationCoordinate2D)coordinate;
-- (NSInteger)numberOfContainsPreAlarmRegionsWithCoordinate:(CLLocationCoordinate2D)coordinate;
-
-//包含这个坐标的大预警区域。没有返回nil
-- (NSArray*)containsBigPreAlarmRegionsWithCoordinate:(CLLocationCoordinate2D)coordinate;
-- (NSInteger)numberOfContainsBigPreAlarmRegionsWithCoordinate:(CLLocationCoordinate2D)coordinate;
-
+- (void)addRegion:(IARegion*)region;
+- (void)addRegions:(NSArray*)regions;
+- (void)removeRegion:(IARegion*)region;
+- (void)removeRegions:(NSArray*)regions;
 
 //坐标是否能引起列表中的区域类型发生改变
 - (BOOL)canChangeUserLocationTypeForCoordinate:(CLLocationCoordinate2D)coordinate;
 
-//是否能检测出所有区域与theLocation的距离（与theLocation的精度有关）
-- (BOOL)canDetermineDistanceFromLocation:(const CLLocation *)theLocation;
-
-//正在运行中：到达时候提醒 且 类型 == IAUserLocationTypeOuter ; 离开时候提醒 且 类型 == IAUserLocationTypeInner
-- (BOOL)isDetectingWithAlarm:(IAAlarm*)alarm;
+//把不应该运行的region清理掉
+- (void)checkRegions;
 
 
-- (void)addRegion:(IARegion*)region;
-- (void)removeRegion:(IARegion*)region;
++ (IARegionsCenter*)sharedRegionCenter;
+
 
 
 @end

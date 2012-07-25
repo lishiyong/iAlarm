@@ -29,10 +29,6 @@
 
 #pragma mark - 覆盖父类
 
-+ (id)allocWithZone:(NSZone *)zone{
-    return NSAllocateObject([self class], 0, zone);
-}
-
 - (id)initWithDelegate:(id)delegate{
     self = [super initWithDelegate:delegate];
     if (self) {
@@ -41,9 +37,15 @@
 		_locationManager.delegate = self;
         
         [self registerNotifications];
-        [self performSelector:@selector(start) withObject:nil afterDelay:0.25];
+        
+        [IARegionsCenter sharedRegionCenter];
+        [self start];
     }
     return self;
+}
+
++ (id)allocWithZone:(NSZone *)zone{
+    return NSAllocateObject([self class], 0, zone);
 }
 
 - (id)location{
@@ -73,16 +75,14 @@
 //与IALocationManager 相同
 - (void)checkLocationData:(CLLocation*)locationData{
 	
-    NSString *ss = [NSString stringWithFormat:@"执行了检测，数据精度 = %.f,指针=%d",locationData.horizontalAccuracy,locationData];
+    NSString *ss = [NSString stringWithFormat:@"执行了检测，数据精度 = %.f",locationData.horizontalAccuracy];
     [[YCLog logSingleInstance] addlog:ss];
     
 	BOOL canChange = [[IARegionsCenter sharedRegionCenter] canChangeUserLocationTypeForCoordinate:locationData.coordinate];
 	if (canChange) { //定位数据能改变某个区域的状态
-        
+
 		//调用代理
-		IARegionsCenter *regionsCenter = [IARegionsCenter sharedRegionCenter];
-		
-		for (IARegion *region in regionsCenter.regionArray) {
+		for (IARegion *region in [[IARegionsCenter sharedRegionCenter].regions allValues]) {
 			IAUserLocationType currentType = [region containsCoordinate:locationData.coordinate];
 			
             /*
@@ -118,23 +118,15 @@
 			}
 			
 		}//end for
-		
+
 	}
     
-	
 }
 
 
 
 #pragma mark -
 #pragma mark Notification
-/*
-- (void) handle_applicationDidEnterBackground:(id) notification{
-}
-
-- (void)handle_applicationWillEnterForeground_DidFinishLaunching:(NSNotification*)notification {
-}
- */
 
 - (void)handle_applicationDidBecomeActive:(NSNotification*)notification {
     [self start];
@@ -175,21 +167,6 @@
 						   selector: @selector (handle_applicationWillResignActive:)
 							   name: UIApplicationWillResignActiveNotification
 							 object: nil];
-    /*
-    [notificationCenter addObserver: self
-						   selector: @selector (handle_applicationDidEnterBackground:)
-							   name: UIApplicationDidEnterBackgroundNotification
-							 object: nil];
-	[notificationCenter addObserver: self
-						   selector: @selector (handle_applicationWillEnterForeground_DidFinishLaunching:)
-							   name: UIApplicationWillEnterForegroundNotification
-							 object: nil];
-	[notificationCenter addObserver: self
-						   selector: @selector (handle_applicationWillEnterForeground_DidFinishLaunching:)
-							   name: UIApplicationDidFinishLaunchingNotification
-							 object: nil];
-
-    */
     
 }
 
@@ -198,11 +175,6 @@
 	[notificationCenter removeObserver:self	name: IARegionsDidChangeNotification object: nil];
 	[notificationCenter removeObserver:self	name: UIApplicationDidBecomeActiveNotification object: nil];
 	[notificationCenter removeObserver:self	name: UIApplicationWillResignActiveNotification object: nil];
-    /*
-    [notificationCenter removeObserver:self	name: UIApplicationDidEnterBackgroundNotification object: nil];
-	[notificationCenter removeObserver:self	name: UIApplicationWillEnterForegroundNotification object: nil];
-	[notificationCenter removeObserver:self	name: UIApplicationDidFinishLaunchingNotification object: nil];
-     */
 }
 
 
@@ -227,19 +199,19 @@
     //////////////////////////////////////////////////////////////
 }
 
-//#define EPS 1e-5
-#define EPS 1.0
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation{
+    
     [[YCLog logSingleInstance] addlog:@"定位通知 locationManager didUpdateToLocation"];
+    //NSLog(@"")
+    //删除无效闹钟
+    [[IARegionsCenter sharedRegionCenter] checkRegions];
+    
     
     NSDate* eventDate = newLocation.timestamp;
     NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
     if (abs(howRecent) > 5.0) {
 		return;
 	}
-    
-    NSString *s = [NSString stringWithFormat:@"定位经度：%.f,指针:%p",newLocation.horizontalAccuracy,newLocation];
-    [[YCLog logSingleInstance] addlog:s];
 
     
     [YCSystemStatus sharedSystemStatus].lastLocation = newLocation;//收集last数据
@@ -256,16 +228,12 @@
     if ([regionsCenter.regions count] >0) {
         
         if (oldLocation) {
-            if ((oldLocation.horizontalAccuracy - newLocation.horizontalAccuracy) > EPS ){
-                NSString *ss = [NSString stringWithFormat:@"取消检测，精度:%.f,指针:%p",oldLocation.horizontalAccuracy,oldLocation];
-                [[YCLog logSingleInstance] addlog:ss];
-                //[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(checkLocationData:) object:oldLocation];
+            if ((oldLocation.horizontalAccuracy - newLocation.horizontalAccuracy) > 1.0 ){
                 [NSObject cancelPreviousPerformRequestsWithTarget:self];
             }
         }
         [self performSelector:@selector(checkLocationData:) withObject:newLocation afterDelay:8.0]; //等5秒后在执行
 
-        
     }
     
 }

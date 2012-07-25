@@ -366,6 +366,7 @@
 	[distanceActivityIndicatorView release];
     
     [moveArrowImageView release];	
+    [_alarm release];
     [super dealloc];
 }
 

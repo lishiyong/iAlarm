@@ -23,12 +23,24 @@
     
 	NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
 	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-	cell.detailTextLabel.text = [self.timePicker.date stringOfTimeShortStyle];
     if (cell == self.beginCell) {
         _alarmCalendar.beginTime = [self.timePicker.date retain];
     }else {
         _alarmCalendar.endTime = [self.timePicker.date retain];
     }
+    
+    //cell上的时间文本
+    self.beginCell.detailTextLabel.text = [_alarmCalendar.beginTime stringOfTimeShortStyle];
+    if ( _alarmCalendar.endTimeInNextDay) {//结束与开始不在同一天
+        if (-1 != _alarmCalendar.weekDay) 
+            self.endCell.detailTextLabel.text = [_alarmCalendar.endTime stringOfTimeWeekDayShortStyle];
+        else {
+            NSString *s = [NSString stringWithFormat:@"%@, %@", @"次日", [_alarmCalendar.endTime stringOfTimeShortStyle]];
+            self.endCell.detailTextLabel.text = s;
+        }
+        
+    }else 
+        self.endCell.detailTextLabel.text = [_alarmCalendar.endTime stringOfTimeShortStyle];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil alarmCalendar:(IAAlarmCalendar*)alarmCalendar{
@@ -44,8 +56,19 @@
     [super viewDidLoad];
     self.title = @"开始与结束";
     
+    if ( _alarmCalendar.endTimeInNextDay) {//结束与开始不在同一天
+        if (-1 != _alarmCalendar.weekDay) 
+            self.endCell.detailTextLabel.text = [_alarmCalendar.endTime stringOfTimeWeekDayShortStyle];
+        else {
+            NSString *s = [NSString stringWithFormat:@"%@, %@", @"次日", [_alarmCalendar.endTime stringOfTimeShortStyle]];
+            self.endCell.detailTextLabel.text = s;
+        }
+         
+    }else 
+        self.endCell.detailTextLabel.text = [_alarmCalendar.endTime stringOfTimeShortStyle];
+    
     self.beginCell.detailTextLabel.text = [_alarmCalendar.beginTime stringOfTimeShortStyle];
-    self.endCell.detailTextLabel.text = [_alarmCalendar.endTime stringOfTimeShortStyle];
+    
     self.beginCell.textLabel.text = @"开始";
     self.endCell.textLabel.text = @"结束";
     

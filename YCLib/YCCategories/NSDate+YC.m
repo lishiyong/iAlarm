@@ -11,12 +11,39 @@
 
 @implementation NSDate (YC)
 
+/*
+- (NSString *)description{
+    NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
+    [formatter setDateStyle:kCFDateFormatterShortStyle];
+    [formatter setTimeStyle:kCFDateFormatterShortStyle];
+    [formatter setTimeZone:[NSTimeZone defaultTimeZone]];
+    [formatter setLocale:[NSLocale systemLocale]];
+    return [formatter stringFromDate:self];
+}
+ */
+
+- (NSString *)debugDescription{
+    NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
+    [formatter setDateStyle:kCFDateFormatterLongStyle];
+    [formatter setTimeStyle:kCFDateFormatterShortStyle];
+    //[formatter setTimeZone:[NSTimeZone defaultTimeZone]];
+    //[formatter setLocale:[NSLocale systemLocale]];
+    return [formatter stringFromDate:self];
+}
+
 - (NSString *)stringOfTimeShortStyle{
     NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
     [dateFormatter setDateStyle:kCFDateFormatterNoStyle];
     [dateFormatter setTimeStyle:kCFDateFormatterShortStyle];
     
     return [dateFormatter stringFromDate:self];
+}
+
+- (NSString *)stringOfTimeWeekDayShortStyle{
+    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+    [dateFormatter setDateFormat:@"EEE"];
+    NSString  *weekday = [dateFormatter stringFromDate:self];
+    return [NSString stringWithFormat:@"%@, %@",weekday,[self stringOfTimeShortStyle]];
 }
 
 + (NSDate *)dateWithDate:(NSDate *)date time:(NSDate *)time{
