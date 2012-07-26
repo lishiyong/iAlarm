@@ -17,8 +17,12 @@
 @interface AlarmLRepeatTypeViewController (private)
 
 - (void)_makeSections;
+
+/*
+ *在7个中，有效的alarmCalendar。
+ */
 - (NSIndexSet*)_vaildIndexSetOfAlwaysAlarmCalendars;
-- (BOOL)_isSameOfAlwaysAlarmCalendars;
+//- (BOOL)_isSameOfAlwaysAlarmCalendars;
 
 @end
 
@@ -36,6 +40,7 @@
     }];
 }
 
+/*
 - (BOOL)_isSameOfAlwaysAlarmCalendars{
     //用第一个元素和其他的比较
     IAAlarmCalendar *firstObj = [_alwaysAlarmCalendars objectAtIndex:0];
@@ -53,6 +58,7 @@
     
     return (set.count == _alwaysAlarmCalendars.count);
 }
+ */
 
 - (void)_makeSections{
 
@@ -247,6 +253,9 @@
         self.alarm.alarmCalendars = nil;
     }
     
+    //
+    self.alarm.sameBeginEndTime = self.sameSwitch.on;
+    
 }
 
 #pragma mark - 
@@ -294,10 +303,10 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    self.beginEndSwitch.on = self.alarm.usedAlarmCalendar;
     _lastIndexPathOfType = [[NSIndexPath indexPathForRow:self.alarm.repeatType.sortId inSection:0] retain];
-    [self _makeSections];
     
+    self.beginEndSwitch.on = self.alarm.usedAlarmCalendar;
+    self.sameSwitch.on = self.alarm.sameBeginEndTime;
     //临时的日历
     if (self.alarm.usedAlarmCalendar) {
         if (self.alarm.alarmCalendars.count == 1) {
@@ -306,9 +315,12 @@
             _alwaysAlarmCalendars = [self.alarm.alarmCalendars retain];
             _onceAlarmCalendar = [[_alwaysAlarmCalendars objectAtIndex:0] copy];//
             
-            self.sameSwitch.on = [self _isSameOfAlwaysAlarmCalendars];//
         }
     }
+    
+    [self _makeSections];
+    
+
     
     
     //如果空

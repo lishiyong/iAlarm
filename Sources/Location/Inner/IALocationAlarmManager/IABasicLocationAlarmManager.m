@@ -202,9 +202,9 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation{
     
     [[YCLog logSingleInstance] addlog:@"定位通知 locationManager didUpdateToLocation"];
-    //NSLog(@"")
-    //删除无效闹钟
-    [[IARegionsCenter sharedRegionCenter] checkRegions];
+    //删除无效闹钟,增加有效的
+    [[IARegionsCenter sharedRegionCenter] checkRegionsForRemove];
+    //[[IARegionsCenter sharedRegionCenter] checkAlarmsForAdd];
     
     
     NSDate* eventDate = newLocation.timestamp;

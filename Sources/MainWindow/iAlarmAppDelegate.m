@@ -99,40 +99,31 @@
 }
 
 - (BOOL)didReceiveLaunchIAlarmLocalNotification:(UILocalNotification *)notification{
-    
-     //启动闹钟
-     NSString *alarmId = [notification.userInfo objectForKey:@"kLaunchIAlarmLocalNotificationKey"];
-     if (alarmId) {
-     
-         IAAlarm *alarm = [IAAlarm findForAlarmId:alarmId];
-         IAUserLocationType type = [alarm.positionType.positionTypeId isEqualToString:@"p002"] ? IAUserLocationTypeOuter : IAUserLocationTypeInner; //p002 到达提醒。把区域类型设置成马上触发的情况
-         IARegion *region = [[[IARegion alloc] initWithAlarm:alarm userLocationType:type] autorelease];
-         if (alarm.shouldWorking) {//判断是否启用
-             [[IARegionsCenter sharedRegionCenter] addRegion:region];
-         }
-          
-         
-         UIApplicationState state = [UIApplication sharedApplication].applicationState;
-         
-         if (UIApplicationStateActive != state) {
-             //界面提示
-             YCPromptView *promptView = [[[YCPromptView alloc] init] autorelease];
-             promptView.promptViewStatus = YCPromptViewStatusOK;
-             promptView.dismissByTouch = YES;
-             [promptView performSelector:@selector(show) withObject:nil afterDelay:0.5];
-             [promptView performSelector:@selector(dismissAnimated:) withObject:(id)kCFBooleanTrue afterDelay:5.0];
-         }
-         
-         //
-         [[UIApplication sharedApplication] cancelLocalNotification:notification];
-   
-         return YES;
-     }
-    
+    //启动闹钟通知
+    NSString *alarmId = [notification.userInfo objectForKey:@"kLaunchIAlarmLocalNotificationKey"];
+    if (alarmId) {
+        return YES;
+    }
     return NO;
-     
 }
 
+- (void)checkAlarmsForAdd{
+    NSArray *array = [[IARegionsCenter sharedRegionCenter] checkAlarmsForAdd];
+    if (array.count > 0) {
+        
+        //界面提示
+        UIApplicationState state = [UIApplication sharedApplication].applicationState;
+        if (UIApplicationStateActive == state){
+            YCPromptView *promptView = [[[YCPromptView alloc] init] autorelease];
+            promptView.promptViewStatus = YCPromptViewStatusOK;
+            promptView.text = @"已经启动";
+            promptView.dismissByTouch = YES;
+            [promptView performSelector:@selector(show) withObject:nil afterDelay:0.0];
+            [promptView performSelector:@selector(dismissAnimated:) withObject:(id)kCFBooleanTrue afterDelay:6.0];
+        }
+        
+    }
+}
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -145,13 +136,12 @@
     if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
         [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     
-    UIApplicationState state = application.applicationState;
-    [application performSelector:@selector(setApplicationIconBadgeNumber:) withInteger:0 afterDelay:0.1];//为评分判断留时间
     
     if ([self didReceiveLaunchIAlarmLocalNotification:notification]) { //是定时启动通知
         return;
     }
     
+    UIApplicationState state = application.applicationState;
     [self setAlarmNotificationWithLocalNotification:notification];
     if (UIApplicationStateActive == state) {//第五种情况：程序在激活状态下收到本地通知
 
@@ -196,7 +186,6 @@
     
 }
  
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {  
     NSLog(@"didFinishLaunchingWithOptions ");
 	[application registerNotifications];
@@ -219,7 +208,6 @@
     
     //因为响应本地通知到达而启动的
     id theLocalNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
-    NSLog(@"通知数据 theLocalNotification = %@",theLocalNotification);
     if (theLocalNotification) { //第一种情况：程序因响应本地通知的到达而启动
         if (![self didReceiveLaunchIAlarmLocalNotification:theLocalNotification]) { //不是是定时启动通知
             [self setAlarmNotificationWithLocalNotification:theLocalNotification];;
@@ -264,6 +252,7 @@
 	BOOL alreadyRate = [YCSystemStatus sharedSystemStatus].alreadyRate;
 	BOOL notToRemindRate = [YCSystemStatus sharedSystemStatus].notToRemindRate;
 	
+    [application performSelector:@selector(setApplicationIconBadgeNumber:) withInteger:0 afterDelay:0.1];//为评分判断留时间
 	//没有评过 且 没点过不再提示 且 (闹钟提示过一次 或 每启动x次)
 	BOOL letAlertShow = (!alreadyRate) && (!notToRemindRate) && ( application.applicationIconBadgeNumber > 0 );//没有评过 且 没点过不再提示 且 提醒过
 	
@@ -288,7 +277,10 @@
         if (/*application.applicationDidFinishLaunchNumber > 1 &&*/ application.applicationState == UIApplicationStateActive) 
             [self.locationServicesUsableAlert showWaitUntilBecomeKeyWindow:self.window afterDelay:0.1];//检测定位服务状态。如果不可用或未授权，弹出对话框
     } afterDelay:2.0];
-        
+    
+    //检测是否有要启动的alarm
+    [self checkAlarmsForAdd];
+    
     //打开查看视图
     [self viewNotificationedAlarm:animatedView];
         

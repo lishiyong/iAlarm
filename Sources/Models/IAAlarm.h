@@ -33,7 +33,6 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 #define    kavehicleTypeId          @"kavehicleTypeId"
 #define    kradius                  @"kradius"
 
-
 #define    ksortId                  @"ksortId"
 #define    kvibration               @"kvibration"
 #define    kring                    @"kring"
@@ -48,8 +47,9 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 #define    kPerson                  @"kPerson"
 #define    kIndexOfPersonAddresses  @"kIndexOfPersonAddresses"
 
-#define    kUsedAlarmCalendar        @"kUsedAlarmCalendar"
+#define    kUsedAlarmCalendar       @"kUsedAlarmCalendar"
 #define    kAlarmCalendars          @"kAlarmCalendars"
+#define    kSameBeginEndTime        @"kSameBeginEndTime"
 
 
 @class IASaveInfo;
@@ -98,6 +98,7 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
     
     BOOL usedAlarmCalendar;
     NSArray *alarmCalendars;                //仅闹一次（1个），连续闹钟（1－7个）
+    BOOL sameBeginEndTime;                  //使用相同的开始结束时间。usedAlarmCalendar == YES && alarmCalendars.count >1 这个属性才有意义。
 
 }
 
@@ -140,6 +141,7 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 
 @property (nonatomic,assign) BOOL usedAlarmCalendar;
 @property (nonatomic,copy) NSArray *alarmCalendars;
+@property (nonatomic,assign) BOOL sameBeginEndTime; 
 
 - (void)setRealCoordinateWithVisualCoordinate:(CLLocationCoordinate2D)theVisualCoordinate;
 - (void)setVisualCoordinateWithRealCoordinate:(CLLocationCoordinate2D)theCoordinate;

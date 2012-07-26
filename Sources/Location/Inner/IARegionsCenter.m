@@ -6,6 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCPositionType.h"
 #import "IAAlarmCalendar.h"
 #import "YCSound.h"
 #import "YCLib.h"
@@ -154,7 +155,8 @@ NSString *IARegionKey = @"IARegionKey";
 	return b;
 }
 
-- (void)checkRegions{
+- (void)checkRegionsForRemove{
+    
     NSMutableArray *temps = nil;
     NSEnumerator *enumerator = [_regions objectEnumerator];
     IARegion *aRegion = nil;    
@@ -169,6 +171,43 @@ NSString *IARegionKey = @"IARegionKey";
     if (temps.count > 0) 
         [self removeRegions:temps];
     
+}
+
+- (NSArray*)checkAlarmsForAdd{
+    NSArray *alarms = [IAAlarm alarmArray];
+    NSMutableArray *temps = nil;
+    
+    for (IAAlarm *anAlarm in alarms) {
+        
+        if ([_regions objectForKey:anAlarm.alarmId] == nil && anAlarm.shouldWorking) {
+            
+            //先取消通知，再发。为了取消本次提醒
+            [anAlarm.alarmCalendars makeObjectsPerformSelector:@selector(cancelLocalNotification)];
+            if (anAlarm.usedAlarmCalendar) {
+                for (IAAlarmCalendar * aCalender in anAlarm.alarmCalendars) {
+                    
+                    if (aCalender.vaild) {
+                        NSString *alertTitle = anAlarm.alarmName ? anAlarm.alarmName : anAlarm.positionTitle;
+                        [aCalender scheduleLocalNotificationWithAlarmId:anAlarm.alarmId title:alertTitle message:nil soundName:anAlarm.sound.soundFileName];
+                    }
+                    
+                }
+            }
+            
+            IAUserLocationType type = [anAlarm.positionType.positionTypeId isEqualToString:@"p002"] ? IAUserLocationTypeOuter : IAUserLocationTypeInner; //p002 到达提醒。把区域类型设置成马上触发的情况
+            IARegion *region = [[[IARegion alloc] initWithAlarm:anAlarm userLocationType:type] autorelease];
+            
+            if (temps == nil)
+                temps = [NSMutableArray array];
+            [temps addObject:region];
+        }
+        
+    }
+
+    if (temps.count > 0) 
+        [self addRegions:temps];
+    
+    return temps;
 }
 
 #pragma mark - Init

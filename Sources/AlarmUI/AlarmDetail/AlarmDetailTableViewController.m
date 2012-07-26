@@ -103,9 +103,9 @@
         [alarmTemp addObserver:self forKeyPath:@"indexOfPersonAddresses" options:0 context:nil];
         [alarmTemp addObserver:self forKeyPath:@"usedAlarmCalendar" options:0 context:nil];
         [alarmTemp addObserver:self forKeyPath:@"alarmCalendars" options:0 context:nil];
+        [alarmTemp addObserver:self forKeyPath:@"sameBeginEndTime" options:0 context:nil];
          
 	}
-    NSLog(@"alarmTemp.retainCount = %d",alarmTemp.retainCount);
 	return alarmTemp;
 	
 }
@@ -713,6 +713,7 @@
     
     self.alarm.usedAlarmCalendar = self.alarmTemp.usedAlarmCalendar;
     self.alarm.alarmCalendars = self.alarmTemp.alarmCalendars;
+    self.alarm.sameBeginEndTime = self.alarmTemp.sameBeginEndTime;
 	
 	[self.alarm saveFromSender:self];
 
@@ -1236,7 +1237,8 @@
         [alarmTemp removeObserver:self forKeyPath:@"person"];
         [alarmTemp removeObserver:self forKeyPath:@"indexOfPersonAddresses"];
         [alarmTemp removeObserver:self forKeyPath:@"usedAlarmCalendar"];
-        [alarmTemp removeObserver:self forKeyPath:@"alarmCalendars"];        
+        [alarmTemp removeObserver:self forKeyPath:@"alarmCalendars"];
+        [alarmTemp removeObserver:self forKeyPath:@"sameBeginEndTime"];
 	}
      
 	[alarmTemp release];

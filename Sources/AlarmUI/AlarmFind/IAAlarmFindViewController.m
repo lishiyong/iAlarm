@@ -712,7 +712,6 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
     self.navigationItem.leftBarButtonItem = self.doneButtonItem;
     self.navigationItem.rightBarButtonItem = self.upDownBarItem;
     
-    
     //设置cell拖拽后显示背景
     self.backgroundTableView.backgroundView.backgroundColor = [UIColor tableViewBackgroundViewBackgroundColor];
     self.backgroundTableView.leftShadowView.hidden = YES;
@@ -735,8 +734,6 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
     self.tableView.backgroundView = backgroundView;
     
     
-    
-    
     //地图的圆角和边框，下白边框是containerView多1个像素
     self.maskImageView.layer.cornerRadius = 4;
     self.maskImageView.layer.masksToBounds = YES;
@@ -745,7 +742,6 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
     self.mapView.layer.borderColor = [UIColor colorWithIntRed:114 intGreen:121 intBlue:133 intAlpha:255].CGColor;//深色边框，同TextureButton的边框
     self.mapView.layer.borderWidth = 1.0;
     self.containerView.layer.cornerRadius = 4;
-    
     
     
     //把position设置到左下角

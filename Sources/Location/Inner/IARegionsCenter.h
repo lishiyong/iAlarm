@@ -30,8 +30,11 @@ extern NSString *IARegionKey;
 //坐标是否能引起列表中的区域类型发生改变
 - (BOOL)canChangeUserLocationTypeForCoordinate:(CLLocationCoordinate2D)coordinate;
 
-//把不应该运行的region清理掉
-- (void)checkRegions;
+//检测列表，把不应该运行的region清理掉
+- (void)checkRegionsForRemove;
+
+//检测所有闹钟，把符合条件的加入到列表中
+- (NSArray*)checkAlarmsForAdd;
 
 
 + (IARegionsCenter*)sharedRegionCenter;

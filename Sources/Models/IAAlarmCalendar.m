@@ -38,6 +38,7 @@
     //开始时间改变了，_firstFireDate需要重现生成
     [_firstFireDate release];
     _firstFireDate = nil;
+    [self firstFireDate];//生成
 }
 
 
@@ -51,7 +52,6 @@
         thisWeekBeginTimeComponents.weekday = _weekDay;
         newBeginTime = [[NSCalendar currentCalendar] dateFromComponents:thisWeekBeginTimeComponents];
     }
-    //NSLog(@"self.beginTime = %@",[newBeginTime debugDescription]);
     return newBeginTime;
 }
 
@@ -60,7 +60,6 @@
     if ([newEndTime compare:self.beginTime] == NSOrderedAscending) { //endTime 比 beginTime早，endTime放到下一天
         newEndTime = [newEndTime dateByAddingTimeInterval:60.0*60*24];
     }
-    //NSLog(@"self.endTime = %@",[newEndTime debugDescription]);
     return newEndTime;
 }
 
@@ -86,10 +85,34 @@
 
         
     }
-    
-    NSLog(@"_firstFireDate = %@",[_firstFireDate debugDescription]);
-    
     return _firstFireDate;
+}
+
+- (id)nextTimeFireDate{
+  
+    NSDate *nextTimeFireDate = nil;
+
+    NSTimeInterval ti = [self.firstFireDate timeIntervalSinceNow];
+    if (ti >= 0.0) {
+        nextTimeFireDate = self.firstFireDate;
+    }else {
+        NSInteger i = 0;
+        if (_weekDay != -1){
+            i = 7;
+        }else { //
+            i = 1;
+        }
+        
+        NSUInteger day = (NSUInteger) (ti / (60*60*24*i));
+        BOOL hasR = ( ((NSUInteger)ti) % (60*60*24*i) == 0 ) ? NO : YES ; 
+        day = day + (hasR ? i : 0) ;
+        
+        nextTimeFireDate = [self.firstFireDate dateByAddingTimeInterval:60.0*60*24*day];
+    }
+    
+    //NSLog(@"firstFireDate = %@",[_firstFireDate debugDescription]);
+    //NSLog(@"nextTimeFireDate = %@",[nextTimeFireDate debugDescription]);
+    return nextTimeFireDate;
 }
 
 
@@ -115,14 +138,17 @@
     NSString *notificationBody = [NSString stringWithFormat:@"%@: %@",alertTitle,alertMessage];
     
     _notification = [[UILocalNotification alloc] init];
-    _notification.fireDate = self.firstFireDate;
+    _notification.fireDate = self.nextTimeFireDate;    
     _notification.timeZone = [NSTimeZone defaultTimeZone];
     _notification.repeatInterval = self.repeatInterval;
     _notification.soundName = soundName;
     _notification.alertBody = notificationBody;
     _notification.userInfo = userInfo;
+    _notification.applicationIconBadgeNumber = 1;//
+    
     UIApplication *app = [UIApplication sharedApplication];
     [app scheduleLocalNotification:_notification];
+    
 }
 
 - (void)cancelLocalNotification{

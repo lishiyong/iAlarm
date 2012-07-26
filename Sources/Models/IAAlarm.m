@@ -72,6 +72,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 
 @synthesize usedAlarmCalendar;
 @synthesize alarmCalendars;
+@synthesize sameBeginEndTime;
 
 - (id)init
 {
@@ -117,6 +118,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
         
         usedAlarmCalendar = NO;
         alarmCalendars = nil;
+        sameBeginEndTime = YES;
 	}
 	return self;
 }
@@ -162,6 +164,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
     
     [encoder encodeBool:usedAlarmCalendar forKey:kUsedAlarmCalendar];
     [encoder encodeObject:alarmCalendars forKey:kAlarmCalendars];
+    [encoder encodeBool:sameBeginEndTime forKey:kSameBeginEndTime];
     
 }
 
@@ -210,6 +213,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
         
         usedAlarmCalendar = [decoder decodeBoolForKey:kUsedAlarmCalendar];
         alarmCalendars = [[decoder decodeObjectForKey:kAlarmCalendars] retain];
+        sameBeginEndTime = [decoder decodeBoolForKey:kSameBeginEndTime];
         
         
         //////////////////////////
@@ -291,6 +295,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
     
     copy.usedAlarmCalendar = self.usedAlarmCalendar;
     copy.alarmCalendars = self.alarmCalendars;
+    copy.sameBeginEndTime = self.sameBeginEndTime;
         
     return copy;
 }
@@ -323,7 +328,6 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
     [placemark release];
     [person release];
     
-    NSLog(@"alarmCalendars.retainCount = %d",alarmCalendars.retainCount);
     [alarmCalendars release];
     [super dealloc];
 }
