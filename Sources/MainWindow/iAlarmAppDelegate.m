@@ -98,15 +98,6 @@
      
 }
 
-- (BOOL)didReceiveLaunchIAlarmLocalNotification:(UILocalNotification *)notification{
-    //启动闹钟通知
-    NSString *alarmId = [notification.userInfo objectForKey:@"kLaunchIAlarmLocalNotificationKey"];
-    if (alarmId) {
-        return YES;
-    }
-    return NO;
-}
-
 - (void)checkAlarmsForAdd{
     NSArray *array = [[IARegionsCenter sharedRegionCenter] checkAlarmsForAdd];
     if (array.count > 0) {
@@ -124,6 +115,19 @@
         
     }
 }
+
+- (BOOL)didReceiveLaunchIAlarmLocalNotification:(UILocalNotification *)notification{
+    
+    [self checkAlarmsForAdd];
+    
+    //启动闹钟通知
+    NSString *alarmId = [notification.userInfo objectForKey:@"kLaunchIAlarmLocalNotificationKey"];
+    if (alarmId) {
+        return YES;
+    }
+    return NO;
+}
+
 
 #pragma mark -
 #pragma mark Application lifecycle
