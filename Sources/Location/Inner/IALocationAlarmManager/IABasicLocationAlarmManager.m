@@ -38,7 +38,7 @@
         
         [self registerNotifications];
         
-        [IARegionsCenter sharedRegionCenter];
+        //[IARegionsCenter sharedRegionCenter];
         [self start];
     }
     return self;

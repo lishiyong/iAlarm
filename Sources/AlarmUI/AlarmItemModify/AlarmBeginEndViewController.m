@@ -7,10 +7,12 @@
 //
 
 #import "YCLib.h"
-#import "IAAlarmCalendar.h"
+#import "IAAlarmSchedule.h"
 #import "AlarmBeginEndViewController.h"
 
 @interface AlarmBeginEndViewController ()
+
+- (void)_updateUI;
 
 @end
 
@@ -19,18 +21,14 @@
 @synthesize tableView = _tableView;
 @synthesize beginCell = _beginCell, endCell = _endCell, timePicker = _timePicker;
 
-- (IBAction)timePickerValueDidChange:(id)sender{
-    
-	NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    if (cell == self.beginCell) {
-        _alarmCalendar.beginTime = [self.timePicker.date retain];
-    }else {
-        _alarmCalendar.endTime = [self.timePicker.date retain];
-    }
-    
+- (void)_updateUI{
     //cell上的时间文本
-    self.beginCell.detailTextLabel.text = [_alarmCalendar.beginTime stringOfTimeShortStyle];
+    if (-1 != _alarmCalendar.weekDay) //有星期信息
+        self.beginCell.detailTextLabel.text = [_alarmCalendar.beginTime stringOfTimeWeekDayShortStyle];
+    else 
+        self.beginCell.detailTextLabel.text = [_alarmCalendar.beginTime stringOfTimeShortStyle];
+    
+    
     if ( _alarmCalendar.endTimeInNextDay) {//结束与开始不在同一天
         if (-1 != _alarmCalendar.weekDay) 
             self.endCell.detailTextLabel.text = [_alarmCalendar.endTime stringOfTimeWeekDayShortStyle];
@@ -43,7 +41,20 @@
         self.endCell.detailTextLabel.text = [_alarmCalendar.endTime stringOfTimeShortStyle];
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil alarmCalendar:(IAAlarmCalendar*)alarmCalendar{
+- (IBAction)timePickerValueDidChange:(id)sender{
+    
+	NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    if (cell == self.beginCell) {
+        _alarmCalendar.beginTime = [self.timePicker.date retain];
+    }else {
+        _alarmCalendar.endTime = [self.timePicker.date retain];
+    }
+    
+    [self _updateUI];
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil alarmCalendar:(IAAlarmSchedule*)alarmCalendar{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _alarmCalendar = [alarmCalendar retain];
@@ -56,19 +67,8 @@
     [super viewDidLoad];
     self.title = @"开始与结束";
     
-    if ( _alarmCalendar.endTimeInNextDay) {//结束与开始不在同一天
-        if (-1 != _alarmCalendar.weekDay) 
-            self.endCell.detailTextLabel.text = [_alarmCalendar.endTime stringOfTimeWeekDayShortStyle];
-        else {
-            NSString *s = [NSString stringWithFormat:@"%@, %@", @"次日", [_alarmCalendar.endTime stringOfTimeShortStyle]];
-            self.endCell.detailTextLabel.text = s;
-        }
-         
-    }else 
-        self.endCell.detailTextLabel.text = [_alarmCalendar.endTime stringOfTimeShortStyle];
-    
-    self.beginCell.detailTextLabel.text = [_alarmCalendar.beginTime stringOfTimeShortStyle];
-    
+    [self _updateUI];
+        
     self.beginCell.textLabel.text = @"开始";
     self.endCell.textLabel.text = @"结束";
     

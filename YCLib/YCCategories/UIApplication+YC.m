@@ -42,7 +42,7 @@ static NSString *kYCApplicationDidBecomeActiveNumberKey = @"kYCApplicationDidBec
  
  
 
-- (id)applicationDidFinishLaunchingTime{
+- (id)timestampWhenApplicationDidFinishLaunching{
 	static  NSDate *d = nil;
 	if (d==nil) {
 		d = [[NSDate date] retain];
@@ -50,7 +50,7 @@ static NSString *kYCApplicationDidBecomeActiveNumberKey = @"kYCApplicationDidBec
 	return d;
 }
 
-- (NSInteger)applicationDidFinishLaunchNumber{
+- (NSInteger)numberOfApplicationDidFinishLaunching{
 	NSNumber *number = [[NSUserDefaults standardUserDefaults] objectForKey: kYCApplicationDidFinishLaunchNumberKey];
 	if (number == nil) {
 		return 0;
@@ -58,25 +58,32 @@ static NSString *kYCApplicationDidBecomeActiveNumberKey = @"kYCApplicationDidBec
 	return [number integerValue];
 }
 
-- (NSInteger)applicationDidBecomeActiveNumber{
+- (NSInteger)numberOfApplicationDidBecomeActive{
+    
 	NSNumber *number = [[NSUserDefaults standardUserDefaults] objectForKey: kYCApplicationDidBecomeActiveNumberKey];
 	if (number == nil) {
 		return 0;
 	}
 	return [number integerValue];
+     
 }
 
-- (NSTimeInterval)applicationDidFinishLaunchineTimeElapsing{
+- (NSTimeInterval)timeElapsingAfterApplicationDidFinishLaunching{
 	NSDate *now = [NSDate date];
-	return [now timeIntervalSinceDate:self.applicationDidFinishLaunchingTime];
+	return [now timeIntervalSinceDate:self.timestampWhenApplicationDidFinishLaunching];
+}
+
+static  NSInteger _numberOfApplicationDidBecomeActiveOnceLaunching = 0;
+- (NSInteger)numberOfApplicationDidBecomeActiveOnceLaunching{
+	return _numberOfApplicationDidBecomeActiveOnceLaunching;
 }
 
 - (void)handleApplicationDidFinishLaunching:(id)notification {
 	//启动计时
-    [self applicationDidFinishLaunchingTime];
+    [self timestampWhenApplicationDidFinishLaunching];
     
     //启动次数
-    NSInteger i = self.applicationDidFinishLaunchNumber;
+    NSInteger i = self.numberOfApplicationDidFinishLaunching;
 	NSNumber *number = [NSNumber numberWithInteger:i+1];
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -85,7 +92,12 @@ static NSString *kYCApplicationDidBecomeActiveNumberKey = @"kYCApplicationDidBec
 }
 
 - (void)handleApplicationDidBecomeActive:(id)notification{
-	NSInteger i = self.applicationDidBecomeActiveNumber;
+    
+    //计次，不累计
+    _numberOfApplicationDidBecomeActiveOnceLaunching ++;
+    
+    //计次，累计
+	NSInteger i = self.numberOfApplicationDidBecomeActive;
 	NSNumber *number = [NSNumber numberWithInteger:i+1];
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];

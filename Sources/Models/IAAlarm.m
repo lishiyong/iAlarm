@@ -6,7 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "IAAlarmCalendar.h"
+#import "IAAlarmSchedule.h"
 #import "YCLib.h"
 #import "YCPlacemark.h"
 #import "IAPerson.h"
@@ -30,6 +30,43 @@
 NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNotification";
 
 #define kDataFilename @"alarms.plist"
+
+
+#define    kalarmId                 @"kalarmId"
+#define    kalarmName               @"kalarmName"
+#define    knameChanged             @"knameChanged"
+
+#define    kposition                @"kposition"
+#define    kpositionShort           @"kpositionShort"
+#define    kpositionTitle           @"kpositionTitle"
+#define    kusedCoordinateAddress   @"kusedCoordinateAddress"
+#define    kcoordinate              @"kcoordinate"
+#define    kvisualCoordinate        @"kvisualCoordinate"
+#define    klocationAccuracy        @"klocationAccuracy"
+
+#define    kenabling                @"kenabling"
+#define    kasoundId                @"kasoundId"
+#define    karepeatTypeId           @"karepeatTypeId"
+#define    kavehicleTypeId          @"kavehicleTypeId"
+#define    kradius                  @"kradius"
+
+#define    ksortId                  @"ksortId"
+#define    kvibration               @"kvibration"
+#define    kring                    @"kring"
+#define    kdescription             @"kdescription"
+#define    kpositionTypeId          @"kpositionTypeId"
+
+#define    kreserve1                @"kreserve1"
+#define    kreserve2                @"kreserve2"
+#define    kreserve3                @"kreserve3"
+
+#define    kplacemark               @"kplacemark"
+#define    kPerson                  @"kPerson"
+#define    kIndexOfPersonAddresses  @"kIndexOfPersonAddresses"
+
+#define    kUsedAlarmSchedule       @"kUsedAlarmSchedule"
+#define    kAlarmSchedules          @"kAlarmSchedules"
+#define    kSameBeginEndTime        @"kSameBeginEndTime"
 
 
 @implementation IAAlarm
@@ -70,8 +107,8 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 @synthesize person;
 @synthesize indexOfPersonAddresses;
 
-@synthesize usedAlarmCalendar;
-@synthesize alarmCalendars;
+@synthesize usedAlarmSchedule;
+@synthesize alarmSchedules;
 @synthesize sameBeginEndTime;
 
 - (id)init
@@ -116,8 +153,8 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
         person = nil;
         indexOfPersonAddresses = -1;
         
-        usedAlarmCalendar = NO;
-        alarmCalendars = nil;
+        usedAlarmSchedule = NO;
+        alarmSchedules = nil;
         sameBeginEndTime = YES;
 	}
 	return self;
@@ -162,8 +199,8 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
     [encoder encodeObject:person forKey:kPerson];
     [encoder encodeInteger:indexOfPersonAddresses forKey:kIndexOfPersonAddresses];
     
-    [encoder encodeBool:usedAlarmCalendar forKey:kUsedAlarmCalendar];
-    [encoder encodeObject:alarmCalendars forKey:kAlarmCalendars];
+    [encoder encodeBool:usedAlarmSchedule forKey:kUsedAlarmSchedule];
+    [encoder encodeObject:alarmSchedules forKey:kAlarmSchedules];
     [encoder encodeBool:sameBeginEndTime forKey:kSameBeginEndTime];
     
 }
@@ -211,8 +248,8 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
         person = [[decoder decodeObjectForKey:kPerson] retain];
         indexOfPersonAddresses = [decoder decodeIntegerForKey:kIndexOfPersonAddresses];
         
-        usedAlarmCalendar = [decoder decodeBoolForKey:kUsedAlarmCalendar];
-        alarmCalendars = [[decoder decodeObjectForKey:kAlarmCalendars] retain];
+        usedAlarmSchedule = [decoder decodeBoolForKey:kUsedAlarmSchedule];
+        alarmSchedules = [[decoder decodeObjectForKey:kAlarmSchedules] retain];
         sameBeginEndTime = [decoder decodeBoolForKey:kSameBeginEndTime];
         
         
@@ -293,8 +330,16 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
     copy.person = self.person;
     copy.indexOfPersonAddresses = self.indexOfPersonAddresses;
     
-    copy.usedAlarmCalendar = self.usedAlarmCalendar;
-    copy.alarmCalendars = self.alarmCalendars;
+    copy.usedAlarmSchedule = self.usedAlarmSchedule;
+    //copy.alarmCalendars = self.alarmCalendars;
+    if (self.alarmSchedules.count > 0) {
+        NSMutableArray *array = [NSMutableArray arrayWithCapacity:self.alarmSchedules.count];
+        [self.alarmSchedules enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            id objCopied = [[obj copy] autorelease];
+            [array addObject:objCopied];
+        }];
+        copy->alarmSchedules = [array retain];
+    }
     copy.sameBeginEndTime = self.sameBeginEndTime;
         
     return copy;
@@ -328,7 +373,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
     [placemark release];
     [person release];
     
-    [alarmCalendars release];
+    [alarmSchedules release];
     [super dealloc];
 }
 
@@ -400,10 +445,10 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	[NSKeyedArchiver archiveRootObject:alarms toFile:filePathName];
     
     //发送、取消定时启动通知
-    if (self.enabled && self.usedAlarmCalendar) {
+    if (self.enabled && self.usedAlarmSchedule) {
         
         NSString *alertTitle = self.alarmName ? self.alarmName : self.positionTitle;
-        for (IAAlarmCalendar * aCalender in self.alarmCalendars) {
+        for (IAAlarmSchedule * aCalender in self.alarmSchedules) {
             
             if (aCalender.vaild) 
                 [aCalender scheduleLocalNotificationWithAlarmId:self.alarmId title:alertTitle message:nil soundName:self.sound.soundFileName];
@@ -413,7 +458,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
         }
         
     }else {
-        for (IAAlarmCalendar * aCalender in self.alarmCalendars) {
+        for (IAAlarmSchedule * aCalender in self.alarmSchedules) {
             [aCalender cancelLocalNotification];
         }
     }
@@ -448,7 +493,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	if (NSNotFound != index) { 
         
         //取消定时启动通知
-        for (IAAlarmCalendar * aCalender in self.alarmCalendars) {
+        for (IAAlarmSchedule * aCalender in self.alarmSchedules) {
             [aCalender cancelLocalNotification];
         }
         
@@ -609,27 +654,30 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 
 - (BOOL)shouldWorking{
     if (self.enabled) {
-        if (self.usedAlarmCalendar) {
+        if (self.usedAlarmSchedule) {
             
             NSDate *now = [NSDate date];
-            IAAlarmCalendar *anCalendar = nil;
-            if(self.alarmCalendars.count == 1)  {
+            IAAlarmSchedule *aSchedule = nil;
+            if(self.alarmSchedules.count == 1)  {
                 //仅提醒一次
-                anCalendar = [self.alarmCalendars objectAtIndex:0];
-            }else if(self.alarmCalendars.count == 7){
+                aSchedule = [self.alarmSchedules objectAtIndex:0];
+            }else if(self.alarmSchedules.count == 7){
                 //连续闹钟
                 NSCalendar *currentCalendar = [NSCalendar currentCalendar];
                 currentCalendar.firstWeekday = 2;//一周从周一开始
                 int weekday = [currentCalendar ordinalityOfUnit:NSWeekdayCalendarUnit inUnit:NSWeekCalendarUnit forDate:now];
                 weekday = weekday -1;//周一 weekday = 1
-                anCalendar = [self.alarmCalendars objectAtIndex:weekday];
+                aSchedule = [self.alarmSchedules objectAtIndex:weekday];
             }
             
-            NSComparisonResult r1 = [anCalendar.beginTime compare:now];
-            NSComparisonResult r2 = [anCalendar.endTime compare:now];
+            NSComparisonResult r1 = [aSchedule.beginTime compare:now];
+            NSComparisonResult r2 = [aSchedule.endTime compare:now];
+            
+            NSLog(@"aSchedule.beginTime = %@",[aSchedule.beginTime debugDescription]);
+            NSLog(@"aSchedule.endTime = %@",[aSchedule.endTime debugDescription]);
             
             //anCalendar被选中了 && now在开始和结束之间
-            if (anCalendar.vaild && (NSOrderedSame == r1 || NSOrderedAscending == r1) 
+            if (aSchedule.vaild && (NSOrderedSame == r1 || NSOrderedAscending == r1) 
                 && (NSOrderedSame == r2 || NSOrderedDescending == r2)) {
                 return YES;
             }else {

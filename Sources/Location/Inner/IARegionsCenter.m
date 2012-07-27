@@ -7,7 +7,7 @@
 //
 
 #import "YCPositionType.h"
-#import "IAAlarmCalendar.h"
+#import "IAAlarmSchedule.h"
 #import "YCSound.h"
 #import "YCLib.h"
 #import "IAGlobal.h"
@@ -59,14 +59,27 @@ NSString *IARegionKey = @"IARegionKey";
         [notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
     }
 }
+
 - (void)removeRegion:(IARegion*)region{
     [self removeRegions:[NSArray arrayWithObject:region]];
 }
 
+#pragma mark - timer
 
+- (void)timerFired:(NSTimer *)timer
+{
+    /*
+    //取消timer启动闹钟的通知－不需要这个通知来启动了
+    UILocalNotification *aNotification = [timer.userInfo objectForKey:@"kAlarmScheduleNotificationKey"];
+    if (aNotification) 
+        [[UIApplication sharedApplication] cancelLocalNotification:aNotification];
+     */
+    
+    //把应该启动都启动了。延时1秒为了在 [UIApplicationDelegate applicationDidBecomeActive:]后执行
+    [self performSelector:@selector(checkAlarmsForAddWithCurrentLocation:) withObject:nil afterDelay:1.0];
+}
 
-#pragma mark -
-#pragma mark Notification
+#pragma mark - Notification
 
 //闹钟列表发生变化
 - (void)handleAlarmsDataListDidChange:(id)notification {
@@ -173,7 +186,8 @@ NSString *IARegionKey = @"IARegionKey";
     
 }
 
-- (NSArray*)checkAlarmsForAdd{
+- (NSArray*)checkAlarmsForAddWithCurrentLocation:(CLLocation*)currentLocation{
+    NSLog(@"checkAlarmsForAddWithCurrentLocation = %@",currentLocation);
     NSArray *alarms = [IAAlarm alarmArray];
     NSMutableArray *temps = nil;
     
@@ -181,10 +195,12 @@ NSString *IARegionKey = @"IARegionKey";
         
         if ([_regions objectForKey:anAlarm.alarmId] == nil && anAlarm.shouldWorking) {
             
+            NSLog(@"anAlarm.shouldWorking");
+            
             //先取消通知，再发。为了取消本次提醒
-            [anAlarm.alarmCalendars makeObjectsPerformSelector:@selector(cancelLocalNotification)];
-            if (anAlarm.usedAlarmCalendar) {
-                for (IAAlarmCalendar * aCalender in anAlarm.alarmCalendars) {
+            [anAlarm.alarmSchedules makeObjectsPerformSelector:@selector(cancelLocalNotification)];
+            if (anAlarm.usedAlarmSchedule) {
+                for (IAAlarmSchedule * aCalender in anAlarm.alarmSchedules) {
                     
                     if (aCalender.vaild) {
                         NSString *alertTitle = anAlarm.alarmName ? anAlarm.alarmName : anAlarm.positionTitle;
@@ -194,8 +210,14 @@ NSString *IARegionKey = @"IARegionKey";
                 }
             }
             
-            IAUserLocationType type = [anAlarm.positionType.positionTypeId isEqualToString:@"p002"] ? IAUserLocationTypeOuter : IAUserLocationTypeInner; //p002 到达提醒。把区域类型设置成马上触发的情况
-            IARegion *region = [[[IARegion alloc] initWithAlarm:anAlarm userLocationType:type] autorelease];
+            IARegion *region = nil;
+            if (currentLocation) {
+                region = [[[IARegion alloc] initWithAlarm:anAlarm currentLocation:currentLocation] autorelease];
+            }else {
+                IAUserLocationType type = [anAlarm.positionType.positionTypeId isEqualToString:@"p002"] ? IAUserLocationTypeOuter : IAUserLocationTypeInner; //p002 到达提醒。把区域类型设置成马上触发的情况
+                region = [[[IARegion alloc] initWithAlarm:anAlarm userLocationType:type] autorelease];
+            }
+            
             
             if (temps == nil)
                 temps = [NSMutableArray array];
@@ -218,17 +240,7 @@ NSString *IARegionKey = @"IARegionKey";
     if (self) {
         
         //初始化列表
-        CLLocation *lastLocation = [YCSystemStatus sharedSystemStatus].lastLocation;
         _regions = [[NSMutableDictionary dictionary] retain];
-        NSMutableArray *temps = [NSMutableArray array];
-        for (IAAlarm *oneAlarm in [IAAlarm alarmArray]) {
-            if (oneAlarm.shouldWorking) {
-                IARegion *region = [[[IARegion alloc] initWithAlarm:oneAlarm currentLocation:lastLocation] autorelease];
-                [temps addObject:region];
-            }
-        }
-        [self addRegions:temps];
-
         //
 		[self registerNotifications];
 	}

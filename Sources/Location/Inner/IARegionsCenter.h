@@ -33,8 +33,8 @@ extern NSString *IARegionKey;
 //检测列表，把不应该运行的region清理掉
 - (void)checkRegionsForRemove;
 
-//检测所有闹钟，把符合条件的加入到列表中
-- (NSArray*)checkAlarmsForAdd;
+//检测所有闹钟，把符合条件的加入到列表中.if currentLocation is nil,按照尽快触发的原则设置闹钟区域。
+- (NSArray*)checkAlarmsForAddWithCurrentLocation:(CLLocation*)currentLocation;
 
 
 + (IARegionsCenter*)sharedRegionCenter;

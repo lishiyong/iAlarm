@@ -9,13 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "AlarmModifyTableViewController.h"
 
-@class AlarmBeginEndViewController, IAAlarmCalendar;
+@class AlarmBeginEndViewController, IAAlarmSchedule;
 @interface AlarmLRepeatTypeViewController : AlarmModifyTableViewController {
     
     NSIndexPath  *_lastIndexPathOfType;
     NSMutableArray *_sections;
-    IAAlarmCalendar *_onceAlarmCalendar;
-    NSArray *_alwaysAlarmCalendars;
+    IAAlarmSchedule *_onceAlarmSchedule;
+    NSArray *_alwaysAlarmSchedules;
     AlarmBeginEndViewController *_alarmBeginEndViewController;
     
 }

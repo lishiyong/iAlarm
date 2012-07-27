@@ -988,8 +988,8 @@
 		9CC472201564F70B00F79985 /* YCTexturedButtonTextGradient@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CC4721E1564F70B00F79985 /* YCTexturedButtonTextGradient@2x.png */; };
 		9CC472221564F76F00F79985 /* YCTexturedButtonTextGradientSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CC472211564F76F00F79985 /* YCTexturedButtonTextGradientSmall.png */; };
 		9CC472231564F76F00F79985 /* YCTexturedButtonTextGradientSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CC472211564F76F00F79985 /* YCTexturedButtonTextGradientSmall.png */; };
-		9CC6E5C415B915F2002D3BD3 /* IAAlarmCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC6E5C315B915F2002D3BD3 /* IAAlarmCalendar.m */; };
-		9CC6E5C515B915F2002D3BD3 /* IAAlarmCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC6E5C315B915F2002D3BD3 /* IAAlarmCalendar.m */; };
+		9CC6E5C415B915F2002D3BD3 /* IAAlarmSchedule.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC6E5C315B915F2002D3BD3 /* IAAlarmSchedule.m */; };
+		9CC6E5C515B915F2002D3BD3 /* IAAlarmSchedule.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC6E5C315B915F2002D3BD3 /* IAAlarmSchedule.m */; };
 		9CCDAE771312BB4800774FD7 /* IAButtonBarFlag@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CCDAE761312BB4800774FD7 /* IAButtonBarFlag@2x.png */; };
 		9CCEABBB13386CF3001457A6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9CCEABB913386CF3001457A6 /* Localizable.strings */; };
 		9CCF8797157228C6007C7680 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CCF8796157228C6007C7680 /* AddressBook.framework */; };
@@ -1926,8 +1926,8 @@
 		9CC472161564F62B00F79985 /* YCTexturedButtonTextGradientSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCTexturedButtonTextGradientSmall@2x.png"; sourceTree = "<group>"; };
 		9CC4721E1564F70B00F79985 /* YCTexturedButtonTextGradient@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCTexturedButtonTextGradient@2x.png"; sourceTree = "<group>"; };
 		9CC472211564F76F00F79985 /* YCTexturedButtonTextGradientSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCTexturedButtonTextGradientSmall.png; sourceTree = "<group>"; };
-		9CC6E5C215B915F2002D3BD3 /* IAAlarmCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAAlarmCalendar.h; sourceTree = "<group>"; };
-		9CC6E5C315B915F2002D3BD3 /* IAAlarmCalendar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAAlarmCalendar.m; sourceTree = "<group>"; };
+		9CC6E5C215B915F2002D3BD3 /* IAAlarmSchedule.h */ = {isa = PBXFileReference; fileEncoding = 4; path = IAAlarmSchedule.h; sourceTree = "<group>"; };
+		9CC6E5C315B915F2002D3BD3 /* IAAlarmSchedule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAAlarmSchedule.m; sourceTree = "<group>"; };
 		9CCDAE761312BB4800774FD7 /* IAButtonBarFlag@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAButtonBarFlag@2x.png"; sourceTree = "<group>"; };
 		9CCEABBA13386CF3001457A6 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9CCEABC813386D44001457A6 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -3999,8 +3999,8 @@
 				9C0706DB152C036000AC4207 /* IAAlarmNotification.m */,
 				9C0706DE152C086900AC4207 /* IAAlarmNotificationCenter.h */,
 				9C0706DF152C086900AC4207 /* IAAlarmNotificationCenter.m */,
-				9CC6E5C215B915F2002D3BD3 /* IAAlarmCalendar.h */,
-				9CC6E5C315B915F2002D3BD3 /* IAAlarmCalendar.m */,
+				9CC6E5C215B915F2002D3BD3 /* IAAlarmSchedule.h */,
+				9CC6E5C315B915F2002D3BD3 /* IAAlarmSchedule.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -5318,7 +5318,7 @@
 				9C66664215B6737E002385BB /* YCCheckMarkCell.m in Sources */,
 				9C4C7DCB15B6B72900F6F795 /* UITableView+YC.m in Sources */,
 				9C56CD0115B7F0BE00E931DA /* AlarmBeginEndViewController.m in Sources */,
-				9CC6E5C415B915F2002D3BD3 /* IAAlarmCalendar.m in Sources */,
+				9CC6E5C415B915F2002D3BD3 /* IAAlarmSchedule.m in Sources */,
 				9CF8832215B95832003EF8AB /* NSDate+YC.m in Sources */,
 				9C01AC0415BBCE7900A2ADE0 /* IALocationAlarmManager.m in Sources */,
 				9C01AC1D15BBE58A00A2ADE0 /* IABasicLocationAlarmManager.m in Sources */,
@@ -5548,7 +5548,7 @@
 				9C66664315B6737E002385BB /* YCCheckMarkCell.m in Sources */,
 				9C4C7DCC15B6B72900F6F795 /* UITableView+YC.m in Sources */,
 				9C56CD0315B7F2C800E931DA /* AlarmBeginEndViewController.m in Sources */,
-				9CC6E5C515B915F2002D3BD3 /* IAAlarmCalendar.m in Sources */,
+				9CC6E5C515B915F2002D3BD3 /* IAAlarmSchedule.m in Sources */,
 				9CF8832315B95832003EF8AB /* NSDate+YC.m in Sources */,
 				9C01AC0515BBCE7900A2ADE0 /* IALocationAlarmManager.m in Sources */,
 				9C01AC1E15BBE58A00A2ADE0 /* IABasicLocationAlarmManager.m in Sources */,

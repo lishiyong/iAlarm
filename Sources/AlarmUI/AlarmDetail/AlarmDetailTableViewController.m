@@ -6,7 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-
+#import "IAAlarmSchedule.h"
 #import "YCLib.h"
 #import "IAContactManager.h"
 #import "IAPerson.h"
@@ -101,8 +101,8 @@
         [alarmTemp addObserver:self forKeyPath:@"notes" options:0 context:nil];
         [alarmTemp addObserver:self forKeyPath:@"person" options:0 context:nil];
         [alarmTemp addObserver:self forKeyPath:@"indexOfPersonAddresses" options:0 context:nil];
-        [alarmTemp addObserver:self forKeyPath:@"usedAlarmCalendar" options:0 context:nil];
-        [alarmTemp addObserver:self forKeyPath:@"alarmCalendars" options:0 context:nil];
+        [alarmTemp addObserver:self forKeyPath:@"usedAlarmSchedule" options:0 context:nil];
+        [alarmTemp addObserver:self forKeyPath:@"alarmSchedules" options:0 context:nil];
         [alarmTemp addObserver:self forKeyPath:@"sameBeginEndTime" options:0 context:nil];
          
 	}
@@ -353,10 +353,44 @@
         AlarmLRepeatTypeViewController *viewCtler = [[[AlarmLRepeatTypeViewController alloc] initWithNibName:@"AlarmLRepeatTypeViewController" bundle:nil alarm:self.alarmTemp] autorelease];
         
 		self->repeatCellDescription.didSelectCellObject = viewCtler;
+        
+        //截断方式:中间截断
+        cell.detailTextLabel.lineBreakMode = UILineBreakModeMiddleTruncation;
 	}
     
-    NSString *detailText = self.alarmTemp.repeatType.repeatTypeName;
-    if (self.alarmTemp.usedAlarmCalendar) {
+    NSString *detailText = nil;
+    if (self.alarmTemp.usedAlarmSchedule 
+        && self.alarmTemp.alarmSchedules.count == 7) {
+        
+        BOOL w1 = [(IAAlarmSchedule*)[self.alarmTemp.alarmSchedules objectAtIndex:0] vaild];
+        BOOL w2 = [(IAAlarmSchedule*)[self.alarmTemp.alarmSchedules objectAtIndex:1] vaild];
+        BOOL w3 = [(IAAlarmSchedule*)[self.alarmTemp.alarmSchedules objectAtIndex:2] vaild];
+        BOOL w4 = [(IAAlarmSchedule*)[self.alarmTemp.alarmSchedules objectAtIndex:3] vaild];
+        BOOL w5 = [(IAAlarmSchedule*)[self.alarmTemp.alarmSchedules objectAtIndex:4] vaild];
+        BOOL w6 = [(IAAlarmSchedule*)[self.alarmTemp.alarmSchedules objectAtIndex:5] vaild];
+        BOOL w7 = [(IAAlarmSchedule*)[self.alarmTemp.alarmSchedules objectAtIndex:6] vaild];
+        
+        if (w1 && w2 && w3 && w4 && w5 && !w6 && !w7) {
+            detailText = @"工作日";
+        }else if (!w1 && !w2 && !w3 && !w4 && !w5 && w6 && w7) {
+            detailText = @"周末";
+        }else if (w1 && w2 && w3 && w4 && w5 && w6 && w7) {
+            detailText = @"每天";
+        }else {
+            NSMutableString *tempS = [NSMutableString string];
+            [self.alarmTemp.alarmSchedules enumerateObjectsUsingBlock:^(IAAlarmSchedule *obj, NSUInteger idx, BOOL *stop) {
+                if (obj.vaild) 
+                    [tempS appendFormat:@" %@",[obj.beginTime stringOfTimeOnlyWeekDayStyle]];
+            }];
+            detailText = [tempS stringByTrim];
+            
+        }
+        
+    }else {
+        detailText = self.alarmTemp.repeatType.repeatTypeName;//仅闹一次,连续闹钟
+    }
+    
+    if (self.alarmTemp.usedAlarmSchedule) {
         NSString *iconString = nil;//这是钟表🕘
         if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) 
             iconString = @"\U0001F558";
@@ -711,8 +745,8 @@
     self.alarm.person = self.alarmTemp.person;
     self.alarm.indexOfPersonAddresses = self.alarmTemp.indexOfPersonAddresses;
     
-    self.alarm.usedAlarmCalendar = self.alarmTemp.usedAlarmCalendar;
-    self.alarm.alarmCalendars = self.alarmTemp.alarmCalendars;
+    self.alarm.usedAlarmSchedule = self.alarmTemp.usedAlarmSchedule;
+    self.alarm.alarmSchedules = self.alarmTemp.alarmSchedules;
     self.alarm.sameBeginEndTime = self.alarmTemp.sameBeginEndTime;
 	
 	[self.alarm saveFromSender:self];
@@ -1236,8 +1270,8 @@
         [alarmTemp removeObserver:self forKeyPath:@"notes"];
         [alarmTemp removeObserver:self forKeyPath:@"person"];
         [alarmTemp removeObserver:self forKeyPath:@"indexOfPersonAddresses"];
-        [alarmTemp removeObserver:self forKeyPath:@"usedAlarmCalendar"];
-        [alarmTemp removeObserver:self forKeyPath:@"alarmCalendars"];
+        [alarmTemp removeObserver:self forKeyPath:@"usedAlarmSchedule"];
+        [alarmTemp removeObserver:self forKeyPath:@"alarmSchedules"];
         [alarmTemp removeObserver:self forKeyPath:@"sameBeginEndTime"];
 	}
      

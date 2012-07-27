@@ -46,6 +46,12 @@
     return [NSString stringWithFormat:@"%@, %@",weekday,[self stringOfTimeShortStyle]];
 }
 
+- (NSString *)stringOfTimeOnlyWeekDayStyle{
+    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+    [dateFormatter setDateFormat:@"EEE"];
+    return [dateFormatter stringFromDate:self];
+}
+
 + (NSDate *)dateWithDate:(NSDate *)date time:(NSDate *)time{
     
     NSCalendar *currentCalendar = [NSCalendar currentCalendar];

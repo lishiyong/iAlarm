@@ -18,8 +18,12 @@
 /**
  "周日上午10:5" 或 "Sunday 10:5 AM"
  **/
-
 - (NSString *)stringOfTimeWeekDayShortStyle;
+
+/**
+ "周日" 或 "Sunday "
+ **/
+- (NSString *)stringOfTimeOnlyWeekDayStyle;
 
 /*
  *创建一个新的NSDate,日期，时间分别来自不同部分

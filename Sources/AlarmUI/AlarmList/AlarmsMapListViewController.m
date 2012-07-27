@@ -925,7 +925,7 @@
 	//检查网络
 	isAlreadyAlertForInternet = NO;
 	NSInteger alarmsCount = self.alarms.count;
-    NSInteger launchNumber = [[UIApplication sharedApplication] applicationDidFinishLaunchNumber];
+    NSInteger launchNumber = [[UIApplication sharedApplication] numberOfApplicationDidFinishLaunching];
 	if (0 == alarmsCount && 0 == launchNumber) { //闹钟数不等于0，就会直接加载地图了，在地图数据加载失败事件中会提示网络的。
         isAlreadyAlertForInternet = YES;
         [self performBlock:^{[self alertInternetAfterDelay:4.0];} afterDelay:1.0];
@@ -1033,7 +1033,7 @@
 	
     //刷新距离
     CLLocation *location = [YCSystemStatus sharedSystemStatus].lastLocation;
-    if ([UIApplication sharedApplication].applicationDidFinishLaunchineTimeElapsing  < 5.0) {//小于x秒，刚启动，第一次显示view
+    if ([UIApplication sharedApplication].timeElapsingAfterApplicationDidFinishLaunching  < 5.0) {//小于x秒，刚启动，第一次显示view
         //第一次刷新距离，判断一下数据的时间戳，防止是很久前缓存的。
         NSTimeInterval ti = [location.timestamp timeIntervalSinceNow];
         if (ti < -120) location = nil; //120秒内的数据可用。最后位置过久，不用.

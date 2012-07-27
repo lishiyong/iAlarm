@@ -6,7 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "IAAlarmCalendar.h"
+#import "IAAlarmSchedule.h"
 #import "AlarmBeginEndViewController.h"
 #import "YCLib.h"
 #import "AlarmLRepeatTypeViewController.h"
@@ -35,7 +35,7 @@
 #pragma mark - private
 
 - (NSIndexSet*)_vaildIndexSetOfAlwaysAlarmCalendars{
-    return [_alwaysAlarmCalendars indexesOfObjectsPassingTest:^BOOL(IAAlarmCalendar *obj, NSUInteger idx, BOOL *stop) {
+    return [_alwaysAlarmSchedules indexesOfObjectsPassingTest:^BOOL(IAAlarmSchedule *obj, NSUInteger idx, BOOL *stop) {
         return obj.vaild;
     }];
 }
@@ -79,10 +79,10 @@
     
     //开始结束cell
     self.beginEndCell.textLabel.text = @"开始\r\n结束";    
-    if (_onceAlarmCalendar.endTimeInNextDay) { //endTime 比 beginTime早
-        self.beginEndCell.detailTextLabel.text = [NSString stringWithFormat:@"%@\r\n%@, %@",[_onceAlarmCalendar.beginTime stringOfTimeShortStyle],@"次日",[_onceAlarmCalendar.endTime stringOfTimeShortStyle]];//@"8:00 AM 次日, 21:00 PM"
+    if (_onceAlarmSchedule.endTimeInNextDay) { //endTime 比 beginTime早
+        self.beginEndCell.detailTextLabel.text = [NSString stringWithFormat:@"%@\r\n%@, %@",[_onceAlarmSchedule.beginTime stringOfTimeShortStyle],@"次日",[_onceAlarmSchedule.endTime stringOfTimeShortStyle]];//@"8:00 AM 次日, 21:00 PM"
     }else {
-        self.beginEndCell.detailTextLabel.text = [NSString stringWithFormat:@"%@\r\n%@",[_onceAlarmCalendar.beginTime stringOfTimeShortStyle],[_onceAlarmCalendar.endTime stringOfTimeShortStyle]]; //@"8:00 AM 21:00 PM"
+        self.beginEndCell.detailTextLabel.text = [NSString stringWithFormat:@"%@\r\n%@",[_onceAlarmSchedule.beginTime stringOfTimeShortStyle],[_onceAlarmSchedule.endTime stringOfTimeShortStyle]]; //@"8:00 AM 21:00 PM"
     }
     self.beginEndCell.textLabel.numberOfLines = 2;
     self.beginEndCell.detailTextLabel.numberOfLines = 2;
@@ -162,7 +162,7 @@
         //星期cell
         NSMutableArray *daysSection = [NSMutableArray array];
         for (int i = 0; i<7; i++) {
-            IAAlarmCalendar *aCalendar = (IAAlarmCalendar *)[_alwaysAlarmCalendars objectAtIndex:i];
+            IAAlarmSchedule *aCalendar = (IAAlarmSchedule *)[_alwaysAlarmSchedules objectAtIndex:i];
             YCCheckMarkCell *dayCell = nil;
             if (self.sameSwitch.on) {
                 dayCell = [[[YCCheckMarkCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DayCell" checkMarkType:YCCheckMarkTypeRight] autorelease];
@@ -222,17 +222,17 @@
 	self.alarm.repeatType = rep;
     
     //
-    self.alarm.usedAlarmCalendar = self.beginEndSwitch.on;
+    self.alarm.usedAlarmSchedule = self.beginEndSwitch.on;
     
     //
-    if (self.alarm.usedAlarmCalendar) {
+    if (self.alarm.usedAlarmSchedule) {
     
         if (once) {
-            _onceAlarmCalendar.repeatInterval = 0; //不重复
-            _onceAlarmCalendar.weekDay = -1;
-            self.alarm.alarmCalendars = [NSArray arrayWithObjects:_onceAlarmCalendar, nil];
+            _onceAlarmSchedule.repeatInterval = 0; //不重复
+            _onceAlarmSchedule.weekDay = -1;
+            self.alarm.alarmSchedules = [NSArray arrayWithObjects:_onceAlarmSchedule, nil];
         }else {
-            [_alwaysAlarmCalendars enumerateObjectsUsingBlock:^(IAAlarmCalendar *obj, NSUInteger idx, BOOL *stop) {
+            [_alwaysAlarmSchedules enumerateObjectsUsingBlock:^(IAAlarmSchedule *obj, NSUInteger idx, BOOL *stop) {
                 
                 if (6 == idx) //1：周日 2：周1 ... 7：周六. 
                     obj.weekDay = 1;
@@ -241,16 +241,16 @@
                 
                 obj.repeatInterval = NSWeekCalendarUnit;
                 if (self.sameSwitch.on) { //使用相同的开始结束
-                    obj.beginTime = _onceAlarmCalendar.beginTime;
-                    obj.endTime = _onceAlarmCalendar.endTime;
+                    obj.beginTime = _onceAlarmSchedule.beginTime;
+                    obj.endTime = _onceAlarmSchedule.endTime;
                 }
             }];
             
-            self.alarm.alarmCalendars = _alwaysAlarmCalendars;
+            self.alarm.alarmSchedules = _alwaysAlarmSchedules;
         }
         
     }else {
-        self.alarm.alarmCalendars = nil;
+        self.alarm.alarmSchedules = nil;
     }
     
     //
@@ -305,18 +305,20 @@
     [super viewDidLoad];
     _lastIndexPathOfType = [[NSIndexPath indexPathForRow:self.alarm.repeatType.sortId inSection:0] retain];
     
-    self.beginEndSwitch.on = self.alarm.usedAlarmCalendar;
+    self.beginEndSwitch.on = self.alarm.usedAlarmSchedule;
     self.sameSwitch.on = self.alarm.sameBeginEndTime;
     //临时的日历
-    if (self.alarm.usedAlarmCalendar) {
-        if (self.alarm.alarmCalendars.count == 1) {
-            _onceAlarmCalendar = [[self.alarm.alarmCalendars objectAtIndex:0] retain];
-        }else if (self.alarm.alarmCalendars.count == 7){
-            _alwaysAlarmCalendars = [self.alarm.alarmCalendars retain];
-            _onceAlarmCalendar = [[_alwaysAlarmCalendars objectAtIndex:0] copy];//
+    if (self.alarm.usedAlarmSchedule) {
+        if (self.alarm.alarmSchedules.count == 1) {
+            _onceAlarmSchedule = [[self.alarm.alarmSchedules objectAtIndex:0] retain];
+        }else if (self.alarm.alarmSchedules.count == 7){
+            _alwaysAlarmSchedules = [self.alarm.alarmSchedules retain];
+            _onceAlarmSchedule = [[_alwaysAlarmSchedules objectAtIndex:0] copy];//
             
         }
     }
+    _onceAlarmSchedule.repeatInterval = 0; //不重复
+    _onceAlarmSchedule.weekDay = -1;
     
     [self _makeSections];
     
@@ -324,13 +326,13 @@
     
     
     //如果空
-    if (_onceAlarmCalendar == nil) {
-        _onceAlarmCalendar = [[IAAlarmCalendar alloc] init];
+    if (_onceAlarmSchedule == nil) {
+        _onceAlarmSchedule = [[IAAlarmSchedule alloc] init];
     }
-    if (_alwaysAlarmCalendars == nil) {
+    if (_alwaysAlarmSchedules == nil) {
         NSMutableArray *temps =  [NSMutableArray arrayWithCapacity:7];
         for (int i = 0; i < 7; i++) {
-            IAAlarmCalendar *anAlarmCalendar = [[[IAAlarmCalendar alloc] init] autorelease];
+            IAAlarmSchedule *anAlarmCalendar = [[[IAAlarmSchedule alloc] init] autorelease];
             [temps addObject:anAlarmCalendar];
             
             NSString *dayString = nil;
@@ -362,7 +364,7 @@
             anAlarmCalendar.name = dayString;
             
         }
-        _alwaysAlarmCalendars = [[NSArray arrayWithArray:temps] retain];
+        _alwaysAlarmSchedules = [[NSArray arrayWithArray:temps] retain];
     }
     
 }
@@ -404,7 +406,7 @@
     if (_lastIndexPathOfType.row == 1) { //连续闹钟
         if (indexPath.section == 1) {
             //打开开始与结束视图， 每次都新创建一个
-            IAAlarmCalendar *anAlarmCalendar = [_alwaysAlarmCalendars objectAtIndex:indexPath.row];
+            IAAlarmSchedule *anAlarmCalendar = [_alwaysAlarmSchedules objectAtIndex:indexPath.row];
             AlarmBeginEndViewController *beVC = [[[AlarmBeginEndViewController alloc] initWithNibName:@"AlarmBeginEndViewController" bundle:nil alarmCalendar:anAlarmCalendar] autorelease];
             [self.navigationController pushViewController:beVC animated:YES];
         }
@@ -445,7 +447,7 @@
             if (_lastIndexPathOfType.row == 1) { //连续闹钟
                 
                 YCCheckMarkCell *dayCell = (YCCheckMarkCell*)[tableView cellForRowAtIndexPath:indexPath];
-                IAAlarmCalendar *alarmCalendar = (IAAlarmCalendar*)[_alwaysAlarmCalendars objectAtIndex:indexPath.row];
+                IAAlarmSchedule *alarmCalendar = (IAAlarmSchedule*)[_alwaysAlarmSchedules objectAtIndex:indexPath.row];
                 alarmCalendar.vaild = dayCell.checkmark;
 
                 
@@ -475,7 +477,7 @@
                 
                 //打开开始与结束视图， 共用一个
                 if (_alarmBeginEndViewController == nil) {
-                    _alarmBeginEndViewController = [[AlarmBeginEndViewController alloc] initWithNibName:@"AlarmBeginEndViewController" bundle:nil alarmCalendar:_onceAlarmCalendar];
+                    _alarmBeginEndViewController = [[AlarmBeginEndViewController alloc] initWithNibName:@"AlarmBeginEndViewController" bundle:nil alarmCalendar:_onceAlarmSchedule];
                 }
                 [self.navigationController pushViewController:_alarmBeginEndViewController animated:YES];
             }
@@ -515,8 +517,8 @@
     self.sameSwitch = nil;
     [_lastIndexPathOfType release]; _lastIndexPathOfType = nil;
     [_sections release]; _sections = nil;
-    [_onceAlarmCalendar release]; _onceAlarmCalendar= nil;
-    [_alwaysAlarmCalendars release]; _alwaysAlarmCalendars = nil;
+    [_onceAlarmSchedule release]; _onceAlarmSchedule= nil;
+    [_alwaysAlarmSchedules release]; _alwaysAlarmSchedules = nil;
     [_alarmBeginEndViewController release]; _alarmBeginEndViewController = nil;
     
 }
@@ -531,8 +533,8 @@
     
     [_lastIndexPathOfType release];
     [_sections release];
-    [_onceAlarmCalendar release];
-    [_alwaysAlarmCalendars release];
+    [_onceAlarmSchedule release];
+    [_alwaysAlarmSchedules release];
     [_alarmBeginEndViewController release];
     [super dealloc];
 }

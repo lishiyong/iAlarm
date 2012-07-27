@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@class IAAlarmCalendar;
+@class IAAlarmSchedule;
 
 @interface AlarmBeginEndViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>{
     NSMutableArray *_sections;
     NSMutableArray *_heightOfCells;
-    IAAlarmCalendar *_alarmCalendar;
+    IAAlarmSchedule *_alarmCalendar;
 }
 
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
@@ -23,6 +23,6 @@
 
 - (IBAction)timePickerValueDidChange:(id)sender;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil alarmCalendar:(IAAlarmCalendar *)alarmCalendar;
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil alarmCalendar:(IAAlarmSchedule *)alarmCalendar;
 
 @end

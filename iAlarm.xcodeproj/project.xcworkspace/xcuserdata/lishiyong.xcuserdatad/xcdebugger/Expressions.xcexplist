@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <VariablesViewState
-   version = "1.1">
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "-[IAAlarmCalendar scheduleLocalNotificationWithAlarmId:title:message:soundName:]:IAAlarmCalendar.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[self nextTimeFireDate]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
 </VariablesViewState>

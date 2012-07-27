@@ -15,43 +15,6 @@
 extern NSString *IAAlarmsDataListDidChangeNotification;
 
 
-#define    kalarmId                 @"kalarmId"
-#define    kalarmName               @"kalarmName"
-#define    knameChanged             @"knameChanged"
-
-#define    kposition                @"kposition"
-#define    kpositionShort           @"kpositionShort"
-#define    kpositionTitle           @"kpositionTitle"
-#define    kusedCoordinateAddress   @"kusedCoordinateAddress"
-#define    kcoordinate              @"kcoordinate"
-#define    kvisualCoordinate        @"kvisualCoordinate"
-#define    klocationAccuracy        @"klocationAccuracy"
-
-#define    kenabling                @"kenabling"
-#define    kasoundId                @"kasoundId"
-#define    karepeatTypeId           @"karepeatTypeId"
-#define    kavehicleTypeId          @"kavehicleTypeId"
-#define    kradius                  @"kradius"
-
-#define    ksortId                  @"ksortId"
-#define    kvibration               @"kvibration"
-#define    kring                    @"kring"
-#define    kdescription             @"kdescription"
-#define    kpositionTypeId          @"kpositionTypeId"
-
-#define    kreserve1                @"kreserve1"
-#define    kreserve2                @"kreserve2"
-#define    kreserve3                @"kreserve3"
-
-#define    kplacemark               @"kplacemark"
-#define    kPerson                  @"kPerson"
-#define    kIndexOfPersonAddresses  @"kIndexOfPersonAddresses"
-
-#define    kUsedAlarmCalendar       @"kUsedAlarmCalendar"
-#define    kAlarmCalendars          @"kAlarmCalendars"
-#define    kSameBeginEndTime        @"kSameBeginEndTime"
-
-
 @class IASaveInfo;
 @class YCSound, YCRepeatType, YCPositionType;
 @class YCPlacemark, IAPerson;
@@ -96,8 +59,8 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
     IAPerson *person;                        //通讯录中的联系人，2012-6-21添加
     NSInteger indexOfPersonAddresses;       //对应通讯录中人的地址索引
     
-    BOOL usedAlarmCalendar;
-    NSArray *alarmCalendars;                //仅闹一次（1个），连续闹钟（1－7个）
+    BOOL usedAlarmSchedule;
+    NSArray *alarmSchedules;                //仅闹一次（1个），连续闹钟（1－7个）
     BOOL sameBeginEndTime;                  //使用相同的开始结束时间。usedAlarmCalendar == YES && alarmCalendars.count >1 这个属性才有意义。
 
 }
@@ -139,8 +102,8 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
 @property (nonatomic,retain) IAPerson *person;
 @property (nonatomic,assign) NSInteger indexOfPersonAddresses;
 
-@property (nonatomic,assign) BOOL usedAlarmCalendar;
-@property (nonatomic,copy) NSArray *alarmCalendars;
+@property (nonatomic,assign) BOOL usedAlarmSchedule;
+@property (nonatomic,copy) NSArray *alarmSchedules;
 @property (nonatomic,assign) BOOL sameBeginEndTime; 
 
 - (void)setRealCoordinateWithVisualCoordinate:(CLLocationCoordinate2D)theVisualCoordinate;
