@@ -149,6 +149,7 @@
         }
         
         //一个日期也不选，就是仅闹一次。当然没有不同时间的选项了。
+        /*
         if ([self _vaildIndexSetOfAlwaysAlarmCalendars].count == 0) {
             
             [self.sameSwitch setOn:YES animated:YES];
@@ -158,6 +159,7 @@
             self.sameSwitch.enabled = NO;
             self.sameSwitchCell.textLabel.enabled = NO;
         }
+         */
        
         //星期cell
         NSMutableArray *daysSection = [NSMutableArray array];
@@ -322,8 +324,6 @@
     
     [self _makeSections];
     
-
-    
     
     //如果空
     if (_onceAlarmSchedule == nil) {
@@ -372,6 +372,8 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.title = KViewTitleRepeat;
+    [_lastIndexPathOfType release]; //重复类型cell重现生成
+    _lastIndexPathOfType = [[NSIndexPath indexPathForRow:self.alarm.repeatType.sortId inSection:0] retain];
     [self _makeSections];
 	[self.tableView reloadData];
     

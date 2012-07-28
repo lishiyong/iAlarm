@@ -287,6 +287,4 @@ static IARegionsCenter *single =nil;
     return self;
 }
 
-
-
 @end

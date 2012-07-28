@@ -8,8 +8,8 @@
 
 #import "UIApplication+YC.h"
 
-static NSString *kYCApplicationDidFinishLaunchNumberKey = @"kYCApplicationDidFinishLaunchNumberKey";
-static NSString *kYCApplicationDidBecomeActiveNumberKey = @"kYCApplicationDidBecomeActiveNumberKey";
+static NSString *kNumberOfApplicationDidFinishLaunchingKey = @"kNumberOfApplicationDidFinishLaunchingKey";
+static NSString *kNumberOfApplicationDidBecomeActiveKey    = @"kNumberOfApplicationDidBecomeActiveKey";
 
 @implementation UIApplication (YC)
 
@@ -51,7 +51,7 @@ static NSString *kYCApplicationDidBecomeActiveNumberKey = @"kYCApplicationDidBec
 }
 
 - (NSInteger)numberOfApplicationDidFinishLaunching{
-	NSNumber *number = [[NSUserDefaults standardUserDefaults] objectForKey: kYCApplicationDidFinishLaunchNumberKey];
+	NSNumber *number = [[NSUserDefaults standardUserDefaults] objectForKey: kNumberOfApplicationDidFinishLaunchingKey];
 	if (number == nil) {
 		return 0;
 	}
@@ -60,7 +60,7 @@ static NSString *kYCApplicationDidBecomeActiveNumberKey = @"kYCApplicationDidBec
 
 - (NSInteger)numberOfApplicationDidBecomeActive{
     
-	NSNumber *number = [[NSUserDefaults standardUserDefaults] objectForKey: kYCApplicationDidBecomeActiveNumberKey];
+	NSNumber *number = [[NSUserDefaults standardUserDefaults] objectForKey: kNumberOfApplicationDidBecomeActiveKey];
 	if (number == nil) {
 		return 0;
 	}
@@ -87,7 +87,7 @@ static  NSInteger _numberOfApplicationDidBecomeActiveOnceLaunching = 0;
 	NSNumber *number = [NSNumber numberWithInteger:i+1];
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setObject: number forKey: kYCApplicationDidFinishLaunchNumberKey];
+	[defaults setObject: number forKey: kNumberOfApplicationDidFinishLaunchingKey];
 	[defaults synchronize];
 }
 
@@ -101,7 +101,7 @@ static  NSInteger _numberOfApplicationDidBecomeActiveOnceLaunching = 0;
 	NSNumber *number = [NSNumber numberWithInteger:i+1];
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setObject: number forKey: kYCApplicationDidBecomeActiveNumberKey];
+	[defaults setObject: number forKey: kNumberOfApplicationDidBecomeActiveKey];
 	[defaults synchronize];
 }
 

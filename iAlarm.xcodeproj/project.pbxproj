@@ -276,6 +276,8 @@
 		9C5B1DBA154E582D009235DB /* YCClockAlarm20.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5B1DB7154E582D009235DB /* YCClockAlarm20.png */; };
 		9C5B1DBB154E582D009235DB /* YCClockAlarm20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5B1DB8154E582D009235DB /* YCClockAlarm20@2x.png */; };
 		9C5B1DBC154E582D009235DB /* YCClockAlarm20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5B1DB8154E582D009235DB /* YCClockAlarm20@2x.png */; };
+		9C5FD3A515C3757D00143523 /* IARegionsCenter+Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5FD3A415C3757D00143523 /* IARegionsCenter+Debug.m */; };
+		9C5FD3A615C37F1B00143523 /* IARegionsCenter+Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5FD3A415C3757D00143523 /* IARegionsCenter+Debug.m */; };
 		9C62CACC1597517900722F35 /* ABPasteboardControl+YCBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C62CAB31597517900722F35 /* ABPasteboardControl+YCBookmark.m */; };
 		9C62CACD1597517900722F35 /* ABPasteboardControl+YCBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C62CAB31597517900722F35 /* ABPasteboardControl+YCBookmark.m */; };
 		9C62CACE1597517900722F35 /* ABPersonViewController+YCBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C62CAB51597517900722F35 /* ABPersonViewController+YCBookmark.m */; };
@@ -1499,6 +1501,8 @@
 		9C5B1DB2154E56A1009235DB /* YCClockAlarm@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCClockAlarm@2x.png"; sourceTree = "<group>"; };
 		9C5B1DB7154E582D009235DB /* YCClockAlarm20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCClockAlarm20.png; sourceTree = "<group>"; };
 		9C5B1DB8154E582D009235DB /* YCClockAlarm20@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCClockAlarm20@2x.png"; sourceTree = "<group>"; };
+		9C5FD3A315C3757D00143523 /* IARegionsCenter+Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IARegionsCenter+Debug.h"; sourceTree = "<group>"; };
+		9C5FD3A415C3757D00143523 /* IARegionsCenter+Debug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "IARegionsCenter+Debug.m"; sourceTree = "<group>"; };
 		9C62CAB21597517900722F35 /* ABPasteboardControl+YCBookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ABPasteboardControl+YCBookmark.h"; sourceTree = "<group>"; };
 		9C62CAB31597517900722F35 /* ABPasteboardControl+YCBookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ABPasteboardControl+YCBookmark.m"; sourceTree = "<group>"; };
 		9C62CAB41597517900722F35 /* ABPersonViewController+YCBookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ABPersonViewController+YCBookmark.h"; sourceTree = "<group>"; };
@@ -1926,7 +1930,7 @@
 		9CC472161564F62B00F79985 /* YCTexturedButtonTextGradientSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCTexturedButtonTextGradientSmall@2x.png"; sourceTree = "<group>"; };
 		9CC4721E1564F70B00F79985 /* YCTexturedButtonTextGradient@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCTexturedButtonTextGradient@2x.png"; sourceTree = "<group>"; };
 		9CC472211564F76F00F79985 /* YCTexturedButtonTextGradientSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCTexturedButtonTextGradientSmall.png; sourceTree = "<group>"; };
-		9CC6E5C215B915F2002D3BD3 /* IAAlarmSchedule.h */ = {isa = PBXFileReference; fileEncoding = 4; path = IAAlarmSchedule.h; sourceTree = "<group>"; };
+		9CC6E5C215B915F2002D3BD3 /* IAAlarmSchedule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAAlarmSchedule.h; sourceTree = "<group>"; };
 		9CC6E5C315B915F2002D3BD3 /* IAAlarmSchedule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAAlarmSchedule.m; sourceTree = "<group>"; };
 		9CCDAE761312BB4800774FD7 /* IAButtonBarFlag@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAButtonBarFlag@2x.png"; sourceTree = "<group>"; };
 		9CCEABBA13386CF3001457A6 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -3956,6 +3960,8 @@
 				9CFD5D50131DF41700C01B38 /* IARegion.h */,
 				9CFD5D51131DF41700C01B38 /* IARegion.m */,
 				9CE8950212FFFFD2008FBD45 /* IARegionsCenter.h */,
+				9C5FD3A315C3757D00143523 /* IARegionsCenter+Debug.h */,
+				9C5FD3A415C3757D00143523 /* IARegionsCenter+Debug.m */,
 				9CE8950312FFFFD2008FBD45 /* IARegionsCenter.m */,
 				9C01AC2115BBE67B00A2ADE0 /* IALocationManager.h */,
 				9C01AC2215BBE67B00A2ADE0 /* IALocationManager.m */,
@@ -5325,6 +5331,7 @@
 				9C01AC1F15BBE58A00A2ADE0 /* IAPlaceholderLocationAlarmManager.m in Sources */,
 				9C01AC2315BBE67B00A2ADE0 /* IALocationManager.m in Sources */,
 				9C4BE34E15BD321E00773E3F /* NSDateComponents+YC.m in Sources */,
+				9C5FD3A515C3757D00143523 /* IARegionsCenter+Debug.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5555,6 +5562,7 @@
 				9C01AC2015BBE58A00A2ADE0 /* IAPlaceholderLocationAlarmManager.m in Sources */,
 				9C01AC2415BBE67B00A2ADE0 /* IALocationManager.m in Sources */,
 				9C4BE34F15BD361600773E3F /* NSDateComponents+YC.m in Sources */,
+				9C5FD3A615C37F1B00143523 /* IARegionsCenter+Debug.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

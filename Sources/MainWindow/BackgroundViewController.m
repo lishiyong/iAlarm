@@ -6,7 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-
+#import "IARegionsCenter+Debug.h"
 #import "IAPerson.h"
 #import "IARecentAddressDataManager.h"
 #import "IABookmarkManager.h"
@@ -821,6 +821,9 @@
 }
 
 - (void)infoButtonPressed:(id)sender{
+    //debug
+    [[IARegionsCenter sharedRegionCenter] debug];
+    
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	NSNotification *aNotification = [NSNotification notificationWithName:IAInfoButtonPressedNotification object:self userInfo:nil];
 	[notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];

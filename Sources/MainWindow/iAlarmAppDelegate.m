@@ -6,6 +6,7 @@
 //  Copyright __MyCompanyName__ 2010. All rights reserved.
 //
 
+#import "IARegionsCenter+Debug.h"
 #import "YCLib.h"
 #import "UIAlertView+YC.h"
 #import "NSString+YC.h"
@@ -110,7 +111,7 @@
             promptView.promptViewStatus = YCPromptViewStatusOK;
             promptView.text = @"已经启动";
             promptView.dismissByTouch = YES;
-            [promptView performSelector:@selector(show) withObject:nil afterDelay:0.2];
+            [promptView performSelector:@selector(show) withObject:nil afterDelay:0.25];
             [promptView performSelector:@selector(dismissAnimated:) withObject:(id)kCFBooleanTrue afterDelay:5.0];
         }
         
@@ -232,7 +233,9 @@
         [[IARegionsCenter sharedRegionCenter] checkAlarmsForAddWithCurrentLocation:lastLocation];
     }
     
-        
+    //debug
+    [[IARegionsCenter sharedRegionCenter] debug];
+    
     return YES;
 }
 
@@ -296,6 +299,8 @@
     //检测是否有要启动的alarm。因为第一次启动时候 IARegionsCenter初始化会执行这个了，第一次启动不需要
     if (application.numberOfApplicationDidBecomeActiveOnceLaunching > 0) {
         [self checkAlarmsForAdd];
+        //debug
+        [[IARegionsCenter sharedRegionCenter] debug];
     }
     
     //打开查看视图

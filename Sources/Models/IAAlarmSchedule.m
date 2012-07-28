@@ -157,6 +157,7 @@
     _notification.alertBody = notificationBody;
     _notification.userInfo = notificationUserInfo;
     _notification.applicationIconBadgeNumber = 1;//
+    _notification.alertAction = @"启动";
     
     UIApplication *app = [UIApplication sharedApplication];
     [app scheduleLocalNotification:_notification];

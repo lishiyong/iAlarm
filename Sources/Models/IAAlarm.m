@@ -694,7 +694,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 }
 
 - (NSString *)description{
-    return self.alarmName;
+    return self.alarmName ? self.alarmName : self.positionTitle;
 }
 
 /*
