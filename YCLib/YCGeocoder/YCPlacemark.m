@@ -165,6 +165,7 @@
 }
 
 - (void)dealloc{    
+    NSLog(@"YCPlacemark dealloc");
     [_placemark release];
     [_addressDictionary release];
     [_separater release];
@@ -427,6 +428,10 @@
     
     NSLog(@"_placemarkNameIsFormattedAddress = %@",_internalPlacemarkNameIsName ? @"YES":@"NO");
     
+}
+
+- (id)retain{
+    return [super retain];
 }
 
 

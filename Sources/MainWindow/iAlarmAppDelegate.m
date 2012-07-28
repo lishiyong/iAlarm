@@ -227,7 +227,6 @@
     //初始化中心数据
     if (didReceiveLaunchIAlarmLocalNotification) {
         [self checkAlarmsForAdd]; //有界面提示，尽快闹钟提醒原则。
-        NSLog(@"有界面提示，尽快闹钟提醒原则。");
     }else {
         CLLocation *lastLocation = [YCSystemStatus sharedSystemStatus].lastLocation;
         [[IARegionsCenter sharedRegionCenter] checkAlarmsForAddWithCurrentLocation:lastLocation];
@@ -308,27 +307,31 @@
         
 }
 
-- (void)test1{
-    NSLog(@"this is test1!");
+- (void)checkApplicationScheduledLocalNotifications{
+    //NSLog(@"checkApplicationScheduledLocalNotifications");
+    //取消遗漏而无效的启动通知
+    for (UILocalNotification *aNo in [UIApplication sharedApplication].scheduledLocalNotifications) {
+        NSString *alarmId = [aNo.userInfo objectForKey:@"kLaunchIAlarmLocalNotificationKey"];
+        if (alarmId != nil) {
+            IAAlarm *anAlarm = [IAAlarm findForAlarmId:alarmId];
+            if (nil == anAlarm) 
+                [[UIApplication sharedApplication] cancelLocalNotification:aNo];
+        }
+    }
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
-        // Clean up any unfinished task business by marking where you.
-        // stopped or ending the task outright.
         [application endBackgroundTask:bgTask];
         bgTask = UIBackgroundTaskInvalid;
     }];
     
     // Start the long-running task and return immediately.
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        
         // Do the work associated with the task, preferably in chunks.
-        NSLog(@"this is background task!");
-        [self performSelectorOnMainThread:@selector(test1) withObject:nil waitUntilDone:YES];
-        //[self performSelectorOnMainThread:@selector(test1) withObject:nil waitUntilDone:NO];
-        
+        [self performSelectorOnMainThread:@selector(checkApplicationScheduledLocalNotifications) withObject:nil waitUntilDone:YES];
+    
         [application endBackgroundTask:bgTask];
         bgTask = UIBackgroundTaskInvalid;
     });

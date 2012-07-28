@@ -815,6 +815,10 @@
 }
 
 - (void)mapTypeButtonPressed:(id)sender{
+    //debug
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    
+    
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	NSNotification *aNotification = [NSNotification notificationWithName:IAMapTypeButtonPressedNotification object:self userInfo:nil];
 	[notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];

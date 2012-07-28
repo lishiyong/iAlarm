@@ -243,6 +243,8 @@
 		9C50F70715AEA490008E7077 /* YCPromptViewCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C50F70415AEA490008E7077 /* YCPromptViewCheck.png */; };
 		9C50F70815AEA490008E7077 /* YCPromptViewCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C50F70515AEA490008E7077 /* YCPromptViewCheck@2x.png */; };
 		9C50F70915AEA490008E7077 /* YCPromptViewCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C50F70515AEA490008E7077 /* YCPromptViewCheck@2x.png */; };
+		9C50F78915C456B0006F4B47 /* test.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C50F78815C456B0006F4B47 /* test.strings */; };
+		9C50F78A15C456B0006F4B47 /* test.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C50F78815C456B0006F4B47 /* test.strings */; };
 		9C52E8A515A2A93E003A74FC /* YCTweetSheetPaperClip.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C52E8A315A2A93E003A74FC /* YCTweetSheetPaperClip.png */; };
 		9C52E8A615A2A93E003A74FC /* YCTweetSheetPaperClip.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C52E8A315A2A93E003A74FC /* YCTweetSheetPaperClip.png */; };
 		9C52E8A715A2A93E003A74FC /* YCTweetSheetPaperClip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C52E8A415A2A93E003A74FC /* YCTweetSheetPaperClip@2x.png */; };
@@ -1479,6 +1481,7 @@
 		9C50A5F0156DEAE400A4B7CC /* 家里 沈阳.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = "家里 沈阳.gpx"; path = "../backup/家里 沈阳.gpx"; sourceTree = "<group>"; };
 		9C50F70415AEA490008E7077 /* YCPromptViewCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCPromptViewCheck.png; sourceTree = "<group>"; };
 		9C50F70515AEA490008E7077 /* YCPromptViewCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCPromptViewCheck@2x.png"; sourceTree = "<group>"; };
+		9C50F78815C456B0006F4B47 /* test.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = test.strings; sourceTree = "<group>"; };
 		9C52E8A315A2A93E003A74FC /* YCTweetSheetPaperClip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCTweetSheetPaperClip.png; sourceTree = "<group>"; };
 		9C52E8A415A2A93E003A74FC /* YCTweetSheetPaperClip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCTweetSheetPaperClip@2x.png"; sourceTree = "<group>"; };
 		9C52E8A915A2ABD7003A74FC /* YCSharingPanelMessageField.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCSharingPanelMessageField.png; sourceTree = "<group>"; };
@@ -3554,6 +3557,7 @@
 			children = (
 				9C9AE0F0155E057F0068DECF /* LocalizedString.h */,
 				9CCEABB913386CF3001457A6 /* Localizable.strings */,
+				9C50F78815C456B0006F4B47 /* test.strings */,
 			);
 			path = Localized;
 			sourceTree = "<group>";
@@ -4692,6 +4696,7 @@
 				9C4C7DC515B6A75E00F6F795 /* YCPreferencesWhiteCheck.png in Resources */,
 				9C4C7DC715B6A75E00F6F795 /* YCPreferencesWhiteCheck@2x.png in Resources */,
 				9C56CD0215B7F0BE00E931DA /* AlarmBeginEndViewController.xib in Resources */,
+				9C50F78915C456B0006F4B47 /* test.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5098,6 +5103,7 @@
 				9C4C7DC615B6A75E00F6F795 /* YCPreferencesWhiteCheck.png in Resources */,
 				9C4C7DC815B6A75E00F6F795 /* YCPreferencesWhiteCheck@2x.png in Resources */,
 				9C56CD0415B7F2CC00E931DA /* AlarmBeginEndViewController.xib in Resources */,
+				9C50F78A15C456B0006F4B47 /* test.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5645,6 +5651,7 @@
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "97ADCFC9-B6C7-41CB-842B-F524A4DEA95C";
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SDKROOT = iphoneos;
 			};
@@ -5716,6 +5723,7 @@
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B0DACFB0-D312-4CA0-9EAC-D403715801CE";
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SDKROOT = iphoneos;
 			};
@@ -5844,6 +5852,7 @@
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "86C6133B-FF49-4369-A8BE-57703AEB5EA3";
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SDKROOT = iphoneos;
 			};
@@ -5894,6 +5903,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "97ADCFC9-B6C7-41CB-842B-F524A4DEA95C";
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SDKROOT = iphoneos;
 			};
@@ -5965,6 +5975,7 @@
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "24408D1E-F2CB-40B3-A02C-B496AD54BA5A";
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SDKROOT = iphoneos;
 			};
@@ -6034,6 +6045,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "24408D1E-F2CB-40B3-A02C-B496AD54BA5A";
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SDKROOT = iphoneos;
 			};

@@ -111,6 +111,16 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 @synthesize alarmSchedules;
 @synthesize sameBeginEndTime;
 
+- (void)setAlarmSchedules:(NSArray *)theAlarmSchedules{
+    if (theAlarmSchedules != alarmSchedules) {
+        //取消启动通知
+        [alarmSchedules makeObjectsPerformSelector:@selector(cancelLocalNotification)];
+        
+        [alarmSchedules release];
+        alarmSchedules = [theAlarmSchedules copy];
+    }
+}
+
 - (id)init
 {
     self = [super init];
@@ -370,6 +380,8 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 	[reserve2 release];
 	[reserve3 release];
     
+    //NSLog(@"dealloc self.placemark.retainCount = %d",self.placemark.retainCount);
+    //NSLog(@"dealloc self.person.retainCount = %d",self.person.retainCount);
     [placemark release];
     [person release];
     
@@ -462,7 +474,6 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
             [aCalender cancelLocalNotification];
         }
     }
-    
     
     return saveInfo;
 
@@ -672,10 +683,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
             
             NSComparisonResult r1 = [aSchedule.beginTime compare:now];
             NSComparisonResult r2 = [aSchedule.endTime compare:now];
-            
-            NSLog(@"aSchedule.beginTime = %@",[aSchedule.beginTime debugDescription]);
-            NSLog(@"aSchedule.endTime = %@",[aSchedule.endTime debugDescription]);
-            
+                        
             //anCalendar被选中了 && now在开始和结束之间
             if (aSchedule.vaild && (NSOrderedSame == r1 || NSOrderedAscending == r1) 
                 && (NSOrderedSame == r2 || NSOrderedDescending == r2)) {

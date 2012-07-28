@@ -351,9 +351,19 @@ static int kDownloadFBFriendLimit = 50;
  * Called when the user canceled the authorization dialog.
  */
 -(void)fbDidNotLogin:(BOOL)cancelled {
-	if (cancelled) {
+	/*
+    if (cancelled) {
 		[self.parentViewController dismissModalViewControllerAnimated:YES];
 		[self dismissModalViewControllerAnimated:YES];
+	}
+     */
+    
+    if (cancelled) {
+        if ([self respondsToSelector:@selector(presentingViewController)]) {
+            [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+        }else{
+            [self.parentViewController dismissModalViewControllerAnimated:YES];
+        }
 	}
 }
 

@@ -13,6 +13,13 @@
 #import "IAAlarm.h"
 #import "AlarmNameViewController.h"
 
+@interface AlarmNameViewController ()
+
+- (void)handleKeyboardDidShow:(id)aNotification;
+- (void)registerNotifications;
+- (void)unRegisterNotifications;
+
+@end
 
 @implementation AlarmNameViewController
 
@@ -37,7 +44,7 @@
 	
 }
 
--(IBAction) textFieldDoneEditing:(id)sender
+-(IBAction)textFieldDoneEditing:(id)sender
 {
 	[self saveData];
     [self.navigationController popViewControllerAnimated:YES];
@@ -50,6 +57,7 @@
 	self.title = KViewTitleName;
     self.alarmNameTextField.placeholder = @"如:什么地方就要到了";
     self.alarmNameTextField.textColor = [UIColor tableCellBlueTextYCColor];
+    //[self registerNotifications];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -61,12 +69,14 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
+    //[self unRegisterNotifications];
 	self.alarmNameTextField = nil;
     self.alarmNameTextCell = nil;
 }
 
 
 - (void)dealloc {
+    //[self unRegisterNotifications];
 	[_alarmNameTextField release];
     [_alarmNameTextCell release];
     [super dealloc];
@@ -91,11 +101,59 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    /*
+    CGRect viewFrame = [self.tableView frame];
+    return viewFrame.size.height/2 - self.alarmNameTextCell.bounds.size.height/2;
+     */
+    
     return 65.0;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     return @" "; //4.2前没这个不行
+}
+
+#pragma mark - Notification
+
+- (void)handleKeyboardDidShow:(NSNotification*)aNotification{	
+    
+    
+    NSDictionary* info = [aNotification userInfo];
+    
+    // Get the size of the keyboard.
+    NSValue* aValue = [info objectForKey:UIKeyboardBoundsUserInfoKey];
+    CGSize keyboardSize = [aValue CGRectValue].size;
+    
+    // Resize the scroll view (which is the root view of the window)
+    CGRect viewFrame = [self.tableView frame];
+    viewFrame.size.height -= keyboardSize.height;
+    self.tableView.frame = viewFrame;
+    
+    [self.tableView reloadData];
+    
+}
+
+- (void)registerNotifications {
+	
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    
+    [notificationCenter addObserver:self
+                           selector:@selector(handleKeyboardDidShow:)
+                               name:UIKeyboardDidShowNotification object:nil];
+/*
+    [notificationCenter addObserver:self
+                           selector:@selector(handleKeyboardDidHidden:)
+                               name:UIKeyboardDidHideNotification object:nil];
+ */
+    
+}
+
+- (void)unRegisterNotifications {
+    
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    
+	[notificationCenter removeObserver:self	name: UIKeyboardDidShowNotification object: nil];
+	[notificationCenter removeObserver:self	name: UIKeyboardDidHideNotification object: nil];
 }
 
 @end

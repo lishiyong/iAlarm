@@ -570,6 +570,7 @@
 #pragma mark - Override super
 
 - (void)dealloc{
+    NSLog(@"IAPerson dealloc");
     [_personName release];
     [_organization release];
     [_addressDictionaries release];
@@ -630,6 +631,10 @@
 - (id)copyWithZone:(NSZone *)zone{
     IAPerson *copy = [[[self class] allocWithZone: zone] initWithPersonId:self.personId personName:self.personName organization:self.organization addressDictionaries:self.addressDictionaries note:self.note image:self.image phones:self.phones];    
     return copy;
+}
+
+- (id)retain{
+    return [super retain];
 }
 
 

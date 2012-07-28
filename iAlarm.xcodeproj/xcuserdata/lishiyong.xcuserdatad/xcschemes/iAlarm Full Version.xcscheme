@@ -77,7 +77,7 @@
       </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
-      buildConfiguration = "Debug FullVersion">
+      buildConfiguration = "Release FullVersion">
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Distribution FullVersion"

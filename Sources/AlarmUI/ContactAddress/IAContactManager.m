@@ -6,6 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "AlarmDetailTableViewController.h"
 #import "YCLocation.h"
 #import "YCParam.h"
 #import <QuartzCore/QuartzCore.h>
@@ -297,7 +298,6 @@
 
 
 - (void)cancelButtonItemPressed:(id)sender{
-    
     if ([_currentViewController respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]) {
         [_currentViewController dismissViewControllerAnimated:YES completion:NULL];
     }else{
@@ -307,7 +307,7 @@
 
 - (void)pushContactViewControllerWithAlarm:(IAAlarm*)theAlarm{
     
-    
+    [(UINavigationController*)_currentViewController setDelegate:self]; 
     [_alarm release];
     _alarm = [theAlarm retain];
     
@@ -812,7 +812,19 @@
     _mapViewDidFinishLoadingMap = YES;
 }
 
-#pragma mark - 
+#pragma mark - UINavigationControllerDelegate
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
+    
+    if ([viewController isKindOfClass:[AlarmDetailTableViewController class]]) {
+        [_alarm release];
+        _alarm = nil;
+    }
+    
+}
+
+
+#pragma mark - 响应点图片
 
 - (void)personImageDidPress{
     UIViewController *vc = [(UINavigationController*) _currentViewController topViewController];

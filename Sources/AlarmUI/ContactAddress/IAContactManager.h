@@ -11,7 +11,7 @@
 #import <Foundation/Foundation.h>
 
 @class IAAlarm, IAPerson, AlarmPositionMapViewController;
-@interface IAContactManager : NSObject<MKMapViewDelegate, ABUnknownPersonViewControllerDelegate, ABPersonViewControllerDelegate>{
+@interface IAContactManager : NSObject<MKMapViewDelegate, ABUnknownPersonViewControllerDelegate, ABPersonViewControllerDelegate, UINavigationControllerDelegate>{
     //不能用于多线程和并发
     
     IAAlarm *_alarm; 
