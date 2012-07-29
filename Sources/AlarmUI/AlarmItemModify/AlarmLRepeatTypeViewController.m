@@ -90,7 +90,7 @@
     
     //启用开关cell
     self.beginEndSwitchCell.textLabel.text = @"启用定时提醒";
-    self.beginEndSwitchCell.accessoryView = self.beginEndSwitch; 
+    self.beginEndSwitchCell.accessoryView = self.beginEndSwitch;
     
     //相同提醒时间cell
     self.sameSwitchCell.textLabel.text = @"开始结束时间相同";
@@ -264,26 +264,36 @@
 #pragma mark - 
 
 - (IBAction)beginEndSwitchValueDidChange:(id)sender{
+
+    //生成indexSet供cell动画用。必须在 self.sameSwitch.on 的前面
+     NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
+    if (0 == _lastIndexPathOfType.row) {
+        [indexSet addIndex:2];
+    }else {
+        [indexSet addIndex:3];
+        if (self.sameSwitch.on) 
+            [indexSet addIndex:4];
+    }
+    
+    //生成sections
     if (_lastIndexPathOfType.row == 1) {
         if (!self.beginEndSwitch.on) { 
-            self.sameSwitch.on = YES;//连续闹钟,不开启定时。必然是使用同一时间
+            [self.sameSwitch setOn:YES animated:YES];//连续闹钟,不开启定时。为了使用“右选择cell”，通过sameSwitch.on = YES 做标识。
         }
     }
-    
     [self _makeSections];
-    [self.tableView reloadDataAnimated:YES];
-    //动画插入weekday cell
-    /*
-    NSIndexSet *is = [NSIndexSet indexSetWithIndexesInRange:(NSRange){2, 1}];
+    
+    //cell动画插入或删除
     if (self.beginEndSwitch.on) {
-        [self.tableView insertSections:is withRowAnimation:UITableViewRowAnimationBottom];
+        [self.tableView insertSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
     }else {
-        [self.tableView deleteSections:is withRowAnimation:UITableViewRowAnimationBottom];
+        [self.tableView deleteSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
     }
-     */
-    //[self.tableView reloa];
-    
-    
+    //星期cell可能变化了，需要刷新一下
+    if (_lastIndexPathOfType.row == 1) {
+        [self.tableView reloadData];
+    }
+
     //让最低部分可视
     if (_lastIndexPathOfType.row == 1) {
         if (self.beginEndSwitch.on) { 
@@ -297,8 +307,23 @@
 }
 
 - (IBAction)sameSwitchValueDidChange:(id)sender{
+    //生成sections
     [self _makeSections];
-    [self.tableView reloadDataAnimated:YES];
+    
+    //生成indexSet供cell动画用
+    NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
+    [indexSet addIndex:4];
+    
+    //cell动画插入或删除
+    if (self.sameSwitch.on) {
+        [self.tableView insertSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
+    }else {
+        [self.tableView deleteSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
+    }
+    //星期cell可能变化了，需要刷新一下
+    if (_lastIndexPathOfType.row == 1) {
+        [self.tableView reloadData];
+    }
     
     //让最低部分可视
     if (_lastIndexPathOfType.row == 1) {
@@ -340,12 +365,14 @@
     //如果空
     if (_onceAlarmSchedule == nil) {
         _onceAlarmSchedule = [[IAAlarmSchedule alloc] init];
+        _onceAlarmSchedule.repeatInterval = 0; //不重复
+        _onceAlarmSchedule.weekDay = -1;  //不是星期中的天
     }
     if (_alwaysAlarmSchedules == nil) {
         NSMutableArray *temps =  [NSMutableArray arrayWithCapacity:7];
         for (int i = 0; i < 7; i++) {
-            IAAlarmSchedule *anAlarmCalendar = [[[IAAlarmSchedule alloc] init] autorelease];
-            [temps addObject:anAlarmCalendar];
+            IAAlarmSchedule *anAlarmSchedule = [[[IAAlarmSchedule alloc] init] autorelease];
+            [temps addObject:anAlarmSchedule];
             
             NSString *dayString = nil;
             switch (i) {
@@ -373,7 +400,12 @@
                 default:
                     break;
             }
-            anAlarmCalendar.name = dayString;
+            anAlarmSchedule.name = dayString;
+            anAlarmSchedule.repeatInterval = NSWeekCalendarUnit;
+            if (6 == i) //1：周日 2：周1 ... 7：周六. 
+                anAlarmSchedule.weekDay = 1;
+            else 
+                anAlarmSchedule.weekDay = i + 2;
             
         }
         _alwaysAlarmSchedules = [[NSArray arrayWithArray:temps] retain];
@@ -449,22 +481,21 @@
                 [_lastIndexPathOfType release];
                 _lastIndexPathOfType = [indexPath retain];
                 
-                
+                //生成sections
                 [self _makeSections];
                 
+                //生成indexSet供cell动画用
                 NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
                 [indexSet addIndex:1];//星期cells
                 if (self.beginEndSwitch.on && self.sameSwitch.on) //
                     [indexSet addIndex:3];//sameCell
                 
+                //cell动画插入或删除
                 if (_lastIndexPathOfType.row == 0) {
                     [self.tableView deleteSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
                 }else if (_lastIndexPathOfType.row == 1) {
                     [self.tableView insertSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
                 }
-                 
-                 
-                 
 
             }
             

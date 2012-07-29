@@ -349,15 +349,6 @@ AAgACAAIAAEAAQABAAE</bytes>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">beginEndSwitchValueDidChange:</string>
-						<reference key="source" ref="800810061"/>
-						<reference key="destination" ref="372490531"/>
-						<int key="IBEventType">13</int>
-					</object>
-					<int key="connectionID">25</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">sameSwitchValueDidChange:</string>
 						<reference key="source" ref="800810061"/>
 						<reference key="destination" ref="372490531"/>
