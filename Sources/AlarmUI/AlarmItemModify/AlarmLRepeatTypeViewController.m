@@ -32,6 +32,7 @@
 @synthesize beginEndSwitchCell = _beginEndSwitchCell, beginEndCell = _beginEndCell, beginEndSwitch = _beginEndSwitch;
 @synthesize sameSwitchCell = _sameSwitchCell, sameSwitch = _sameSwitch;
 
+
 #pragma mark - private
 
 - (NSIndexSet*)_vaildIndexSetOfAlwaysAlarmCalendars{
@@ -271,6 +272,17 @@
     
     [self _makeSections];
     [self.tableView reloadDataAnimated:YES];
+    //动画插入weekday cell
+    /*
+    NSIndexSet *is = [NSIndexSet indexSetWithIndexesInRange:(NSRange){2, 1}];
+    if (self.beginEndSwitch.on) {
+        [self.tableView insertSections:is withRowAnimation:UITableViewRowAnimationBottom];
+    }else {
+        [self.tableView deleteSections:is withRowAnimation:UITableViewRowAnimationBottom];
+    }
+     */
+    //[self.tableView reloa];
+    
     
     //让最低部分可视
     if (_lastIndexPathOfType.row == 1) {
@@ -372,7 +384,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.title = KViewTitleRepeat;
-    [_lastIndexPathOfType release]; //重复类型cell重现生成
+    [_lastIndexPathOfType release]; //重复类型cell,每次显示都重现生成
     _lastIndexPathOfType = [[NSIndexPath indexPathForRow:self.alarm.repeatType.sortId inSection:0] retain];
     [self _makeSections];
 	[self.tableView reloadData];
@@ -439,7 +451,21 @@
                 
                 
                 [self _makeSections];
-                [self.tableView reloadDataAnimated:YES];
+                
+                NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
+                [indexSet addIndex:1];//星期cells
+                if (self.beginEndSwitch.on && self.sameSwitch.on) //
+                    [indexSet addIndex:3];//sameCell
+                
+                if (_lastIndexPathOfType.row == 0) {
+                    [self.tableView deleteSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
+                }else if (_lastIndexPathOfType.row == 1) {
+                    [self.tableView insertSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
+                }
+                 
+                 
+                 
+
             }
             
             break;
@@ -505,6 +531,15 @@
                 return 44;
         }
     }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section{
+    /*
+    if ((_sections.count -1) == section) {
+        return @"启动定时提醒将在开始时间收到启动位置闹钟的通知。";
+    }
+     */
+    return nil;
 }
 
 #pragma mark -

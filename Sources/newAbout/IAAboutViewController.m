@@ -141,7 +141,7 @@
     if (_foundABugCell == nil) {
         _foundABugCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"foundABugCell"];
         
-        _foundABugCell.textLabel.text = @"Found a bug";
+        _foundABugCell.textLabel.text = KLabelCellFoundABug;
 		_foundABugCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         _foundABugCell.imageView.image = [UIImage imageNamed:@"foundABug-Icon-Small.png"];
     }

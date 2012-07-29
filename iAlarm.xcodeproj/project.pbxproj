@@ -243,8 +243,12 @@
 		9C50F70715AEA490008E7077 /* YCPromptViewCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C50F70415AEA490008E7077 /* YCPromptViewCheck.png */; };
 		9C50F70815AEA490008E7077 /* YCPromptViewCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C50F70515AEA490008E7077 /* YCPromptViewCheck@2x.png */; };
 		9C50F70915AEA490008E7077 /* YCPromptViewCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C50F70515AEA490008E7077 /* YCPromptViewCheck@2x.png */; };
-		9C50F78915C456B0006F4B47 /* test.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C50F78815C456B0006F4B47 /* test.strings */; };
-		9C50F78A15C456B0006F4B47 /* test.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C50F78815C456B0006F4B47 /* test.strings */; };
+		9C50F79F15C45991006F4B47 /* test.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C50F79C15C45991006F4B47 /* test.strings */; };
+		9C50F7A015C45991006F4B47 /* test.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C50F79C15C45991006F4B47 /* test.strings */; };
+		9C50F7A215C459D0006F4B47 /* test.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C50F79C15C45991006F4B47 /* test.strings */; };
+		9C50F7A315C459D0006F4B47 /* test.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C50F79C15C45991006F4B47 /* test.strings */; };
+		9C50F7A615C45A26006F4B47 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9CCEABB913386CF3001457A6 /* Localizable.strings */; };
+		9C50F7A715C45A26006F4B47 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9CCEABB913386CF3001457A6 /* Localizable.strings */; };
 		9C52E8A515A2A93E003A74FC /* YCTweetSheetPaperClip.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C52E8A315A2A93E003A74FC /* YCTweetSheetPaperClip.png */; };
 		9C52E8A615A2A93E003A74FC /* YCTweetSheetPaperClip.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C52E8A315A2A93E003A74FC /* YCTweetSheetPaperClip.png */; };
 		9C52E8A715A2A93E003A74FC /* YCTweetSheetPaperClip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C52E8A415A2A93E003A74FC /* YCTweetSheetPaperClip@2x.png */; };
@@ -1481,7 +1485,11 @@
 		9C50A5F0156DEAE400A4B7CC /* 家里 沈阳.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = "家里 沈阳.gpx"; path = "../backup/家里 沈阳.gpx"; sourceTree = "<group>"; };
 		9C50F70415AEA490008E7077 /* YCPromptViewCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCPromptViewCheck.png; sourceTree = "<group>"; };
 		9C50F70515AEA490008E7077 /* YCPromptViewCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCPromptViewCheck@2x.png"; sourceTree = "<group>"; };
-		9C50F78815C456B0006F4B47 /* test.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = test.strings; sourceTree = "<group>"; };
+		9C50F79D15C45991006F4B47 /* English */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/test.strings; sourceTree = "<group>"; };
+		9C50F79E15C45991006F4B47 /* LocalizedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalizedString.h; sourceTree = "<group>"; };
+		9C50F7A115C459D0006F4B47 /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Japanese; path = Japanese.lproj/test.strings; sourceTree = "<group>"; };
+		9C50F7A415C45A26006F4B47 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/test.strings; sourceTree = "<group>"; };
+		9C50F7A515C45A26006F4B47 /* zh_TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_TW; path = zh_TW.lproj/test.strings; sourceTree = "<group>"; };
 		9C52E8A315A2A93E003A74FC /* YCTweetSheetPaperClip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCTweetSheetPaperClip.png; sourceTree = "<group>"; };
 		9C52E8A415A2A93E003A74FC /* YCTweetSheetPaperClip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCTweetSheetPaperClip@2x.png"; sourceTree = "<group>"; };
 		9C52E8A915A2ABD7003A74FC /* YCSharingPanelMessageField.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCSharingPanelMessageField.png; sourceTree = "<group>"; };
@@ -1772,7 +1780,6 @@
 		9C8AB2DA13B0C92100120AD5 /* iAlarm-Info-FullVersion.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iAlarm-Info-FullVersion.plist"; sourceTree = "<group>"; };
 		9C90A1361522BD3A00695881 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		9C90A1381522BD4400695881 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
-		9C9AE0F1155E057F0068DECF /* English */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = English; path = English.lproj/LocalizedString.h; sourceTree = "<group>"; };
 		9C9BA6FA15A7366400DAA29D /* IAFlagAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAFlagAnnotationView.h; sourceTree = "<group>"; };
 		9C9BA6FB15A7366400DAA29D /* IAFlagAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAFlagAnnotationView.m; sourceTree = "<group>"; };
 		9CA04E8C155E74280082C1F2 /* IAPin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAPin@2x.png"; sourceTree = "<group>"; };
@@ -3555,9 +3562,9 @@
 		9CCEABB113386C73001457A6 /* Localized */ = {
 			isa = PBXGroup;
 			children = (
-				9C9AE0F0155E057F0068DECF /* LocalizedString.h */,
+				9C50F79C15C45991006F4B47 /* test.strings */,
+				9C50F79E15C45991006F4B47 /* LocalizedString.h */,
 				9CCEABB913386CF3001457A6 /* Localizable.strings */,
-				9C50F78815C456B0006F4B47 /* test.strings */,
 			);
 			path = Localized;
 			sourceTree = "<group>";
@@ -4696,7 +4703,9 @@
 				9C4C7DC515B6A75E00F6F795 /* YCPreferencesWhiteCheck.png in Resources */,
 				9C4C7DC715B6A75E00F6F795 /* YCPreferencesWhiteCheck@2x.png in Resources */,
 				9C56CD0215B7F0BE00E931DA /* AlarmBeginEndViewController.xib in Resources */,
-				9C50F78915C456B0006F4B47 /* test.strings in Resources */,
+				9C50F79F15C45991006F4B47 /* test.strings in Resources */,
+				9C50F7A215C459D0006F4B47 /* test.strings in Resources */,
+				9C50F7A615C45A26006F4B47 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5103,7 +5112,9 @@
 				9C4C7DC615B6A75E00F6F795 /* YCPreferencesWhiteCheck.png in Resources */,
 				9C4C7DC815B6A75E00F6F795 /* YCPreferencesWhiteCheck@2x.png in Resources */,
 				9C56CD0415B7F2CC00E931DA /* AlarmBeginEndViewController.xib in Resources */,
-				9C50F78A15C456B0006F4B47 /* test.strings in Resources */,
+				9C50F7A015C45991006F4B47 /* test.strings in Resources */,
+				9C50F7A315C459D0006F4B47 /* test.strings in Resources */,
+				9C50F7A715C45A26006F4B47 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5586,12 +5597,15 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		9C9AE0F0155E057F0068DECF /* LocalizedString.h */ = {
+		9C50F79C15C45991006F4B47 /* test.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				9C9AE0F1155E057F0068DECF /* English */,
+				9C50F79D15C45991006F4B47 /* English */,
+				9C50F7A115C459D0006F4B47 /* Japanese */,
+				9C50F7A415C45A26006F4B47 /* zh_CN */,
+				9C50F7A515C45A26006F4B47 /* zh_TW */,
 			);
-			name = LocalizedString.h;
+			name = test.strings;
 			sourceTree = "<group>";
 		};
 		9CCEABB913386CF3001457A6 /* Localizable.strings */ = {

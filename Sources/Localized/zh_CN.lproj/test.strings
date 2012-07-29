@@ -1,0 +1,10 @@
+/* 
+  test.strings
+  iAlarm
+
+  Created by li shiyong on 12-7-29.
+  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
+*/
+
+/* found a bug cell的标签 */
+"KLabelCellFoundABug" = "发现了一个问题";

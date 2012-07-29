@@ -152,6 +152,7 @@
 */
 
 
+#define KLabelCellFoundABug                      NSLocalizedStringFromTable(@"KLabelCellFoundABug", @"test" ,         @"found a bug cell的标签")
 
 
 

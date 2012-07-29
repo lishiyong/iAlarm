@@ -17,6 +17,7 @@
     IAAlarmSchedule *_onceAlarmSchedule;
     NSArray *_alwaysAlarmSchedules;
     AlarmBeginEndViewController *_alarmBeginEndViewController;
+    //NSArray *_dayCells;
     
 }
 
@@ -26,6 +27,8 @@
 
 @property (nonatomic, retain) IBOutlet  UITableViewCell *sameSwitchCell;
 @property (nonatomic, retain) IBOutlet  UISwitch *sameSwitch;
+
+//@property (nonatomic, readonly) NSArray *dayCells;
 
 - (IBAction)beginEndSwitchValueDidChange:(id)sender;
 - (IBAction)sameSwitchValueDidChange:(id)sender;
