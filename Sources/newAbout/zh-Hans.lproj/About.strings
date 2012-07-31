@@ -1,7 +1,77 @@
-/* 
-  About.strings
-  iAlarm
 
-  Created by li shiyong on 12-7-30.
-  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
-*/
+/* 购买完全版cell的标签 */
+"KLabelCellBuyFullVersion" = "下载完全版";
+
+/* 邮件 cell的标签 */
+"KLabelCellEmail" = "邮件";
+
+/* Facebook cell的标签 */
+"KLabelCellFacebook" = "Facebook";
+
+/* 在twitter跟随我们 cell的标签 */
+"KLabelCellFollowUsOnTwitter" = "在twitter跟随我们";
+
+/* 发现了一个问题 cell的标签 */
+"KLabelCellFoundABug" = "发现了一个问题";
+
+/* 我有一个好主意 cell的标签 */
+"KLabelCellHasACoolIdea" = "有一个好点子";
+
+/* 短信 cell的标签 */
+"KLabelCellMessages" = "短信";
+
+/* 评分cell的标签 */
+"KLabelCellRateAndReview" = "撰写评论";
+
+/* 打个招呼 cell的标签 */
+"KLabelCellSayHi" = "打个招呼";
+
+/* 设置的 cell的标签 */
+"KLabelCellSetting" = "设置";
+
+/* 告诉朋友 cell的标签 */
+"KLabelCellShareApp" = "告诉朋友";
+
+/* Twitter cell的标签 */
+"KLabelCellTwitter" = "Twitter";
+
+/* 版本cell的标签 */
+"KLabelCellVersion" = "版本";
+
+/* 在facebook访问我们 cell的标签 */
+"KLabelCellVisitUsOnFacebook" = "在facebook访问我们";
+
+/* 版本Section的脚 */
+"KLabelSectionFooterVersion" = "";
+
+/* 评分Section头的标签 */
+"KLabelSectionHeaderRateAndReview" = "评分";
+
+/* 分享Section的标签 */
+"KLabelSectionHeaderShare" = "分享";
+
+/* 版本Section头的标签 */
+"KLabelSectionHeaderVersion" = "位置闹钟";
+
+
+/* 关于视图标题 */
+"KViewTitleAbout" = "关于";
+
+/* 设置视图标题 */
+"KViewTitleSetting" = "设置";
+
+
+/* 要求评分的提示框的标题 */
+"kAlertConfirmRateTitle" = "喜欢位置闹钟吗?";
+
+/* 要求评分的提示框的内容 */
+"kAlertConfirmRateBody" = "如果喜欢，请到App Store上给一个5星的评分吧！您的支持使得后续版本的升级得以继续。";
+
+/* 要求评分的提示框的 ‘去评分’按钮  */
+"kAlertConfirmRateBtnToRate" = "好，马上去评分！";
+
+/* 要求评分的提示框的 ‘No,Thanks’按钮 */
+"kAlertConfirmRateBtnNoThanks" = "稍后再提示我";
+
+/* 要求评分的提示框的 ‘Not to remind’按钮 */
+"kAlertConfirmRateBtnNotToremind" = "不再提示";

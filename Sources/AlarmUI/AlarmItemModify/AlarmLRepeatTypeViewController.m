@@ -89,7 +89,7 @@
     self.beginEndCell.detailTextLabel.numberOfLines = 2;
     
     //启用开关cell
-    self.beginEndSwitchCell.textLabel.text = @"启用定时提醒";
+    self.beginEndSwitchCell.textLabel.text = @"定时启动";
     self.beginEndSwitchCell.accessoryView = self.beginEndSwitch;
     
     //相同提醒时间cell
@@ -275,6 +275,9 @@
             [indexSet addIndex:4];
     }
     
+    //保存变化前sections数量
+    NSUInteger oldSectionCount = _sections.count; 
+    
     //生成sections
     if (_lastIndexPathOfType.row == 1) {
         if (!self.beginEndSwitch.on) { 
@@ -289,9 +292,16 @@
     }else {
         [self.tableView deleteSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
     }
+
     //星期cell可能变化了，需要刷新一下
-    if (_lastIndexPathOfType.row == 1) {
+    if (_lastIndexPathOfType.row == 1) 
+    {
         [self.tableView reloadData];
+    }else {
+        //刷新原来最后一个section，为了刷新sectionFooter
+        if (oldSectionCount >0 && oldSectionCount <= _sections.count) {
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:oldSectionCount -1] withRowAnimation:UITableViewRowAnimationNone];
+        }
     }
 
     //让最低部分可视
@@ -321,9 +331,8 @@
         [self.tableView deleteSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
     }
     //星期cell可能变化了，需要刷新一下
-    if (_lastIndexPathOfType.row == 1) {
-        [self.tableView reloadData];
-    }
+    [self.tableView reloadData];
+
     
     //让最低部分可视
     if (_lastIndexPathOfType.row == 1) {
@@ -423,8 +432,8 @@
     
 }
 
-- (void)viewDidDisappear:(BOOL)animated{
-    [super viewDidDisappear:animated];
+-(void)viewWillDisappear:(BOOL)animated{
+	[super viewWillDisappear:animated];
     self.title = nil;
 }
 
@@ -565,11 +574,11 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section{
-    /*
+    
     if ((_sections.count -1) == section) {
-        return @"启动定时提醒将在开始时间收到启动位置闹钟的通知。";
+        return @"启用定时启动将在开始时间收到要求您启动位置闹钟的通知。";
     }
-     */
+     
     return nil;
 }
 

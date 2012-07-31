@@ -1,7 +1,77 @@
-/* 
-  About.strings
-  iAlarm
 
-  Created by li shiyong on 12-7-30.
-  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
-*/
+/* 购买完全版cell的标签 */
+"KLabelCellBuyFullVersion" = "DownLoad FullVersion";
+
+/* 邮件 cell的标签 */
+"KLabelCellEmail" = "メール";
+
+/* Facebook cell的标签 */
+"KLabelCellFacebook" = "Facebook";
+
+/* 在twitter跟随我们 cell的标签 */
+"KLabelCellFollowUsOnTwitter" = "Follow Us on Twitter";
+
+/* 发现了一个问题 cell的标签 */
+"KLabelCellFoundABug" = "Found a Bug";
+
+/* 我有一个好主意 cell的标签 */
+"KLabelCellHasACoolIdea" = "Have a Cool Idea";
+
+/* 短信 cell的标签 */
+"KLabelCellMessages" = "SMS/MMS";
+
+/* 评分cell的标签 */
+"KLabelCellRateAndReview" = "レビューを書く";
+
+/* 打个招呼 cell的标签 */
+"KLabelCellSayHi" = "Just Want to Say Hi";
+
+/* 设置的 cell的标签 */
+"KLabelCellSetting" = "設定";
+
+/* 告诉朋友 cell的标签 */
+"KLabelCellShareApp" = "友人に知らせる";
+
+/* Twitter cell的标签 */
+"KLabelCellTwitter" = "Twitter";
+
+/* 版本cell的标签 */
+"KLabelCellVersion" = "バージョン";
+
+/* 在facebook访问我们 cell的标签 */
+"KLabelCellVisitUsOnFacebook" = "Visit Us on Facebook";
+
+/* 版本Section的脚 */
+"KLabelSectionFooterVersion" = "";
+
+/* 评分Section头的标签 */
+"KLabelSectionHeaderRateAndReview" = "Rate/review in App Store";
+
+/* 分享Section的标签 */
+"KLabelSectionHeaderShare" = "友人に知らせる";
+
+/* 版本Section头的标签 */
+"KLabelSectionHeaderVersion" = "位置アラーム";
+
+
+/* 关于视图标题 */
+"KViewTitleAbout" = "情報";
+
+/* 设置视图标题 */
+"KViewTitleSetting" = "設定";
+
+
+/* 要求评分的提示框的标题 */
+"kAlertConfirmRateTitle" = "位置アラームが好きですか？";
+
+/* 要求评分的提示框的内容 */
+"kAlertConfirmRateBody" = "好きでしたら、App Ｓtore に五つ星の評価をください。あなたのサポートで今後のアップデートを継続することができます。";
+
+/* 要求评分的提示框的 ‘去评分’按钮  */
+"kAlertConfirmRateBtnToRate" = "はい、すぐに評価しましょう！";
+
+/* 要求评分的提示框的 ‘No,Thanks’按钮 */
+"kAlertConfirmRateBtnNoThanks" = "あとで、また思い出させて下さい";
+
+/* 要求评分的提示框的 ‘Not to remind’按钮 */
+"kAlertConfirmRateBtnNotToremind" = "もう教えてくれなくて結構です";

@@ -1,7 +1,100 @@
-/* 
-  ShareApp.strings
-  iAlarm
 
-  Created by li shiyong on 12-7-30.
-  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
-*/
+////////////////////////////////////////////////////////
+/* app store 的链接 */
+"KLinkAppStoreLite" = "http://itunes.apple.com/cn/app/ialarm-location-alarm/id427929181?mt=8";
+"KLinkAppStoreFullVersion" = "http://itunes.apple.com/cn/app/ialarm-pro/id468639288?ls=1&mt=8";
+
+"KLinkCustomAppStoreLite" = "http://bit.ly/iAlarmLite_cn";
+"KLinkCustomAppStoreFullVersion" = "http://bit.ly/iAlarm_cn";
+
+
+/* Facebook:send to 的标签 */
+"KLabelCellFBSendTo" = "发送到:";
+
+/* 朋友们的Facebook涂鸦墙Section头的标签 */
+"KLabelSectionFBFriendsWall" = "朋友们的涂鸦墙";
+
+/* 我的Facebook涂鸦墙Section头的标签 */
+"KLabelSectionFBMyWell" = "我的涂鸦墙";
+
+
+/* 退出fb提示的文本,Login As XX (不是你？) */
+"KTextPromptFBLoginAsXX" = "Logged in as %@ (Not You?)";
+
+/* 还有xx个fb联系人的文本,还有 %d 个... */
+"KTextPromptFBMore" = "还有 %d 个...";
+
+
+/* 选择联系人视图的提示 */
+"KViewPromptCheckContacts" = "选择涂鸦墙";
+
+/* FB new feed视图标题 */
+"KViewTitleFBNewFeed" = "撰写";
+
+/* TW new Tweet视图标题 */
+"KViewTitleTWNewTweet" = "New Tweet";
+
+/* FB 所有朋友视图标题，所有的朋友 */
+"KViewTitleAllFBFriends" = "所有朋友";
+
+
+/* 文本,Sending... */
+"KTextPromptSending" = "正在发送...";
+
+/* 文本,xx 位朋友*/
+"KTextPromptXXFriends" = "%d 位朋友";
+
+/* 文本,下xx位朋友*/
+"KTextPromptNextXXFriends" = "下面%d项...";
+
+
+/* Share按钮 */
+"kBtnShare" = "共享";
+
+/* Send按钮 */
+"kBtnSend" = "发送";
+
+/* Cancel按钮 */
+"kBtnCancel" = "取消";
+
+
+/* Facebook sheet上按钮 */
+"KSheetBtnFacebook" = "Facebook";
+
+/* Twitter sheet上按钮 */
+"KSheetBtnTwitter" = "Twitter";
+
+/* Email sheet上按钮 */
+"KSheetBtnEMail" = "邮件";
+
+/* 短信 sheet上按钮 */
+"KSheetBtnMessages" = "短信";
+
+
+/* 需要打开internet连接访问Facebook的提示框的内容 */
+"kAlertNeedInternetBodyAccessFacebook" = "您必须连接到 Wi-Fi 或蜂窝数据网络才能访问 Facebook。";
+
+/* 需要打开internet连接访问Twitter的提示框的内容 */
+"kAlertNeedInternetBodyAccessTwitter" = "您必须连接到 Wi-Fi 或蜂窝数据网络才能访问 Twitter。";
+
+/* 需要打开internet连接访问facebook的提示框的标题 */
+"kAlertNeedInternetTitleAccessFacebook" = "无法连接 Facebook";
+
+/* 需要打开internet连接访问Twitter的提示框的标题 */
+"kAlertNeedInternetTitleAccessTwitter" = "无法连接 Twitter";
+
+/* 提示退出facebook登录状态的提示框的标题 */
+"kAlertBeforeLogoutFBInternetTitle" = "退出Facebook ?";
+
+
+/* 共享内容Get the app */
+"KShareContentTextGetTheApp" = "下载位置闹钟";
+
+/* 共享内容Get the app */
+"KShareContentTwitterMessage" = "有多少童鞋因为在公交车上玩儿游戏刷微博坐过站的？或者因为打瞌睡错过了目的地？没关系，试试这款名为“位置闹钟”的iPhone App吧，其专业独特的定位提醒功能可能正是你所需要的。";
+
+/* 共享内容Get the app */
+"KShareContentMailMessage" = "有多少童鞋因为在公交车上玩儿游戏刷微博坐过站的？或者因为打瞌睡错过了目的地？没关系，试试这款名为“位置闹钟”的iPhone App吧，其专业独特的定位提醒功能可能正是你所需要的。";
+
+/* 共享内容Get the app */
+"KShareContentMailTitle" = "推荐一个很有用的iPhone App－位置闹钟";

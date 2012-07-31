@@ -15,7 +15,7 @@
 #import "NSObject+YC.h"
 #import "UIUtility.h"
 #import "YCSystemStatus.h"
-#import "LocalizedStringAbout.h"
+#import "LocalizedStringShareApp.h"
 #import "Facebook.h"
 #import "YCFacebookPeople.h"
 #import "YCFacebookGlobalData.h"
@@ -133,12 +133,12 @@ static NSString* kFacebookAppId = @"146975985381829";
 }
 
 - (void)shareAppPrivate{
-    UIActionSheet *shareAppSheet = [[[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:KLabelCellTwitter,KLabelCellFacebook,nil] autorelease];
+    UIActionSheet *shareAppSheet = [[[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:KSheetBtnTwitter,KSheetBtnFacebook,nil] autorelease];
     
     if ([self canSendMail]) 
-        [shareAppSheet addButtonWithTitle:KLabelCellEmail];
+        [shareAppSheet addButtonWithTitle:KSheetBtnEMail];
     if ([self canSendText]) 
-        [shareAppSheet addButtonWithTitle:KLabelCellMessages];
+        [shareAppSheet addButtonWithTitle:KSheetBtnMessages];
     
     //cancel按钮放到最后一个
     [shareAppSheet addButtonWithTitle:kBtnCancel];
@@ -210,7 +210,7 @@ static NSString* kFacebookAppId = @"146975985381829";
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     
     NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
-    if ([buttonTitle isEqualToString:KLabelCellTwitter]) {//Tw
+    if ([buttonTitle isEqualToString:KSheetBtnTwitter]) {//Tw
 
         
         if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) {
@@ -248,7 +248,7 @@ static NSString* kFacebookAppId = @"146975985381829";
         
         
         
-    }else if([buttonTitle isEqualToString:KLabelCellFacebook]){//fb
+    }else if([buttonTitle isEqualToString:KSheetBtnFacebook]){//fb
         
         if (![self isFacebookAuthorized]){
             [self authorizeFacebook];
@@ -256,12 +256,12 @@ static NSString* kFacebookAppId = @"146975985381829";
         }else 
             [superViewController presentModalViewController:self.fbFeedNavController animated:YES];
         
-    }else if([buttonTitle isEqualToString:KLabelCellEmail]){
+    }else if([buttonTitle isEqualToString:KSheetBtnEMail]){
         
         //邮件
         [self sendEmail];
         
-    }else if([buttonTitle isEqualToString:KLabelCellMessages]){
+    }else if([buttonTitle isEqualToString:KSheetBtnMessages]){
         
         //短信
         [self sendMessages];

@@ -108,7 +108,7 @@
     if (_followUsOnTwitterCell == nil) {
         _followUsOnTwitterCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"followUsOnTwitterCell"];
         
-        _followUsOnTwitterCell.textLabel.text = @"在Twitter上关注";
+        _followUsOnTwitterCell.textLabel.text = KLabelCellFollowUsOnTwitter;
 		_followUsOnTwitterCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         _followUsOnTwitterCell.imageView.image = [UIImage imageNamed:@"twitter-Icon-Small.png"];
     }
@@ -119,7 +119,7 @@
     if (_visitUsOnFacebookCell == nil) {
         _visitUsOnFacebookCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"visitUsOnFacebookCell"];
         
-        _visitUsOnFacebookCell.textLabel.text = @"在Facebook访问我们";
+        _visitUsOnFacebookCell.textLabel.text = KLabelCellVisitUsOnFacebook;
 		_visitUsOnFacebookCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         _visitUsOnFacebookCell.imageView.image = [UIImage imageNamed:@"facebook-Icon-Small.png"];
     }
@@ -130,7 +130,7 @@
     if (_shareAppCell == nil) {
         _shareAppCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"shareAppCell"];
         
-        _shareAppCell.textLabel.text = @"告诉朋友";
+        _shareAppCell.textLabel.text = KLabelCellShareApp;
 		_shareAppCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         _shareAppCell.imageView.image = [UIImage imageNamed:@"tellFriends-Icon-Small.png"];
     }
@@ -152,7 +152,7 @@
     if (_hasACoolIdeaCell == nil) {
         _hasACoolIdeaCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"hasACoolIdeaCell"];
         
-        _hasACoolIdeaCell.textLabel.text = @"Have a cool ideal";
+        _hasACoolIdeaCell.textLabel.text = KLabelCellHasACoolIdea;
 		_hasACoolIdeaCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         _hasACoolIdeaCell.imageView.image = [UIImage imageNamed:@"hasACoolIdea-Icon-Small.png"];
     }
@@ -163,7 +163,7 @@
     if (_sayHiCell == nil) {
         _sayHiCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"sayHiCell"];
         
-        _sayHiCell.textLabel.text = @"Just want to say Hi";
+        _sayHiCell.textLabel.text = KLabelCellSayHi;
 		_sayHiCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         _sayHiCell.imageView.image = [UIImage imageNamed:@"email-Icon-Small.png"];
     }
@@ -174,7 +174,7 @@
     if (_settingCell == nil) {
         _settingCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"settingCell"];
         
-        _settingCell.textLabel.text = @"设置";
+        _settingCell.textLabel.text = KLabelCellSetting;
 		_settingCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         _settingCell.imageView.image = [UIImage imageNamed:@"setting-Icon-Small.png"];
     }
@@ -356,7 +356,7 @@
     
     //标题等
     [picker setToRecipients:[NSArray arrayWithObject:@"iAlarmABC@gmail.com"]];
-	[picker setSubject:@"发现了一个bug"];
+	[picker setSubject:KLabelCellFoundABug];
     
     //内容
     NSString *deviceInfo=[[[NSString alloc]
@@ -389,7 +389,7 @@
 	picker.mailComposeDelegate = self;
 
     [picker setToRecipients:[NSArray arrayWithObject:@"iAlarmABC@gmail.com"]];
-	[picker setSubject:@"我有一个好点子"];
+	[picker setSubject:KLabelCellHasACoolIdea];
     
     if ([self.navigationController respondsToSelector:@selector(presentViewController:animated:completion:)]) 
         [self.navigationController presentViewController:picker animated:YES completion:NO];
@@ -426,8 +426,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"About";
-     self.navigationItem.leftBarButtonItem = self.cancelButtonItem;
+    self.title = KViewTitleAbout;
+    self.navigationItem.leftBarButtonItem = self.cancelButtonItem;
     
     
     ///评分
@@ -469,6 +469,16 @@
                        ,copyright
                        ,nil] retain];
     
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.title = KViewTitleAbout; 
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+	[super viewWillDisappear:animated];
+    self.title = nil;
 }
 
 #pragma mark - Table view data source

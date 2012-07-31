@@ -15,7 +15,7 @@
 #import "YCBarButtonItem.h"
 #import "YCFacebookPeoplePickerNavigationController.h"
 #import "LocalizedString.h"
-#import "LocalizedStringAbout.h"
+#import "LocalizedStringShareApp.h"
 #import "YCFacebookPeople.h"
 #import "YCFacebookGlobalData.h"
 #import "YCMaskView.h"

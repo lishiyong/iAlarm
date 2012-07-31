@@ -1071,8 +1071,8 @@
 	[self stopLocationAndReverseRestart:NO];
     
     //
-    //self.title = nil;
-    [self performSelector:@selector(setTitle:) withObject:nil afterDelay:0.2];
+    self.title = nil;
+    //[self performSelector:@selector(setTitle:) withObject:nil afterDelay:0.2];
 }
 
 

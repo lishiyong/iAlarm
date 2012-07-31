@@ -11,7 +11,7 @@
 #import "NSObject+YC.h"
 #import "YCBarButtonItem.h"
 #import "YCShareContent.h"
-#import "LocalizedStringAbout.h"
+#import "LocalizedStringShareApp.h"
 #import "SA_OAuthTwitterEngine.h"
 #import "YCTwitterTweetViewController.h"
 

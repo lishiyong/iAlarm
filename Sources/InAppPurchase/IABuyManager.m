@@ -6,7 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "LocalizedStringAbout.h"
+#import "LocalizedStringShareApp.h"
 #import "YCMaskView.h"
 #import "YCSystemStatus.h"
 #import "YCParam.h"

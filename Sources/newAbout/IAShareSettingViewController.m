@@ -226,7 +226,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"共享设置";
+    self.title = KViewTitleSetting;
     
     //
     NSArray *shareSettingSection = nil;

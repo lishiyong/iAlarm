@@ -12,7 +12,7 @@
 #import "YCFacebookGlobalData.h"
 #import "YCMaskView.h"
 #import "YCFacebookPeople.h"
-#import "LocalizedStringAbout.h"
+#import "LocalizedStringShareApp.h"
 #import "CheckPeopleCell.h"
 #import "YCFacebookPeoplePickerNavigationController.h"
 
