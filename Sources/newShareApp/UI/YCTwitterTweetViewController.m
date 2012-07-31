@@ -176,7 +176,7 @@
     //文本
     NSMutableString *text = [NSMutableString string];
     if (shareContent.message) 
-        [text appendString:shareContent.message];
+        [text appendString:shareContent.message1];
     
     if (shareContent.link1) 
         [text appendString:shareContent.link1];

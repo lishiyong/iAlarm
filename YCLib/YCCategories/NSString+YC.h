@@ -17,4 +17,16 @@
 -(NSString*)nameInFullFileName;
 -(NSString*)typeInFullFileName;
 
+/*
+ *🔔
+ */
++ (NSString*)stringEmojiBell;
+
+/*
+ *🕘
+ */
++ (NSString*)stringEmojiClockFaceNine;
+
+
+
 @end

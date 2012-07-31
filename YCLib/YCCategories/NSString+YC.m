@@ -41,5 +41,29 @@
 	return type;
 }
 
+/*
+ *🔔
+ */
++ (NSString*)stringEmojiBell{
+    NSString *string = nil;
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) 
+        string = @"\U0001F514";
+    else 
+        string = @"\ue325";
+    return string;
+}
+
+/*
+ *🕘
+ */
++ (NSString*)stringEmojiClockFaceNine{
+    NSString *string = nil;
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) 
+        string = @"\U0001F558";
+    else 
+        string = @"\ue02c";
+    return string;
+}
+
 
 @end

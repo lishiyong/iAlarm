@@ -37,6 +37,9 @@ typedef NSUInteger IAUserLocationType;
 - (id)initWithAlarm:(IAAlarm*)theAlarm userLocationType:(IAUserLocationType)userLocationType;
 - (id)initWithAlarm:(IAAlarm*)theAlarm currentLocation:(CLLocation*)currentLocation;
 
-
+/*
+ *符合触发条件：到达时候提醒，在区域外；离开时候提醒，在区域内。
+ */
+- (BOOL)isMonitoring;
 
 @end

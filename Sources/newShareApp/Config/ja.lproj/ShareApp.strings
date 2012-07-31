@@ -91,10 +91,11 @@
 "KShareContentTextGetTheApp" = "Download the App";
 
 /* 共享内容Get the app */
-"KShareContentTwitterMessage" = "バスの中でゲームに夢中になったり、居眠りをしていてバス停を乗り過ごしそうになったことがありませんか?大丈夫、この App\"位置アラーム\"を使ってみてください。その特有の位置計測アラーム機能は、あなたが絶対に必要としていたものです。";
+"KShareContentTwitterMessage" = "とても役に立つ iPhone App 位置アラームを推薦します。";
 
 /* 共享内容Get the app */
-"KShareContentMailMessage"    = "バスの中でゲームに夢中になったり、居眠りをしていてバス停を乗り過ごしそうになったことがありませんか?大丈夫、この iPhone App\"位置アラーム\"を使ってみてください。その特有の位置計測アラーム機能は、あなたが絶対に必要としていたものです。";
+"KShareContentMailMessage"    = "とても役に立つ iPhone App 位置アラームを推薦します。";
 
 /* 共享内容Get the app */
 "KShareContentMailTitle" = "とても役に立つ iPhone App 位置アラームを推薦します";
+

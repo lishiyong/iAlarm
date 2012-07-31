@@ -58,6 +58,18 @@
 
 }
 
+- (BOOL)isMonitoring{
+    if ([self.alarm.positionType.positionTypeId isEqualToString:@"p002"]) {
+        if (IAUserLocationTypeOuter == self.userLocationType) 
+            return YES;
+    }else {
+        if (IAUserLocationTypeInner == self.userLocationType) 
+            return YES;
+    }
+    
+    return NO;
+}
+
 - (id)initWithAlarm:(IAAlarm*)theAlarm{
     self = [super init];
     if (self) {

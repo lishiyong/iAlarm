@@ -5,6 +5,7 @@
 //  Created by li shiyong on 11-1-9.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 
+#import "IARegion.h"
 #import "YCSystemStatus.h"
 #import "YCLib.h"
 #import "IAPerson.h"
@@ -64,6 +65,9 @@
      iconString = @"\ue02c";
      */
     
+
+    
+    
     //可用状态时候就更新距离
     _subTitleIsDistanceString = self.alarm.enabled;
     
@@ -81,6 +85,20 @@
         theDetail = _distanceString;
     else 
         theDetail = self.alarm.position;
+    
+    if (self.alarm.enabled){
+        NSString *iconString = nil;
+        if (self.alarm.shouldWorking ) {
+            IARegion *region = [[IARegionsCenter sharedRegionCenter].regions objectForKey:self.alarm.alarmId];
+            if (region.isMonitoring) 
+                iconString = [NSString stringEmojiBell];
+        }else {
+            if (self.alarm.usedAlarmSchedule) 
+                iconString = [NSString stringEmojiClockFaceNine];
+        }
+        if (iconString) 
+            theDetail = [NSString stringWithFormat:@"%@ %@",iconString,theDetail];
+    }
     
     
     alarmTitleLabel.text = theTitle;
@@ -187,12 +205,29 @@
     if (_subTitleIsDistanceString) {
         [UIView transitionWithView:self.alarmDetailLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^()
          {
+             /*
+             NSString *detailLabelText = nil;
              if (_distanceString) {
-                 if (![self.alarmDetailLabel.text isEqualToString:_distanceString])
-                     self.alarmDetailLabel.text = _distanceString;
+                 detailLabelText = _distanceString;
              }else{
-                 self.alarmDetailLabel.text = self.alarm.position;
+                 detailLabelText = self.alarm.position;
              }
+             
+             if (self.alarm.enabled && self.alarm.usedAlarmSchedule && !self.alarm.shouldWorking){
+                 NSString *iconString = nil;//这是钟表🕘
+                 if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) 
+                     iconString = @"\U0001F558";
+                 else 
+                     iconString = @"\ue02c";
+                 
+                 detailLabelText = [NSString stringWithFormat:@"%@ %@",iconString,detailLabelText];
+             }
+             
+             if (![self.alarmDetailLabel.text isEqualToString:detailLabelText])
+                 self.alarmDetailLabel.text = detailLabelText;
+              */
+             [self updateCell];
+             
              
          } completion:NULL];         
     }

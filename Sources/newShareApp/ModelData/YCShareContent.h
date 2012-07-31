@@ -12,6 +12,7 @@
 @interface YCShareContent : NSObject {
     
     NSString *message;
+    NSString *message1;
     NSString *title;
     UIImage  *image1;
     UIImage  *image2;
@@ -30,6 +31,7 @@
  */
 
 @property(nonatomic, copy) NSString *message;
+@property(nonatomic, copy) NSString *message1;
 @property(nonatomic, copy) NSString *title;
 @property(nonatomic, retain) UIImage *image1;
 @property(nonatomic, retain) UIImage *image2;

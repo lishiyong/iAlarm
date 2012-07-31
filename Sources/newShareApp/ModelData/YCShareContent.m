@@ -13,6 +13,7 @@
 @implementation YCShareContent
 
 @synthesize message;
+@synthesize message1;
 @synthesize title;
 @synthesize image1;
 @synthesize image2;
@@ -24,6 +25,7 @@
 
 - (void)dealloc {
 	[message release];
+    [message1 release];
 	[title release];
 	[image1 release];
 	[image2 release];

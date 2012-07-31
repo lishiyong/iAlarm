@@ -193,10 +193,12 @@
     NSString *message = self.textView.text;
     message = message ? message : @"";
     UIImage *picture = shareContent.image1;
-    
+    if (picture == nil)
+        picture = [UIImage imageNamed:@"icon-FullVersion@2x.png"]; //加载114
+
+        
     [publishParam setObject:message forKey:@"message"];
-    if (picture) 
-        [publishParam setObject:picture forKey:@"picture"];
+    [publishParam setObject:picture forKey:@"picture"];
     
 	return publishParam;
 }
@@ -242,9 +244,6 @@
 			[messageDelegate messageComposeYCViewController:self didFinishWithResult:YES];
 		}
 	}
-
-
-	
 }
 
 -(IBAction)doneButtonItemPressed:(id)sender{
@@ -445,7 +444,7 @@
 }
 
 - (void)request:(FBRequest *)request didLoad:(id)result {
-	
+    	
 	if (![result isKindOfClass:[NSDictionary class]]) 
 		return;
 	
@@ -492,7 +491,7 @@
 	[self.maskView setHidden:YES];
     
 	
-	//NSLog(@"fb didFailWithError %@",error);
+	NSLog(@"fb didFailWithError %@",error);
 	
 	//发布失败
 	if (self.publishParam == request.params) {//是发布到墙上的情况
@@ -502,8 +501,6 @@
 			[messageDelegate messageComposeYCViewController:self didFinishWithResult:NO];
 		}
 	}
-	 
-
 }
 
 #pragma mark -

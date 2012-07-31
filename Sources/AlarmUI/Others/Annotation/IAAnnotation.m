@@ -6,6 +6,8 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "IARegion.h"
+#import "IARegionsCenter.h"
 #import "YCLib.h"
 #import "YCSystemStatus.h"
 #import "IANotifications.h"
@@ -136,6 +138,19 @@
 }
 
 - (void)setAnnotationStatus:(IAAnnotationStatus)annotationStatus{
+    
+    NSString *iconString = nil;
+    if (self.alarm.enabled){
+        if (self.alarm.shouldWorking ) {
+            IARegion *region = [[IARegionsCenter sharedRegionCenter].regions objectForKey:self.alarm.alarmId];
+            if (region.isMonitoring) 
+                iconString = [NSString stringEmojiBell];
+        }else {
+            if (self.alarm.usedAlarmSchedule) 
+                iconString = [NSString stringEmojiClockFaceNine];
+        }
+    }
+    
     //NSLog(@"annotationStatus = %d",annotationStatus);
     _annotationStatus = annotationStatus;
     switch (_annotationStatus) {
@@ -143,6 +158,7 @@
         {//正常状态 titel：名称，subtitle：距离
             self.title = self.alarm.title;
             
+            /*
             if (_distanceString) {
                 if (![self.subtitle isEqualToString:_distanceString]){
                     self.subtitle = nil;
@@ -150,6 +166,26 @@
                 }
             }else{
                 self.subtitle = nil;
+            }
+            _subTitleIsDistanceString = YES;
+             */
+            
+            NSString *subtitle = nil;
+            if (_distanceString) {
+                subtitle = _distanceString;
+            }else{
+                subtitle = self.alarm.position;
+            }
+            
+            if (iconString != nil) {
+                subtitle = (subtitle != nil) ? subtitle : @"";
+                subtitle = [NSString stringWithFormat:@"%@%@",iconString,subtitle];
+            }
+            
+            
+            if (![self.subtitle isEqualToString:subtitle]){
+                self.subtitle = nil;
+                self.subtitle = subtitle;
             }
             _subTitleIsDistanceString = YES;
             
@@ -161,6 +197,10 @@
             [self performSelector:@selector(setTitle:) withObject:self.alarm.title afterDelay:0.35];
             
             NSString *postion = self.alarm.position;
+            if (iconString != nil) {
+                postion = (postion != nil) ? postion : @"";
+                postion = [NSString stringWithFormat:@"%@%@",iconString,postion];
+            }
             if (postion) {
                 if (![self.subtitle isEqualToString:postion]){
                     self.subtitle = nil;

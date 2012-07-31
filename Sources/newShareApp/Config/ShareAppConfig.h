@@ -14,4 +14,4 @@ static NSString *kAppStoreAppID = @"468639288"; //Full
 #endif
 
 //启动程序多少次，才有rate
-#define kLetOneVisibleBecomeActiveNumber 4
+#define kLetOneVisibleBecomeActiveNumber 3

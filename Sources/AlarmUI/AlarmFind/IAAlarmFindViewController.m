@@ -121,7 +121,10 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
     NSString *title = viewedAlarmNotification.alarm.title;
     NSString *message = viewedAlarmNotification.alarm.title;
     UIImage *image = [self takePhotoFromTheMapView];
-    [engine shareAppWithContent:[YCShareContent shareContentWithTitle:title message:message image:image]];
+    
+    YCShareContent *shareContent = [YCShareContent shareContentWithTitle:title message:message image:image];
+    shareContent.message1 = viewedAlarmNotification.alarm.title;
+    [engine shareAppWithContent:shareContent];
 }
 
 - (IBAction)delayAlarm1ButtonPressed:(id)sender{

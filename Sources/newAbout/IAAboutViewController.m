@@ -21,6 +21,7 @@
 #import "NSString+YC.h"
 #import "TableViewCellDescription.h"
 #import "LocalizedStringAbout.h"
+#import "LocalizedStringShareApp.h"
 #import "IAAboutViewController.h"
 #import <Accounts/Accounts.h>
 #import <Twitter/Twitter.h>
@@ -339,13 +340,15 @@
 }
 
 - (void)didSelectShareAppCell:(id)sender{
-    NSString *title = @"There is cool app!";
-    NSString *message = @"I found a cool app ,tell you!";
-    NSString *link = @"http://111.com";
+    NSString *title = KShareContentMailTitle;
+    NSString *message = KShareContentMailMessage;
+    NSString *messageTw = KShareContentTwitterMessage;
+    NSString *link = KLinkCustomAppStore;
     UIImage *image = nil;
     
     YCShareContent *shareContent = [YCShareContent shareContentWithTitle:title message:message image:image];
     shareContent.link1 = link;
+    shareContent.message1 = messageTw;
     
     [self.shareAppEngine shareAppWithContent:shareContent];
 }

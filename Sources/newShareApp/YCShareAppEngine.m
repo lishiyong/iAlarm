@@ -218,7 +218,7 @@ static NSString* kFacebookAppId = @"146975985381829";
             
             TWTweetComposeViewController *tweetViewController = [[[TWTweetComposeViewController alloc] init] autorelease];
             
-            [tweetViewController setInitialText:shareContent.message];
+            [tweetViewController setInitialText:shareContent.message1];
             if (shareContent.image1) 
                 [tweetViewController addImage:shareContent.image1];
             if (shareContent.link1) 

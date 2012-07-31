@@ -19,9 +19,10 @@
         self.year = anotherDateComponents.year;
     }
     
-    if (NSUndefinedDateComponent != anotherDateComponents.yearForWeekOfYear) {
-        self.yearForWeekOfYear = anotherDateComponents.yearForWeekOfYear;
-    }
+    if ([anotherDateComponents respondsToSelector:@selector(yearForWeekOfYear)]) 
+        if (NSUndefinedDateComponent != anotherDateComponents.yearForWeekOfYear) {
+            self.yearForWeekOfYear = anotherDateComponents.yearForWeekOfYear;
+        }
     
     if (NSUndefinedDateComponent != anotherDateComponents.quarter) {
         self.quarter = anotherDateComponents.quarter;
@@ -43,13 +44,15 @@
         self.weekdayOrdinal = anotherDateComponents.weekdayOrdinal;
     }
     
-    if (NSUndefinedDateComponent != anotherDateComponents.weekOfMonth) {
-        self.weekOfMonth = anotherDateComponents.weekOfMonth;
-    }
+    if ([anotherDateComponents respondsToSelector:@selector(weekOfMonth)]) 
+        if (NSUndefinedDateComponent != anotherDateComponents.weekOfMonth) {
+            self.weekOfMonth = anotherDateComponents.weekOfMonth;
+        }
     
-    if (NSUndefinedDateComponent != anotherDateComponents.weekOfYear) {
-        self.weekOfYear = anotherDateComponents.weekOfYear;
-    }
+    if ([anotherDateComponents respondsToSelector:@selector(weekOfYear)])
+        if (NSUndefinedDateComponent != anotherDateComponents.weekOfYear) {
+            self.weekOfYear = anotherDateComponents.weekOfYear;
+        }
     
     if (NSUndefinedDateComponent != anotherDateComponents.day) {
         self.day = anotherDateComponents.day;
