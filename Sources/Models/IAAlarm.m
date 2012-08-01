@@ -701,6 +701,22 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
     }
 }
 
+- (CLLocationDistance)distanceFromLocation:(CLLocation*)location{
+    if (nil == location || !CLLocationCoordinate2DIsValid(self.realCoordinate) ){
+        return -1;
+    }else {
+        return [location distanceFromCoordinate:self.realCoordinate];
+    }
+}
+
+- (NSString*)distanceLocalStringFromLocation:(CLLocation*)location{
+    if ([self distanceFromLocation:location] == -1) {
+        return nil;
+    }else {
+        return [location distanceStringFromCoordinate:self.realCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
+    }
+}
+
 - (NSString *)description{
     return self.alarmName ? self.alarmName : self.positionTitle;
 }

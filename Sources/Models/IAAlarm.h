@@ -147,6 +147,13 @@ extern NSString *IAAlarmsDataListDidChangeNotification;
  */
 - (BOOL)shouldWorking;
 
+/*
+ * if location == nil or self.realCoordinate == kCLLocationCoordinate2DInvalid
+ *  then distanceFromCurrentLocation = -1, distanceFromCurrentLocationLocalString = nil
+ */
+- (CLLocationDistance)distanceFromLocation:(CLLocation*)location;
+- (NSString*)distanceLocalStringFromLocation:(CLLocation*)location;
+
 
 @end
 

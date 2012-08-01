@@ -16,6 +16,11 @@
     _flagColor = flagColor;
     UIImage *flagImage = nil;
     switch (_flagColor) {
+        case IAFlagAnnotationColorChecker:
+            flagImage = [UIImage imageNamed:@"checkerFlag.png"];
+            [self setCenterOffset:(CGPoint){13,-15}];
+            [self setCalloutOffset:(CGPoint){-7,-3}];
+            break;
         case IAFlagAnnotationColorBlueDeep:
             flagImage = [UIImage imageNamed:@"Shadow_IAFlagBlueDeep.png"];
             break;

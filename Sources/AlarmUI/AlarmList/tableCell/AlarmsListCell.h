@@ -11,8 +11,6 @@
 
 @class IAAlarm;
 @interface AlarmsListCell : UITableViewCell {
-	CLLocationDistance _distanceFromCurrentLocation;
-    NSString  *_distanceString;
     BOOL _subTitleIsDistanceString;
 }
 

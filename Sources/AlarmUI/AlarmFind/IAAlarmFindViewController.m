@@ -29,7 +29,6 @@
 NSString* YCTimeIntervalStringSinceNow(NSDate *date);
 
 NSString* YCTimeIntervalStringSinceNow(NSDate *date){    
-    
     NSString *returnString = nil;
     
     NSTimeInterval interval= fabs([date timeIntervalSinceNow]) ;
@@ -292,6 +291,18 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
 
 - (void)setDistanceLabelWithCurrentLocation:(CLLocation*)curLocation{ 
     
+    NSString *distanceString = [viewedAlarmNotification.alarm distanceLocalStringFromLocation:curLocation];
+    if (distanceString) {
+        if (![self.titleLabel.text isEqualToString:distanceString]){
+            
+            [UIView transitionWithView:self.titleLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                self.titleLabel.text = distanceString;
+            } completion:NULL];
+        }
+    }else{
+        self.titleLabel.text = @" . . . ";
+    }
+    /*
     if (curLocation && CLLocationCoordinate2DIsValid(viewedAlarmNotification.alarm.realCoordinate)) {
         
         CLLocationCoordinate2D theRealCoordinate = viewedAlarmNotification.alarm.realCoordinate;        
@@ -307,6 +318,7 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
     }else{
         self.titleLabel.text = @" . . . ";
     }
+     */
     
 }
 
@@ -380,6 +392,7 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
     MKCoordinateRegion newRegion = MKCoordinateRegionMakeWithDistance(newCoord, radius*2.5, radius*2.5);
     MKCoordinateRegion newRegionFited =  [self.mapView regionThatFits:newRegion];
     [self.mapView setRegion:newRegionFited animated:NO];
+    
     
     //圈
     circleOverlay = [[MKCircle circleWithCenterCoordinate:visualCoordinate radius:radius] retain];
@@ -509,7 +522,8 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
         return nil;
 
     NSString *annotationIdentifier = @"PinViewAnnotation";
-    MKPinAnnotationView *pinView = (MKPinAnnotationView *) [mapView dequeueReusableAnnotationViewWithIdentifier:annotationIdentifier];
+    //MKPinAnnotationView *pinView = (MKPinAnnotationView *) [mapView dequeueReusableAnnotationViewWithIdentifier:annotationIdentifier];
+    IAFlagAnnotationView *pinView = (IAFlagAnnotationView *) [mapView dequeueReusableAnnotationViewWithIdentifier:annotationIdentifier];
     
     if (!pinView){
 
@@ -521,12 +535,15 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
         leftView.animationImages = [NSArray arrayWithObjects:ringImage,ringImageClear, nil];
         leftView.animationDuration = 1.75;
         
-        
+        /*
         pinView = [[[MKPinAnnotationView alloc]
                                       initWithAnnotation:theAnnotation
                                          reuseIdentifier:annotationIdentifier] autorelease];
+         */
+        pinView = [[IAFlagAnnotationView alloc] initWithAnnotation:theAnnotation reuseIdentifier:annotationIdentifier];
+        pinView.flagColor = IAFlagAnnotationColorChecker;
         
-        [pinView setPinColor:MKPinAnnotationColorPurple];
+        //[pinView setPinColor:MKPinAnnotationColorPurple];
         pinView.canShowCallout = YES;
          
         pinView.leftCalloutAccessoryView = leftView;

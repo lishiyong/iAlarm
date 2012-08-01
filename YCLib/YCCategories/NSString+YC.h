@@ -27,6 +27,14 @@
  */
 + (NSString*)stringEmojiClockFaceNine;
 
+/*
+ *⚠
+ */
++ (NSString*)stringEmojiWarningSign;
 
+/*
+ *💤
+ */
++ (NSString*)stringEmojiSleepingSymbol;
 
 @end

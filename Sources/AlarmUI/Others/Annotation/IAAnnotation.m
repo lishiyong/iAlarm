@@ -23,6 +23,7 @@
 - (void)handleStandardLocationDidFinish: (NSNotification*) notification;
 - (void)registerNotifications;
 - (void)unRegisterNotifications;
+- (void)setAnnotationStatus:(IAAnnotationStatus)annotationStatus location:(CLLocation*)location;
 
 @end
 
@@ -31,30 +32,11 @@
 
 
 - (void)handleStandardLocationDidFinish: (NSNotification*) notification{
-    
     CLLocation *curLocation = [[notification userInfo] objectForKey:IAStandardLocationKey];
-    BOOL curLocationAndRealCoordinateIsValid = (curLocation && CLLocationCoordinate2DIsValid(self.realCoordinate));
-
-    //设置与当前位置的距离值
-    if (curLocationAndRealCoordinateIsValid) {        
-        CLLocationDistance distance = [curLocation distanceFromCoordinate:self.realCoordinate];
-        _distanceFromCurrentLocation = distance;
-        
-        NSString *distanceString = [curLocation distanceStringFromCoordinate:self.realCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
-        [_distanceString release];
-        _distanceString = [distanceString retain];
-        
-    }else{
-        _distanceFromCurrentLocation = -1;
-        [_distanceString release];
-        _distanceString = nil;
-    }
-    
     //设置与当前位置的subtitle的字符串
     if (_subTitleIsDistanceString) {
-        [self setAnnotationStatus:_annotationStatus];
+        [self setAnnotationStatus:_annotationStatus location:curLocation];
     }
-    
 }
 
 - (void)handleApplicationDidBecomeActive: (NSNotification*) notification{
@@ -117,15 +99,6 @@
     if (self) {
         _alarm = [anAlarm retain];
         _realCoordinate = _alarm.realCoordinate;
-                
-        CLLocation *curLocation = [YCSystemStatus sharedSystemStatus].lastLocation;
-        BOOL curLocationAndRealCoordinateIsValid = (curLocation && CLLocationCoordinate2DIsValid(self.realCoordinate));
-        if (curLocationAndRealCoordinateIsValid) {
-            _distanceString = [curLocation distanceStringFromCoordinate:self.realCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
-            [_distanceString retain];
-        }else{
-            _distanceString = nil;
-        }
         
         self.annotationStatus = _alarm.enabled ? IAAnnotationStatusNormal:IAAnnotationStatusDisabledNormal;
         [self registerNotifications];
@@ -138,16 +111,28 @@
 }
 
 - (void)setAnnotationStatus:(IAAnnotationStatus)annotationStatus{
+    [self setAnnotationStatus:annotationStatus location:[YCSystemStatus sharedSystemStatus].lastLocation];
+}
+- (void)setAnnotationStatus:(IAAnnotationStatus)annotationStatus location:(CLLocation*)location{
+
+    NSString *distanceString = [self.alarm distanceLocalStringFromLocation:location];
     
     NSString *iconString = nil;
     if (self.alarm.enabled){
-        if (self.alarm.shouldWorking ) {
+        if (self.alarm.shouldWorking) {
             IARegion *region = [[IARegionsCenter sharedRegionCenter].regions objectForKey:self.alarm.alarmId];
-            if (region.isMonitoring) 
-                iconString = [NSString stringEmojiBell];
+            if (location != nil) {
+                if (region.isMonitoring) 
+                    iconString = [NSString stringEmojiBell]; //启动了。🔔
+                else 
+                    iconString = [NSString stringEmojiSleepingSymbol]; //启动了，但是下次进入才会提醒。💤！
+            }else{
+                 iconString = [NSString stringEmojiWarningSign]; //无定位数据，。警告图标！⚠
+            }
+            
         }else {
             if (self.alarm.usedAlarmSchedule) 
-                iconString = [NSString stringEmojiClockFaceNine];
+                iconString = [NSString stringEmojiClockFaceNine]; //等待定时通知🕘
         }
     }
     
@@ -158,21 +143,9 @@
         {//正常状态 titel：名称，subtitle：距离
             self.title = self.alarm.title;
             
-            /*
-            if (_distanceString) {
-                if (![self.subtitle isEqualToString:_distanceString]){
-                    self.subtitle = nil;
-                    self.subtitle = _distanceString;
-                }
-            }else{
-                self.subtitle = nil;
-            }
-            _subTitleIsDistanceString = YES;
-             */
-            
             NSString *subtitle = nil;
-            if (_distanceString) {
-                subtitle = _distanceString;
+            if (distanceString) {
+                subtitle = distanceString;
             }else{
                 subtitle = self.alarm.position;
             }
@@ -257,10 +230,10 @@
                 _subTitleIsDistanceString = NO;
             }else{
                 
-                if (_distanceString) {
-                    if (![self.subtitle isEqualToString:_distanceString]){
+                if (distanceString) {
+                    if (![self.subtitle isEqualToString:distanceString]){
                         self.subtitle = nil;
-                        self.subtitle = _distanceString;
+                        self.subtitle = distanceString;
                     }
                 }else{
                     self.subtitle = nil;

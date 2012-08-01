@@ -65,5 +65,26 @@
     return string;
 }
 
+/*
+ *⚠
+ */
++ (NSString*)stringEmojiWarningSign{
+    NSString *string = nil;
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) 
+        string = @"\u26A0";
+    else 
+        string = @"\ue252";
+    return string;
+}
+
++ (NSString*)stringEmojiSleepingSymbol{
+    NSString *string = nil;
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) 
+        string = @"\U0001F4A4";
+    else 
+        string = @"\ue13c";
+    return string;
+}
+
 
 @end

@@ -23,6 +23,7 @@
 - (void)handleStandardLocationDidFinish: (NSNotification*) notification;
 - (void)registerNotifications;
 - (void)unRegisterNotifications;
+- (void)updateCellWithLocation:(CLLocation*)location;
 
 @end
 
@@ -35,41 +36,15 @@
     [alarm retain];
     [_alarm release];
     _alarm = alarm;
-    
-    _distanceFromCurrentLocation = -1;//未设置过的标识
-
-    CLLocation *curLocation = [YCSystemStatus sharedSystemStatus].lastLocation;
-    BOOL curLocationAndRealCoordinateIsValid = (curLocation && CLLocationCoordinate2DIsValid(self.alarm.realCoordinate));
-    if (curLocationAndRealCoordinateIsValid) {
-        _distanceString = [curLocation distanceStringFromCoordinate:self.alarm.realCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
-        [_distanceString retain];
-    }else{
-        _distanceString = nil;
-    }
 }
 
 - (void)updateCell{
-    /*
-    if (self.alarm.usedAlarmCalendar && self.alarm.enabled) {
-        self.clockImageView.hidden = NO;
-        self.flagImageView.hidden = YES;
-    }else {
-        self.clockImageView.hidden = YES;
-        self.flagImageView.hidden = NO;
-    }
-     
-     NSString *iconString = nil;//这是钟表🕘
-     if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) 
-     iconString = @"\U0001F558";
-     else 
-     iconString = @"\ue02c";
-     */
-    
-
-    
-    
     //可用状态时候就更新距离
     _subTitleIsDistanceString = self.alarm.enabled;
+    [self updateCellWithLocation:[YCSystemStatus sharedSystemStatus].lastLocation];
+}
+
+- (void)updateCellWithLocation:(CLLocation*)location{
     
     NSString *theTitle  = self.alarm.alarmName;
     theTitle = theTitle ? theTitle : self.alarm.person.personName;
@@ -80,9 +55,11 @@
     theTitle = theTitle ? theTitle : self.alarm.positionTitle; 
     theTitle = theTitle ? theTitle : KDefaultAlarmName;
     
+    
+    NSString *distanceString = [self.alarm distanceLocalStringFromLocation:location];
     NSString *theDetail = nil;
-    if (self.alarm.enabled &&  _distanceString) 
-        theDetail = _distanceString;
+    if (self.alarm.enabled &&  distanceString) 
+        theDetail = distanceString;
     else 
         theDetail = self.alarm.position;
     
@@ -90,11 +67,17 @@
         NSString *iconString = nil;
         if (self.alarm.shouldWorking ) {
             IARegion *region = [[IARegionsCenter sharedRegionCenter].regions objectForKey:self.alarm.alarmId];
-            if (region.isMonitoring) 
-                iconString = [NSString stringEmojiBell];
+            if (location != nil) {
+                if (region.isMonitoring) 
+                    iconString = [NSString stringEmojiBell]; //启动了。🔔
+                else 
+                    iconString = [NSString stringEmojiSleepingSymbol]; //启动了，但是下次进入才会提醒。💤！
+            }else{
+                iconString = [NSString stringEmojiWarningSign]; //无定位数据，警告图标！⚠
+            }
         }else {
             if (self.alarm.usedAlarmSchedule) 
-                iconString = [NSString stringEmojiClockFaceNine];
+                iconString = [NSString stringEmojiClockFaceNine]; //等待定时通知🕘
         }
         if (iconString) 
             theDetail = [NSString stringWithFormat:@"%@ %@",iconString,theDetail];
@@ -163,9 +146,7 @@
 
 - (void)dealloc {
     NSLog(@"AlarmsListCell dealloc");
-    [self unRegisterNotifications];
-    
-    [_distanceString release];
+    [self unRegisterNotifications];    
 	[_alarm release];
     [alarmTitleLabel release];
     [alarmDetailLabel release];
@@ -184,51 +165,11 @@
     }
     
     CLLocation *curLocation = [[notification userInfo] objectForKey:IAStandardLocationKey];
-    BOOL curLocationAndRealCoordinateIsValid = (curLocation && CLLocationCoordinate2DIsValid(self.alarm.realCoordinate));
-    
-    //设置与当前位置的距离值
-    if (curLocationAndRealCoordinateIsValid) {        
-        CLLocationDistance distance = [curLocation distanceFromCoordinate:self.alarm.realCoordinate];
-        _distanceFromCurrentLocation = distance;
-        
-        NSString *distanceString = [curLocation distanceStringFromCoordinate:self.alarm.realCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
-        [_distanceString release];
-        _distanceString = [distanceString retain];
-        
-    }else{
-        _distanceFromCurrentLocation = -1;
-        [_distanceString release];
-        _distanceString = nil;
-    }
-    
     //设置与当前位置的subtitle的字符串
     if (_subTitleIsDistanceString) {
         [UIView transitionWithView:self.alarmDetailLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^()
          {
-             /*
-             NSString *detailLabelText = nil;
-             if (_distanceString) {
-                 detailLabelText = _distanceString;
-             }else{
-                 detailLabelText = self.alarm.position;
-             }
-             
-             if (self.alarm.enabled && self.alarm.usedAlarmSchedule && !self.alarm.shouldWorking){
-                 NSString *iconString = nil;//这是钟表🕘
-                 if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) 
-                     iconString = @"\U0001F558";
-                 else 
-                     iconString = @"\ue02c";
-                 
-                 detailLabelText = [NSString stringWithFormat:@"%@ %@",iconString,detailLabelText];
-             }
-             
-             if (![self.alarmDetailLabel.text isEqualToString:detailLabelText])
-                 self.alarmDetailLabel.text = detailLabelText;
-              */
-             [self updateCell];
-             
-             
+             [self updateCellWithLocation:curLocation];
          } completion:NULL];         
     }
     

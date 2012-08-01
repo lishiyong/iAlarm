@@ -9,7 +9,8 @@
 #import <MapKit/MapKit.h>
 
 enum {
-    IAFlagAnnotationColorGreen = 0,
+    IAFlagAnnotationColorChecker = 0,
+    IAFlagAnnotationColorGreen,
     IAFlagAnnotationColorOrange,
     IAFlagAnnotationColorBlueDeep,
     IAFlagAnnotationColorPurple

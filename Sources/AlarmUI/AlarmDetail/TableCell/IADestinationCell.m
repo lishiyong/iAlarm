@@ -23,6 +23,7 @@
 - (void)registerNotifications;
 - (void)unRegisterNotifications;
 - (void)setWidthOfAddressLabelAndDistanceLabel;//设置地址label距离label的宽度，根据不同语言“title”的长度
+- (void)setCellStatus:(IADestinationCellStatus)cellStatus location:(CLLocation*)location;
 
 @end
 
@@ -103,8 +104,11 @@
     
 }
 
-
 - (void)setCellStatus:(IADestinationCellStatus)cellStatus{
+    [self setCellStatus:cellStatus location:[YCSystemStatus sharedSystemStatus].lastLocation];
+}
+
+- (void)setCellStatus:(IADestinationCellStatus)cellStatus location:(CLLocation*)location{
     _cellStatus = cellStatus;
     
     //停了再说
@@ -130,17 +134,15 @@
     addressLabelText = [addressLabelText stringByTrim];
     
 	self.addressLabel.text = addressLabelText; //地址
-    
-    CLLocationCoordinate2D realCoordinate = self.alarm.realCoordinate;
-	if (CLLocationCoordinate2DIsValid(realCoordinate) && [YCSystemStatus sharedSystemStatus].lastLocation) {
-        CLLocation *currentLocation = [YCSystemStatus sharedSystemStatus].lastLocation;
-		NSString *distanceString = [currentLocation distanceStringFromCoordinate:realCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
-		self.distanceLabel.text = distanceString; //距离
-	}else {
-		self.distanceLabel.text = nil;
-	}
-    
-    
+    //后设置距离
+    NSString *distanceString = [self.alarm distanceLocalStringFromLocation:location];
+    if(distanceString != nil){
+        self.distanceLabel.text = @" ";
+        [self.distanceLabel performSelector:@selector(setText:) withObject:distanceString afterDelay:0.1];  //距离
+    }else {
+         self.distanceLabel.text = nil;
+    }
+        
     switch (_cellStatus) {
         case IADestinationCellStatusNone:
         {
@@ -257,6 +259,8 @@
     }
     
 
+    
+
 } completion:NULL];
     
 }
@@ -264,24 +268,19 @@
 - (void)handleStandardLocationDidFinish: (NSNotification*) notification{
     
     CLLocation *curLocation = [[notification userInfo] objectForKey:IAStandardLocationKey];
-    BOOL curLocationAndRealCoordinateIsValid = (curLocation && CLLocationCoordinate2DIsValid(self.alarm.realCoordinate));
+    NSString *distanceString = [self.alarm distanceLocalStringFromLocation:curLocation];
     
     //设置与当前位置的距离值
-    if (curLocationAndRealCoordinateIsValid) {        
-        
-        NSString *distanceString = [curLocation distanceStringFromCoordinate:self.alarm.realCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];  
-        
-        if (![self.distanceLabel.text isEqualToString:distanceString]) {
-            self.distanceLabel.text = distanceString;
-            
+    if (curLocation && CLLocationCoordinate2DIsValid(self.alarm.realCoordinate)) {        
+                
+        if (![self.distanceLabel.text isEqualToString:distanceString]) {            
             if (_cellStatus == IADestinationCellStatusNormal 
              || _cellStatus == IADestinationCellStatusNormalWithoutDistance
                 ) { //正常状态才显示距离文本
                 
                 self.cellStatus = IADestinationCellStatusNormalMeasuringDistance;
-                
                 [self performBlock:^{ //让用户看2秒等待圈
-                    self.cellStatus = IADestinationCellStatusNormal;
+                    [self setCellStatus:IADestinationCellStatusNormal location:curLocation];
                 } afterDelay:2.0];
                 
             }

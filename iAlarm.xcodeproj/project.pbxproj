@@ -64,6 +64,10 @@
 		9C0BBC931529CD3D002509F3 /* UIPopoverButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0BBC8C1529CD3D002509F3 /* UIPopoverButtonPressed@2x.png */; };
 		9C0BBC941529CD3D002509F3 /* UIPopoverButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0BBC8D1529CD3D002509F3 /* UIPopoverButtonPressed.png */; };
 		9C0BBC951529CD3D002509F3 /* UIPopoverButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0BBC8D1529CD3D002509F3 /* UIPopoverButtonPressed.png */; };
+		9C0C44C315C8F4A40007C93B /* checkerFlag@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0C44C115C8F4A30007C93B /* checkerFlag@2x.png */; };
+		9C0C44C415C8F4A40007C93B /* checkerFlag@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0C44C115C8F4A30007C93B /* checkerFlag@2x.png */; };
+		9C0C44C515C8F4A40007C93B /* checkerFlag.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0C44C215C8F4A40007C93B /* checkerFlag.png */; };
+		9C0C44C615C8F4A40007C93B /* checkerFlag.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0C44C215C8F4A40007C93B /* checkerFlag.png */; };
 		9C119007138CAEDA0091933E /* iAlarmList_row@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C119006138CAEDA0091933E /* iAlarmList_row@2x.png */; };
 		9C144699153C79090071EFF2 /* NSMutableURLRequest+Parameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C144671153C79090071EFF2 /* NSMutableURLRequest+Parameters.m */; };
 		9C14469A153C79090071EFF2 /* NSMutableURLRequest+Parameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C144671153C79090071EFF2 /* NSMutableURLRequest+Parameters.m */; };
@@ -1363,6 +1367,8 @@
 		9C0BBC8B1529CD3D002509F3 /* UIPopoverButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIPopoverButton.png; sourceTree = "<group>"; };
 		9C0BBC8C1529CD3D002509F3 /* UIPopoverButtonPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIPopoverButtonPressed@2x.png"; sourceTree = "<group>"; };
 		9C0BBC8D1529CD3D002509F3 /* UIPopoverButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIPopoverButtonPressed.png; sourceTree = "<group>"; };
+		9C0C44C115C8F4A30007C93B /* checkerFlag@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkerFlag@2x.png"; sourceTree = "<group>"; };
+		9C0C44C215C8F4A40007C93B /* checkerFlag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkerFlag.png; sourceTree = "<group>"; };
 		9C119006138CAEDA0091933E /* iAlarmList_row@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iAlarmList_row@2x.png"; sourceTree = "<group>"; };
 		9C144670153C79090071EFF2 /* NSMutableURLRequest+Parameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+Parameters.h"; sourceTree = "<group>"; };
 		9C144671153C79090071EFF2 /* NSMutableURLRequest+Parameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+Parameters.m"; sourceTree = "<group>"; };
@@ -4152,6 +4158,8 @@
 				9CF1667C15693B4000281A33 /* flag20 */,
 				9CF1669D15693B4000281A33 /* IAMapPinGray.png */,
 				9C22557B15A72C4C0022A724 /* IAMapPinGray@2x.png */,
+				9C0C44C115C8F4A30007C93B /* checkerFlag@2x.png */,
+				9C0C44C215C8F4A40007C93B /* checkerFlag.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -4720,6 +4728,8 @@
 				9C73AA8115C623FD000C2F3A /* ShareApp.strings in Resources */,
 				9C73AA8B15C624B7000C2F3A /* About.strings in Resources */,
 				9C03969015C6676500C8C2EE /* Localizable.strings in Resources */,
+				9C0C44C315C8F4A40007C93B /* checkerFlag@2x.png in Resources */,
+				9C0C44C515C8F4A40007C93B /* checkerFlag.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5130,6 +5140,8 @@
 				9C73AA8215C623FD000C2F3A /* ShareApp.strings in Resources */,
 				9C73AA8C15C624B7000C2F3A /* About.strings in Resources */,
 				9C4290A215C66793003830FF /* Localizable.strings in Resources */,
+				9C0C44C415C8F4A40007C93B /* checkerFlag@2x.png in Resources */,
+				9C0C44C615C8F4A40007C93B /* checkerFlag.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
