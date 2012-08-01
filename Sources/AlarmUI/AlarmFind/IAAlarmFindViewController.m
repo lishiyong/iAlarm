@@ -28,7 +28,9 @@
 
 NSString* YCTimeIntervalStringSinceNow(NSDate *date);
 
-NSString* YCTimeIntervalStringSinceNow(NSDate *date){    
+NSString* YCTimeIntervalStringSinceNow(NSDate *date){ 
+    
+    /*
     NSString *returnString = nil;
     
     NSTimeInterval interval= fabs([date timeIntervalSinceNow]) ;
@@ -56,6 +58,26 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
         
         returnString=[NSString stringWithFormat:@"%d年前", (NSInteger)(interval/(60*60*24*30*12))];
     }
+    
+    return returnString;
+     */
+    
+    NSDate *now = [NSDate date];
+    NSCalendar *currentCalendar = [NSCalendar currentCalendar];
+    NSUInteger units = NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit;
+    NSDateComponents *comps = [currentCalendar components: units fromDate:date toDate:now options:0];
+    
+    NSString *returnString = nil;
+    if (comps.day > 0) {
+       returnString = [NSString stringWithFormat:KTitleTimeIntervalXDAgo, comps.day];
+    }else if (comps.hour > 0) {
+        returnString = [NSString stringWithFormat:KTitleTimeIntervalXHAgo, comps.hour];
+    }else if (comps.minute > 0) {
+        returnString = [NSString stringWithFormat:KTitleTimeIntervalXMAgo, comps.minute];
+    }else  {
+        returnString = KTitleTimeIntervalNow;
+    }
+    
     
     return returnString;
 }

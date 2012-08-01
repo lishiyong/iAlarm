@@ -3986,9 +3986,9 @@
 				9CFD5D50131DF41700C01B38 /* IARegion.h */,
 				9CFD5D51131DF41700C01B38 /* IARegion.m */,
 				9CE8950212FFFFD2008FBD45 /* IARegionsCenter.h */,
+				9CE8950312FFFFD2008FBD45 /* IARegionsCenter.m */,
 				9C5FD3A315C3757D00143523 /* IARegionsCenter+Debug.h */,
 				9C5FD3A415C3757D00143523 /* IARegionsCenter+Debug.m */,
-				9CE8950312FFFFD2008FBD45 /* IARegionsCenter.m */,
 				9C01AC2115BBE67B00A2ADE0 /* IALocationManager.h */,
 				9C01AC2215BBE67B00A2ADE0 /* IALocationManager.m */,
 			);

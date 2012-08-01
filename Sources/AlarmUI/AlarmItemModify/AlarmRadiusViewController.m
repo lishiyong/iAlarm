@@ -8,7 +8,7 @@
 
 #import "YCLocationManager.h"
 #import "IAGlobal.h"
-#import "IAAnnotation.h"
+#import "YCMapPointAnnotation.h"
 #import "YCLocation.h"
 #import "CustomPickerController.h"
 #import "UIUtility.h"
@@ -331,7 +331,7 @@
     [super viewDidLoad];
 	self.mapView.delegate = self;
 	self.title = KViewTitleAlarmRadius;
-    middlePointAnnotion = [[IAAnnotation alloc] initWithAlarm:self.alarm];
+    middlePointAnnotion = [[YCMapPointAnnotation alloc] initWithCoordinate:kCLLocationCoordinate2DInvalid title:nil subTitle:nil];
     
 	[self registerNotifications];
 
@@ -552,7 +552,7 @@
 	
 	static NSString* pinViewAnnotationIdentifier = nil;
 	
-	if ([annotation isKindOfClass:[IAAnnotation class]]) {
+	if (middlePointAnnotion == annotation) {
 		pinViewAnnotationIdentifier = @"edgeViewAnnotationIdentifier";
 		MKAnnotationView* middlePointView = (MKPinAnnotationView *)
 		[theMapView dequeueReusableAnnotationViewWithIdentifier:pinViewAnnotationIdentifier];
@@ -576,7 +576,7 @@
 		
 		//标签，例如：3.0kms
 		CLLocationDistance radius = [self alarmRadiusValue];
-		((IAAnnotation*)annotation).title =  [UIUtility convertDistance:radius];
+		middlePointAnnotion.title =  [UIUtility convertDistance:radius];
 		
 		return middlePointView;
 	}else {
@@ -638,7 +638,7 @@
 - (void)mapView:(MKMapView *)theMapView didAddAnnotationViews:(NSArray *)views{
 	for (id oneObj in views) {
 		id annotation = ((MKAnnotationView*)oneObj).annotation;
-		if ([ annotation isKindOfClass:[IAAnnotation class]]) {
+		if ([ annotation isKindOfClass:[YCMapPointAnnotation class]]) {
 			[self performSelector:@selector(animateSelectAnotation:) withObject:annotation afterDelay:0.3];
 		}
 	}
@@ -735,6 +735,8 @@
 	
 	self.customPickerViewContainer = nil;
 	self.customPickerController = nil;
+    
+    [middlePointAnnotion release]; middlePointAnnotion = nil;
 }
 
 
