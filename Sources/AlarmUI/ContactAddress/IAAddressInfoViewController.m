@@ -6,6 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "LocalizedString.h"
 #import "YCPlacemark.h"
 #import "IAAlarm.h"
 #import "IAPerson.h"
@@ -145,7 +146,7 @@
 }
 
 - (IBAction)saveAsPersonButtonPressed:(id)sender{
-    UIActionSheet *sheet = [[[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"创建新联系人",@"添加到现有联系人",nil] autorelease];
+    UIActionSheet *sheet = [[[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:KTitleCancel destructiveButtonTitle:nil otherButtonTitles:@"创建新联系人",@"添加到现有联系人",nil] autorelease];
     
     [sheet showInView:self.tableView];
 }

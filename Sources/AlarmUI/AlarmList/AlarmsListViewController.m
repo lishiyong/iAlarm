@@ -101,14 +101,6 @@
 	self.navigationItem.titleView = nil;
 }
 
-
-
-- (void) handle_regionTypeDidChange:(NSNotification*)notification{	
-    //把所有cell重新生成一遍
-    [self.alarmListTableView reloadData];
-}
-
-
 - (void) registerNotifications {
 	
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -127,12 +119,6 @@
 						   selector: @selector (handle_applicationWillResignActive:)
 							   name: UIApplicationWillResignActiveNotification
 							 object: nil];
-    
-    //区域的类型发生了改变
-    [notificationCenter addObserver: self
-						   selector: @selector (handle_regionTypeDidChange:)
-							   name: IARegionTypeDidChangeNotification
-							 object: nil];
 }
 
 - (void)unRegisterNotifications{
@@ -140,7 +126,6 @@
 	[notificationCenter removeObserver:self	name: IAAlarmListEditStateDidChangeNotification object: nil];
 	[notificationCenter removeObserver:self	name: IAAlarmsDataListDidChangeNotification object: nil];
 	[notificationCenter removeObserver:self	name: UIApplicationWillResignActiveNotification object: nil];
-    [notificationCenter removeObserver:self	name: IARegionTypeDidChangeNotification object: nil];
 }
 
 

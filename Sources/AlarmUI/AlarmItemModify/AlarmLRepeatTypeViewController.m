@@ -79,9 +79,9 @@
     
     
     //开始结束cell
-    self.beginEndCell.textLabel.text = @"开始\r\n结束";    
+    self.beginEndCell.textLabel.text = [NSString stringWithFormat:@"%@\r\n%@",KAPTitleBeginTime,KAPTitleEndTime];    
     if (_onceAlarmSchedule.endTimeInNextDay) { //endTime 比 beginTime早
-        self.beginEndCell.detailTextLabel.text = [NSString stringWithFormat:@"%@\r\n%@, %@",[_onceAlarmSchedule.beginTime stringOfTimeShortStyle],@"次日",[_onceAlarmSchedule.endTime stringOfTimeShortStyle]];//@"8:00 AM 次日, 21:00 PM"
+        self.beginEndCell.detailTextLabel.text = [NSString stringWithFormat:@"%@\r\n%@, %@",[_onceAlarmSchedule.beginTime stringOfTimeShortStyle],KWDSTitleNextDay,[_onceAlarmSchedule.endTime stringOfTimeShortStyle]];//@"8:00 AM 次日, 21:00 PM"
     }else {
         self.beginEndCell.detailTextLabel.text = [NSString stringWithFormat:@"%@\r\n%@",[_onceAlarmSchedule.beginTime stringOfTimeShortStyle],[_onceAlarmSchedule.endTime stringOfTimeShortStyle]]; //@"8:00 AM 21:00 PM"
     }
@@ -89,11 +89,11 @@
     self.beginEndCell.detailTextLabel.numberOfLines = 2;
     
     //启用开关cell
-    self.beginEndSwitchCell.textLabel.text = @"定时启动";
+    self.beginEndSwitchCell.textLabel.text = KAPTitleTimeSwitch;
     self.beginEndSwitchCell.accessoryView = self.beginEndSwitch;
     
     //相同提醒时间cell
-    self.sameSwitchCell.textLabel.text = @"开始结束时间相同";
+    self.sameSwitchCell.textLabel.text = KAPTitleSameBeginEndTime;
     self.sameSwitchCell.accessoryView = self.sameSwitch;
     
     
@@ -386,25 +386,25 @@
             NSString *dayString = nil;
             switch (i) {
                 case 0:
-                    dayString = @"每周一";
+                    dayString = KWDTitleEveryMonday;
                     break;
                 case 1:
-                    dayString = @"每周二";
+                    dayString = KWDTitleEveryTuesday;
                     break;
                 case 2:
-                    dayString = @"每周三";
+                    dayString = KWDTitleEveryWednesday;
                     break;
                 case 3:
-                    dayString = @"每周四";
+                    dayString = KWDTitleEveryThursday;
                     break;
                 case 4:
-                    dayString = @"每周五";
+                    dayString = KWDTitleEveryFriday;
                     break;
                 case 5:
-                    dayString = @"每周六";
+                    dayString = KWDTitleEverySaturday;
                     break;
                 case 6:
-                    dayString = @"每周日";
+                    dayString = KWDTitleEverySunday;
                     break;
                 default:
                     break;
@@ -576,7 +576,7 @@
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section{
     
     if ((_sections.count -1) == section) {
-        return @"启用定时启动将在开始时间收到要求您启动位置闹钟的通知。";
+        return KTextWhyTimeSwitch;
     }
      
     return nil;

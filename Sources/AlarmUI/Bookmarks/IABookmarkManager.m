@@ -6,6 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "LocalizedString.h"
 #import "YCLib.h"
 #import "IAPerson.h"
 #import "YCSearchBar.h"
@@ -38,7 +39,7 @@
         NSArray *displayedItems = [NSArray arrayWithObjects:[NSNumber numberWithInt:kABPersonAddressProperty], 
                                    nil];
         _peoplePicker.displayedProperties = displayedItems;
-        _peoplePicker.title = @"通讯录";
+        _peoplePicker.title = KBMTitleContacts;
         _peoplePicker.delegate = self;
     }
     
@@ -46,9 +47,9 @@
     if (!_recentAddressNav) {
         IARecentAddressViewController *recentAddressVC = [[[IARecentAddressViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
         recentAddressVC.delegate = self;
-        recentAddressVC.navigationItem.prompt = @"选取最近的搜索";
+        recentAddressVC.navigationItem.prompt = KBMTitlePromptRecents;
         _recentAddressNav = [[UINavigationController alloc] initWithRootViewController:recentAddressVC];
-        _recentAddressNav.title = @"最近搜索";
+        _recentAddressNav.title = KBMTitleBMRecents;
         
     }
     
@@ -240,7 +241,7 @@
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
     //ABPeoplePickerNavigationController是个nav控制器，把它包含的子视图都设置上
     if (navigationController == _peoplePicker) {
-        viewController.navigationItem.prompt = @"选取联系人显示在地图上";
+        viewController.navigationItem.prompt = KBMTitlePromptContacts;
         
         UIBarButtonItem *cancelButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonItemPressed:)] autorelease];
         viewController.navigationItem.rightBarButtonItem = cancelButtonItem;

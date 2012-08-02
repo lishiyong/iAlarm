@@ -133,7 +133,7 @@ NSString *IARegionKey = @"IARegionKey";
             YCPromptView *promptView = [[[YCPromptView alloc] init] autorelease];
             promptView.promptViewStatus = YCPromptViewStatusWarn;
             promptView.dismissByTouch = YES;
-            promptView.text = @"由于您现在离这个目的地很近，所以在下次进入目的地区域，才会提醒您！";
+            promptView.text = KTextWaringNexttimeAlarm;
             [promptView performSelector:@selector(show) withObject:nil afterDelay:0.25];
             [promptView performSelector:@selector(dismissAnimated:) withObject:(id)kCFBooleanTrue afterDelay:8.0];
         }

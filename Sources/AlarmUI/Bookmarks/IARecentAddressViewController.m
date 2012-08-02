@@ -6,6 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "LocalizedString.h"
 #import "YCLib.h"
 #import "IAPerson.h"
 #import <AddressBookUI/AddressBookUI.h>
@@ -22,7 +23,7 @@
 }
 
 - (void)clearButtonItemPressed:(id)sender{
-    UIActionSheet *sheet = [[[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"清除所有最近搜索" otherButtonTitles:nil] autorelease];
+    UIActionSheet *sheet = [[[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:KTitleCancel destructiveButtonTitle:KTitleClearAllRecents otherButtonTitles:nil] autorelease];
     [sheet showInView:self.tableView];
 }
 
@@ -60,10 +61,10 @@
 {
     [super viewDidLoad];
 
-    self.title = @"最近搜索";
+    self.title = KBMTitleBMRecents;
     UIBarButtonItem *cancelButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonItemPressed:)] autorelease];
     
-    UIBarButtonItem *clearButtonItem =  [[[UIBarButtonItem alloc] initWithTitle:@"清除" style:UIBarButtonItemStyleBordered target:self action:@selector(clearButtonItemPressed:)] autorelease];
+    UIBarButtonItem *clearButtonItem =  [[[UIBarButtonItem alloc] initWithTitle:KTitleClear style:UIBarButtonItemStyleBordered target:self action:@selector(clearButtonItemPressed:)] autorelease];
     
     self.navigationItem.rightBarButtonItem = cancelButtonItem;
     self.navigationItem.leftBarButtonItem = clearButtonItem;
@@ -132,10 +133,10 @@
     NSString *titleString = nil;
     NSString *addressString = nil;
     if ([value isKindOfClass: [NSString class]]) {
-        titleString = @"搜索：";
+        titleString = [NSString stringWithFormat:@"%@:",KTitleSearch];
         addressString = [key stringByAppendingFormat:@" (%@)",value];
     }else if([value isKindOfClass:[IAPerson class]] ){
-        titleString = @"联系人：";
+        titleString = [NSString stringWithFormat:@"%@:",KBMTitleContact];
         NSDictionary *addressDic = [(IAPerson*)value addressDictionary];
         NSString *stringValue = [ABCreateStringWithAddressDictionary(addressDic,NO) stringByTrim];
         addressString = [key stringByAppendingFormat:@" (%@)",stringValue];

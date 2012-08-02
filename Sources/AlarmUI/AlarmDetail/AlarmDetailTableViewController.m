@@ -169,7 +169,7 @@
         
         self->testAlarmButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         self->testAlarmButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-        [self->testAlarmButton setTitle:@"测试" forState:UIControlStateNormal & UIControlStateHighlighted];
+        [self->testAlarmButton setTitle:KTitleTest forState:UIControlStateNormal & UIControlStateHighlighted];
         self->testAlarmButton.titleLabel.font            = [UIFont boldSystemFontOfSize: 19];
         self->testAlarmButton.titleLabel.lineBreakMode   = UILineBreakModeTailTruncation;
         self->testAlarmButton.titleLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
@@ -371,11 +371,11 @@
         BOOL w7 = [(IAAlarmSchedule*)[self.alarmTemp.alarmSchedules objectAtIndex:6] vaild];
         
         if (w1 && w2 && w3 && w4 && w5 && !w6 && !w7) {
-            detailText = @"工作日";
+            detailText = KWDSTitleWeekdays;
         }else if (!w1 && !w2 && !w3 && !w4 && !w5 && w6 && w7) {
-            detailText = @"周末";
+            detailText = KWDSTitleWeekends;
         }else if (w1 && w2 && w3 && w4 && w5 && w6 && w7) {
-            detailText = @"每天";
+            detailText = KWDSTitleEveryDay;
         }else {
             NSMutableString *tempS = [NSMutableString string];
             [self.alarmTemp.alarmSchedules enumerateObjectsUsingBlock:^(IAAlarmSchedule *obj, NSUInteger idx, BOOL *stop) {
@@ -447,7 +447,7 @@
         self->nameCellDescription.tableViewCell.detailTextLabel.text = self.alarmTemp.alarmName;
     }else{
         self->nameCellDescription.tableViewCell.detailTextLabel.textColor = [UIColor lightGrayColor];
-        self->nameCellDescription.tableViewCell.detailTextLabel.text = @"例如：什么地方就要到了";
+        self->nameCellDescription.tableViewCell.detailTextLabel.text = KAPTextPlaceholderName;
     }
      
     
@@ -462,7 +462,7 @@
 	if (!self->notesCellDescription) {
 		self->notesCellDescription = [[TableViewCellDescription alloc] init];
 		UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
-		cell.textLabel.text = @"备注";
+		cell.textLabel.text = KAPTitleNote;
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		
 		self->notesCellDescription.tableViewCell = cell;
@@ -477,7 +477,7 @@
         self->notesCellDescription.tableViewCell.detailTextLabel.text = self.alarmTemp.notes;
     }else{
         self->notesCellDescription.tableViewCell.detailTextLabel.textColor = [UIColor lightGrayColor];
-        self->notesCellDescription.tableViewCell.detailTextLabel.text = @"例如：到达后要做什么";
+        self->notesCellDescription.tableViewCell.detailTextLabel.text = KAPTextPlaceholderNote;
     }
 	
 	return self->notesCellDescription;

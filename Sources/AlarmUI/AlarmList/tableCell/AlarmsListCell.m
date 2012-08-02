@@ -167,7 +167,7 @@
     CLLocation *curLocation = [[notification userInfo] objectForKey:IAStandardLocationKey];
     //设置与当前位置的subtitle的字符串
     if (_subTitleIsDistanceString) {
-        [UIView transitionWithView:self.alarmDetailLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^()
+        [UIView transitionWithView:self.contentView duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^()
          {
              [self updateCellWithLocation:curLocation];
          } completion:NULL];         
@@ -176,23 +176,36 @@
 }
 
 - (void)handleApplicationDidBecomeActive: (NSNotification*) notification{
-    
     if (self.window == nil) { //cell 没有在显示
         self.alarm = nil;
         return;
     }
-    
-    //进入前台，模拟发送定位数据。防止真正的定位数据迟迟不发。
-    NSDictionary *userInfo = nil;
-    CLLocation *curLocation = [YCSystemStatus sharedSystemStatus].lastLocation;
-    if (curLocation)
-        userInfo = [NSDictionary dictionaryWithObject:curLocation forKey:IAStandardLocationKey];
-    
-    NSNotification *aNotification = [NSNotification notificationWithName:IAStandardLocationDidFinishNotification 
-                                                                  object:self
-                                                                userInfo:userInfo];
-    [self handleStandardLocationDidFinish:aNotification];
-    //[self performSelector:@selector(handleStandardLocationDidFinish:) withObject:aNotification afterDelay:0.0];
+    [UIView transitionWithView:self.contentView duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^()
+    {
+      [self updateCell];
+    } completion:NULL];    
+}
+
+- (void)handleRegionsDidChange:(NSNotification*)notification {
+    if (self.window == nil) { //cell 没有在显示
+        self.alarm = nil;
+        return;
+    }
+    [UIView transitionWithView:self.contentView duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^()
+    {
+     [self updateCell];
+    } completion:NULL];
+}
+
+- (void)handleRegionTypeDidChange:(NSNotification*)notification{	
+    if (self.window == nil) { //cell 没有在显示
+        self.alarm = nil;
+        return;
+    }
+    [UIView transitionWithView:self.contentView duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^()
+    {
+     [self updateCell];
+    } completion:NULL];
 }
 
 - (void)registerNotifications {
@@ -205,6 +218,17 @@
     [notificationCenter addObserver: self
 						   selector: @selector (handleApplicationDidBecomeActive:)
 							   name: UIApplicationDidBecomeActiveNotification
+                             object: nil];
+    
+    //区域列表发生了改变
+    [notificationCenter addObserver: self
+						   selector: @selector (handleRegionsDidChange:)
+							   name: IARegionsDidChangeNotification
+							 object: nil];
+    //区域的类型发生了改变
+    [notificationCenter addObserver: self
+						   selector: @selector (handleRegionTypeDidChange:)
+							   name: IARegionTypeDidChangeNotification
 							 object: nil];
 	
 }
@@ -213,8 +237,9 @@
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter removeObserver:self	name: IAStandardLocationDidFinishNotification object: nil];
     [notificationCenter removeObserver:self	name: UIApplicationDidBecomeActiveNotification object: nil];
+    [notificationCenter removeObserver:self	name: IARegionsDidChangeNotification object: nil];
+    [notificationCenter removeObserver:self	name: IARegionTypeDidChangeNotification object: nil];
 }
-
 
 
 @end

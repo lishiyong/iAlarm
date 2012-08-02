@@ -26,12 +26,12 @@
 {
     [super viewDidLoad];
    
-    self.title = @"备注";//KViewTitleName;
+    self.title = KAPTitleNote;
 	self.textView.textColor = [UIColor tableCellBlueTextYCColor];
 	[self.textView becomeFirstResponder];  //调用键盘
 	self.textView.enablesReturnKeyAutomatically = NO; 
 	self.textView.font = [UIFont systemFontOfSize:19.0];
-    self.textView.placeholder = @"如:到达后要做什么事情";
+    self.textView.placeholder = KAPTextPlaceholderNote;
 }
 
 - (void)viewWillAppear:(BOOL)animated

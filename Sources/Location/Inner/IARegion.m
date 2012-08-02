@@ -26,6 +26,17 @@
 
 @synthesize userLocationType = _userLocationType, alarm = _alarm;
 
+- (void)setUserLocationType:(IAUserLocationType)userLocationType{
+    _userLocationType = userLocationType;
+    
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:self forKey:IAChangedRegionKey];
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    NSNotification *aNotification = [NSNotification notificationWithName:IARegionTypeDidChangeNotification 
+                                                                  object:self 
+                                                                userInfo:userInfo];
+    [notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
+}
+
 
 -(CLLocationDistance)radiusInner{
 	CLLocationDistance radiusInner = _region.radius; 

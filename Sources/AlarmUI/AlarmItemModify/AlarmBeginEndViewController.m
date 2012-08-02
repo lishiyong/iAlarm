@@ -6,6 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "LocalizedString.h"
 #import "YCLib.h"
 #import "IAAlarmSchedule.h"
 #import "AlarmBeginEndViewController.h"
@@ -33,7 +34,7 @@
         if (-1 != _alarmCalendar.weekDay) 
             self.endCell.detailTextLabel.text = [_alarmCalendar.endTime stringOfTimeWeekDayShortStyle];
         else {
-            NSString *s = [NSString stringWithFormat:@"%@, %@", @"次日", [_alarmCalendar.endTime stringOfTimeShortStyle]];
+            NSString *s = [NSString stringWithFormat:@"%@, %@", KWDSTitleNextDay, [_alarmCalendar.endTime stringOfTimeShortStyle]];
             self.endCell.detailTextLabel.text = s;
         }
         
@@ -65,12 +66,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"开始与结束";
+    self.title = KAPTitleBeginTimeAndEndTime;
     
     [self _updateUI];
         
-    self.beginCell.textLabel.text = @"开始";
-    self.endCell.textLabel.text = @"结束";
+    self.beginCell.textLabel.text = KAPTitleBeginTime;
+    self.endCell.textLabel.text = KAPTitleEndTime;
     
     _sections = [[NSMutableArray array] retain];
     NSArray *beginEndSection = [NSArray arrayWithObjects:self.beginCell, self.endCell, nil];

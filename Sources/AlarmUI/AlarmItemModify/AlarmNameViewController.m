@@ -55,7 +55,7 @@
     [super viewDidLoad];
 	
 	self.title = KViewTitleName;
-    self.alarmNameTextField.placeholder = @"如:什么地方就要到了";
+    self.alarmNameTextField.placeholder = KAPTextPlaceholderName;
     self.alarmNameTextField.textColor = [UIColor tableCellBlueTextYCColor];
     //[self registerNotifications];
 }
@@ -117,7 +117,7 @@
 
 - (void)handleKeyboardDidShow:(NSNotification*)aNotification{	
     
-    
+    /*
     NSDictionary* info = [aNotification userInfo];
     
     // Get the size of the keyboard.
@@ -130,6 +130,7 @@
     self.tableView.frame = viewFrame;
     
     [self.tableView reloadData];
+     */
     
 }
 

@@ -128,18 +128,18 @@
 #pragma mark -
 #pragma mark Notification
 
-- (void)handle_applicationDidBecomeActive:(NSNotification*)notification {
+- (void)handleApplicationDidBecomeActive:(NSNotification*)notification {
     [self start];
 }
 
-- (void) handle_applicationWillResignActive:(id)notification{	
+- (void) handleApplicationWillResignActive:(id)notification{	
     IARegionsCenter *regionsCenter = [IARegionsCenter sharedRegionCenter];
     if ([regionsCenter.regions count] <= 0) {
         [self stop];
     }   
 }
 
-- (void) handle_regionsDidChange:(NSNotification*)notification {
+- (void) handleRegionsDidChange:(NSNotification*)notification {
     IARegionsCenter *regionsCenter = [IARegionsCenter sharedRegionCenter];
     UIApplication *app = [UIApplication sharedApplication];
     if ([regionsCenter.regions count] > 0 || app.applicationState == UIApplicationStateActive) {
@@ -155,16 +155,16 @@
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     
 	[notificationCenter addObserver: self
-						   selector: @selector (handle_regionsDidChange:)
+						   selector: @selector (handleRegionsDidChange:)
 							   name: IARegionsDidChangeNotification
 							 object: nil];
 	
 	[notificationCenter addObserver: self
-						   selector: @selector (handle_applicationDidBecomeActive:)
+						   selector: @selector (handleApplicationDidBecomeActive:)
 							   name: UIApplicationDidBecomeActiveNotification
 							 object: nil];
 	[notificationCenter addObserver: self
-						   selector: @selector (handle_applicationWillResignActive:)
+						   selector: @selector (handleApplicationWillResignActive:)
 							   name: UIApplicationWillResignActiveNotification
 							 object: nil];
     

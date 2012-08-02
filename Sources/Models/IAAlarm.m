@@ -713,7 +713,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
     if ([self distanceFromLocation:location] == -1) {
         return nil;
     }else {
-        return [location distanceStringFromCoordinate:self.realCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
+        return [location distanceStringFromCoordinate:self.realCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextDistanceLessThan0_1Km];
     }
 }
 

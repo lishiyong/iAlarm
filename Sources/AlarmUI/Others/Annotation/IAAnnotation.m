@@ -40,27 +40,15 @@
 }
 
 - (void)handleApplicationDidBecomeActive: (NSNotification*) notification{
-    //进入前台，模拟发送定位数据。防止真正的定位数据迟迟不发。
-    NSDictionary *userInfo = nil;
-    CLLocation *curLocation = [YCSystemStatus sharedSystemStatus].lastLocation;
-    if (curLocation)
-        userInfo = [NSDictionary dictionaryWithObject:curLocation forKey:IAStandardLocationKey];
-        
-    NSNotification *aNotification = [NSNotification notificationWithName:IAStandardLocationDidFinishNotification 
-                                                                  object:self
-                                                                userInfo:userInfo];
-    [self handleStandardLocationDidFinish:aNotification];
-    //[self performSelector:@selector(handleStandardLocationDidFinish:) withObject:aNotification afterDelay:0.0];
+    [self setAnnotationStatus:_annotationStatus];
 }
 
-- (void)handleApplicationWillResignActive: (NSNotification*) notification{
-    /*
-    //进入后台，把距离赋空
-    _distanceString = nil;
-    if (_subTitleIsDistanceString) {
-        [self setAnnotationStatus:_annotationStatus];
-    }
-     */
+- (void)handleRegionsDidChange:(NSNotification*)notification {
+    [self setAnnotationStatus:_annotationStatus];
+}
+
+- (void)handleRegionTypeDidChange:(NSNotification*)notification{	
+    [self setAnnotationStatus:_annotationStatus];
 }
 
 - (void)registerNotifications {
@@ -76,11 +64,17 @@
 						   selector: @selector (handleApplicationDidBecomeActive:)
 							   name: UIApplicationDidBecomeActiveNotification
 							 object: nil];
-     
-     [notificationCenter addObserver: self
-                            selector: @selector (handleApplicationWillResignActive:)
-                                name: UIApplicationWillResignActiveNotification
-                              object: nil];
+    
+    //区域列表发生了改变
+    [notificationCenter addObserver: self
+						   selector: @selector (handleRegionsDidChange:)
+							   name: IARegionsDidChangeNotification
+							 object: nil];
+    //区域的类型发生了改变
+    [notificationCenter addObserver: self
+						   selector: @selector (handleRegionTypeDidChange:)
+							   name: IARegionTypeDidChangeNotification
+							 object: nil];
 	
 }
 
@@ -88,7 +82,8 @@
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter removeObserver:self	name: IAStandardLocationDidFinishNotification object: nil];
     [notificationCenter removeObserver:self	name: UIApplicationDidBecomeActiveNotification object: nil];
-    [notificationCenter removeObserver:self	name: UIApplicationWillResignActiveNotification object: nil];
+    [notificationCenter removeObserver:self	name: IARegionsDidChangeNotification object: nil];
+    [notificationCenter removeObserver:self	name: IARegionTypeDidChangeNotification object: nil];
 }
 
 
