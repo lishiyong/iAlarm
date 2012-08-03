@@ -84,6 +84,9 @@
      indexForView = 0;
      [alarmNotification_ release];
      alarmNotification_ = nil;
+    
+    //取消通知，不然通知可能反复出现
+    [[UIApplication sharedApplication] cancelLocalNotification:notification];
 
     NSString *notificationId = [notification.userInfo objectForKey:@"knotificationId"];
     if (notificationId) {
@@ -447,6 +450,7 @@
     notification.alertBody = notificationBody;
     notification.applicationIconBadgeNumber = badgeNumber;
     notification.userInfo = userInfo;
+    notification.repeatInterval = NSMinuteCalendarUnit; //反复提示
     [app scheduleLocalNotification:notification];
 
 }

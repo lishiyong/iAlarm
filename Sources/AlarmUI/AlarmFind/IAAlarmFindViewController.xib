@@ -451,31 +451,12 @@ AAgACAAIAAEAAQABAAE</bytes>
 									<int key="NSfFlags">16</int>
 								</object>
 							</object>
-							<object class="IBUIButton" id="556734307">
-								<reference key="NSNextResponder" ref="411627522"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{155, 56}, {145, 46}}</string>
-								<reference key="NSSuperview" ref="411627522"/>
-								<reference key="NSWindow"/>
-								<bool key="IBUIOpaque">NO</bool>
-								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<int key="IBUIContentHorizontalAlignment">0</int>
-								<int key="IBUIContentVerticalAlignment">0</int>
-								<string key="IBUITitleShadowOffset">{0, 1}</string>
-								<string key="IBUINormalTitle">30分钟后提醒</string>
-								<reference key="IBUIHighlightedTitleColor" ref="452598840"/>
-								<reference key="IBUINormalTitleShadowColor" ref="240383835"/>
-								<reference key="IBUINormalBackgroundImage" ref="502488719"/>
-								<reference key="IBUIFontDescription" ref="6798595"/>
-								<reference key="IBUIFont" ref="639204593"/>
-							</object>
 							<object class="IBUIButton" id="863917673">
 								<reference key="NSNextResponder" ref="411627522"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{0, 56}, {145, 46}}</string>
+								<string key="NSFrame">{{0, 56}, {300, 46}}</string>
 								<reference key="NSSuperview" ref="411627522"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="556734307"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="IBUIContentStretch">{{0, 0}, {0.029999999999999999, 0.17999999999999999}}</string>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -555,14 +536,6 @@ AAgACAAIAAEAAQABAAE</bytes>
 						<reference key="destination" ref="1046766095"/>
 					</object>
 					<int key="connectionID">47</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">button3</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="556734307"/>
-					</object>
-					<int key="connectionID">49</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -703,15 +676,6 @@ AAgACAAIAAEAAQABAAE</bytes>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">delayAlarm2ButtonPressed:</string>
-						<reference key="source" ref="556734307"/>
-						<reference key="destination" ref="372490531"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">103</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">delayAlarm1ButtonPressed:</string>
 						<reference key="source" ref="863917673"/>
 						<reference key="destination" ref="372490531"/>
@@ -793,7 +757,6 @@ AAgACAAIAAEAAQABAAE</bytes>
 						<reference key="object" ref="893994949"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="1046766095"/>
-							<reference ref="556734307"/>
 							<reference ref="863917673"/>
 						</array>
 						<reference key="parent" ref="0"/>
@@ -802,11 +765,6 @@ AAgACAAIAAEAAQABAAE</bytes>
 					<object class="IBObjectRecord">
 						<int key="objectID">39</int>
 						<reference key="object" ref="1046766095"/>
-						<reference key="parent" ref="893994949"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">40</int>
-						<reference key="object" ref="556734307"/>
 						<reference key="parent" ref="893994949"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -929,8 +887,6 @@ AAgACAAIAAEAAQABAAE</bytes>
 				<string key="37.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="39.CustomClassName">YCTexturedButton</string>
 				<string key="39.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="40.CustomClassName">YCTexturedButton</string>
-				<string key="40.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="41.CustomClassName">YCTexturedButton</string>
 				<string key="41.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="0.0" key="41.IBUIButtonInspectorSelectedEdgeInsetMetadataKey"/>
@@ -956,16 +912,11 @@ AAgACAAIAAEAAQABAAE</bytes>
 					<string key="superclassName">UIViewController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="delayAlarm1ButtonPressed:">id</string>
-						<string key="delayAlarm2ButtonPressed:">id</string>
 						<string key="tellFriendsButtonPressed:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="delayAlarm1ButtonPressed:">
 							<string key="name">delayAlarm1ButtonPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="delayAlarm2ButtonPressed:">
-							<string key="name">delayAlarm2ButtonPressed:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="tellFriendsButtonPressed:">
@@ -978,7 +929,6 @@ AAgACAAIAAEAAQABAAE</bytes>
 						<string key="backgroundTableViewCell">UITableViewCell</string>
 						<string key="button1">UIButton</string>
 						<string key="button2">UIButton</string>
-						<string key="button3">UIButton</string>
 						<string key="buttonCell">UITableViewCell</string>
 						<string key="containerView">UIView</string>
 						<string key="mapView">MKMapView</string>
@@ -1007,10 +957,6 @@ AAgACAAIAAEAAQABAAE</bytes>
 						</object>
 						<object class="IBToOneOutletInfo" key="button2">
 							<string key="name">button2</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="button3">
-							<string key="name">button3</string>
 							<string key="candidateClassName">UIButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="buttonCell">

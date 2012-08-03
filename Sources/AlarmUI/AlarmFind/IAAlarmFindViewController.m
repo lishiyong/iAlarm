@@ -30,38 +30,6 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date);
 
 NSString* YCTimeIntervalStringSinceNow(NSDate *date){ 
     
-    /*
-    NSString *returnString = nil;
-    
-    NSTimeInterval interval= fabs([date timeIntervalSinceNow]) ;
-    if ((interval/60) < 1) {
-        
-        returnString = @"现在";
-        
-    }else if((interval/60) > 1 && (interval/(60*60)) < 1){
-        
-        returnString=[NSString stringWithFormat:@"%d分钟前", (NSInteger)(interval/60)];
-        
-    }else if((interval/(60*60)) > 1  && (interval/(60*60*24)) < 1){
-        
-        returnString=[NSString stringWithFormat:@"%d小时前", (NSInteger)(interval/(60*60))];
-        
-    }else if((interval/(60*60*24)) > 1  && (interval/(60*60*24*30)) < 1){
-        
-        returnString=[NSString stringWithFormat:@"%d天前", (NSInteger)(interval/(60*60*24))];
-        
-    }else if((interval/(60*60*24*30)) > 1  && (interval/(60*60*24*30*12)) < 1){
-        
-        returnString=[NSString stringWithFormat:@"%d月前", (NSInteger)(interval/(60*60*24*30))];
-        
-    }else {
-        
-        returnString=[NSString stringWithFormat:@"%d年前", (NSInteger)(interval/(60*60*24*30*12))];
-    }
-    
-    return returnString;
-     */
-    
     NSDate *now = [NSDate date];
     NSCalendar *currentCalendar = [NSCalendar currentCalendar];
     NSUInteger units = NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit;
@@ -69,15 +37,14 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
     
     NSString *returnString = nil;
     if (comps.day > 0) {
-       returnString = [NSString stringWithFormat:KTitleTimeIntervalXDAgo, comps.day];
+       returnString = [NSString stringWithFormat:KTITitleXDAgo, comps.day];
     }else if (comps.hour > 0) {
-        returnString = [NSString stringWithFormat:KTitleTimeIntervalXHAgo, comps.hour];
+        returnString = [NSString stringWithFormat:KTITitleXHAgo, comps.hour];
     }else if (comps.minute > 0) {
-        returnString = [NSString stringWithFormat:KTitleTimeIntervalXMAgo, comps.minute];
+        returnString = [NSString stringWithFormat:KTITitleXMAgo, comps.minute];
     }else  {
-        returnString = KTitleTimeIntervalNow;
+        returnString = KTITitleNow;
     }
-    
     
     return returnString;
 }
@@ -102,7 +69,7 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
 
 @synthesize tableView;
 @synthesize mapViewCell, takeImageContainerView, containerView, mapView, maskImageView, timeIntervalLabel, watchImageView;
-@synthesize buttonCell, button1, button2, button3;
+@synthesize buttonCell, button1, button2;
 @synthesize notesCell, notesLabel, titleLabel;
 @synthesize backgroundTableView, backgroundTableViewCell;
 
@@ -150,18 +117,12 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
 
 - (IBAction)delayAlarm1ButtonPressed:(id)sender{
     if (!actionSheet1) {
-        actionSheet1 = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:kAlertBtnCancel  destructiveButtonTitle:@"过5分钟再提醒" otherButtonTitles:nil];
+        NSString *bTitle5 = [NSString stringWithFormat:kTitleAlarmAfterXMinutes,5];
+        NSString *bTitle30 = [NSString stringWithFormat:kTitleAlarmAfterXMinutes,30];
+        actionSheet1 = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:kAlertBtnCancel destructiveButtonTitle:bTitle5 otherButtonTitles:bTitle30,nil];
     }
     [actionSheet1 showInView:self.view];
 }
-
-- (IBAction)delayAlarm2ButtonPressed:(id)sender{
-    if (!actionSheet2) {
-        actionSheet2 = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:kAlertBtnCancel  destructiveButtonTitle:@"过30分钟再提醒" otherButtonTitles:nil];
-    }
-    [actionSheet2 showInView:self.view];
-}
-
 
 - (void)doneButtonItemPressed:(id)sender{
     [self dismissModalViewControllerAnimated:YES];
@@ -218,17 +179,17 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
     NSInteger status = (actionSheet == actionSheet1) ? 0 : 1;
     [self makeMoveAlarmAnimationWithStatus:status]; 
     
-    if ( actionSheet == actionSheet1 || actionSheet == actionSheet2) {
+    if ( actionSheet == actionSheet1) {
         
         
         IAAlarm *alarmForNotif = viewedAlarmNotification.alarm;
         
         //保存到文件
         NSTimeInterval secs = 0;
-        if (actionSheet == actionSheet1) {//延时1
+        if (0 == buttonIndex) {//延时1
             secs = 60*5;//5分钟
             
-        }else if (actionSheet == actionSheet2) {//延时2
+        }else if (1 == buttonIndex) {//延时2
             secs = 60*30;//30分钟
         }
         NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:secs];
@@ -399,7 +360,7 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
     NSString *alarmName = alarm.alarmName ? alarm.alarmName : alarm.positionTitle;
     pointAnnotation = [[YCMapPointAnnotation alloc] initWithCoordinate:visualCoordinate title:alarmName subTitle:nil];
     [self.mapView addAnnotation:pointAnnotation];
-    //[pointAnnotation setDistanceSubtitleWithCurrentLocation:[YCSystemStatus sharedSystemStatus].lastLocation];//距离
+    
     
     //地图的显示region
     
@@ -539,9 +500,10 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
 #pragma mark - MapView delegate
 
 - (MKAnnotationView *)mapView:(MKMapView *)mv viewForAnnotation:(id <MKAnnotation>)theAnnotation{
-    
+        
     if(![theAnnotation isKindOfClass:[YCMapPointAnnotation class]])
         return nil;
+
 
     NSString *annotationIdentifier = @"PinViewAnnotation";
     //MKPinAnnotationView *pinView = (MKPinAnnotationView *) [mapView dequeueReusableAnnotationViewWithIdentifier:annotationIdentifier];
@@ -794,9 +756,8 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
     self.notesLabel.textColor = [UIColor tableViewFooterTextColor];
     
     //按钮
-    [self.button1 setTitle:@"告诉朋友" forState:UIControlStateNormal];
-    [self.button2 setTitle:@"过5分钟再提醒" forState:UIControlStateNormal];
-    [self.button3 setTitle:@"过30分钟再提醒" forState:UIControlStateNormal];
+    [self.button1 setTitle:kTitleTellFriends forState:UIControlStateNormal];
+    [self.button2 setTitle:kTitleAlarmLater forState:UIControlStateNormal];
     
     
     //留着，tableView的委托要用
@@ -806,6 +767,7 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
      
     
     [self registerNotifications];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -817,8 +779,7 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [timer invalidate]; [timer release]; timer = nil;
-    [actionSheet1 dismissWithClickedButtonIndex:1 animated:NO];
-    [actionSheet2 dismissWithClickedButtonIndex:1 animated:NO];
+    [actionSheet1 dismissWithClickedButtonIndex:actionSheet1.cancelButtonIndex animated:NO];
     [[YCAlarmStatusBar shareStatusBar] setHidden:YES animated:YES];
 }
 
@@ -884,7 +845,6 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
     self.buttonCell = nil;
     self.button1 = nil;
     self.button2 = nil;
-    self.button3 = nil;
     
     self.notesCell = nil;
     
@@ -892,7 +852,6 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
     self.backgroundTableViewCell = nil;
     
     [actionSheet1 release];actionSheet1 = nil;
-    [actionSheet2 release];actionSheet2 = nil;
 }
 
 - (void)dealloc {
@@ -912,7 +871,6 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
     [buttonCell release];
     [button1 release];
     [button2 release];
-    [button3 release];
     
     [notesCell release];
     [notesLabel release];
@@ -926,7 +884,6 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
     [circleOverlay release];
     [engine release];
     [actionSheet1 release];
-    [actionSheet2 release];
     [clockAlarmImageView release];
     [super dealloc];
 }

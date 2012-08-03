@@ -23,15 +23,12 @@
     MKCircle *circleOverlay;
     YCShareAppEngine *engine;
     UIActionSheet *actionSheet1;
-    UIActionSheet *actionSheet2;
     NSTimer *timer;
     UIImageView *clockAlarmImageView;
-    
     
     CGFloat _mapViewCellHeight;
     CGFloat _buttonCellHeight;
     CGFloat _notesCellHeight;
-     
 }
 @property (nonatomic,retain) IBOutlet UITableView *tableView;
 @property(nonatomic,retain,readonly) UIBarButtonItem *doneButtonItem;
@@ -48,7 +45,6 @@
 @property (nonatomic,retain) IBOutlet UITableViewCell *buttonCell;
 @property (nonatomic,retain) IBOutlet UIButton *button1;
 @property (nonatomic,retain) IBOutlet UIButton *button2;
-@property (nonatomic,retain) IBOutlet UIButton *button3;
 
 @property (nonatomic,retain) IBOutlet UITableViewCell *notesCell;
 @property (nonatomic,retain) IBOutlet UILabel *notesLabel;
@@ -63,7 +59,6 @@
 
 - (IBAction)tellFriendsButtonPressed:(id)sender;
 - (IBAction)delayAlarm1ButtonPressed:(id)sender;
-- (IBAction)delayAlarm2ButtonPressed:(id)sender;
 
 
 @end

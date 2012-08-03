@@ -6,6 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "LocalizedString.h"
 #import "IARegionsCenter.h"
 #import "YCLib.h"
 #import "IAAlarmSchedule.h"
@@ -135,19 +136,15 @@
     NSMutableDictionary *notificationUserInfo = [NSMutableDictionary dictionaryWithCapacity:1];
     [notificationUserInfo setObject:alarmId forKey:@"kLaunchIAlarmLocalNotificationKey"];
     
-    NSString *iconString = nil;//这是钟表🕘
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) 
-        iconString = @"\U0001F558";
-    else 
-        iconString = @"\ue02c";
-    
-    NSString *alertTitle =  [NSString stringWithFormat:@"%@%@",iconString,title]; 
+    NSString *iconString = [NSString stringEmojiClockFaceNine];//这是钟表🕘    
     NSString *alertMessage = nil;
     if (message) 
         alertMessage = message;
     else 
-        alertMessage = @"单点这条消息，来启动位置闹钟！";
-    NSString *notificationBody = [NSString stringWithFormat:@"%@: %@",alertTitle,alertMessage];
+        alertMessage = KTextNotificationLaunchAlarm;
+    
+    if (title == nil) title = @"";
+    NSString *notificationBody = [NSString stringWithFormat:@"%@%@: %@", iconString, alertMessage, title];
     
     _notification = [[UILocalNotification alloc] init];    
     _notification.fireDate = [self.nextTimeFireDate dateByAddingTimeInterval:5.0];//延后1秒    
@@ -157,7 +154,7 @@
     _notification.alertBody = notificationBody;
     _notification.userInfo = notificationUserInfo;
     _notification.applicationIconBadgeNumber = 1;//
-    _notification.alertAction = @"启动";
+    _notification.alertAction = KTitleLaunch;
     
     UIApplication *app = [UIApplication sharedApplication];
     [app scheduleLocalNotification:_notification];
