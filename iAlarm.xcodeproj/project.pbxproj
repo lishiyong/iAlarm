@@ -1006,6 +1006,8 @@
 		9CC6E5C515B915F2002D3BD3 /* IAAlarmSchedule.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC6E5C315B915F2002D3BD3 /* IAAlarmSchedule.m */; };
 		9CCDAE771312BB4800774FD7 /* IAButtonBarFlag@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CCDAE761312BB4800774FD7 /* IAButtonBarFlag@2x.png */; };
 		9CCEABBB13386CF3001457A6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9CCEABB913386CF3001457A6 /* Localizable.strings */; };
+		9CCF7B0515CD564500C66760 /* iAlarm介绍.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9CCF7B0815CD564500C66760 /* iAlarm介绍.txt */; };
+		9CCF7B0615CD564500C66760 /* iAlarm介绍.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9CCF7B0815CD564500C66760 /* iAlarm介绍.txt */; };
 		9CCF8797157228C6007C7680 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CCF8796157228C6007C7680 /* AddressBook.framework */; };
 		9CD2791813470C0B00A7EAAB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CD2791713470C0B00A7EAAB /* AVFoundation.framework */; };
 		9CD3E35A13666BC40032321A /* IANotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD3E35913666BC40032321A /* IANotifications.m */; };
@@ -1958,6 +1960,10 @@
 		9CC6E5C215B915F2002D3BD3 /* IAAlarmSchedule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAAlarmSchedule.h; sourceTree = "<group>"; };
 		9CC6E5C315B915F2002D3BD3 /* IAAlarmSchedule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAAlarmSchedule.m; sourceTree = "<group>"; };
 		9CCDAE761312BB4800774FD7 /* IAButtonBarFlag@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAButtonBarFlag@2x.png"; sourceTree = "<group>"; };
+		9CCF7B0715CD564500C66760 /* en */ = {isa = PBXFileReference; lastKnownFileType = text; name = en; path = "en.lproj/iAlarm介绍.txt"; sourceTree = "<group>"; };
+		9CCF7B0915CD564C00C66760 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text; name = ja; path = "ja.lproj/iAlarm介绍.txt"; sourceTree = "<group>"; };
+		9CCF7B0A15CD564D00C66760 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text; name = "zh-Hans"; path = "zh-Hans.lproj/iAlarm介绍.txt"; sourceTree = "<group>"; };
+		9CCF7B0B15CD564D00C66760 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text; name = "zh-Hant"; path = "zh-Hant.lproj/iAlarm介绍.txt"; sourceTree = "<group>"; };
 		9CCF8796157228C6007C7680 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		9CD2791713470C0B00A7EAAB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		9CD3E35813666BC40032321A /* IANotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IANotifications.h; sourceTree = "<group>"; };
@@ -2301,6 +2307,7 @@
 				9C7487011562989500486793 /* External Frameworks and Libraries */,
 				9C7484BE1562981F00486793 /* YCLib */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				9CCF7B0115CD563A00C66760 /* AppStore */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -3584,6 +3591,14 @@
 			path = Localized;
 			sourceTree = "<group>";
 		};
+		9CCF7B0115CD563A00C66760 /* AppStore */ = {
+			isa = PBXGroup;
+			children = (
+				9CCF7B0815CD564500C66760 /* iAlarm介绍.txt */,
+			);
+			path = AppStore;
+			sourceTree = "<group>";
+		};
 		9CD65EE2135E6FE400E9573C /* icons */ = {
 			isa = PBXGroup;
 			children = (
@@ -4730,6 +4745,7 @@
 				9C0C44C315C8F4A40007C93B /* checkerFlag@2x.png in Resources */,
 				9C0C44C515C8F4A40007C93B /* checkerFlag.png in Resources */,
 				9CAE0C9315CC2C39006B0F55 /* InfoPlist.strings in Resources */,
+				9CCF7B0515CD564500C66760 /* iAlarm介绍.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5142,6 +5158,7 @@
 				9C0C44C415C8F4A40007C93B /* checkerFlag@2x.png in Resources */,
 				9C0C44C615C8F4A40007C93B /* checkerFlag.png in Resources */,
 				9CAE0C9415CC2C39006B0F55 /* InfoPlist.strings in Resources */,
+				9CCF7B0615CD564500C66760 /* iAlarm介绍.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5673,6 +5690,17 @@
 			name = Localizable.strings;
 			path = /Users/lishiyong/lsyWorks/iAlarm/Sources/Localized;
 			sourceTree = "<absolute>";
+		};
+		9CCF7B0815CD564500C66760 /* iAlarm介绍.txt */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9CCF7B0715CD564500C66760 /* en */,
+				9CCF7B0915CD564C00C66760 /* ja */,
+				9CCF7B0A15CD564D00C66760 /* zh-Hans */,
+				9CCF7B0B15CD564D00C66760 /* zh-Hant */,
+			);
+			name = "iAlarm介绍.txt";
+			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
 
