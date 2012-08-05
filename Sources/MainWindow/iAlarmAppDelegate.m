@@ -112,7 +112,7 @@
         {
             YCPromptView *promptView = [[[YCPromptView alloc] init] autorelease];
             promptView.promptViewStatus = YCPromptViewStatusOK;
-            promptView.text = @"已经启动";
+            promptView.text = KTextAlarmHasLaunched;
             promptView.dismissByTouch = YES;
             [promptView performSelector:@selector(show) withObject:nil afterDelay:0.25];
             [promptView performSelector:@selector(dismissAnimated:) withObject:(id)kCFBooleanTrue afterDelay:5.0];

@@ -576,7 +576,8 @@
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section{
     
     if ((_sections.count -1) == section) {
-        return KTextWhyTimeSwitch;
+        NSString *s = [NSString stringWithFormat:@"%@\n%@",KTextWhyTimeSwitch,KTextWhyCanNotAutoLaunch];
+        return s;
     }
      
     return nil;
