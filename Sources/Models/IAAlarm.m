@@ -451,11 +451,6 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
         } afterDelay:0.1];
     }
     
-	
-    //保存到文件
-	NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kDataFilename];
-	[NSKeyedArchiver archiveRootObject:alarms toFile:filePathName];
-    
     //发送、取消定时启动通知
     if (self.enabled && self.usedAlarmSchedule) {
         
@@ -474,6 +469,10 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
             [aCalender cancelLocalNotification];
         }
     }
+    
+    //保存到文件.注意，保存文件要在处理“定时启动”之后，alarmSchedules的中的通知才能生成。
+	NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kDataFilename];
+	[NSKeyedArchiver archiveRootObject:alarms toFile:filePathName];
     
     return saveInfo;
 

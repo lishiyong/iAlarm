@@ -678,6 +678,10 @@ animateDuration:(CFTimeInterval)animateDuration
 	//RoundEx
 	//ceil() 向上取整
 	//floor() 向下取整
+    if (distance < 0.001)
+        distance = 0.0;
+        
+    
 	double d = distance/1000.0;
 	//NSInteger n = ceil(d);
 	NSString *temple= kUnitKilometre;

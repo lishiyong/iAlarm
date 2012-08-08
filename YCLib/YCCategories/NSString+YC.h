@@ -37,4 +37,15 @@
  */
 + (NSString*)stringEmojiSleepingSymbol;
 
+/*
+ *🚧
+ */
++ (NSString*)stringEmojiConstructionSign;
+
+/*
+ *📡
+ */
++ (NSString*)stringEmojiSatelliteAntenna;
+
+
 @end

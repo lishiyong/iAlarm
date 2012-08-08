@@ -26,7 +26,7 @@
 
 @implementation YCPromptView
 
-@synthesize promptViewStatus = _promptViewStatus, dismissByTouch = _dismissByTouch;
+@synthesize promptViewStatus = _promptViewStatus, dismissByTouch = _dismissByTouch, textLabel = _textLabel;
 
 - (void)selfPressed:(id)sender{
     if (_dismissByTouch) 

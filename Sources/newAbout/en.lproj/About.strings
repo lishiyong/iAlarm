@@ -30,7 +30,7 @@
 "KLabelCellSetting" = "Setting";
 
 /* 告诉朋友 cell的标签 */
-"KLabelCellShareApp" = "Tell Friends";
+"KLabelCellShareApp" = "Tell A Friend";
 
 /* Twitter cell的标签 */
 "KLabelCellTwitter" = "Twitter";

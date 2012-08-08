@@ -84,9 +84,6 @@
      indexForView = 0;
      [alarmNotification_ release];
      alarmNotification_ = nil;
-    
-    //取消通知，不然通知可能反复出现
-    [[UIApplication sharedApplication] cancelLocalNotification:notification];
 
     NSString *notificationId = [notification.userInfo objectForKey:@"knotificationId"];
     if (notificationId) {
@@ -142,6 +139,15 @@
     if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
         [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     
+    //取消通知，不然通知可能反复出现
+    [self performBlock:^{
+        for (UILocalNotification *aLn in application.scheduledLocalNotifications) {
+            NSString *notificationId = [aLn.userInfo objectForKey:@"knotificationId"];
+            if (notificationId) {
+                [application cancelLocalNotification:aLn];
+            }
+        }
+    } afterDelay:1.0];
     
     if ([self didReceiveLaunchIAlarmLocalNotification:notification]) { //是定时启动通知
         return;
@@ -236,7 +242,7 @@
     }
     
     //debug
-    [[IARegionsCenter sharedRegionCenter] debug];
+    //[[IARegionsCenter sharedRegionCenter] debug];
     
     return YES;
 }
@@ -302,12 +308,22 @@
     if (application.numberOfApplicationDidBecomeActiveOnceLaunching > 0) {
         [self checkAlarmsForAdd];
         //debug
-        [[IARegionsCenter sharedRegionCenter] debug];
+        //[[IARegionsCenter sharedRegionCenter] debug];
     }
     
     //打开查看视图
     [self viewNotificationedAlarm:animatedView];
-        
+    
+    //取消通知，不然通知可能反复出现
+    [self performBlock:^{
+        for (UILocalNotification *aLn in application.scheduledLocalNotifications) {
+            NSString *notificationId = [aLn.userInfo objectForKey:@"knotificationId"];
+            if (notificationId) {
+                [application cancelLocalNotification:aLn];
+            }
+        }
+    } afterDelay:1.0];
+
 }
 
 - (void)checkApplicationScheduledLocalNotifications{
@@ -315,10 +331,11 @@
     //取消遗漏而无效的启动通知
     for (UILocalNotification *aNo in [UIApplication sharedApplication].scheduledLocalNotifications) {
         NSString *alarmId = [aNo.userInfo objectForKey:@"kLaunchIAlarmLocalNotificationKey"];
-        if (alarmId != nil) {
+        if (alarmId != nil) { //是定时启动
             IAAlarm *anAlarm = [IAAlarm findForAlarmId:alarmId];
-            if (nil == anAlarm) 
+            if (nil == anAlarm || !anAlarm.enabled) //没有这个闹钟 或 闹钟关闭了
                 [[UIApplication sharedApplication] cancelLocalNotification:aNo];
+            
         }
     }
 }
@@ -445,13 +462,13 @@
     UILocalNotification *notification = [[[UILocalNotification alloc] init] autorelease];
     notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:1];
     notification.timeZone = [NSTimeZone defaultTimeZone];
-    notification.repeatInterval = 0;
     notification.soundName = alarmForNotif.sound.soundFileName;
     notification.alertBody = notificationBody;
     notification.applicationIconBadgeNumber = badgeNumber;
     notification.userInfo = userInfo;
     notification.repeatInterval = NSMinuteCalendarUnit; //反复提示
     [app scheduleLocalNotification:notification];
+    //[app presentLocalNotificationNow:notification];
 
 }
 

@@ -47,7 +47,7 @@
     CLLocationDistance radius = _region.radius;  
 	
 	const CLLocationDistance kMaxOffset = 500.0;
-	const CLLocationDistance kMinOffset = 200.0;
+	const CLLocationDistance kMinOffset = 1.0;
 	CLLocationDistance offset = radius * 0.1;
 	offset = (offset > kMaxOffset) ? kMaxOffset : offset;
 	offset = (offset < kMinOffset) ? kMinOffset : offset;
@@ -66,7 +66,6 @@
 	}else {
 		return IAUserLocationTypeEdge;	
 	}
-
 }
 
 - (BOOL)isMonitoring{

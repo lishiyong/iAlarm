@@ -91,10 +91,14 @@
     self.flagImageView.image = [UIImage imageNamed:imageName];
     
     
-    if (self.alarm.enabled) {
-        self.isEnabledLabel.text = KDicOn; 
+    if (self.editing) //编辑状态不显示 “关闭” 或 “打开”
+        self.isEnabledLabel.alpha = 0.0;
+    else 
         self.isEnabledLabel.alpha = 1.0;
-        self.alarmDetailLabel.alpha = 1.0;
+    
+    if (self.alarm.enabled) {
+        self.isEnabledLabel.text = KDicOn;
+        //self.alarmDetailLabel.alpha = 1.0;
         self.alarmTitleLabel.textColor = [UIColor colorWithWhite:0.03 alpha:0.9];
         self.alarmDetailLabel.textColor = [UIColor colorWithWhite:0.2 alpha:1.0];
         self.isEnabledLabel.textColor = [UIColor colorWithWhite:0.03 alpha:0.85];
@@ -102,7 +106,6 @@
         self.isEnabledLabel.text = KDicOff; //文字:关闭
         self.alarmTitleLabel.textColor = [UIColor darkGrayColor];
         self.alarmDetailLabel.textColor = [UIColor darkGrayColor];
-        //self.isEnabledLabel.textColor = [UIColor grayColor];
         self.isEnabledLabel.textColor = [UIColor darkGrayColor];
     }
 

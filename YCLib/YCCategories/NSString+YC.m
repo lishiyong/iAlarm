@@ -86,5 +86,23 @@
     return string;
 }
 
++ (NSString*)stringEmojiConstructionSign{
+    NSString *string = nil;
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) 
+        string = @"\U0001F6A7";
+    else 
+        string = @"\ue137";
+    return string;
+}
+
++ (NSString*)stringEmojiSatelliteAntenna{
+    NSString *string = nil;
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) 
+        string = @"\U0001F4E1";
+    else 
+        string = @"\ue14b";
+    return string;
+}
+
 
 @end

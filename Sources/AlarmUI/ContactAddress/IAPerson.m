@@ -26,7 +26,11 @@
 }
 
 - (NSString *)personName{
-    return _personName;
+    //return _personName;
+    //显示得时候把标识符号去掉
+    NSString *temp = [_personName stringByReplacingOccurrencesOfString:kOrganizationPrefix withString:@""];
+    temp = [temp stringByReplacingOccurrencesOfString:kOrganizationSuffix withString:@""];
+    return temp;  
 }
 
 - (NSString *)organization{

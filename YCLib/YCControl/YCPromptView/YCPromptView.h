@@ -28,6 +28,8 @@ typedef NSUInteger YCPromptViewStatus;
 @property (nonatomic) BOOL dismissByTouch; //是否点击后消失
 @property (nonatomic) YCPromptViewStatus promptViewStatus;
 @property (nonatomic, copy) NSString *text;
+@property (nonatomic,retain)UILabel *textLabel;
+
 - (void)show;
 - (void)dismissAnimated:(BOOL)animated;
 

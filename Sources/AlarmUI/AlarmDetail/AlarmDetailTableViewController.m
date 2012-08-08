@@ -438,6 +438,8 @@
 		self->nameCellDescription.didSelectCellSelector = @selector(didSelectNavCell:);
 		AlarmNameViewController *viewCtler = [[[AlarmNameViewController alloc] initWithNibName:@"AlarmNameViewController" bundle:nil alarm:self.alarmTemp] autorelease];
 		self->nameCellDescription.didSelectCellObject = viewCtler;
+        
+        
 		
 	}
     
@@ -445,9 +447,13 @@
     if (self.alarmTemp.alarmName) {
         self->nameCellDescription.tableViewCell.detailTextLabel.textColor = [UIColor colorWithRed:56.0/255.0 green:84.0/255.0 blue:135.0/255.0 alpha:1.0];
         self->nameCellDescription.tableViewCell.detailTextLabel.text = self.alarmTemp.alarmName;
+        self->nameCellDescription.tableViewCell.detailTextLabel.adjustsFontSizeToFitWidth = NO;
     }else{
         self->nameCellDescription.tableViewCell.detailTextLabel.textColor = [UIColor lightGrayColor];
         self->nameCellDescription.tableViewCell.detailTextLabel.text = KAPTextPlaceholderName;
+        //自动调整字号
+        self->nameCellDescription.tableViewCell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
+        self->nameCellDescription.tableViewCell.detailTextLabel.minimumFontSize = 10.0;
     }
      
     
@@ -475,9 +481,13 @@
     if (self.alarmTemp.notes && [[self.alarmTemp.notes stringByTrim] length] >0) {
         self->notesCellDescription.tableViewCell.detailTextLabel.textColor = [UIColor tableCellBlueTextYCColor];
         self->notesCellDescription.tableViewCell.detailTextLabel.text = self.alarmTemp.notes;
+        self->notesCellDescription.tableViewCell.detailTextLabel.adjustsFontSizeToFitWidth = NO;
     }else{
         self->notesCellDescription.tableViewCell.detailTextLabel.textColor = [UIColor lightGrayColor];
         self->notesCellDescription.tableViewCell.detailTextLabel.text = KAPTextPlaceholderNote;
+        //自动调整字号
+        self->notesCellDescription.tableViewCell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
+        self->notesCellDescription.tableViewCell.detailTextLabel.minimumFontSize = 10.0;
     }
 	
 	return self->notesCellDescription;
@@ -805,7 +815,8 @@
     notification.alertBody = notificationBody;
     notification.applicationIconBadgeNumber = badgeNumber;
     notification.userInfo = userInfo;
-    [app scheduleLocalNotification:notification];
+    //[app scheduleLocalNotification:notification];
+    [app presentLocalNotificationNow:notification];
 }
 
 #pragma mark -

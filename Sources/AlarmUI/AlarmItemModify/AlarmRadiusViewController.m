@@ -6,6 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCPromptView.h"
 #import "YCLocationManager.h"
 #import "IAGlobal.h"
 #import "YCMapPointAnnotation.h"
@@ -98,6 +99,17 @@
 	self.alarm.alarmRadiusTypeId = self.alarm.alarmRadiusType.alarmRadiusTypeId;
 	double rd = [self alarmRadiusValue];
 	self.alarm.radius = (rd < kMixAlarmRadius) ? kMixAlarmRadius:rd;
+    
+    //警告，提醒半径太小
+    if (rd < 499.0) {
+        YCPromptView *promptView = [[[YCPromptView alloc] init] autorelease];
+        promptView.promptViewStatus = YCPromptViewStatusWarn;
+        promptView.dismissByTouch = YES;
+        promptView.textLabel.font = [UIFont boldSystemFontOfSize:19.0];
+        promptView.text = KTextWaringRadiusTooSmall;
+        [promptView performSelector:@selector(show) withObject:nil afterDelay:0.25];
+        [promptView performSelector:@selector(dismissAnimated:) withObject:(id)kCFBooleanTrue afterDelay:8.0];
+    }
 	
 }
 
@@ -128,35 +140,6 @@
 	[self updateAlarmRadiusCircleOverlay:circleOverlay];
 	
 	[[self.mapView layer] addAnimation:animation forKey:@"updateAlarmRadiusCircleOverlay"];
-	 
-	/*
-	if (self.lastCircleOverlay) {
-		CLLocationDistance lastRadius = self.lastCircleOverlay.radius;
-		CLLocationDistance newRadius  = circleOverlay.radius;
-		
-		MKMapRect lastMapRect = self.lastCircleOverlay.boundingMapRect;
-		MKMapRect newMapRect  = circleOverlay.boundingMapRect;
-		MKCoordinateRegion lastRegion = MKCoordinateRegionForMapRect(lastMapRect);
-		MKCoordinateRegion newRegion  = MKCoordinateRegionForMapRect(newMapRect);
-		
-		CGRect lastRect = [self.mapView convertRegion:lastRegion toRectToView:self.mapView];
-		CGRect newRect  = [self.mapView convertRegion:newRegion  toRectToView:self.mapView];
-		
-		NSInteger updateValue = abs( (NSInteger)(newRect.size.width - lastRect.size.width) );
-		if (updateValue > 2) {
-			if (updateValue >20) updateValue = 20;
-			CLLocationCoordinate2D centerCoordinate = circleOverlay.coordinate;
-			for (NSInteger i = 0; i < updateValue; i++) {
-				CLLocationDistance tempRadius = (lastRadius >= newRadius)?(lastRadius-(lastRadius - newRadius)/updateValue):(lastRadius+(newRadius - lastRadius)/updateValue);
-				
-				MKCircle *circle = [MKCircle circleWithCenterCoordinate:centerCoordinate radius:tempRadius];
-				[self performSelector:@selector(updateAlarmRadiusCircleOverlay:) withObject:circle afterDelay:i*5/20];
-				//[self updateAlarmRadiusCircleOverlay:circle];
-			}
-		}
-		
-	}
-	 */
 	
 	
 }
@@ -223,16 +206,6 @@
 	(newCircleRect.size.width < kMinCircleRadius*2 || newCircleRect.size.height < kMinCircleRadius*2);
 	
 	if (b) {
-		
-		/*
-		 //根据包括圆的矩形的区域，得到地图区域:宽 = 宽*(200/180),高 = 高*(200/180)
-		 CLLocationDegrees latitudeDelta = newCircleRegion.span.latitudeDelta *kRateOfMapAndMaxCircleDiameter;
-		 CLLocationDegrees longitudeDelta = newCircleRegion.span.longitudeDelta *kRateOfMapAndMaxCircleDiameter;
-		 MKCoordinateSpan newSpan = MKCoordinateSpanMake(latitudeDelta, longitudeDelta);
-		 MKCoordinateRegion newMapRegion = MKCoordinateRegionMake(centerCoordinate, newSpan);
-		 //修正
-		 MKCoordinateRegion newMapRegionFited = [self.mapView regionThatFits:newMapRegion];
-		*/
 		 
 		MKCoordinateRegion newMapRegionFited = newCircleRegion;//[self.mapView regionThatFits:newCircleRegion];
 		if (self->isFirstShow){
@@ -278,14 +251,6 @@
 	[invocaton setArgument:&inComponentForCustomPicker atIndex:3];
 	[invocaton setArgument:&isAnimatedForAlarmRadiusPicker atIndex:4];
 	[invocaton performSelector:@selector(invoke) withObject:nil afterDelay:0.3];
-	
-	/*
-	///////////////////////////////////////////
-	//单位的单复数
-	NSString *unit = [self alarmRadiusUnitForRow:selectedRowForCustomPicker];
-	[self.alarmRadiusUnitLabel performSelector:@selector(setText:) withObject:unit afterDelay:0.3];
-	///////////////////////////////////////////
-	*/
 	
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	NSNotification *aNotification = [NSNotification notificationWithName:IAAlarmRadiusDidChangeNotification object:self];
@@ -346,7 +311,6 @@
 	[self.customPickerController updatePickerViewWithAlarmRadius:self.alarm.radius];  //更新CustomPicker的显示
 	
 	//是否显示CustomPicker
-	//id obj = [[DicManager alarmRadiusTypeDictionary] objectForKey:self.alarm.AlarmRadiusTypeId];
 	id obj = self.alarm.alarmRadiusType;
 	NSInteger row = [[DicManager alarmRadiusTypeArray] indexOfObject:obj];
 	if (row != NSNotFound) {
@@ -371,12 +335,6 @@
 	CLLocationDistance alarmRadius = self.alarm.radius;
 	[self setCircleOverlayAndMapRegionWithAlarmRadius:alarmRadius];
 	
-	/*
-	///////////////////////////////////////////
-	//单位的单复数
-	self.alarmRadiusUnitLabel.text = self.alarmRadiusUnit;
-	///////////////////////////////////////////
-	 */
 	self.alarmRadiusUnitLabel.text = kUnitKilometre;
 	
 }
@@ -402,7 +360,6 @@
 #pragma mark Utility
 -(void)animateSetCustomPickerShowOrHide{
 	CATransition *animation = [CATransition animation];  
-	//[animation setDelegate:self];  
 	[animation setDuration:0.70];
 	animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]; 
 	[animation setType:kCATransitionPush];
@@ -420,7 +377,7 @@
 	self.customPickerViewContainer.hidden = !isHidden;
 	
 	[[self.customPickerViewContainer layer] addAnimation:animation forKey:@"Custom Picker Hide or Show"];
-	
+    
 }
 
 #pragma mark -

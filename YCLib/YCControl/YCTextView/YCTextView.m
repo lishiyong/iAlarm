@@ -32,6 +32,9 @@
         textField = [[UITextField alloc] initWithFrame:frame];
         textField.font = self.font;
         textField.userInteractionEnabled = NO;
+        //自动调整字号
+        textField.adjustsFontSizeToFitWidth = YES;
+        textField.minimumFontSize = 10.0;
     }
     return textField;
 }

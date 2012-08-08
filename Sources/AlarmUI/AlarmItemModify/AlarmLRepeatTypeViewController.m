@@ -22,7 +22,6 @@
  *在7个中，有效的alarmCalendar。
  */
 - (NSIndexSet*)_vaildIndexSetOfAlwaysAlarmCalendars;
-//- (BOOL)_isSameOfAlwaysAlarmCalendars;
 
 @end
 
@@ -40,26 +39,6 @@
         return obj.vaild;
     }];
 }
-
-/*
-- (BOOL)_isSameOfAlwaysAlarmCalendars{
-    //用第一个元素和其他的比较
-    IAAlarmCalendar *firstObj = [_alwaysAlarmCalendars objectAtIndex:0];
-    
-    NSIndexSet *set = [_alwaysAlarmCalendars indexesOfObjectsPassingTest:^BOOL(IAAlarmCalendar *obj, NSUInteger idx, BOOL *stop) {
-        BOOL isEqualBegin = [firstObj.beginTime isEqualToDate:obj.beginTime];
-        BOOL isEqualEnd   = [firstObj.endTime   isEqualToDate:obj.endTime];
-        if (isEqualBegin && isEqualEnd) {
-            return YES;
-        }else {
-            *stop = YES;
-            return NO;
-        }
-    }];
-    
-    return (set.count == _alwaysAlarmCalendars.count);
-}
- */
 
 - (void)_makeSections{
 
@@ -233,6 +212,7 @@
         if (once) {
             _onceAlarmSchedule.repeatInterval = 0; //不重复
             _onceAlarmSchedule.weekDay = -1;
+            _onceAlarmSchedule.vaild = YES;
             self.alarm.alarmSchedules = [NSArray arrayWithObjects:_onceAlarmSchedule, nil];
         }else {
             [_alwaysAlarmSchedules enumerateObjectsUsingBlock:^(IAAlarmSchedule *obj, NSUInteger idx, BOOL *stop) {
@@ -247,6 +227,7 @@
                     obj.beginTime = _onceAlarmSchedule.beginTime;
                     obj.endTime = _onceAlarmSchedule.endTime;
                 }
+                //obj.vaild = ;
             }];
             
             self.alarm.alarmSchedules = _alwaysAlarmSchedules;

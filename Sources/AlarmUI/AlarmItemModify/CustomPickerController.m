@@ -1,4 +1,5 @@
 
+#import "YCLib.h"
 #import "YCParam.h"
 #import "IAGlobal.h"
 #import "IAAlarmRadiusType.h"
@@ -30,7 +31,7 @@ NSString *IAAlarmDidDeSelecteCustomRowNotification = @"IAAlarmDidDeSelecteCustom
 #define METERS_COMPONENT 2
 #define METERS_COMPONENT_WIDTH 108
 #define METERS_COMPONENT_HIGHT 32
-#define METERS_LABEL_WIDTH 50
+#define METERS_LABEL_WIDTH 40
 
 
 // Identifies for component views
@@ -55,14 +56,9 @@ NSString *IAAlarmDidDeSelecteCustomRowNotification = @"IAAlarmDidDeSelecteCustom
 	
 	[self.pickerView selectRow:kmRow inComponent:1 animated:NO];
 	[self.pickerView selectRow:meterRow inComponent:2 animated:NO];
-	
-	/*
-	if (kmRow == 0) {
-		self.alarmRadiusUnitKilometreLabel.text = kAlarmRadiusUnitKilometre; //单数
-	}else {
-		self.alarmRadiusUnitKilometreLabel.text = kAlarmRadiusUnitKilometres; //复数
-	}
-	 */
+    
+    //更新一下 米的列，500米下的标记可能改变
+    [self.pickerView reloadComponent:2];
 	
 }
 
@@ -179,7 +175,7 @@ NSString *IAAlarmDidDeSelecteCustomRowNotification = @"IAAlarmDidDeSelecteCustom
 
 
 
-- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view {
+- (UIView *)pickerView:(UIPickerView *)thePickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view {
 	
 	UIView *returnView = nil;
 	
@@ -223,7 +219,12 @@ NSString *IAAlarmDidDeSelecteCustomRowNotification = @"IAAlarmDidDeSelecteCustom
 			text = [NSString stringWithFormat:@"%d", row];
 			break;
 		case METERS_COMPONENT:
-			text = [NSString stringWithFormat:@"%d", (row)*100];
+            text = [NSString stringWithFormat:@"%d", (row)*100];
+            if ([thePickerView selectedRowInComponent:1] == 0) { //0km
+                if (row > 0 && row < 5) {  // 小于500m
+                    text = [NSString stringWithFormat:@"%@ %@",[NSString stringEmojiSatelliteAntenna],text];
+                }
+            }
 			break;
 		default:
 			break;
@@ -231,7 +232,7 @@ NSString *IAAlarmDidDeSelecteCustomRowNotification = @"IAAlarmDidDeSelecteCustom
 	
 	UILabel *theLabel = (UILabel *)[returnView viewWithTag:SUB_LABEL_TAG];
 	theLabel.text = text;
-	
+    	
 	return returnView;
 }
 
@@ -286,11 +287,15 @@ NSString *IAAlarmDidDeSelecteCustomRowNotification = @"IAAlarmDidDeSelecteCustom
 		NSTimeInterval delay = 0.0;
         if (self.customAlarmRadiusValue < kMixAlarmRadius-1.0) //499.0(500.0) 浮点比较
         {
+            /*
             if ([YCParam paramSingleInstance].leaveAlarmEnabled) { //iphone 4
                 [thePickerView selectRow:1 inComponent:2 animated:YES];//最小选100米
             }else{
                 [thePickerView selectRow:5 inComponent:2 animated:YES]; //最小选500米
             }
+             */
+            
+            [thePickerView selectRow:1 inComponent:2 animated:YES]; //最小选100米
             delay = 1.0;
         }
         
@@ -298,24 +303,11 @@ NSString *IAAlarmDidDeSelecteCustomRowNotification = @"IAAlarmDidDeSelecteCustom
 		NSNotification *aNotification = [NSNotification notificationWithName:IAAlarmRadiusDidChangeNotification object:self];
 		[notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:delay];	
 	}
+    
+    if (1== component) { //0 km
+        [thePickerView reloadComponent:2];//更新一下 米的列，500米下的标记可能改变
+    }
 	
-	/*
-	if (component == 1){
-		if (row == 0) {
-			self.alarmRadiusUnitKilometreLabel.text = kAlarmRadiusUnitKilometre; //单数
-		}else {
-			self.alarmRadiusUnitKilometreLabel.text = kAlarmRadiusUnitKilometres; //复数
-		}
-	}else if (component == 2){
-		if (row == 0) {
-			self.alarmRadiusUnitMetreLabel.text = kAlarmRadiusUnitMeter; //单数
-		}else {
-			self.alarmRadiusUnitMetreLabel.text = kAlarmRadiusUnitMeters; //复数
-		}
-	}
-	 */
-
-
 }
 
 

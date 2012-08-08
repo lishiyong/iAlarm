@@ -88,13 +88,12 @@
     if (!_unknownPersonVC) {
         _unknownPersonVC = [[ABUnknownPersonViewController alloc] init];
         _unknownPersonVC.unknownPersonViewDelegate = self;
+        _unknownPersonVC.allowsAddingToAddressBook = YES;
     }
     
     if (thePerson) {
         _unknownPersonVC.alternateName = thePerson.organization ? thePerson.organization : thePerson.personName;//优先显示organization
         _unknownPersonVC.displayedPerson = thePerson.ABPerson;
-        BOOL isAllowsAddingToAddressBook = (thePerson.addressDictionaries.count >0);
-        _unknownPersonVC.allowsAddingToAddressBook = isAllowsAddingToAddressBook;
     }
     
      _unknownPersonVC.title = KLabelAlarmPostion;
@@ -822,6 +821,17 @@
     }
     
 }
+
+/*
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
+    if (viewController == _unknownPersonVC) {
+        if (_unknownPersonVC.displayedPerson) {
+            IAPerson * thePerson = [[IAPerson alloc] initWithPerson:_unknownPersonVC.displayedPerson];
+            _unknownPersonVC.allowsAddingToAddressBook = (thePerson.addressDictionaries.count >0);
+        }
+    }
+}
+ */
 
 
 #pragma mark - 响应点图片
