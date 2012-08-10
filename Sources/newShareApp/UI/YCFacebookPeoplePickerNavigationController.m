@@ -8,9 +8,8 @@
 
 #import "WaitingPromptCell.h"
 #import "IconDownloader.h"
-#import "YCBarButtonItem.h"
+#import "YCLib.h"
 #import "YCFacebookGlobalData.h"
-#import "YCMaskView.h"
 #import "YCFacebookPeople.h"
 #import "LocalizedStringShareApp.h"
 #import "CheckPeopleCell.h"

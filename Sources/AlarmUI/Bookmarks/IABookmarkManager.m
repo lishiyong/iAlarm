@@ -12,7 +12,6 @@
 #import "YCSearchBar.h"
 #import "YCSearchDisplayController.h"
 #import "YCSearchController.h"
-#import "YCTabToolbarController.h"
 #import "IARecentAddressViewController.h"
 #import "IABookmarkManager.h"
 

@@ -7,11 +7,10 @@
 //
 
 #import "LocalizedStringShareApp.h"
-#import "YCMaskView.h"
+#import "YCLib.h"
 #import "YCSystemStatus.h"
 #import "YCParam.h"
 #import "UIUtility.h"
-#import "YCInAppPurchaseManager.h"
 #import "IABuyManager.h"
 
 NSString *IAInAppPurchaseProUpgradeProductId = @"com.yicheng.iAlarm.upgradetopro";

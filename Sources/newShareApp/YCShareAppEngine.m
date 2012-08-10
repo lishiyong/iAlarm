@@ -12,7 +12,7 @@
 #import "YCTwitterTweetViewController.h"
 #import "YCFacebookFeedViewController.h"
 #import "YCShareAppNotifications.h"
-#import "NSObject+YC.h"
+#import "YCLib.h"
 #import "UIUtility.h"
 #import "YCSystemStatus.h"
 #import "LocalizedStringShareApp.h"
@@ -21,7 +21,6 @@
 #import "YCFacebookGlobalData.h"
 #import "SA_OAuthTwitterController.h"
 #import "SA_OAuthTwitterEngine.h"
-#import "YCSoundPlayer.h"
 #import "YCShareAppEngine.h"
 
 #define kOAuthConsumerKey_TW		@"lUbvIKxdi2c6SleoH3z5Q"		                 

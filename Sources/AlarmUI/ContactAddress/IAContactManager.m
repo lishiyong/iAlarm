@@ -7,7 +7,6 @@
 //
 
 #import "AlarmDetailTableViewController.h"
-#import "YCLocation.h"
 #import "YCParam.h"
 #import <QuartzCore/QuartzCore.h>
 #import "AlarmPositionMapViewController.h"

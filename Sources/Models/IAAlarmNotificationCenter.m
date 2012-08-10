@@ -6,8 +6,8 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCLib.h"
 #import "IAAlarm.h"
-#import "UIApplication+YC.h"
 #import "IAAlarmNotification.h"
 #import "IAAlarmNotificationCenter.h"
 

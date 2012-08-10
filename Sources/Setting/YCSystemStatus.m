@@ -6,7 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "UIApplication+YC.h"
+#import "YCLib.h"
 #import "YCLog.h"
 #import "IAAlarm.h"
 #import "IANotifications.h"

@@ -6,9 +6,8 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
-#import "YCLocationManager.h"
+#import "YCLib.h"
 #import "LocalizedString.h"
-#import "CLLocation+YC.h"
 #import "YCMapPointAnnotation+AlarmUI.h"
 
 @implementation YCMapPointAnnotation (AlarmUI)

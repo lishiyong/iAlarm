@@ -7,7 +7,6 @@
 //
 
 #import "YCLib.h"
-#import "YCSoundPlayer.h"
 #import "YCSound.h"
 #import "DicManager.h"
 #import "AlarmLSoundViewController.h"

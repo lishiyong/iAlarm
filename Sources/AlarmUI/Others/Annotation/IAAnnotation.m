@@ -13,9 +13,7 @@
 #import "IANotifications.h"
 #import "LocalizedString.h"
 #import "IAPerson.h"
-#import "YCPlacemark.h"
 #import "IAAlarm.h"
-#import "YCMapPointAnnotation.h"
 #import "IAAnnotation.h"
 
 @interface IAAnnotation (Private) 

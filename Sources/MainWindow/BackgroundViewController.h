@@ -6,8 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "YCAlertTableView.h"
-#import "BSForwardGeocoder.h"
+#import "YCLib.h"
 #import "YCSearchController.h"
 #import <UIKit/UIKit.h>
 

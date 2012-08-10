@@ -8,9 +8,8 @@
 
 #import "IAAlarm.h"
 #import "IAAnnotation.h"
-#import "YCRemoveMinusButton.h"
+#import "YCLib.h"
 #import "IAPinAnnotationView.h"
-#import "YCMoveInButton.h"
 
 @interface IAPinAnnotationView (private) 
 - (void)_setEditing:(BOOL)isEditing animated:(BOOL)animated;

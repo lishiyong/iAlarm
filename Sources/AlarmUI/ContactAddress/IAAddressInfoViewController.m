@@ -7,7 +7,7 @@
 //
 
 #import "LocalizedString.h"
-#import "YCPlacemark.h"
+#import "YCLib.h"
 #import "IAAlarm.h"
 #import "IAPerson.h"
 #import "IAAddressInfoViewController.h"

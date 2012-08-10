@@ -8,9 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
-#import "YCButton.h"
-#import "YCRemoveMinusButton.h"
-#import "YCMoveInButton.h"
+#import "YCLib.h"
 
 
 @class IAPinAnnotationView;

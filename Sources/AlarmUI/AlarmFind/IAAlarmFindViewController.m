@@ -7,9 +7,6 @@
 //
 #import "IAFlagAnnotationView.h"
 #import "YCLib.h"
-#import "UIButton+YC.h"
-#import "YCLocationManager.h"
-#import "YCAlarmStatusBar.h"
 #import "YCMapPointAnnotation+AlarmUI.h"
 #import "YCShareContent.h"
 #import "YCShareAppEngine.h"
@@ -17,12 +14,10 @@
 #import "IANotifications.h"
 #import "YCSystemStatus.h"
 #import "LocalizedString.h"
-#import "NSString+YC.h"
 #import "IAAlarm.h"
 #import "YCSound.h"
 #import "YCPositionType.h"
 #import "IAAlarmNotification.h"
-#import "UIColor+YC.h"
 #import <QuartzCore/QuartzCore.h>
 #import "IAAlarmFindViewController.h"
 

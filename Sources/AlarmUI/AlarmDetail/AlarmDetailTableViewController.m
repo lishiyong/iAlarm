@@ -10,26 +10,17 @@
 #import "YCLib.h"
 #import "IAContactManager.h"
 #import "IAPerson.h"
-#import "YCLocationManager.h"
-#import "CLLocation+YC.h"
 #import "IAAlarmNotificationCenter.h"
-#import "UIColor+YC.h"
 #import "IAAlarmFindViewController.h"
 #import "IAAlarmNotification.h"
 #import "AlarmNotesViewController.h"
-#import "NSString+YC.h"
-#import "YCSoundPlayer.h"
 #import "IADestinationCell.h"
 #import "AlarmTriggerTableViewController.h"
 #import "YCPositionType.h"
 #import "IAGlobal.h"
-#import "NSObject+YC.h"
-#import "UIViewController+YC.h"
 #import "IANotifications.h"
 #import "AlarmDetailFooterView.h"
 #import "YCSystemStatus.h"
-#import "YClocationServicesUsableAlert.h"
-#import "YCMaps.h"
 #import "IAAlarmRadiusType.h"
 #import "AlarmRadiusViewController.h"
 #import "YCParam.h"
@@ -990,6 +981,8 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
+    [self.navigationController.navigationBar setYCBarStyle:YCBarStyleSilver];
+
 	isFirstShow = YES;
     self.tableView.showsVerticalScrollIndicator = NO;
 	

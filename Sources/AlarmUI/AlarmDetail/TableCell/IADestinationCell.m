@@ -8,7 +8,6 @@
 
 #import "IANotifications.h"
 #import "YCLib.h"
-#import "YCPlacemark.h"
 #import "IAAlarm.h"
 #import "YCSystemStatus.h"
 #import "LocalizedString.h"

@@ -11,16 +11,9 @@
 #import "IARecentAddressDataManager.h"
 #import "IABookmarkManager.h"
 #import "YCLib.h"
-#import "YCLocation.h"
-#import "YCFunctions.h"
-#import "YCLocationManager.h"
-#import "UINavigationController+YC.h"
 #import "YCSearchBarNotification.h"
 #import "IAAboutViewController.h"
 #import "IAAlarmFindViewController.h"
-#import "NSObject+YC.h"
-#import "YCMaps.h"
-#import "MKMapView+YC.h"
 #import "UIUtility.h"
 #import "YCSearchBar.h"
 #import "YCSystemStatus.h"
@@ -31,7 +24,6 @@
 #import "AlarmsListViewController.h"
 #import "AlarmsMapListViewController.h"
 #import "BackgroundViewController.h"
-#import "YCAlertTableView.h"
 
 
 
@@ -908,6 +900,8 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];    
+    [self.navigationController.navigationBar setYCBarStyle:YCBarStyleSilver];
+    
     //self.navBar =self.navigationController.navigationBar;
     BOOL navigationBarHidden = self.navigationController.navigationBarHidden;
     [self.navigationController setToolbarHidden:navigationBarHidden animated:NO];

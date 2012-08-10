@@ -9,7 +9,7 @@
 //  See ReadMe for further attributions, copyrights and license info.
 //
 
-#import "NSObject+YC.h"
+#import "YCLib.h"
 #import <UIKit/UIKit.h>
 #import "SA_OAuthTwitterEngine.h"
 

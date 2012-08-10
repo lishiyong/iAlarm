@@ -6,11 +6,8 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "YCPromptView.h"
-#import "YCLocationManager.h"
+#import "YCLib.h"
 #import "IAGlobal.h"
-#import "YCMapPointAnnotation.h"
-#import "YCLocation.h"
 #import "CustomPickerController.h"
 #import "UIUtility.h"
 #import "IAAlarm.h"

@@ -6,8 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
-#import "YCSoundPlayer.h"
-#import "UIApplication+YC.h"
+#import "YCLib.h"
 #import "NSData+Base64Additions.h"
 #import "LocalizedStringShareApp.h"
 #import <QuartzCore/QuartzCore.h>

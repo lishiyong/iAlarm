@@ -6,7 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
-#import "YCMapPointAnnotation.h"
+//#import "YCMapPointAnnotation.h"
 
 @interface YCMapPointAnnotation (AlarmUI)
 

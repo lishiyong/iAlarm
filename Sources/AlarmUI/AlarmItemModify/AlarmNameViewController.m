@@ -7,8 +7,6 @@
 //
 
 #import "YCLib.h"
-#import "UIColor+YC.h"
-#import "NSString+YC.h"
 #import "AlarmModifyTableViewController.h"
 #import "IAAlarm.h"
 #import "AlarmNameViewController.h"

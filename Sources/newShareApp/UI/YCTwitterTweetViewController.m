@@ -8,8 +8,6 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "YCLib.h"
-#import "NSObject+YC.h"
-#import "YCBarButtonItem.h"
 #import "YCShareContent.h"
 #import "LocalizedStringShareApp.h"
 #import "SA_OAuthTwitterEngine.h"

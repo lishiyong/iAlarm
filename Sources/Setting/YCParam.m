@@ -7,8 +7,7 @@
 //
 
 #import <CoreLocation/CoreLocation.h>
-#import "UIApplication+YC.h"
-#import "NSCoder+YC.h"
+#import "YCLib.h"
 #import "YCParam.h"
 #import "UIUtility.h"
 #import "IAAlarm.h"
