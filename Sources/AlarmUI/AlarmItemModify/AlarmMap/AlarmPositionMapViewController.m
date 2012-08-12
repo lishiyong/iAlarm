@@ -11,7 +11,6 @@
 #import "IANotifications.h"
 #import "IAAlarmRadiusType.h"
 #import "YCSystemStatus.h"
-#import "YCSearchBar.h"
 #import "AlarmPositionMapViewController.h"
 #import "IAAlarm.h"
 #import "UIUtility.h"

@@ -981,8 +981,6 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-    [self.navigationController.navigationBar setYCBarStyle:YCBarStyleSilver];
-
 	isFirstShow = YES;
     self.tableView.showsVerticalScrollIndicator = NO;
 	

@@ -12,7 +12,7 @@
 #import <UIKit/UIKit.h>
 
 
-@class YCTabToolbarController, YCSearchController;
+@class YCTabToolbarController, SearchDisplayManager;
 
 @interface IABookmarkManager : NSObject<ABPeoplePickerNavigationControllerDelegate, ABPersonViewControllerDelegate, IARecentAddressViewControllerDelegate,UINavigationControllerDelegate>{
     YCTabToolbarController *_tabToolbarController;
@@ -21,7 +21,7 @@
 }
 
 @property (nonatomic, assign) IBOutlet UIViewController *currentViewController; //相当于delegate,要用assign
-@property (nonatomic, retain) YCSearchController *searchController;
+@property (nonatomic, retain) SearchDisplayManager *searchDisplayManager;
 
 - (void)presentBookmarViewController;
 

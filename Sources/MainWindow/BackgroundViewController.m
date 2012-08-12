@@ -6,16 +6,15 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import "SearchDisplayManager.h"
 #import "IARegionsCenter+Debug.h"
 #import "IAPerson.h"
 #import "IARecentAddressDataManager.h"
 #import "IABookmarkManager.h"
 #import "YCLib.h"
-#import "YCSearchBarNotification.h"
 #import "IAAboutViewController.h"
 #import "IAAlarmFindViewController.h"
 #import "UIUtility.h"
-#import "YCSearchBar.h"
 #import "YCSystemStatus.h"
 #import "LocalizedString.h"
 #import "IAAlarm.h"
@@ -30,11 +29,8 @@
 @implementation BackgroundViewController
 @synthesize listViewController;
 @synthesize mapsViewController;
-//@synthesize navBar;
 @synthesize searchBar;
-@synthesize searchController;
 @synthesize bookmarkManager;
-//@synthesize toolbar;
 @synthesize animationBackgroundView;
 
 - (id)editButtonItem{
@@ -310,15 +306,22 @@
 	
 
 	//Nav的标题,toolbar上的按钮
+    UIView *titleView = nil;
 	if (IAListViewController == curViewControllerType) {
 		self.title = KViewTitleAlarmsList;
-        //[self.toolbar setItems:[self listViewToolbarItems] animated:YES];
         [self setToolbarItems:[self listViewToolbarItems] animated:YES];
+        //self.navigationItem.titleView = nil;
+        titleView = nil;
 	}else {
 		self.title = KViewTitleAlarmsListMaps;
-        //[self.toolbar setItems:[self mapsViewToolbarItems] animated:YES];
         [self setToolbarItems:[self mapsViewToolbarItems] animated:YES];
+        titleView = self.searchBar;
 	}
+    
+    //searchBar
+    [UIView transitionWithView:self.navigationController.navigationBar duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+        self.navigationItem.titleView = titleView;
+    } completion:NULL];
 
 }
 
@@ -644,13 +647,16 @@
     //截图遮挡，避免屏幕跳动
     [self takeMaskViewWithBarDoHide:doHide];
 
+    self.navigationItem.titleView = nil;
+    
     [self.navigationController setToolbarHidden:doHide animated:YES]; 
-    //[self.toolbar setItems:[self mapsViewToolbarItems] animated:NO];
     [self setToolbarItems:[self mapsViewToolbarItems] animated:NO];
-    //[self.navigationController setNavigationBarHidden:doHide animated:YES];
     [self.navigationController setNavigationBarHidden:doHide animated:YES searchBar:self.searchBar fromSuperView:self.animationBackgroundView];
 
-    //[self.mapsViewController.mapView performSelector:@selector(setUserInteractionEnabled:) withObject:(id)kCFBooleanTrue afterDelay:UINavigationControllerHideShowBarDuration + 0.05];//MKMapView有bug:地图到了最细致后，再放大mapview的尺寸，就禁止用户事件。
+    [self performBlock:^{
+        self.navigationItem.titleView = doHide ? nil : self.searchBar;
+    } afterDelay:UINavigationControllerHideShowBarDuration+ 0.1];
+    
     [self performBlock:^{
         self.mapsViewController.mapView.userInteractionEnabled = YES;
     } afterDelay:UINavigationControllerHideShowBarDuration+ 0.05];
@@ -661,7 +667,7 @@
     //关闭未关闭的对话框
     [searchResultsAlert dismissWithClickedButtonIndex:searchResultsAlert.cancelButtonIndex animated:NO];
     [searchAlert dismissWithClickedButtonIndex:searchAlert.cancelButtonIndex animated:NO];
-    [self.searchController setActive:NO animated:NO];
+    [ycSearchDisplayController setActive:NO animated:NO];
     [forwardGeocoderManager cancel];
 }
 
@@ -710,10 +716,12 @@
 						   selector: @selector (handle_controlStatusShouldChange:)
 							   name: IAControlStatusShouldChangeNotification
 							 object: nil];
+    /*
     [notificationCenter addObserver: self
 						   selector: @selector (handleHideBar:)
 							   name: IADoHideBarNotification
 							 object: nil];
+     */
     [notificationCenter addObserver: self
 						   selector: @selector (handle_applicationWillResignActive:)
 							   name: UIApplicationWillResignActiveNotification
@@ -735,7 +743,7 @@
 	[notificationCenter removeObserver:self	name: IAAlarmMapsMaskingDidChangeNotification object: nil];
 	[notificationCenter removeObserver:self	name: IAAlarmDidViewNotification object: nil];
 	[notificationCenter removeObserver:self	name: IAControlStatusShouldChangeNotification object: nil];
-    [notificationCenter removeObserver:self	name: IADoHideBarNotification object: nil];
+    //[notificationCenter removeObserver:self	name: IADoHideBarNotification object: nil];
     [notificationCenter removeObserver:self	name: UIApplicationWillResignActiveNotification object: nil];
 }
 
@@ -900,7 +908,7 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];    
-    [self.navigationController.navigationBar setYCBarStyle:YCBarStyleSilver];
+    //[self.navigationController.navigationBar setYCBarStyle:YCBarStyleSilver];
     
     //self.navBar =self.navigationController.navigationBar;
     BOOL navigationBarHidden = self.navigationController.navigationBarHidden;
@@ -908,12 +916,18 @@
     [self registerNotifications];
     
     //searchBar
+    self.navigationItem.titleView = self.searchBar;
 	self.searchBar.placeholder = KTextPromptPlaceholderOfSearchBar;
-	[(YCSearchBar*)self.searchBar setCanResignFirstResponder:YES];
-	self.searchController = [[[YCSearchController alloc] initWithDelegate:self
-												 searchDisplayController:self.searchDisplayController] autorelease];
-	self.searchController.originalSearchBarHidden = NO;//不自动隐藏
-    self.bookmarkManager.searchController = self.searchController;
+    self.bookmarkManager.searchDisplayManager = searchDisplayManager;
+    
+    searchDisplayManager = [[SearchDisplayManager alloc] init];
+    ycSearchDisplayController = [[YCSearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+    ycSearchDisplayController.delegate = searchDisplayManager;
+    ycSearchDisplayController.searchResultsDataSource = searchDisplayManager;
+    ycSearchDisplayController.searchResultsDelegate = searchDisplayManager;
+    self.searchBar.delegate = searchDisplayManager;
+    searchDisplayManager.searchDisplayController = ycSearchDisplayController;
+    searchDisplayManager.delegate = self;
     
     
     //当前控制器、 Nav的标题、searchBar
@@ -1192,20 +1206,20 @@
         }
     }
             
-    [self.searchController setActive:NO animated:YES];   //search取消
+    [ycSearchDisplayController setActive:NO animated:YES];   //search取消
 }
 
 #pragma mark -
-#pragma mark YCSearchControllerDelegete methods
+#pragma mark SearchDisplayManagerDelegate methods
 
-- (void)searchController:(YCSearchController *)controller searchString:(NSString *)searchString
+- (void)searchWithString:(NSString *)searchString;
 {
     
     searchString = [searchString stringByTrim];
     
     //加到最近查询list中
     if (searchString && searchString.length > 0) 
-        [self.searchController addListContentWithString:searchString];
+        [searchDisplayManager addListContentWithString:searchString];
     
     //当前地图可视范围的视口
     MKMapRect visibleBounds = self.mapsViewController.mapView.visibleMapRect;
@@ -1224,8 +1238,7 @@
     }];  
      
 }
-
-- (void)searchController:(YCSearchController *)controller addressDictionary:(NSDictionary *)addressDictionary personName:(NSString *) personName personId:(int32_t)personId{
+- (void)searchWithaddressDictionary:(NSDictionary *)addressDictionary personName:(NSString *) personName personId:(int32_t)personId{
     
     if (!forwardGeocoderManager) 
         forwardGeocoderManager = [[YCForwardGeocoderManager alloc] init];
@@ -1238,8 +1251,7 @@
     }];    
 }
 
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{		 
+- (void)cancelSearch{
 	 //取消了，还没结束，结束它
     [forwardGeocoderManager cancel]; 
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -1261,9 +1273,9 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (alertView == searchAlert) {
         if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:kAlertBtnRetry]) {
-            [self.searchController setActive:YES animated:YES];   //search状态
+            [ycSearchDisplayController setActive:YES animated:YES];   //search状态
         }else if(alertView.cancelButtonIndex == buttonIndex){
-            [self.searchController setActive:NO animated:YES];   //search取消
+            [ycSearchDisplayController setActive:NO animated:YES];   //search取消
         }
     }
 }
@@ -1281,11 +1293,14 @@
 	
 	self.listViewController = nil;
 	self.mapsViewController = nil;
-    //self.navBar = nil;
 	self.searchBar = nil;
     self.bookmarkManager = nil;
-	//self.toolbar = nil;
 	self.animationBackgroundView = nil;
+    
+    [ycSearchDisplayController release]; ycSearchDisplayController = nil;
+    [searchDisplayManager clearCaches];
+    [searchDisplayManager release];searchDisplayManager = nil;
+    
 }
 
 
@@ -1298,16 +1313,15 @@
 	[doneButtonItem release];
 	[addButtonItem release];
 	
-    //[navBar release];
 	[searchBar release];
-	[searchController release];
+    [ycSearchDisplayController release];
+    [searchDisplayManager release];
     [searchResultsAlert release];
     [searchAlert release];
     [searchResults release];
     [forwardGeocoderManager release];
     [bookmarkManager release];
 	
-	//[toolbar release];
 	[infoBarButtonItem release];
 	[switchBarButtonItem release];
 	[currentLocationBarButtonItem release];

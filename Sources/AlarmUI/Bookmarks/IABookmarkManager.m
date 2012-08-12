@@ -9,15 +9,14 @@
 #import "LocalizedString.h"
 #import "YCLib.h"
 #import "IAPerson.h"
-#import "YCSearchBar.h"
 #import "YCSearchDisplayController.h"
-#import "YCSearchController.h"
+#import "searchDisplayManager.h"
 #import "IARecentAddressViewController.h"
 #import "IABookmarkManager.h"
 
 @implementation IABookmarkManager
 
-@synthesize currentViewController = _currentViewController, searchController = _searchController;
+@synthesize currentViewController = _currentViewController, searchDisplayManager = _searchDisplayManager;
 
 - (void)cancelButtonItemPressed:(id)sender{
     //ABPersonViewController 控制器的取消按钮。点击后，回到地图界面。
@@ -73,10 +72,9 @@
     
     //做搜索状
     NSString *searchString = ABCreateStringWithAddressDictionary(addressDictionary,NO);
-    self.searchController.searchDisplayController.searchBar.text = searchString;
-    
-    [self.searchController setActive:YES animated:NO];
-    [self.searchController setSearchWaiting:YES];
+    self.searchDisplayManager.searchDisplayController.searchBar.text = searchString;
+    [self.searchDisplayManager.searchDisplayController setActive:YES animated:NO];
+    [self.searchDisplayManager.searchDisplayController.searchBar setShowsSearchingView:YES];
     
     
     //关闭本视图控制器
@@ -88,10 +86,8 @@
     
     [self performBlock:^{
         
-        if ([self.searchController.delegate respondsToSelector:@selector(searchController:addressDictionary:personName:personId:)]) {
-            
-            [self.searchController.delegate searchController:self.searchController addressDictionary:addressDictionary personName:personName personId:personId];
-            
+        if ([self.searchDisplayManager.delegate respondsToSelector:@selector(searchWithaddressDictionary:personName:personId:)]) {
+            [self.searchDisplayManager.delegate searchWithaddressDictionary:addressDictionary personName:personName personId:personId];
         }
         
     } afterDelay:0.1];
@@ -101,9 +97,9 @@
 - (void)_searchWithSearchString:(NSString*)searchString{
     
     //做搜索状
-    self.searchController.searchDisplayController.searchBar.text = searchString;
-    [self.searchController setActive:YES animated:NO];
-    [self.searchController setSearchWaiting:YES];
+    self.searchDisplayManager.searchDisplayController.searchBar.text = searchString;
+    [self.searchDisplayManager.searchDisplayController setActive:YES animated:NO];
+    [self.searchDisplayManager.searchDisplayController.searchBar setShowsSearchingView:YES];
     
     //关闭本视图控制器
     if ([self.currentViewController respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]) {
@@ -113,8 +109,8 @@
     }
     
     [self performBlock:^{
-        if ([self.searchController.delegate respondsToSelector:@selector(searchController:searchString:)]) {
-            [self.searchController.delegate searchController:self.searchController searchString:searchString];
+        if ([self.searchDisplayManager.delegate respondsToSelector:@selector(searchWithString:)]) {
+            [self.searchDisplayManager.delegate searchWithString:searchString];
         }
     } afterDelay:0.1];
     

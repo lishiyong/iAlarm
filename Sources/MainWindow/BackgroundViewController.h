@@ -6,8 +6,8 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import "SearchDisplayManager.h"
 #import "YCLib.h"
-#import "YCSearchController.h"
 #import <UIKit/UIKit.h>
 
 typedef enum {
@@ -15,16 +15,18 @@ typedef enum {
     IAListViewController
 } IASwitchViewControllerType;
 
-@protocol YCAlertTableViewDelegete;
+@protocol YCAlertTableViewDelegete, SearchDisplayManagerDelegate;
 @class YCAlertTableView;
 @class AlarmsListViewController;
 @class AlarmsMapListViewController;
 @class YCSearchBar;
 @class YCForwardGeocoderManager;
 @class IABookmarkManager;
+@class YCSearchDisplayController;
+@class SearchDisplayManager;
 
 @interface BackgroundViewController : UIViewController
-<UIAlertViewDelegate,YCSearchControllerDelegete,YCAlertTableViewDelegete> {
+<UIAlertViewDelegate,SearchDisplayManagerDelegate,YCAlertTableViewDelegete> {
 
 	AlarmsListViewController *listViewController;
 	AlarmsMapListViewController *mapsViewController;
@@ -35,12 +37,14 @@ typedef enum {
 	UIBarButtonItem *doneButtonItem;
 	UIBarButtonItem *addButtonItem;
 	
-	IBOutlet YCSearchBar *searchBar;
-	YCSearchController *searchController;
+	IBOutlet UISearchBar *searchBar;
+    YCSearchDisplayController *ycSearchDisplayController;
+    SearchDisplayManager *searchDisplayManager;
     YCAlertTableView *searchResultsAlert;
     UIAlertView *searchAlert;
     NSArray *searchResults;
     YCForwardGeocoderManager *forwardGeocoderManager;
+
     
 	UIBarButtonItem *infoBarButtonItem;
 	UIBarButtonItem *switchBarButtonItem;
@@ -60,8 +64,7 @@ typedef enum {
 @property (nonatomic, retain, readonly) UIBarButtonItem *doneButtonItem;
 @property (nonatomic, retain, readonly) UIBarButtonItem *addButtonItem;
 
-@property (nonatomic, retain) IBOutlet YCSearchBar *searchBar;
-@property (nonatomic, retain) YCSearchController *searchController;
+@property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, retain) IBOutlet IABookmarkManager *bookmarkManager;
 
 @property (nonatomic, retain, readonly) UIBarButtonItem *infoBarButtonItem;
