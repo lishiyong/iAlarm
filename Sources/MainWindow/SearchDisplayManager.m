@@ -81,7 +81,7 @@ static NSMutableArray	*listContent = nil; //所有实例，共用
 #pragma mark Content Filtering
 
 - (void)filterContentForSearchText:(NSString*)searchText
-{
+{    
 	[self.filteredListContent removeAllObjects]; // First clear the filtered array.
 	
     if (searchText) {
@@ -128,20 +128,20 @@ static NSMutableArray	*listContent = nil; //所有实例，共用
     
 	NSString *searchString = [self.filteredListContent objectAtIndex:indexPath.row];
 	
+    //反选
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
 	//相同，直接搜索
 	if ([searchString isEqualToString:self.searchDisplayController.searchBar.text]) {
-		//搜索状态
-		//[self.searchDisplayController setActive:YES animated:YES];		
-		
-		//反选
-		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 		
         //搜索状态-激活等待指示
 		[self.searchDisplayController.searchBar setShowsSearchingView:YES];
         
 		//执行搜索
-        if ([delegate respondsToSelector:@selector(searchWithString:)]) 
+        if ([delegate respondsToSelector:@selector(searchWithString:)]) {
+            [self.searchDisplayController hidesSearchResultsTableViewWithAnimated:YES]; //搜索时候，把tableView去掉
             [delegate searchWithString:searchString];
+        }
 		
         
 	}else {//不相同，把选中的“提示字符串”显示到searchBar的文本框中
@@ -160,8 +160,10 @@ static NSMutableArray	*listContent = nil; //所有实例，共用
         [self.searchDisplayController.searchBar setShowsSearchingView:YES];
         
         //执行搜索
-        if ([delegate respondsToSelector:@selector(searchWithString:)]) 
+        if ([delegate respondsToSelector:@selector(searchWithString:)]) {
+            [self.searchDisplayController hidesSearchResultsTableViewWithAnimated:YES]; //搜索时候，把tableView去掉
             [delegate searchWithString:searchString];
+        }
     }
 }
 
@@ -183,8 +185,9 @@ static NSMutableArray	*listContent = nil; //所有实例，共用
 	}
 }
 
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
-    [self filterContentForSearchText:searchText];
+- (BOOL)searchDisplayController:(YCSearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{
+    [self filterContentForSearchText:searchString];
+    return YES;
 }
 
 #pragma mark - YCSearchDisplayDelegate

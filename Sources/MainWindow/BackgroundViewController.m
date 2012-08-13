@@ -310,7 +310,6 @@
 	if (IAListViewController == curViewControllerType) {
 		self.title = KViewTitleAlarmsList;
         [self setToolbarItems:[self listViewToolbarItems] animated:YES];
-        //self.navigationItem.titleView = nil;
         titleView = nil;
 	}else {
 		self.title = KViewTitleAlarmsListMaps;
@@ -390,8 +389,6 @@
     [notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.0];
 	
 	//动画结束，允许
-	//self.navBar.topItem.leftBarButtonItem.enabled = YES;
-	//self.navBar.topItem.rightBarButtonItem.enabled = YES;
     self.navigationItem.leftBarButtonItem.enabled = YES;
     self.navigationItem.rightBarButtonItem.enabled = YES;
 	[self.view setUserInteractionEnabled:YES];
@@ -416,8 +413,6 @@
 		//为定位动画留出时间
 		[self performSelector:@selector(showAddAlarmView:) withObject:alarm afterDelay:1.5];
 		//动画期间，不允许
-		//self.navBar.topItem.leftBarButtonItem.enabled = NO;
-		//self.navBar.topItem.rightBarButtonItem.enabled = NO;
         self.navigationItem.leftBarButtonItem.enabled = NO;
         self.navigationItem.rightBarButtonItem.enabled = NO;
 		[self.view setUserInteractionEnabled:NO];
@@ -485,8 +480,6 @@
 	
 	NSNumber *isMaskObj = [[notification userInfo] objectForKey:IAAlarmMapsMaskingKey];
 	if ([isMaskObj boolValue]) {//发生了覆盖
-		//self.navBar.topItem.leftBarButtonItem = nil;
-		//self.navBar.topItem.rightBarButtonItem = nil;
         [self.navigationItem setLeftBarButtonItem:nil animated:NO];
         [self.navigationItem setRightBarButtonItem:nil animated:NO];
 		self.searchBar.hidden = YES;		
@@ -495,17 +488,14 @@
 		
 		//map在当前显示做处理toolbar
 		if (IAMapsViewController == curViewControllerType) {
-			//[self.toolbar setItems:[self mapsViewToolbarItems] animated:YES]; 
             [self setToolbarItems:[self mapsViewToolbarItems] animated:YES];
             self.searchBar.hidden = NO;
         }
 		else{ 
-			//[self.toolbar setItems:[self listViewToolbarItems] animated:YES]; 
             [self setToolbarItems:[self listViewToolbarItems] animated:YES];
         }
 		
 		
-		//self.navBar.topItem.rightBarButtonItem = self.addButtonItem;
         [self.navigationItem setRightBarButtonItem:self.addButtonItem animated:YES];
 		
 		NSUInteger alarmsCount = [IAAlarm alarmArray].count;		//空列表不显示编辑按钮
@@ -528,11 +518,9 @@
 																			userInfo:nil];
 				[notificationCenter performSelector:@selector(postNotification:) withObject:bNotification afterDelay:0.0];
 			}else {
-				//self.navBar.topItem.leftBarButtonItem = self.editButtonItem;
                 [self.navigationItem setLeftBarButtonItem:self.editButtonItem animated:NO];
 			}
 		}else {
-			//self.navBar.topItem.leftBarButtonItem = nil;
             [self.navigationItem setLeftBarButtonItem:nil animated:NO];
 		}
 
@@ -916,9 +904,7 @@
     [self registerNotifications];
     
     //searchBar
-    self.navigationItem.titleView = self.searchBar;
 	self.searchBar.placeholder = KTextPromptPlaceholderOfSearchBar;
-    self.bookmarkManager.searchDisplayManager = searchDisplayManager;
     
     searchDisplayManager = [[SearchDisplayManager alloc] init];
     ycSearchDisplayController = [[YCSearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
@@ -928,6 +914,8 @@
     self.searchBar.delegate = searchDisplayManager;
     searchDisplayManager.searchDisplayController = ycSearchDisplayController;
     searchDisplayManager.delegate = self;
+    self.bookmarkManager.searchDisplayManager = searchDisplayManager;
+
     
     
     //当前控制器、 Nav的标题、searchBar
@@ -937,28 +925,23 @@
             curViewController = self.listViewController;
             //self.navBar.topItem.title = KViewTitleAlarmsList;
             self.title = KViewTitleAlarmsList;
-            //toolbar有bug，竟然需要延时设置才行
-            //[self.toolbar performSelector:@selector(setItems:) withObject: [self listViewToolbarItems] afterDelay:0.0]; 
             [self setToolbarItems:[self listViewToolbarItems] animated:NO];                                                                   
-            
             self.searchBar.hidden = YES;
+            self.navigationItem.titleView = nil;
             break;
         case IAMapsViewController:
             curViewController = self.mapsViewController;
-            //self.navBar.topItem.title = KViewTitleAlarmsListMaps;
             self.title = KViewTitleAlarmsListMaps;
-            //[self.toolbar performSelector:@selector(setItems:) withObject: [self mapsViewToolbarItems] afterDelay:0.0];
             [self setToolbarItems:[self mapsViewToolbarItems] animated:NO];
             self.searchBar.hidden = NO;
+            self.navigationItem.titleView = self.searchBar;
         default:
             break;
     }
     
     //Nav按钮
-    //self.navBar.topItem.rightBarButtonItem = self.addButtonItem;
-    //self.navBar.topItem.leftBarButtonItem = self.editButtonItem;
-    self.navigationItem.rightBarButtonItem = self.addButtonItem;
-    self.navigationItem.leftBarButtonItem = self.editButtonItem;
+    //self.navigationItem.rightBarButtonItem = self.addButtonItem;
+    //self.navigationItem.leftBarButtonItem = self.editButtonItem;
     
     
 	//view没有加载，先加载

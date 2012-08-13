@@ -87,6 +87,7 @@
     [self performBlock:^{
         
         if ([self.searchDisplayManager.delegate respondsToSelector:@selector(searchWithaddressDictionary:personName:personId:)]) {
+            [self.searchDisplayManager.searchDisplayController hidesSearchResultsTableViewWithAnimated:YES]; //搜索时候，把tableView去掉
             [self.searchDisplayManager.delegate searchWithaddressDictionary:addressDictionary personName:personName personId:personId];
         }
         
@@ -110,6 +111,7 @@
     
     [self performBlock:^{
         if ([self.searchDisplayManager.delegate respondsToSelector:@selector(searchWithString:)]) {
+            [self.searchDisplayManager.searchDisplayController hidesSearchResultsTableViewWithAnimated:YES]; //搜索时候，把tableView去掉
             [self.searchDisplayManager.delegate searchWithString:searchString];
         }
     } afterDelay:0.1];
