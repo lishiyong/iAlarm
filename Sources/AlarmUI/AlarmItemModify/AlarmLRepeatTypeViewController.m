@@ -6,6 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCParam.h"
 #import "IAAlarmSchedule.h"
 #import "AlarmBeginEndViewController.h"
 #import "YCLib.h"
@@ -23,6 +24,9 @@
  */
 - (NSIndexSet*)_vaildIndexSetOfAlwaysAlarmCalendars;
 
+
+- (void)setSkinWithType:(IASkinType)type;
+
 @end
 
 
@@ -31,6 +35,23 @@
 @synthesize beginEndSwitchCell = _beginEndSwitchCell, beginEndCell = _beginEndCell, beginEndSwitch = _beginEndSwitch;
 @synthesize sameSwitchCell = _sameSwitchCell, sameSwitch = _sameSwitch;
 
+- (void)setSkinWithType:(IASkinType)type{
+    YCBarButtonItemStyle buttonItemStyle = YCBarButtonItemStyleDefault;
+    YCTableViewBackgroundStyle tableViewBgStyle = YCTableViewBackgroundStyleDefault;
+    YCBarStyle barStyle = YCBarStyleDefault;
+    if (IASkinTypeDefault == type) {
+        buttonItemStyle = YCBarButtonItemStyleDefault;
+        tableViewBgStyle = YCTableViewBackgroundStyleDefault;
+        barStyle = YCBarStyleDefault;
+    }else {
+        buttonItemStyle = YCBarButtonItemStyleSilver;
+        tableViewBgStyle = YCTableViewBackgroundStyleSilver;
+        barStyle = YCBarStyleSilver;
+    }
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:nil style:buttonItemStyle];
+    [self.tableView setYCBackgroundStyle:tableViewBgStyle];
+    [self.tableView reloadData];
+}
 
 #pragma mark - private
 
@@ -401,6 +422,8 @@
         _alwaysAlarmSchedules = [[NSArray arrayWithArray:temps] retain];
     }
     
+    //skin Style
+    [self setSkinWithType:[YCParam paramSingleInstance].skinType];
 }
  
 - (void)viewWillAppear:(BOOL)animated{
@@ -502,7 +525,8 @@
                 
                 BOOL beginEndSwitchEnabled = self.beginEndSwitch.enabled; //因为_makeSections会改变它，所以先临时存储在这
                 [self _makeSections];
-                [self.tableView reloadDataAnimated:NO];
+                //[self.tableView reloadDataAnimated:NO];
+                [self.tableView reloadData];
                 
                 
                 //不是每个日期都被选中 && beginEndSwitch可用（日期第一次缺失）&& beginEndSwitchCell不在可视范围 && 使用相同时间

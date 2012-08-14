@@ -21,6 +21,22 @@
 
 @synthesize mapView = _mapView ,delegate = _delegate;
 
+- (void)setSkinWithType:(IASkinType)type{
+    YCBarButtonItemStyle buttonItemStyle = YCBarButtonItemStyleDefault;
+    YCTableViewBackgroundStyle tableViewBgStyle = YCTableViewBackgroundStyleDefault;
+    YCBarStyle barStyle = YCBarStyleDefault;
+    if (IASkinTypeDefault == type) {
+        buttonItemStyle = YCBarButtonItemStyleDefault;
+        tableViewBgStyle = YCTableViewBackgroundStyleDefault;
+        barStyle = YCBarStyleDefault;
+    }else {
+        buttonItemStyle = YCBarButtonItemStyleSilver;
+        tableViewBgStyle = YCTableViewBackgroundStyleSilver;
+        barStyle = YCBarStyleSilver;
+    }
+    [self.navigationItem.rightBarButtonItem setYCStyle:buttonItemStyle];
+}
+
 #pragma mark - 
 #pragma mark - Utility
 
@@ -285,6 +301,8 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
                                     initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                     target:self 
                                     action:@selector(doneButtonPressed:)] autorelease];
+    doneButton.style = UIBarButtonItemStyleDone;
+    
     [self.navigationItem setRightBarButtonItem:doneButton animated:YES];
     self.navigationItem.rightBarButtonItem.enabled = NO; //地图返回动画，不能马上执行
     
@@ -312,6 +330,9 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
         self.mapView.showsUserLocation = YES;
         self.navigationItem.rightBarButtonItem.enabled = YES; //地图返回动画，不能马上执行
     } afterDelay:2.0];
+    
+    //skin Style
+    [self setSkinWithType:[YCParam paramSingleInstance].skinType];
      
 }
 

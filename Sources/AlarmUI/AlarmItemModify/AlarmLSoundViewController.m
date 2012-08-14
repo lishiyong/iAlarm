@@ -6,6 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCParam.h"
 #import "YCLib.h"
 #import "YCSound.h"
 #import "DicManager.h"
@@ -17,6 +18,23 @@
 @synthesize lastIndexPath;
 @synthesize soundPlayerCurrent;
 
+- (void)setSkinWithType:(IASkinType)type{
+    YCBarButtonItemStyle buttonItemStyle = YCBarButtonItemStyleDefault;
+    YCTableViewBackgroundStyle tableViewBgStyle = YCTableViewBackgroundStyleDefault;
+    YCBarStyle barStyle = YCBarStyleDefault;
+    if (IASkinTypeDefault == type) {
+        buttonItemStyle = YCBarButtonItemStyleDefault;
+        tableViewBgStyle = YCTableViewBackgroundStyleDefault;
+        barStyle = YCBarStyleDefault;
+    }else {
+        buttonItemStyle = YCBarButtonItemStyleSilver;
+        tableViewBgStyle = YCTableViewBackgroundStyleSilver;
+        barStyle = YCBarStyleSilver;
+    }
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:nil style:buttonItemStyle];
+    [self.tableView setYCBackgroundStyle:tableViewBgStyle];
+    [self.tableView reloadData];
+}
 
 -(id)soundPlays{
 	if (soundPlays == nil) {
@@ -62,7 +80,10 @@
 	//修改视图背景等
 	[self.view setBackgroundColor:[UIColor groupTableViewBackgroundColor]];
 	self.tableView.separatorStyle =  UITableViewCellSeparatorStyleNone;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
 	
+    //skin Style
+    [self setSkinWithType:[YCParam paramSingleInstance].skinType];
 }
 
 

@@ -42,6 +42,12 @@
 #import "AlarmsMapListViewController.h"
 #import "BackgroundViewController.h"
 
+@interface AlarmDetailTableViewController (private)
+
+- (void)setSkinWithType:(IASkinType)type;
+
+@end
+
 
 @implementation AlarmDetailTableViewController
 
@@ -63,6 +69,27 @@
 @synthesize radiusCellDescription;
 @synthesize destionationCellDescription;
 @synthesize notesCellDescription;
+
+- (void)setSkinWithType:(IASkinType)type{
+    YCBarButtonItemStyle buttonItemStyle = YCBarButtonItemStyleDefault;
+    YCTableViewBackgroundStyle tableViewBgStyle = YCTableViewBackgroundStyleDefault;
+    YCBarStyle barStyle = YCBarStyleDefault;
+    if (IASkinTypeDefault == type) {
+        buttonItemStyle = YCBarButtonItemStyleDefault;
+        tableViewBgStyle = YCTableViewBackgroundStyleDefault;
+        barStyle = YCBarStyleDefault;
+    }else {
+        buttonItemStyle = YCBarButtonItemStyleSilver;
+        tableViewBgStyle = YCTableViewBackgroundStyleSilver;
+        barStyle = YCBarStyleSilver;
+    }
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:nil style:buttonItemStyle];
+    [self.cancelButtonItem setYCStyle:buttonItemStyle];
+    [self.saveButtonItem setYCStyle:buttonItemStyle];
+    [self.navigationController.navigationBar setYCBarStyle:barStyle];
+    [self.tableView setYCBackgroundStyle:tableViewBgStyle];
+    [self.tableView reloadData];
+}
 
 - (void)setAlarmTemp:(IAAlarm*)obj{
 	[obj retain];
@@ -132,6 +159,7 @@
 								initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 								target:self
 								action:@selector(cancelButtonItemPressed:)];
+        cancelButtonItem.style = UIBarButtonItemStyleBordered;
 	}
 	
 	return self->cancelButtonItem;
@@ -146,6 +174,7 @@
 								initWithBarButtonSystemItem:UIBarButtonSystemItemSave
 								target:self
 								action:@selector(saveButtonItemPressed:)];
+        saveButtonItem.style = UIBarButtonItemStyleDone;
 	}
 	
 	return self->saveButtonItem;
@@ -1020,7 +1049,8 @@
         [IAContactManager sharedManager].currentViewController = self.navigationController;
     } afterDelay:0.1];
     
-
+    //skin Style
+    [self setSkinWithType:[YCParam paramSingleInstance].skinType];
 }
 
 
@@ -1071,10 +1101,6 @@
 	
 	//停止定位
 	[self stopLocationAndReverseRestart:NO];
-    
-    //
-    self.title = nil;
-    //[self performSelector:@selector(setTitle:) withObject:nil afterDelay:0.2];
 }
 
 

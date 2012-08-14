@@ -13,6 +13,7 @@
 #import "IAAlarm.h"
 
 extern NSString *IAInAppPurchaseProUpgradeProductId;
+#define kParamFilename @"param.plist"
 
 @implementation YCParam
 
@@ -20,13 +21,12 @@ extern NSString *IAInAppPurchaseProUpgradeProductId;
 @synthesize lastLoadMapRegion;
 @synthesize alertWhenCannotLocation;
 @synthesize isProUpgradePurchased;
+@synthesize skinType = _skinType;
 
-
-
-#define kParamFilename @"param.plist"
-
-#pragma mark -
-#pragma mark Application's documents directory
+- (void)setSkinType:(IASkinType)skinType{
+    _skinType = skinType;
+    [self saveParam];
+}
 
 - (BOOL)regionMonitoring{
     //return [CLLocationManager regionMonitoringAvailable];
@@ -124,31 +124,37 @@ extern NSString *IAInAppPurchaseProUpgradeProductId;
 
 }
 
-
-
-#pragma mark -
-#pragma mark NSCoding
-- (void)encodeWithCoder:(NSCoder *)encoder {
-	[encoder encodeMKCoordinateRegion:lastLoadMapRegion forKey:klastLoadMapRegion];
-}
-
 - (id)init{
 	if (self = [super init]) {
 		isProUpgradePurchased = NO;
+        _skinType = IASkinTypeSilver;
 		[self readUserDefaults];
 		[self registerNotifications];
 	}
 	return self;
 }
 
+#pragma mark -
+#pragma mark NSCoding
+
+#define    klastLoadMapRegion                 @"lastLoadMapRegion"
+#define    kunlock                            @"unlock"
+#define    kskinType                          @"skinType"
+
+- (void)encodeWithCoder:(NSCoder *)encoder {
+	[encoder encodeMKCoordinateRegion:lastLoadMapRegion forKey:klastLoadMapRegion];
+    [encoder encodeInteger:_skinType forKey:kskinType];
+}
+
+
+
 - (id)initWithCoder:(NSCoder *)decoder {
 	
     if (self = [self init]) {		
 		lastLoadMapRegion = [decoder decodeMKCoordinateRegionForKey:klastLoadMapRegion];
+        //_skinType = [decoder decodeIntegerForKey:kskinType];
     }
     return self;
-	 
-	
 }
 
 

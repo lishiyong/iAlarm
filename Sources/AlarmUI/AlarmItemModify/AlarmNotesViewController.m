@@ -6,6 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCParam.h"
 #import "YCLib.h"
 #import "IAAlarm.h"
 #import "AlarmModifyTableViewController.h"
@@ -14,6 +15,24 @@
 
 @implementation AlarmNotesViewController
 @synthesize textView = _textView, textViewCell = _textViewCell;
+
+- (void)setSkinWithType:(IASkinType)type{
+    YCBarButtonItemStyle buttonItemStyle = YCBarButtonItemStyleDefault;
+    YCTableViewBackgroundStyle tableViewBgStyle = YCTableViewBackgroundStyleDefault;
+    YCBarStyle barStyle = YCBarStyleDefault;
+    if (IASkinTypeDefault == type) {
+        buttonItemStyle = YCBarButtonItemStyleDefault;
+        tableViewBgStyle = YCTableViewBackgroundStyleDefault;
+        barStyle = YCBarStyleDefault;
+    }else {
+        buttonItemStyle = YCBarButtonItemStyleSilver;
+        tableViewBgStyle = YCTableViewBackgroundStyleSilver;
+        barStyle = YCBarStyleSilver;
+    }
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:nil style:buttonItemStyle];
+    [self.tableView setYCBackgroundStyle:tableViewBgStyle];  
+    [self.tableView reloadData];
+}
 
 - (void)saveData{
     self.alarm.notes = self.textView.text;
@@ -31,6 +50,10 @@
 	self.textView.enablesReturnKeyAutomatically = NO; 
 	self.textView.font = [UIFont systemFontOfSize:19.0];
     self.textView.placeholder = KAPTextPlaceholderNote;
+    
+    //skin Style
+    [self setSkinWithType:[YCParam paramSingleInstance].skinType];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated

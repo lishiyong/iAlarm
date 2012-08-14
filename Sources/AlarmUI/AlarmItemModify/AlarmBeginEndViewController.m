@@ -6,6 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCParam.h"
 #import "LocalizedString.h"
 #import "YCLib.h"
 #import "IAAlarmSchedule.h"
@@ -14,10 +15,28 @@
 @interface AlarmBeginEndViewController ()
 
 - (void)_updateUI;
+- (void)setSkinWithType:(IASkinType)type;
 
 @end
 
 @implementation AlarmBeginEndViewController
+
+- (void)setSkinWithType:(IASkinType)type{
+    YCBarButtonItemStyle buttonItemStyle = YCBarButtonItemStyleDefault;
+    YCTableViewBackgroundStyle tableViewBgStyle = YCTableViewBackgroundStyleDefault;
+    YCBarStyle barStyle = YCBarStyleDefault;
+    if (IASkinTypeDefault == type) {
+        buttonItemStyle = YCBarButtonItemStyleDefault;
+        tableViewBgStyle = YCTableViewBackgroundStyleDefault;
+        barStyle = YCBarStyleDefault;
+    }else {
+        buttonItemStyle = YCBarButtonItemStyleSilver;
+        tableViewBgStyle = YCTableViewBackgroundStyleSilver;
+        barStyle = YCBarStyleSilver;
+    }
+    [self.tableView setYCBackgroundStyle:tableViewBgStyle];    
+    [self.tableView reloadData];
+}
 
 @synthesize tableView = _tableView;
 @synthesize beginCell = _beginCell, endCell = _endCell, timePicker = _timePicker;
@@ -89,6 +108,10 @@
     //选中beginCell
     NSIndexPath *IndexPathOfbeginCell = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.tableView selectRowAtIndexPath:IndexPathOfbeginCell animated:NO scrollPosition:UITableViewScrollPositionBottom];
+
+    //skin Style
+    [self setSkinWithType:[YCParam paramSingleInstance].skinType];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -138,9 +161,11 @@
     return 56.0;
 }
 
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     return @" "; //4.2前没这个不行
 }
+ 
 
 - (void)viewDidUnload
 {

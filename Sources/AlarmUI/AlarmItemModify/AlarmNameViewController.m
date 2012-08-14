@@ -6,6 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCParam.h"
 #import "YCLib.h"
 #import "AlarmModifyTableViewController.h"
 #import "IAAlarm.h"
@@ -22,6 +23,23 @@
 @implementation AlarmNameViewController
 
 @synthesize alarmNameTextField = _alarmNameTextField, alarmNameTextCell = _alarmNameTextCell;
+
+- (void)setSkinWithType:(IASkinType)type{
+    YCBarButtonItemStyle buttonItemStyle = YCBarButtonItemStyleDefault;
+    YCTableViewBackgroundStyle tableViewBgStyle = YCTableViewBackgroundStyleDefault;
+    YCBarStyle barStyle = YCBarStyleDefault;
+    if (IASkinTypeDefault == type) {
+        buttonItemStyle = YCBarButtonItemStyleDefault;
+        tableViewBgStyle = YCTableViewBackgroundStyleDefault;
+        barStyle = YCBarStyleDefault;
+    }else {
+        buttonItemStyle = YCBarButtonItemStyleSilver;
+        tableViewBgStyle = YCTableViewBackgroundStyleSilver;
+        barStyle = YCBarStyleSilver;
+    }
+    [self.tableView setYCBackgroundStyle:tableViewBgStyle];
+    [self.tableView reloadData];
+}
 
 - (void)saveData{
     
@@ -55,7 +73,11 @@
 	self.title = KViewTitleName;
     self.alarmNameTextField.placeholder = KAPTextPlaceholderName;
     self.alarmNameTextField.textColor = [UIColor tableCellBlueTextYCColor];
+    //skin Style
+    [self setSkinWithType:[YCParam paramSingleInstance].skinType];
+    
     //[self registerNotifications];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated

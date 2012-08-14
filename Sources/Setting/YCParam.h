@@ -19,14 +19,21 @@ enum {
 typedef NSUInteger YCDeviceType;
 
 
-#define    klastLoadMapRegion                 @"lastLoadMapRegion"
-#define    kunlock                            @"unlock"
+enum {
+	IASkinTypeDefault = 1,
+	IASkinTypeSilver
+};
+typedef NSUInteger IASkinType;
+
+
+
 @interface YCParam : NSObject <NSCoding> {
 	
 	MKCoordinateRegion lastLoadMapRegion;          //上一次使用地图的区域
 	BOOL alertWhenCannotLocation;                  //不能收到有效的定位数据时候是否警告用户
 	BOOL regionMonitoring;                         //是否使用区域监控,iphone4的功能
     BOOL leaveAlarmEnabled;                        //是否启用离开闹钟
+    IASkinType _skinType;
 }
 
 
@@ -36,6 +43,7 @@ typedef NSUInteger YCDeviceType;
 @property (nonatomic,assign,readonly) YCDeviceType deviceType;  
 @property (nonatomic,assign,readonly) BOOL regionMonitoring;  
 @property (nonatomic,assign,readonly) BOOL leaveAlarmEnabled;
+@property (nonatomic,assign) IASkinType skinType;
 
 
 +(YCParam*) paramSingleInstance;

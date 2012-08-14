@@ -6,6 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import "YCParam.h"
 #import "SearchDisplayManager.h"
 #import "IARegionsCenter+Debug.h"
 #import "IAPerson.h"
@@ -24,7 +25,11 @@
 #import "AlarmsMapListViewController.h"
 #import "BackgroundViewController.h"
 
+@interface AlarmDetailTableViewController (private)
 
+- (void)setSkinWithType:(IASkinType)type;
+
+@end
 
 @implementation BackgroundViewController
 @synthesize listViewController;
@@ -33,6 +38,37 @@
 @synthesize bookmarkManager;
 @synthesize animationBackgroundView;
 
+- (void)setSkinWithType:(IASkinType)type{
+    YCBarButtonItemStyle buttonItemStyle = YCBarButtonItemStyleDefault;
+    YCTableViewBackgroundStyle tableViewBgStyle = YCTableViewBackgroundStyleDefault;
+    YCBarStyle barStyle = YCBarStyleDefault;
+    if (IASkinTypeDefault == type) {
+        buttonItemStyle = YCBarButtonItemStyleDefault;
+        tableViewBgStyle = YCTableViewBackgroundStyleDefault;
+        barStyle = YCBarStyleDefault;
+    }else {
+        buttonItemStyle = YCBarButtonItemStyleSilver;
+        tableViewBgStyle = YCTableViewBackgroundStyleSilver;
+        barStyle = YCBarStyleSilver;
+    }
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:nil style:buttonItemStyle];
+    
+    [self.navigationController.navigationBar setYCBarStyle:YCBarStyleSilver];
+    [self.navigationController.toolbar setYCBarStyle:YCBarStyleSilver forToolbarPosition:UIToolbarPositionBottom];
+    [self.searchBar setYCBarStyle:YCBarStyleSilver];
+    
+    [self.editButtonItem setYCStyle:buttonItemStyle];
+    [self.doneButtonItem setYCStyle:buttonItemStyle];
+    [self.addButtonItem setYCStyle:buttonItemStyle];
+    
+    [infoBarButtonItem setYCStyle:buttonItemStyle];
+	[switchBarButtonItem setYCStyle:buttonItemStyle];
+	[currentLocationBarButtonItem setYCStyle:buttonItemStyle];
+	[focusBarButtonItem setYCStyle:buttonItemStyle];
+	[mapTypeBarButtonItem setYCStyle:buttonItemStyle];
+	[locationingBarItem setYCStyle:buttonItemStyle];   
+}
+
 - (id)editButtonItem{
 	
 	if (!self->editButtonItem) {
@@ -40,6 +76,7 @@
 								initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
 								target:self
 								action:@selector(editOrDoneButtonItemPressed:)];
+        editButtonItem.style = UIBarButtonItemStyleBordered;
 	}
 	
 	return self->editButtonItem;
@@ -52,6 +89,7 @@
 								initWithBarButtonSystemItem:UIBarButtonSystemItemDone
 								target:self
 								action:@selector(editOrDoneButtonItemPressed:)];
+        doneButtonItem.style = UIBarButtonItemStyleDone;
 	}
 	
 	return self->doneButtonItem;
@@ -64,6 +102,7 @@
 							   initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
 							   target:self
 							   action:@selector(addButtonPressed:)];
+        addButtonItem.style = UIBarButtonItemStyleBordered;
 	}
 	
 	return self->addButtonItem;
@@ -72,7 +111,8 @@
 
 - (id)infoBarButtonItem{
 	if (infoBarButtonItem == nil) {
-		UIButton *infoButton =  [UIButton buttonWithType:UIButtonTypeInfoLight];
+		//UIButton *infoButton =  [UIButton buttonWithType:UIButtonTypeInfoLight];
+        UIButton *infoButton =  [UIButton buttonWithType:UIButtonTypeInfoDark];
 		[infoButton addTarget:self action:@selector(infoButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 		infoBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:infoButton];
 	}
@@ -318,7 +358,7 @@
 	}
     
     //searchBar
-    [UIView transitionWithView:self.navigationController.navigationBar duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+    [UIView transitionWithView:self.navigationController.navigationBar duration:0.35 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
         self.navigationItem.titleView = titleView;
     } completion:NULL];
 
@@ -896,7 +936,6 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];    
-    //[self.navigationController.navigationBar setYCBarStyle:YCBarStyleSilver];
     
     //self.navBar =self.navigationController.navigationBar;
     BOOL navigationBarHidden = self.navigationController.navigationBarHidden;
@@ -956,6 +995,10 @@
 	[self.mapsViewController viewWillAppear:NO];
 	[self.animationBackgroundView insertSubview:curViewController.view atIndex:0];
 	[self.mapsViewController viewDidAppear:NO];
+    
+    
+    //skin Style
+    [self setSkinWithType:[YCParam paramSingleInstance].skinType];
     
     //debug
     //[self debug];

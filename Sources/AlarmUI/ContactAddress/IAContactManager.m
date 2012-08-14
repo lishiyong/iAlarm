@@ -51,10 +51,30 @@
  **/
 - (void)_viewController:(UIViewController *)viewController personImage:(UIImage*)personImage;
 
+- (void)setSkinWithType:(IASkinType)type;
+
 @end
 
 @implementation IAContactManager
 @synthesize currentViewController = _currentViewController, animationKind = _animationKind; 
+
+- (void)setSkinWithType:(IASkinType)type{
+    YCBarButtonItemStyle buttonItemStyle = YCBarButtonItemStyleDefault;
+    YCTableViewBackgroundStyle tableViewBgStyle = YCTableViewBackgroundStyleDefault;
+    YCBarStyle barStyle = YCBarStyleDefault;
+    if (IASkinTypeDefault == type) {
+        buttonItemStyle = YCBarButtonItemStyleDefault;
+        tableViewBgStyle = YCTableViewBackgroundStyleDefault;
+        barStyle = YCBarStyleDefault;
+    }else {
+        buttonItemStyle = YCBarButtonItemStyleSilver;
+        tableViewBgStyle = YCTableViewBackgroundStyleSilver;
+        barStyle = YCBarStyleSilver;
+    }
+    [self._cancelButtonItem setYCStyle:buttonItemStyle];
+    
+    [self _unknownPersonViewControllerWithIAPerson:nil];
+}
 
 - (void)setCurrentViewController:(UIViewController *)currentViewController{
     //相当于 delegate，不用retain
@@ -78,6 +98,7 @@
 - (id)_cancelButtonItem{
     if (!_cancelButtonItem) {
         _cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonItemPressed:)];
+        _cancelButtonItem.style = UIBarButtonItemStyleBordered;
     }
     return _cancelButtonItem;
 }
@@ -814,6 +835,7 @@
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
     
+    //
     if ([viewController isKindOfClass:[AlarmDetailTableViewController class]]) {
         [_alarm release];
         _alarm = nil;
@@ -821,16 +843,30 @@
     
 }
 
-/*
+
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
-    if (viewController == _unknownPersonVC) {
-        if (_unknownPersonVC.displayedPerson) {
-            IAPerson * thePerson = [[IAPerson alloc] initWithPerson:_unknownPersonVC.displayedPerson];
-            _unknownPersonVC.allowsAddingToAddressBook = (thePerson.addressDictionaries.count >0);
+    
+    //skin Style
+    if (viewController == _unknownPersonVC || viewController == _personVC) {
+        IASkinType type = [YCParam paramSingleInstance].skinType;
+        YCTableViewBackgroundStyle tableViewBgStyle = YCTableViewBackgroundStyleDefault;
+        if (IASkinTypeDefault == type) {
+            tableViewBgStyle = YCTableViewBackgroundStyleDefault;
+        }else {
+            tableViewBgStyle = YCTableViewBackgroundStyleSilver;
         }
+        
+        for (UIView *aView in [viewController.view subviews]) {
+            if ([aView isKindOfClass:[UITableView class]]) {
+                [(UITableView*)aView setYCBackgroundStyle:tableViewBgStyle];
+                [(UITableView*)aView reloadData];
+            }
+        }
+        
     }
+    
 }
- */
+ 
 
 
 #pragma mark - 响应点图片
@@ -859,6 +895,9 @@ static id single = nil;
     self = [super init];
     if (self) {
         _currentViewController = nil;
+        
+        //skin Style
+        [self setSkinWithType:[YCParam paramSingleInstance].skinType];
     }
     return self;
 }

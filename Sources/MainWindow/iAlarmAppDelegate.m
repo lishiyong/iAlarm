@@ -194,6 +194,12 @@
  
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {  
     NSLog(@"didFinishLaunchingWithOptions ");
+    
+    if (IASkinTypeSilver == [YCParam paramSingleInstance].skinType) {
+        application.statusBarStyle = UIStatusBarStyleBlackOpaque;
+    }else {
+         application.statusBarStyle = UIStatusBarStyleDefault;
+    }
 	
     [application registerNotifications];
 	[YCSystemStatus sharedSystemStatus]; //一定要有这个初始化
