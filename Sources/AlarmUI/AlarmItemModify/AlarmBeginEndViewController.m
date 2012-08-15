@@ -6,7 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
-#import "YCParam.h"
+#import "IAParam.h"
 #import "LocalizedString.h"
 #import "YCLib.h"
 #import "IAAlarmSchedule.h"
@@ -110,7 +110,7 @@
     [self.tableView selectRowAtIndexPath:IndexPathOfbeginCell animated:NO scrollPosition:UITableViewScrollPositionBottom];
 
     //skin Style
-    [self setSkinWithType:[YCParam paramSingleInstance].skinType];
+    [self setSkinWithType:[IAParam sharedParam].skinType];
 
 }
 

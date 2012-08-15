@@ -6,6 +6,8 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "IANotifications.h"
+#import "IAParam.h"
 #import "YCLib.h"
 #import "YCShareContent.h"
 #import "IAGlobal.h"
@@ -57,10 +59,35 @@
 - (id)versionCell;
 - (id)buyFullVersionCell;
 
+- (void)registerNotifications;
+- (void)unRegisterNotifications;
+
+- (void)setSkinWithType:(IASkinType)type;
+
 @end
 
 
 @implementation IAAboutViewController
+
+- (void)setSkinWithType:(IASkinType)type{
+    
+    YCBarButtonItemStyle buttonItemStyle = YCBarButtonItemStyleDefault;
+    YCTableViewBackgroundStyle tableViewBgStyle = YCTableViewBackgroundStyleDefault;
+    YCBarStyle barStyle = YCBarStyleDefault;
+    if (IASkinTypeDefault == type) {
+        buttonItemStyle = YCBarButtonItemStyleDefault;
+        tableViewBgStyle = YCTableViewBackgroundStyleDefault;
+        barStyle = YCBarStyleDefault;
+    }else {
+        buttonItemStyle = YCBarButtonItemStyleSilver;
+        tableViewBgStyle = YCTableViewBackgroundStyleSilver;
+        barStyle = YCBarStyleSilver;
+    }
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:nil style:buttonItemStyle];
+    [self.navigationController.navigationBar setYCBarStyle:YCBarStyleSilver];
+    [self.tableView setYCBackgroundStyle:tableViewBgStyle];
+    [self.cancelButtonItem setYCStyle:buttonItemStyle];
+}
 
 #pragma mark - property
 
@@ -71,6 +98,7 @@
 								  initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 								  target:self
 								  action:@selector(cancelButtonItemPressed:)];
+        _cancelButtonItem.style = UIBarButtonItemStyleBordered;
 	}
 	
 	return _cancelButtonItem;
@@ -470,6 +498,10 @@
                        ,copyright
                        ,nil] retain];
     
+    //skin Style
+    [self setSkinWithType:[IAParam sharedParam].skinType];
+    
+    [self registerNotifications];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -553,13 +585,34 @@
 	
 }
 
+#pragma mark - Notification
 
+- (void)IASkinStyleDidChange:(NSNotification*)notification{	
+    //skin Style
+    NSNumber *styleObj = [notification.userInfo objectForKey:IASkinStyleKey];
+    [self setSkinWithType:[styleObj integerValue]];
+}
+
+- (void)registerNotifications{
+	
+	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver: self
+						   selector: @selector (IASkinStyleDidChange:)
+							   name: IASkinStyleDidChange
+							 object: nil];
+}
+
+- (void)unRegisterNotifications{
+	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter removeObserver:self	name: IASkinStyleDidChange object: nil];
+}
 
 #pragma mark - Memory management
 
 - (void)viewDidUnload
 {
-    [super viewDidUnload];    
+    [super viewDidUnload]; 
+    [self unRegisterNotifications];
     [_cancelButtonItem release]; _cancelButtonItem = nil;
     [_shareAppEngine release]; _shareAppEngine = nil;
     [_promptView release]; _promptView = nil;
@@ -581,6 +634,7 @@
 }
 
 - (void)dealloc {
+    [self unRegisterNotifications];
     [_cancelButtonItem release];
     [_shareAppEngine release];
     [_promptView release];

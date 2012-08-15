@@ -7,7 +7,7 @@
 //
 
 #import "AlarmDetailTableViewController.h"
-#import "YCParam.h"
+#import "IAParam.h"
 #import <QuartzCore/QuartzCore.h>
 #import "AlarmPositionMapViewController.h"
 #import <AddressBook/AddressBook.h>
@@ -362,8 +362,8 @@
     CLLocationCoordinate2D lbcoordinate = theAlarm.visualCoordinate;
     
     //使用最后一次加载地图的中心坐标
-    if(!CLLocationCoordinate2DIsValid(lbcoordinate) && YCMKCoordinateRegionIsValid([YCParam paramSingleInstance].lastLoadMapRegion))        
-        lbcoordinate = [YCParam paramSingleInstance].lastLoadMapRegion.center;
+    if(!CLLocationCoordinate2DIsValid(lbcoordinate) && YCMKCoordinateRegionIsValid([IAParam sharedParam].lastLoadMapRegion))        
+        lbcoordinate = [IAParam sharedParam].lastLoadMapRegion.center;
     
     //使用缺省坐标
     lbcoordinate = CLLocationCoordinate2DIsValid(lbcoordinate) ? lbcoordinate : kYCDefaultCoordinate;
@@ -848,7 +848,7 @@
     
     //skin Style
     if (viewController == _unknownPersonVC || viewController == _personVC) {
-        IASkinType type = [YCParam paramSingleInstance].skinType;
+        IASkinType type = [IAParam sharedParam].skinType;
         YCTableViewBackgroundStyle tableViewBgStyle = YCTableViewBackgroundStyleDefault;
         if (IASkinTypeDefault == type) {
             tableViewBgStyle = YCTableViewBackgroundStyleDefault;
@@ -897,7 +897,7 @@ static id single = nil;
         _currentViewController = nil;
         
         //skin Style
-        [self setSkinWithType:[YCParam paramSingleInstance].skinType];
+        [self setSkinWithType:[IAParam sharedParam].skinType];
     }
     return self;
 }

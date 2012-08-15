@@ -99,4 +99,10 @@ NSString *IADoHideBarNotification = @"IADoHideBarNotification";
 NSString *IADoHideBarKey = @"IADoHideBarKey";
 
 
+//改变了skin的类型的通知
+NSString *IASkinStyleDidChange = @"IASkinStyleDidChange";
+//
+NSString *IASkinStyleKey = @"IASkinStyleKey";
+
+
 

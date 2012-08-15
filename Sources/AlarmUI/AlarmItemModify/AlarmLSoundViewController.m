@@ -6,7 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "YCParam.h"
+#import "IAParam.h"
 #import "YCLib.h"
 #import "YCSound.h"
 #import "DicManager.h"
@@ -83,7 +83,7 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
 	
     //skin Style
-    [self setSkinWithType:[YCParam paramSingleInstance].skinType];
+    [self setSkinWithType:[IAParam sharedParam].skinType];
 }
 
 

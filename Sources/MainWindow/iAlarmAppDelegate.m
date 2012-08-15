@@ -19,7 +19,7 @@
 #import "YCPositionType.h"
 #import "YCSystemStatus.h"
 #import "IARegionsCenter.h"
-#import "YCParam.h"
+#import "IAParam.h"
 #import "IARegion.h"
 #import "YCRepeatType.h"
 #import "YCSound.h"
@@ -195,7 +195,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {  
     NSLog(@"didFinishLaunchingWithOptions ");
     
-    if (IASkinTypeSilver == [YCParam paramSingleInstance].skinType) {
+    if (IASkinTypeSilver == [IAParam sharedParam].skinType) {
         application.statusBarStyle = UIStatusBarStyleBlackOpaque;
     }else {
          application.statusBarStyle = UIStatusBarStyleDefault;

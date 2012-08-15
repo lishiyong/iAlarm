@@ -12,7 +12,7 @@
 #import "IARegionsCenter.h"
 #import "YCSystemStatus.h"
 #import "IANotifications.h"
-#import "YCParam.h"
+#import "IAParam.h"
 #import "IABuyManager.h"
 #import "AlarmListNotifications.h"
 #import "UIUtility.h"

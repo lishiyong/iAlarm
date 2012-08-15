@@ -23,7 +23,7 @@
 #import "YCSystemStatus.h"
 #import "IAAlarmRadiusType.h"
 #import "AlarmRadiusViewController.h"
-#import "YCParam.h"
+#import "IAParam.h"
 #import "AlarmLRepeatTypeViewController.h"
 #import "AlarmLSoundViewController.h"
 #import "AlarmNameViewController.h"
@@ -226,7 +226,7 @@
 		
 		NSArray *twoArray = nil;
 		
-        if ([YCParam paramSingleInstance].leaveAlarmEnabled) { //启用离开闹钟
+        if ([IAParam sharedParam].leaveAlarmEnabled) { //启用离开闹钟
 		
             twoArray = [NSArray arrayWithObjects:
                         self.repeatCellDescription
@@ -1050,7 +1050,7 @@
     } afterDelay:0.1];
     
     //skin Style
-    [self setSkinWithType:[YCParam paramSingleInstance].skinType];
+    [self setSkinWithType:[IAParam sharedParam].skinType];
 }
 
 

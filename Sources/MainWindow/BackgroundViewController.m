@@ -6,7 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "YCParam.h"
+#import "IAParam.h"
 #import "SearchDisplayManager.h"
 #import "IARegionsCenter+Debug.h"
 #import "IAPerson.h"
@@ -55,18 +55,30 @@
     
     [self.navigationController.navigationBar setYCBarStyle:YCBarStyleSilver];
     [self.navigationController.toolbar setYCBarStyle:YCBarStyleSilver forToolbarPosition:UIToolbarPositionBottom];
-    [self.searchBar setYCBarStyle:YCBarStyleSilver];
+    [self.searchBar setYCBarStyle:barStyle];
     
     [self.editButtonItem setYCStyle:buttonItemStyle];
     [self.doneButtonItem setYCStyle:buttonItemStyle];
     [self.addButtonItem setYCStyle:buttonItemStyle];
     
-    [infoBarButtonItem setYCStyle:buttonItemStyle];
-	[switchBarButtonItem setYCStyle:buttonItemStyle];
 	[currentLocationBarButtonItem setYCStyle:buttonItemStyle];
 	[focusBarButtonItem setYCStyle:buttonItemStyle];
 	[mapTypeBarButtonItem setYCStyle:buttonItemStyle];
 	[locationingBarItem setYCStyle:buttonItemStyle];   
+    [switchBarButtonItem setSwitchButtonYCStyle:buttonItemStyle];
+    
+    ////////////
+    [infoBarButtonItem release];
+    UIButton *infoButton = nil;
+    if (IASkinTypeDefault == type) {
+        infoButton =  [UIButton buttonWithType:UIButtonTypeInfoLight];
+    }else {
+        infoButton =  [UIButton buttonWithType:UIButtonTypeInfoDark];
+    }
+    [infoButton addTarget:self action:@selector(infoButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    infoBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:infoButton];
+    ////////////
+
 }
 
 - (id)editButtonItem{
@@ -111,46 +123,19 @@
 
 - (id)infoBarButtonItem{
 	if (infoBarButtonItem == nil) {
-		//UIButton *infoButton =  [UIButton buttonWithType:UIButtonTypeInfoLight];
-        UIButton *infoButton =  [UIButton buttonWithType:UIButtonTypeInfoDark];
+		UIButton *infoButton =  [UIButton buttonWithType:UIButtonTypeInfoLight];
 		[infoButton addTarget:self action:@selector(infoButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 		infoBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:infoButton];
 	}
-	
 	return infoBarButtonItem;
 }
 
 - (id)switchBarButtonItem{
 	if (switchBarButtonItem == nil) {
 		
-		CGRect customFrame = CGRectMake(0, 0, 38, 30);
-		
-		
-		UIView *switchBackgroundView = [[[UIView alloc] initWithFrame:customFrame] autorelease];
-		//动画转换的黑背景
-		UIImage *backgroundImage = [UIImage imageNamed:@"YCDefaultBarButtonItemBackground.png"];
-		backgroundImage = [backgroundImage stretchableImageWithLeftCapWidth:5 topCapHeight:0];
-		UIImageView *switchBackgroundImageView = [[[UIImageView alloc] initWithFrame:customFrame] autorelease];
-		switchBackgroundImageView.image = backgroundImage;
-		switchBackgroundImageView.hidden = YES;//转换时候再显示，否则影响按钮的边框
-		[switchBackgroundView addSubview:switchBackgroundImageView];
-		
-		
-		//按钮
-		UIButton *switchButton =  [[[UIButton alloc] initWithFrame:customFrame] autorelease];
-		[switchBackgroundView addSubview:switchButton];
-		[switchButton setImage:[UIImage imageNamed:@"IAButtonBarLists.png"] forState:UIControlStateNormal];
-		[switchButton addTarget:self action:@selector(switchButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-		
-		//按钮的背景
-		UIImage *normalImage = [UIImage imageNamed:@"YCDefaultBarButtonItem.png"];
-		normalImage = [normalImage stretchableImageWithLeftCapWidth:5 topCapHeight:5];
-		[switchButton setBackgroundImage:normalImage forState:UIControlStateNormal];
-		UIImage *pressedImage = [UIImage imageNamed:@"YCDefaultBarButtonItemPressed.png"];
-		pressedImage = [pressedImage stretchableImageWithLeftCapWidth:5 topCapHeight:5];
-		[switchButton setBackgroundImage:pressedImage forState:UIControlStateHighlighted];
-		
-		switchBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:switchBackgroundView];
+		CGSize size = CGSizeMake(38,30);
+        UIImage *image = [UIImage imageNamed:@"IAButtonBarLists.png"];
+        switchBarButtonItem =  [[UIBarButtonItem alloc] initWithSize:size title:nil image:image style:YCBarButtonItemStyleDefault target:self action:@selector(switchButtonPressed:)];
 	}
 	
 	return switchBarButtonItem;
@@ -322,23 +307,18 @@
 	
 	//////////////////////////
 	//按钮转换
-	UIView *backgroundView = [[self.switchBarButtonItem.customView subviews] objectAtIndex:0]; //一共2个，第1个是按钮背景
-	backgroundView.hidden = NO;//转换完成前，显示按钮背景
-	UIButton *button = [[self.switchBarButtonItem.customView subviews] objectAtIndex:1]; //一共2个，第2个是按钮
-	//转换完成前，事件解除绑定
-	//[button removeTarget:self action:@selector(switchButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.switchBarButtonItem setHidesSwitchBackground:NO];//转换完成前，显示按钮背景
 	
-	
+    UIButton *button = [self.switchBarButtonItem.customView.subviews objectAtIndex:1];//一共2个，第2个是按钮
 	[UIView beginAnimations:@"switchButton Animation" context:nil];
 	[UIView setAnimationDelegate:self];
     [UIView setAnimationDuration:0.75];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
 	
-	
 	if (IAMapsViewController == curViewControllerType) {
-		[button setImage:[UIImage imageNamed:@"IAButtonBarLists.png"] forState:UIControlStateNormal];
+        [self.switchBarButtonItem setSwitchTitle:nil switchImage:[UIImage imageNamed:@"IAButtonBarLists.png"]];
 	}else {
-		[button setImage:[UIImage imageNamed:@"IAButtonBarMaps.png"] forState:UIControlStateNormal];
+        [self.switchBarButtonItem setSwitchTitle:nil switchImage:[UIImage imageNamed:@"IAButtonBarMaps.png"]];
 	}
 	
 	[UIView setAnimationTransition:trType forView:button cache:YES];
@@ -351,6 +331,7 @@
 		self.title = KViewTitleAlarmsList;
         [self setToolbarItems:[self listViewToolbarItems] animated:YES];
         titleView = nil;
+        self.searchBar.frame = CGRectInset(self.navigationController.navigationBar.bounds, 5.0, 0.0); //先调整到最大，为下次加入做准备
 	}else {
 		self.title = KViewTitleAlarmsListMaps;
         [self setToolbarItems:[self mapsViewToolbarItems] animated:YES];
@@ -358,9 +339,7 @@
 	}
     
     //searchBar
-    [UIView transitionWithView:self.navigationController.navigationBar duration:0.35 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
-        self.navigationItem.titleView = titleView;
-    } completion:NULL];
+    [self.navigationItem setTitleView:titleView animated:YES];
 
 }
 
@@ -473,10 +452,8 @@
 	NSNumber *isEditingObj = [[notification userInfo] objectForKey:IAEditStatusKey];
 	//改变按钮
 	if ([isEditingObj boolValue]){
-		//self.navBar.topItem.leftBarButtonItem = self.doneButtonItem;
         [self.navigationItem setLeftBarButtonItem:self.doneButtonItem animated:YES];
 	}else{
-		//self.navBar.topItem.leftBarButtonItem = self.editButtonItem;
         [self.navigationItem setLeftBarButtonItem:self.editButtonItem animated:YES];
     }
 }
@@ -487,6 +464,9 @@
 	if (alarmsCount == 0) {//空列表不显示编辑按钮
         [self.navigationItem setLeftBarButtonItem:nil animated:YES];
         self.focusBarButtonItem.enabled = NO;//没有pin，显示所有按钮当然不可用了
+        if (IAMapsViewController == curViewControllerType) 
+            [self.navigationController.navigationBar layoutTitleView];
+        
 	}else {
 		if (self.navigationItem.leftBarButtonItem == nil) {
             [self.navigationItem setLeftBarButtonItem:self.editButtonItem animated:YES];
@@ -699,6 +679,12 @@
     [forwardGeocoderManager cancel];
 }
 
+- (void)IASkinStyleDidChange:(NSNotification*)notification{	
+    //skin Style
+    NSNumber *styleObj = [notification.userInfo objectForKey:IASkinStyleKey];
+    [self setSkinWithType:[styleObj integerValue]];
+}
+
 - (void)registerNotifications {
 	
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -754,6 +740,11 @@
 						   selector: @selector (handle_applicationWillResignActive:)
 							   name: UIApplicationWillResignActiveNotification
 							 object: nil];
+    
+    [notificationCenter addObserver: self
+						   selector: @selector (IASkinStyleDidChange:)
+							   name: IASkinStyleDidChange
+							 object: nil];
 	
 }
 
@@ -773,6 +764,7 @@
 	[notificationCenter removeObserver:self	name: IAControlStatusShouldChangeNotification object: nil];
     //[notificationCenter removeObserver:self	name: IADoHideBarNotification object: nil];
     [notificationCenter removeObserver:self	name: UIApplicationWillResignActiveNotification object: nil];
+    [notificationCenter removeObserver:self	name: IASkinStyleDidChange object: nil];
 }
 
 #pragma mark -
@@ -921,9 +913,8 @@
 #pragma mark -
 #pragma mark animation delegate
 
-- (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context{
-	UIView *backgroundView = [[self.switchBarButtonItem.customView subviews] objectAtIndex:0]; //一共2个，第1个是背景
-	backgroundView.hidden = YES; //转换完成，背景设成透明，否则影响按钮的边框
+- (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context{ 
+    [self.switchBarButtonItem setHidesSwitchBackground:YES];//转换完成，背景设成透明，否则影响按钮的边框
 	
     if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
         [[UIApplication sharedApplication] endIgnoringInteractionEvents];
@@ -998,7 +989,7 @@
     
     
     //skin Style
-    [self setSkinWithType:[YCParam paramSingleInstance].skinType];
+    [self setSkinWithType:[IAParam sharedParam].skinType];
     
     //debug
     //[self debug];

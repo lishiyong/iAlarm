@@ -96,3 +96,8 @@ extern NSString *IAChangedRegionKey;
 extern NSString *IADoHideBarNotification;
 //BOOL参数，YES:隐藏，NO：显示
 extern NSString *IADoHideBarKey;
+
+//改变了skin的类型的通知
+extern NSString *IASkinStyleDidChange;
+//
+extern NSString *IASkinStyleKey;

@@ -19,7 +19,7 @@
 #import "IAPinAnnotationView.h"
 #import "IASaveInfo.h"
 #import "AlarmListNotifications.h"
-#import "YCParam.h"
+#import "IAParam.h"
 #import "IAAlarmRadiusType.h"
 #import "IAAnnotation.h"
 #import "YCSystemStatus.h"
@@ -581,8 +581,7 @@
 	
 	//保存最后加载的区域
 	if (self.mapView.region.span.latitudeDelta < 20.0) { //很大的地图就不存了
-		[YCParam paramSingleInstance].lastLoadMapRegion = self.mapView.region;
-		[[YCParam paramSingleInstance] saveParam];
+		[IAParam sharedParam].lastLoadMapRegion = self.mapView.region;
 	}
 	 
 }
@@ -938,9 +937,9 @@
             
             region = [self allPinsRegion];
             
-        }else if(YCMKCoordinateRegionIsValid([YCParam paramSingleInstance].lastLoadMapRegion)){       //2.
+        }else if(YCMKCoordinateRegionIsValid([IAParam sharedParam].lastLoadMapRegion)){       //2.
             
-            region = [YCParam paramSingleInstance].lastLoadMapRegion;
+            region = [IAParam sharedParam].lastLoadMapRegion;
             
         }else {//3.
             
@@ -1034,11 +1033,9 @@
 
 	//保存最后加载的区域
 	if (self.mapView.region.span.latitudeDelta < 20.0) { //很大的地图就不存了
-		[YCParam paramSingleInstance].lastLoadMapRegion = self.mapView.region;
-		[[YCParam paramSingleInstance] saveParam];
+		[IAParam sharedParam].lastLoadMapRegion = self.mapView.region;
 	}
-    
-	
+    	
 }
 
 - (void)viewWillDisappear:(BOOL)animated{

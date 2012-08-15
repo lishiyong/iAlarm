@@ -6,7 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "YCParam.h"
+#import "IAParam.h"
 #import "YCLib.h"
 #import "AlarmModifyTableViewController.h"
 #import "IAAlarm.h"
@@ -74,7 +74,7 @@
     self.alarmNameTextField.placeholder = KAPTextPlaceholderName;
     self.alarmNameTextField.textColor = [UIColor tableCellBlueTextYCColor];
     //skin Style
-    [self setSkinWithType:[YCParam paramSingleInstance].skinType];
+    [self setSkinWithType:[IAParam sharedParam].skinType];
     
     //[self registerNotifications];
 

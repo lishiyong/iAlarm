@@ -6,6 +6,8 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "IANotifications.h"
+#import "IAParam.h"
 #import "YCShareAppNotifications.h"
 #import "UIUtility.h"
 #import "YCSystemStatus.h"
@@ -25,9 +27,31 @@
 - (id)twitterCell;
 - (id)kxCell;
 
+- (void)setSkinWithType:(IASkinType)type;
+
 @end
 
 @implementation IAShareSettingViewController
+
+- (void)setSkinWithType:(IASkinType)type{
+    
+    YCBarButtonItemStyle buttonItemStyle = YCBarButtonItemStyleDefault;
+    YCTableViewBackgroundStyle tableViewBgStyle = YCTableViewBackgroundStyleDefault;
+    YCBarStyle barStyle = YCBarStyleDefault;
+    if (IASkinTypeDefault == type) {
+        buttonItemStyle = YCBarButtonItemStyleDefault;
+        tableViewBgStyle = YCTableViewBackgroundStyleDefault;
+        barStyle = YCBarStyleDefault;
+    }else {
+        buttonItemStyle = YCBarButtonItemStyleSilver;
+        tableViewBgStyle = YCTableViewBackgroundStyleSilver;
+        barStyle = YCBarStyleSilver;
+    }
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:nil style:buttonItemStyle];
+    [self.navigationController.navigationBar setYCBarStyle:YCBarStyleSilver];
+    [self.tableView setYCBackgroundStyle:tableViewBgStyle];
+}
+
 
 #pragma mark - Utility
 
@@ -150,7 +174,11 @@
     [self.tableView reloadData];
 }
 
-
+- (void)IASkinStyleDidChange:(NSNotification*)notification{	
+    //skin Style
+    NSNumber *styleObj = [notification.userInfo objectForKey:IASkinStyleKey];
+    [self setSkinWithType:[styleObj integerValue]];
+}
 
 - (void)registerNotifications 
 {
@@ -160,12 +188,17 @@
                            selector: @selector (handle_shareAppAuthorizeDidChange:)
                                name: YCShareAppAuthorizeDidChangeNotification
                              object: nil];
+    [notificationCenter addObserver: self
+						   selector: @selector (IASkinStyleDidChange:)
+							   name: IASkinStyleDidChange
+							 object: nil];
 }
 
 
 - (void)unRegisterNotifications{
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter removeObserver:self	name: YCShareAppAuthorizeDidChangeNotification object: nil];
+    [notificationCenter removeObserver:self	name: IASkinStyleDidChange object: nil];
 }
 
 
@@ -237,6 +270,9 @@
     }
     _sections = [[NSMutableArray arrayWithObjects:shareSettingSection, nil] retain];
     
+    //skin Style
+    [self setSkinWithType:[IAParam sharedParam].skinType];
+        
     [self registerNotifications];
 }
 

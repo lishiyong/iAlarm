@@ -6,7 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "YCParam.h"
+#import "IAParam.h"
 #import "IAAlarmSchedule.h"
 #import "AlarmBeginEndViewController.h"
 #import "YCLib.h"
@@ -423,7 +423,7 @@
     }
     
     //skin Style
-    [self setSkinWithType:[YCParam paramSingleInstance].skinType];
+    [self setSkinWithType:[IAParam sharedParam].skinType];
 }
  
 - (void)viewWillAppear:(BOOL)animated{

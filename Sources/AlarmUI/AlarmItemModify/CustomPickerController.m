@@ -1,6 +1,6 @@
 
 #import "YCLib.h"
-#import "YCParam.h"
+#import "IAParam.h"
 #import "IAGlobal.h"
 #import "IAAlarmRadiusType.h"
 #import "DicManager.h"

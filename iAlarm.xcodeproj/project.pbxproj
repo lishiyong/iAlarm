@@ -239,6 +239,18 @@
 		9C5B1DBA154E582D009235DB /* YCClockAlarm20.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5B1DB7154E582D009235DB /* YCClockAlarm20.png */; };
 		9C5B1DBB154E582D009235DB /* YCClockAlarm20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5B1DB8154E582D009235DB /* YCClockAlarm20@2x.png */; };
 		9C5B1DBC154E582D009235DB /* YCClockAlarm20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5B1DB8154E582D009235DB /* YCClockAlarm20@2x.png */; };
+		9C5F275015DB458800EAC172 /* YCNavigationBarDefaultButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5F274C15DB458600EAC172 /* YCNavigationBarDefaultButton.png */; };
+		9C5F275115DB458800EAC172 /* YCNavigationBarDefaultButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5F274C15DB458600EAC172 /* YCNavigationBarDefaultButton.png */; };
+		9C5F275215DB458800EAC172 /* YCNavigationBarDefaultButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5F274D15DB458600EAC172 /* YCNavigationBarDefaultButton@2x.png */; };
+		9C5F275315DB458800EAC172 /* YCNavigationBarDefaultButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5F274D15DB458600EAC172 /* YCNavigationBarDefaultButton@2x.png */; };
+		9C5F275415DB458800EAC172 /* YCNavigationBarDefaultButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5F274E15DB458700EAC172 /* YCNavigationBarDefaultButtonPressed.png */; };
+		9C5F275515DB458800EAC172 /* YCNavigationBarDefaultButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5F274E15DB458700EAC172 /* YCNavigationBarDefaultButtonPressed.png */; };
+		9C5F275615DB458800EAC172 /* YCNavigationBarDefaultButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5F274F15DB458700EAC172 /* YCNavigationBarDefaultButtonPressed@2x.png */; };
+		9C5F275715DB458800EAC172 /* YCNavigationBarDefaultButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5F274F15DB458700EAC172 /* YCNavigationBarDefaultButtonPressed@2x.png */; };
+		9C5F275A15DB46AF00EAC172 /* YCSwitchButtonItemBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5F275815DB46AC00EAC172 /* YCSwitchButtonItemBackground.png */; };
+		9C5F275B15DB46AF00EAC172 /* YCSwitchButtonItemBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5F275815DB46AC00EAC172 /* YCSwitchButtonItemBackground.png */; };
+		9C5F275C15DB46AF00EAC172 /* YCSwitchButtonItemBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5F275915DB46AE00EAC172 /* YCSwitchButtonItemBackground@2x.png */; };
+		9C5F275D15DB46AF00EAC172 /* YCSwitchButtonItemBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5F275915DB46AE00EAC172 /* YCSwitchButtonItemBackground@2x.png */; };
 		9C5FD3A515C3757D00143523 /* IARegionsCenter+Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5FD3A415C3757D00143523 /* IARegionsCenter+Debug.m */; };
 		9C5FD3A615C37F1B00143523 /* IARegionsCenter+Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5FD3A415C3757D00143523 /* IARegionsCenter+Debug.m */; };
 		9C62CACC1597517900722F35 /* ABPasteboardControl+YCBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C62CAB31597517900722F35 /* ABPasteboardControl+YCBookmark.m */; };
@@ -408,7 +420,7 @@
 		9C8AB28313B0C92100120AD5 /* YCSound.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8951F12FFFFD2008FBD45 /* YCSound.m */; };
 		9C8AB28413B0C92100120AD5 /* YCSystemStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8952812FFFFD2008FBD45 /* YCSystemStatus.m */; };
 		9C8AB28513B0C92100120AD5 /* YCLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8952A12FFFFD2008FBD45 /* YCLog.m */; };
-		9C8AB28613B0C92100120AD5 /* YCParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8952C12FFFFD2008FBD45 /* YCParam.m */; };
+		9C8AB28613B0C92100120AD5 /* IAParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8952C12FFFFD2008FBD45 /* IAParam.m */; };
 		9C8AB28713B0C92100120AD5 /* BoolCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8952F12FFFFD2008FBD45 /* BoolCell.m */; };
 		9C8AB28813B0C92100120AD5 /* CellHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8953112FFFFD2008FBD45 /* CellHeaderView.m */; };
 		9C8AB28913B0C92100120AD5 /* CheckmarkDisclosureIndicatorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8953412FFFFD2008FBD45 /* CheckmarkDisclosureIndicatorCell.m */; };
@@ -1115,8 +1127,6 @@
 		9CD89EFC14106A60000570C8 /* IAButtonBarMaps@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD89EF214106A60000570C8 /* IAButtonBarMaps@2x.png */; };
 		9CD89EFD14106A60000570C8 /* YCDefaultBarButtonItem.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD89EF314106A60000570C8 /* YCDefaultBarButtonItem.png */; };
 		9CD89EFE14106A60000570C8 /* YCDefaultBarButtonItem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD89EF414106A60000570C8 /* YCDefaultBarButtonItem@2x.png */; };
-		9CD89EFF14106A60000570C8 /* YCDefaultBarButtonItemBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD89EF514106A60000570C8 /* YCDefaultBarButtonItemBackground.png */; };
-		9CD89F0014106A60000570C8 /* YCDefaultBarButtonItemBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD89EF614106A60000570C8 /* YCDefaultBarButtonItemBackground@2x.png */; };
 		9CD89F0114106A60000570C8 /* YCDefaultBarButtonItemPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD89EF714106A60000570C8 /* YCDefaultBarButtonItemPressed.png */; };
 		9CD89F0214106A60000570C8 /* YCDefaultBarButtonItemPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD89EF814106A60000570C8 /* YCDefaultBarButtonItemPressed@2x.png */; };
 		9CD89F0314106A60000570C8 /* IAButtonBarLists.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD89EEF14106A60000570C8 /* IAButtonBarLists.png */; };
@@ -1125,8 +1135,6 @@
 		9CD89F0614106A60000570C8 /* IAButtonBarMaps@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD89EF214106A60000570C8 /* IAButtonBarMaps@2x.png */; };
 		9CD89F0714106A60000570C8 /* YCDefaultBarButtonItem.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD89EF314106A60000570C8 /* YCDefaultBarButtonItem.png */; };
 		9CD89F0814106A60000570C8 /* YCDefaultBarButtonItem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD89EF414106A60000570C8 /* YCDefaultBarButtonItem@2x.png */; };
-		9CD89F0914106A60000570C8 /* YCDefaultBarButtonItemBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD89EF514106A60000570C8 /* YCDefaultBarButtonItemBackground.png */; };
-		9CD89F0A14106A60000570C8 /* YCDefaultBarButtonItemBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD89EF614106A60000570C8 /* YCDefaultBarButtonItemBackground@2x.png */; };
 		9CD89F0B14106A60000570C8 /* YCDefaultBarButtonItemPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD89EF714106A60000570C8 /* YCDefaultBarButtonItemPressed.png */; };
 		9CD89F0C14106A60000570C8 /* YCDefaultBarButtonItemPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD89EF814106A60000570C8 /* YCDefaultBarButtonItemPressed@2x.png */; };
 		9CDB21E913679A2B004A7C72 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CDB21E813679A2B004A7C72 /* Default.png */; };
@@ -1230,7 +1238,7 @@
 		9CE895F012FFFFD2008FBD45 /* YCSound.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8951F12FFFFD2008FBD45 /* YCSound.m */; };
 		9CE895F512FFFFD2008FBD45 /* YCSystemStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8952812FFFFD2008FBD45 /* YCSystemStatus.m */; };
 		9CE895F612FFFFD2008FBD45 /* YCLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8952A12FFFFD2008FBD45 /* YCLog.m */; };
-		9CE895F712FFFFD2008FBD45 /* YCParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8952C12FFFFD2008FBD45 /* YCParam.m */; };
+		9CE895F712FFFFD2008FBD45 /* IAParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8952C12FFFFD2008FBD45 /* IAParam.m */; };
 		9CE895F812FFFFD2008FBD45 /* BoolCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8952F12FFFFD2008FBD45 /* BoolCell.m */; };
 		9CE895F912FFFFD2008FBD45 /* CellHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE8953112FFFFD2008FBD45 /* CellHeaderView.m */; };
 		9CE895FA12FFFFD2008FBD45 /* CellHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8953212FFFFD2008FBD45 /* CellHeaderView.xib */; };
@@ -1521,6 +1529,12 @@
 		9C5B1DB2154E56A1009235DB /* YCClockAlarm@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCClockAlarm@2x.png"; sourceTree = "<group>"; };
 		9C5B1DB7154E582D009235DB /* YCClockAlarm20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCClockAlarm20.png; sourceTree = "<group>"; };
 		9C5B1DB8154E582D009235DB /* YCClockAlarm20@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCClockAlarm20@2x.png"; sourceTree = "<group>"; };
+		9C5F274C15DB458600EAC172 /* YCNavigationBarDefaultButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCNavigationBarDefaultButton.png; sourceTree = "<group>"; };
+		9C5F274D15DB458600EAC172 /* YCNavigationBarDefaultButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCNavigationBarDefaultButton@2x.png"; sourceTree = "<group>"; };
+		9C5F274E15DB458700EAC172 /* YCNavigationBarDefaultButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCNavigationBarDefaultButtonPressed.png; sourceTree = "<group>"; };
+		9C5F274F15DB458700EAC172 /* YCNavigationBarDefaultButtonPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCNavigationBarDefaultButtonPressed@2x.png"; sourceTree = "<group>"; };
+		9C5F275815DB46AC00EAC172 /* YCSwitchButtonItemBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCSwitchButtonItemBackground.png; sourceTree = "<group>"; };
+		9C5F275915DB46AE00EAC172 /* YCSwitchButtonItemBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCSwitchButtonItemBackground@2x.png"; sourceTree = "<group>"; };
 		9C5FD3A315C3757D00143523 /* IARegionsCenter+Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IARegionsCenter+Debug.h"; sourceTree = "<group>"; };
 		9C5FD3A415C3757D00143523 /* IARegionsCenter+Debug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "IARegionsCenter+Debug.m"; sourceTree = "<group>"; };
 		9C62CAB21597517900722F35 /* ABPasteboardControl+YCBookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ABPasteboardControl+YCBookmark.h"; sourceTree = "<group>"; };
@@ -2101,8 +2115,6 @@
 		9CD89EF214106A60000570C8 /* IAButtonBarMaps@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAButtonBarMaps@2x.png"; sourceTree = "<group>"; };
 		9CD89EF314106A60000570C8 /* YCDefaultBarButtonItem.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCDefaultBarButtonItem.png; sourceTree = "<group>"; };
 		9CD89EF414106A60000570C8 /* YCDefaultBarButtonItem@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCDefaultBarButtonItem@2x.png"; sourceTree = "<group>"; };
-		9CD89EF514106A60000570C8 /* YCDefaultBarButtonItemBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCDefaultBarButtonItemBackground.png; sourceTree = "<group>"; };
-		9CD89EF614106A60000570C8 /* YCDefaultBarButtonItemBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCDefaultBarButtonItemBackground@2x.png"; sourceTree = "<group>"; };
 		9CD89EF714106A60000570C8 /* YCDefaultBarButtonItemPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCDefaultBarButtonItemPressed.png; sourceTree = "<group>"; };
 		9CD89EF814106A60000570C8 /* YCDefaultBarButtonItemPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCDefaultBarButtonItemPressed@2x.png"; sourceTree = "<group>"; };
 		9CDB21E813679A2B004A7C72 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -2215,8 +2227,8 @@
 		9CE8952812FFFFD2008FBD45 /* YCSystemStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCSystemStatus.m; sourceTree = "<group>"; };
 		9CE8952912FFFFD2008FBD45 /* YCLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCLog.h; sourceTree = "<group>"; };
 		9CE8952A12FFFFD2008FBD45 /* YCLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCLog.m; sourceTree = "<group>"; };
-		9CE8952B12FFFFD2008FBD45 /* YCParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCParam.h; sourceTree = "<group>"; };
-		9CE8952C12FFFFD2008FBD45 /* YCParam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCParam.m; sourceTree = "<group>"; };
+		9CE8952B12FFFFD2008FBD45 /* IAParam.h */ = {isa = PBXFileReference; fileEncoding = 4; path = IAParam.h; sourceTree = "<group>"; };
+		9CE8952C12FFFFD2008FBD45 /* IAParam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAParam.m; sourceTree = "<group>"; };
 		9CE8952E12FFFFD2008FBD45 /* BoolCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoolCell.h; sourceTree = "<group>"; };
 		9CE8952F12FFFFD2008FBD45 /* BoolCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoolCell.m; sourceTree = "<group>"; };
 		9CE8953012FFFFD2008FBD45 /* CellHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellHeaderView.h; sourceTree = "<group>"; };
@@ -3463,18 +3475,24 @@
 				9C80192215DA46C80070D4BB /* YCNavigationBarDefaultBack@2x.png */,
 				9C80192315DA46C80070D4BB /* YCNavigationBarDefaultBackPressed.png */,
 				9C80192415DA46C80070D4BB /* YCNavigationBarDefaultBackPressed@2x.png */,
-				9C8C4A9D15D62D3600FB6A2E /* YCNavigationBarDoneButtonPressedSilver.png */,
-				9C8C4A9E15D62D3600FB6A2E /* YCNavigationBarDoneButtonPressedSilver@2x.png */,
-				9C8C4A9F15D62D3600FB6A2E /* YCNavigationBarDoneButtonSilver.png */,
-				9C8C4AA015D62D3600FB6A2E /* YCNavigationBarDoneButtonSilver@2x.png */,
 				9C8C4AA115D62D3600FB6A2E /* YCNavigationBarSilverBack.png */,
 				9C8C4AA215D62D3600FB6A2E /* YCNavigationBarSilverBack@2x.png */,
 				9C8C4AA315D62D3600FB6A2E /* YCNavigationBarSilverBackPressed.png */,
 				9C8C4AA415D62D3600FB6A2E /* YCNavigationBarSilverBackPressed@2x.png */,
+				9C8C4A9D15D62D3600FB6A2E /* YCNavigationBarDoneButtonPressedSilver.png */,
+				9C8C4A9E15D62D3600FB6A2E /* YCNavigationBarDoneButtonPressedSilver@2x.png */,
+				9C8C4A9F15D62D3600FB6A2E /* YCNavigationBarDoneButtonSilver.png */,
+				9C8C4AA015D62D3600FB6A2E /* YCNavigationBarDoneButtonSilver@2x.png */,
 				9C8C4AA515D62D3600FB6A2E /* YCNavigationBarSilverButton.png */,
 				9C8C4AA615D62D3600FB6A2E /* YCNavigationBarSilverButton@2x.png */,
 				9C8C4AA715D62D3600FB6A2E /* YCNavigationBarSilverButtonPressed.png */,
 				9C8C4AA815D62D3600FB6A2E /* YCNavigationBarSilverButtonPressed@2x.png */,
+				9C5F274C15DB458600EAC172 /* YCNavigationBarDefaultButton.png */,
+				9C5F274D15DB458600EAC172 /* YCNavigationBarDefaultButton@2x.png */,
+				9C5F274E15DB458700EAC172 /* YCNavigationBarDefaultButtonPressed.png */,
+				9C5F274F15DB458700EAC172 /* YCNavigationBarDefaultButtonPressed@2x.png */,
+				9C5F275815DB46AC00EAC172 /* YCSwitchButtonItemBackground.png */,
+				9C5F275915DB46AE00EAC172 /* YCSwitchButtonItemBackground@2x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -3838,8 +3856,6 @@
 				9CD89EF214106A60000570C8 /* IAButtonBarMaps@2x.png */,
 				9CD89EF314106A60000570C8 /* YCDefaultBarButtonItem.png */,
 				9CD89EF414106A60000570C8 /* YCDefaultBarButtonItem@2x.png */,
-				9CD89EF514106A60000570C8 /* YCDefaultBarButtonItemBackground.png */,
-				9CD89EF614106A60000570C8 /* YCDefaultBarButtonItemBackground@2x.png */,
 				9CD89EF714106A60000570C8 /* YCDefaultBarButtonItemPressed.png */,
 				9CD89EF814106A60000570C8 /* YCDefaultBarButtonItemPressed@2x.png */,
 			);
@@ -4269,8 +4285,8 @@
 		9CE8952012FFFFD2008FBD45 /* Setting */ = {
 			isa = PBXGroup;
 			children = (
-				9CE8952B12FFFFD2008FBD45 /* YCParam.h */,
-				9CE8952C12FFFFD2008FBD45 /* YCParam.m */,
+				9CE8952B12FFFFD2008FBD45 /* IAParam.h */,
+				9CE8952C12FFFFD2008FBD45 /* IAParam.m */,
 				9CE8952712FFFFD2008FBD45 /* YCSystemStatus.h */,
 				9CE8952812FFFFD2008FBD45 /* YCSystemStatus.m */,
 				9CE8952912FFFFD2008FBD45 /* YCLog.h */,
@@ -4574,8 +4590,6 @@
 				9CD89F0614106A60000570C8 /* IAButtonBarMaps@2x.png in Resources */,
 				9CD89F0714106A60000570C8 /* YCDefaultBarButtonItem.png in Resources */,
 				9CD89F0814106A60000570C8 /* YCDefaultBarButtonItem@2x.png in Resources */,
-				9CD89F0914106A60000570C8 /* YCDefaultBarButtonItemBackground.png in Resources */,
-				9CD89F0A14106A60000570C8 /* YCDefaultBarButtonItemBackground@2x.png in Resources */,
 				9CD89F0B14106A60000570C8 /* YCDefaultBarButtonItemPressed.png in Resources */,
 				9CD89F0C14106A60000570C8 /* YCDefaultBarButtonItemPressed@2x.png in Resources */,
 				9CE145401412015B003A1D96 /* IADestinationCell.xib in Resources */,
@@ -4913,6 +4927,12 @@
 				9C80192B15DA46C90070D4BB /* YCNavigationBarDefaultBackPressed@2x.png in Resources */,
 				9C80193415DA48F80070D4BB /* YCGroupTableViewSilverBackgroundColor.png in Resources */,
 				9C80193615DA48F80070D4BB /* YCGroupTableViewSilverBackgroundColor@2x.png in Resources */,
+				9C5F275015DB458800EAC172 /* YCNavigationBarDefaultButton.png in Resources */,
+				9C5F275215DB458800EAC172 /* YCNavigationBarDefaultButton@2x.png in Resources */,
+				9C5F275415DB458800EAC172 /* YCNavigationBarDefaultButtonPressed.png in Resources */,
+				9C5F275615DB458800EAC172 /* YCNavigationBarDefaultButtonPressed@2x.png in Resources */,
+				9C5F275A15DB46AF00EAC172 /* YCSwitchButtonItemBackground.png in Resources */,
+				9C5F275C15DB46AF00EAC172 /* YCSwitchButtonItemBackground@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5005,8 +5025,6 @@
 				9CD89EFC14106A60000570C8 /* IAButtonBarMaps@2x.png in Resources */,
 				9CD89EFD14106A60000570C8 /* YCDefaultBarButtonItem.png in Resources */,
 				9CD89EFE14106A60000570C8 /* YCDefaultBarButtonItem@2x.png in Resources */,
-				9CD89EFF14106A60000570C8 /* YCDefaultBarButtonItemBackground.png in Resources */,
-				9CD89F0014106A60000570C8 /* YCDefaultBarButtonItemBackground@2x.png in Resources */,
 				9CD89F0114106A60000570C8 /* YCDefaultBarButtonItemPressed.png in Resources */,
 				9CD89F0214106A60000570C8 /* YCDefaultBarButtonItemPressed@2x.png in Resources */,
 				9CE145411412015B003A1D96 /* IADestinationCell.xib in Resources */,
@@ -5344,6 +5362,12 @@
 				9C80192C15DA46C90070D4BB /* YCNavigationBarDefaultBackPressed@2x.png in Resources */,
 				9C80193515DA48F80070D4BB /* YCGroupTableViewSilverBackgroundColor.png in Resources */,
 				9C80193715DA48F80070D4BB /* YCGroupTableViewSilverBackgroundColor@2x.png in Resources */,
+				9C5F275115DB458800EAC172 /* YCNavigationBarDefaultButton.png in Resources */,
+				9C5F275315DB458800EAC172 /* YCNavigationBarDefaultButton@2x.png in Resources */,
+				9C5F275515DB458800EAC172 /* YCNavigationBarDefaultButtonPressed.png in Resources */,
+				9C5F275715DB458800EAC172 /* YCNavigationBarDefaultButtonPressed@2x.png in Resources */,
+				9C5F275B15DB46AF00EAC172 /* YCSwitchButtonItemBackground.png in Resources */,
+				9C5F275D15DB46AF00EAC172 /* YCSwitchButtonItemBackground@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5372,7 +5396,7 @@
 				9CE895F012FFFFD2008FBD45 /* YCSound.m in Sources */,
 				9CE895F512FFFFD2008FBD45 /* YCSystemStatus.m in Sources */,
 				9CE895F612FFFFD2008FBD45 /* YCLog.m in Sources */,
-				9CE895F712FFFFD2008FBD45 /* YCParam.m in Sources */,
+				9CE895F712FFFFD2008FBD45 /* IAParam.m in Sources */,
 				9CE895F812FFFFD2008FBD45 /* BoolCell.m in Sources */,
 				9CE895F912FFFFD2008FBD45 /* CellHeaderView.m in Sources */,
 				9CE895FB12FFFFD2008FBD45 /* CheckmarkDisclosureIndicatorCell.m in Sources */,
@@ -5601,7 +5625,7 @@
 				9C8AB28313B0C92100120AD5 /* YCSound.m in Sources */,
 				9C8AB28413B0C92100120AD5 /* YCSystemStatus.m in Sources */,
 				9C8AB28513B0C92100120AD5 /* YCLog.m in Sources */,
-				9C8AB28613B0C92100120AD5 /* YCParam.m in Sources */,
+				9C8AB28613B0C92100120AD5 /* IAParam.m in Sources */,
 				9C8AB28713B0C92100120AD5 /* BoolCell.m in Sources */,
 				9C8AB28813B0C92100120AD5 /* CellHeaderView.m in Sources */,
 				9C8AB28913B0C92100120AD5 /* CheckmarkDisclosureIndicatorCell.m in Sources */,

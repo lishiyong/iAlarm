@@ -6,7 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "YCParam.h"
+#import "IAParam.h"
 #import "IANotifications.h"
 #import "LocalizedString.h"
 #import "YCPositionType.h"

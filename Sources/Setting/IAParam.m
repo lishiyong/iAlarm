@@ -8,49 +8,23 @@
 
 #import <CoreLocation/CoreLocation.h>
 #import "YCLib.h"
-#import "YCParam.h"
+#import "IAParam.h"
 #import "UIUtility.h"
 #import "IAAlarm.h"
 
 extern NSString *IAInAppPurchaseProUpgradeProductId;
-#define kParamFilename @"param.plist"
+#define kParamFilename @"IAParam.plist"
 
-@implementation YCParam
+@interface IAParam (private)
 
+- (void)saveParam;
 
-@synthesize lastLoadMapRegion;
-@synthesize alertWhenCannotLocation;
-@synthesize isProUpgradePurchased;
-@synthesize skinType = _skinType;
+@end
 
-- (void)setSkinType:(IASkinType)skinType{
-    _skinType = skinType;
-    [self saveParam];
-}
-
-- (BOOL)regionMonitoring{
-    //return [CLLocationManager regionMonitoringAvailable];
-    return NO;
-}
-
-- (BOOL)leaveAlarmEnabled{
-    //return [CLLocationManager regionMonitoringAvailable];
-    return NO;
-}
-
-- (void)readUserDefaults{
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	alertWhenCannotLocation = [[defaults objectForKey:@"CannotLocationPreference"] boolValue];
-}
-
-- (BOOL)isProUpgradePurchased{
-	BOOL b = [[NSUserDefaults standardUserDefaults] boolForKey:IAInAppPurchaseProUpgradeProductId];
-	return b;
-}
+@implementation IAParam
+@synthesize lastLoadMapRegion = _lastLoadMapRegion, skinType = _skinType;
 
 - (YCDeviceType)deviceType{
-
-	
 	static YCDeviceType deviceType = YCDeviceTypeUnKnown;
 	if (YCDeviceTypeUnKnown == deviceType) {
 		
@@ -65,113 +39,122 @@ extern NSString *IAInAppPurchaseProUpgradeProductId;
 				deviceType = [array indexOfObject:oneObj];
 				break;
 			}
-				
+            
 		}
 	}
 	
 	return deviceType;
-	
 }
 
-+(YCParam*) paramSingleInstance
-{
-	static YCParam* obj = nil;
-	if (obj == nil) {
-		NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kParamFilename];
-		obj = [(YCParam*)[NSKeyedUnarchiver unarchiveObjectWithFile:filePathName] retain];
-		if (obj == nil) {
-			obj = [[YCParam alloc] init];
-			obj.lastLoadMapRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(-1000,-1000), MKCoordinateSpanMake(0, 0));
-		}
-		
-	}
-	return obj;
+- (BOOL)leaveAlarmEnabled{
+    return NO;
 }
 
-
-- (void)handle_applicationWillEnterForeground:(id)notification {
-	[self readUserDefaults];
+- (BOOL)isProUpgradePurchased{
+    //这个特殊，存储在 NSUserDefaults 中
+	BOOL b = [[NSUserDefaults standardUserDefaults] boolForKey:IAInAppPurchaseProUpgradeProductId];
+	return b;
 }
 
-//闹钟列表发生变化
-- (void) handle_alarmsDataListDidChange:(id)notification {
-	if ([IAAlarm alarmArray].count == 0) { //闹钟数量=0,删除最后加载地图区域。目的让，下次打开后以当前位置为中心
-		self.lastLoadMapRegion = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(-1000.0, -1000.0), 0.0, 0.0);
-		[self saveParam];
-	}
+- (void)setSkinType:(IASkinType)skinType{
+    _skinType = skinType;
+    [self saveParam];
+}
+
+- (void)setLastLoadMapRegion:(MKCoordinateRegion)lastLoadMapRegion{
+    _lastLoadMapRegion = lastLoadMapRegion;
+    [self saveParam];
 }
 
 
-
-- (void)registerNotifications {
-	
-	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-	[notificationCenter addObserver: self
-						   selector: @selector (handle_applicationWillEnterForeground:)
-							   name: UIApplicationWillEnterForegroundNotification
-							 object: nil];
-	[notificationCenter addObserver: self
-						   selector: @selector (handle_alarmsDataListDidChange:)
-							   name: IAAlarmsDataListDidChangeNotification
-							 object: nil];
-
-}
-
-- (void)unRegisterNotifications{
-	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-	[notificationCenter removeObserver:self	name: UIApplicationWillEnterForegroundNotification object: nil];
-	[notificationCenter removeObserver:self	name: IAAlarmsDataListDidChangeNotification object: nil];
-
-}
-
-- (id)init{
-	if (self = [super init]) {
-		isProUpgradePurchased = NO;
-        _skinType = IASkinTypeSilver;
-		[self readUserDefaults];
-		[self registerNotifications];
-	}
-	return self;
-}
-
-#pragma mark -
-#pragma mark NSCoding
+#pragma mark - NSCoding
 
 #define    klastLoadMapRegion                 @"lastLoadMapRegion"
-#define    kunlock                            @"unlock"
 #define    kskinType                          @"skinType"
 
-- (void)encodeWithCoder:(NSCoder *)encoder {
-	[encoder encodeMKCoordinateRegion:lastLoadMapRegion forKey:klastLoadMapRegion];
-    [encoder encodeInteger:_skinType forKey:kskinType];
+- (void)saveParam{
+	NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kParamFilename];
+	[NSKeyedArchiver archiveRootObject:self toFile:filePathName];
 }
 
-
+- (void)encodeWithCoder:(NSCoder *)encoder {
+	[encoder encodeMKCoordinateRegion:_lastLoadMapRegion forKey:klastLoadMapRegion];
+    [encoder encodeInteger:_skinType forKey:kskinType];
+}
 
 - (id)initWithCoder:(NSCoder *)decoder {
 	
     if (self = [self init]) {		
-		lastLoadMapRegion = [decoder decodeMKCoordinateRegionForKey:klastLoadMapRegion];
-        //_skinType = [decoder decodeIntegerForKey:kskinType];
+		_lastLoadMapRegion = [decoder decodeMKCoordinateRegionForKey:klastLoadMapRegion];
+        _skinType = [decoder decodeIntegerForKey:kskinType];
     }
     return self;
 }
 
 
+#pragma mark - Init
 
--(void)saveParam{
-	NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kParamFilename];
-
-	[NSKeyedArchiver archiveRootObject:self toFile:filePathName];
+- (id)init{
+    self = [super init];
+    if (self) {
+        _lastLoadMapRegion = MKCoordinateRegionMake(kCLLocationCoordinate2DInvalid,MKCoordinateSpanMake(0, 0));
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) 
+            _skinType = IASkinTypeSilver;
+        else 
+            _skinType = IASkinTypeDefault;
+	}
+    return self;
 }
 
+#pragma mark - single Instance
 
+static IAParam *single =nil;
++ (IAParam*)sharedParam{
+    if (single == nil) {
+        //先从文件读
+        NSString *filePathName =  [[UIApplication sharedApplication].libraryDirectory stringByAppendingPathComponent:kParamFilename];
+        @try {
+            single = [(IAParam*)[NSKeyedUnarchiver unarchiveObjectWithFile:filePathName] retain];
+        }
+        @catch (NSException *exception) {
+            single = nil;
+        }
+        
+        if (single == nil) 
+            single = [[super allocWithZone:NULL] init];
+    }
+    return single;
+}
 
++ (id)allocWithZone:(NSZone *)zone
+{    
+    return single ? single : [super allocWithZone:NULL] ;
+    //return [[self sharedParam] retain];
+}
 
+- (id)copyWithZone:(NSZone *)zone
+{
+    return self;
+}
 
-- (void)dealloc {
-	[self unRegisterNotifications];
-    [super dealloc];
+- (id)retain
+{
+    return self;
+}
+
+- (NSUInteger)retainCount
+{
+    return NSUIntegerMax;  //denotes an object that cannot be released
+}
+
+- (oneway void)release
+{
+    //do nothing
+}
+
+- (id)autorelease
+{
+    return self;
 }
 
 

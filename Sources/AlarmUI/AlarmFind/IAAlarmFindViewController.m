@@ -5,6 +5,8 @@
 //  Created by li shiyong on 12-2-27.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
+
+#import "IAParam.h"
 #import "IAFlagAnnotationView.h"
 #import "YCLib.h"
 #import "YCMapPointAnnotation+AlarmUI.h"
@@ -55,10 +57,33 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
 - (void)registerNotifications;
 - (void)unRegisterNotifications;
 
+- (void)setSkinWithType:(IASkinType)type;
+
 @end
 
 
 @implementation IAAlarmFindViewController
+
+- (void)setSkinWithType:(IASkinType)type{
+    
+    YCBarButtonItemStyle buttonItemStyle = YCBarButtonItemStyleDefault;
+    YCTableViewBackgroundStyle tableViewBgStyle = YCTableViewBackgroundStyleDefault;
+    YCBarStyle barStyle = YCBarStyleDefault;
+    if (IASkinTypeDefault == type) {
+        buttonItemStyle = YCBarButtonItemStyleDefault;
+        tableViewBgStyle = YCTableViewBackgroundStyleDefault;
+        barStyle = YCBarStyleDefault;
+    }else {
+        buttonItemStyle = YCBarButtonItemStyleSilver;
+        tableViewBgStyle = YCTableViewBackgroundStyleSilver;
+        barStyle = YCBarStyleSilver;
+    }
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:nil style:buttonItemStyle];
+    [self.navigationController.navigationBar setYCBarStyle:YCBarStyleSilver];
+    //[self.tableView setYCBackgroundStyle:tableViewBgStyle];
+    [self.doneButtonItem setYCStyle:buttonItemStyle];
+    
+}
 
 #pragma mark - property
 
@@ -75,6 +100,7 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
 								initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 								target:self
 								action:@selector(doneButtonItemPressed:)];
+        doneButtonItem.style = UIBarButtonItemStyleBordered;
 	}
 	
 	return self->doneButtonItem;
@@ -760,6 +786,8 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
     _buttonCellHeight = self.buttonCell.bounds.size.height;
     _notesCellHeight = self.notesCell.bounds.size.height;//根据文本多少调整后才知道
      
+    //skin Style
+    [self setSkinWithType:[IAParam sharedParam].skinType];
     
     [self registerNotifications];
     

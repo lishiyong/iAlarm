@@ -9,7 +9,7 @@
 #import "LocalizedStringShareApp.h"
 #import "YCLib.h"
 #import "YCSystemStatus.h"
-#import "YCParam.h"
+#import "IAParam.h"
 #import "UIUtility.h"
 #import "IABuyManager.h"
 

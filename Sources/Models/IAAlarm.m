@@ -17,7 +17,7 @@
 #import "YCRepeatType.h"
 #import "IAAlarmRadiusType.h"
 #import "DicManager.h"
-#import "YCParam.h"
+#import "IAParam.h"
 #import "IAAlarm.h"
 
 //闹钟列表改变，包括：增，改，删
@@ -140,7 +140,7 @@ NSString *IAAlarmsDataListDidChangeNotification = @"IAAlarmsDataListDidChangeNot
 
 		
 		sortId = 0;       
-		YCDeviceType deviceType = [YCParam paramSingleInstance].deviceType; //不是iphone不振动
+		YCDeviceType deviceType = [IAParam sharedParam].deviceType; //不是iphone不振动
 		if (YCDeviceTypeIPhone == deviceType)
 			vibrate = YES;
 		else 

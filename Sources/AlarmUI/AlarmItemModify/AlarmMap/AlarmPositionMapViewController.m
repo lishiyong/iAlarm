@@ -14,7 +14,7 @@
 #import "AlarmPositionMapViewController.h"
 #import "IAAlarm.h"
 #import "UIUtility.h"
-#import "YCParam.h"
+#import "IAParam.h"
 
 
 @implementation AlarmPositionMapViewController
@@ -278,9 +278,9 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
     if (CLLocationCoordinate2DIsValid(self.alarm.visualCoordinate)) {
         //使用闹钟坐标
         centerCoordinate = self.alarm.visualCoordinate;
-    }else if(YCMKCoordinateRegionIsValid([YCParam paramSingleInstance].lastLoadMapRegion)){
+    }else if(YCMKCoordinateRegionIsValid([IAParam sharedParam].lastLoadMapRegion)){
         //使用最后一次加载地图的中心坐标
-        centerCoordinate = [YCParam paramSingleInstance].lastLoadMapRegion.center;
+        centerCoordinate = [IAParam sharedParam].lastLoadMapRegion.center;
     }else if (self.mapView.userLocation.location)   {
         //使用当前位置 地图上的
         centerCoordinate = self.mapView.userLocation.location.coordinate;
@@ -332,7 +332,7 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
     } afterDelay:2.0];
     
     //skin Style
-    [self setSkinWithType:[YCParam paramSingleInstance].skinType];
+    [self setSkinWithType:[IAParam sharedParam].skinType];
      
 }
 
@@ -342,8 +342,7 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 	
 	//保存最后加载的区域
 	if (self.mapView.region.span.latitudeDelta < 10.0) { //很大的地图就不存了
-		[YCParam paramSingleInstance].lastLoadMapRegion = self.mapView.region;
-		[[YCParam paramSingleInstance] saveParam];
+		[IAParam sharedParam].lastLoadMapRegion = self.mapView.region;
 	}
     
     //删除pin
