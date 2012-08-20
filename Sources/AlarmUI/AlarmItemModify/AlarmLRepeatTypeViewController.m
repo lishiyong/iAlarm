@@ -48,7 +48,7 @@
         tableViewBgStyle = YCTableViewBackgroundStyleSilver;
         barStyle = YCBarStyleSilver;
     }
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:nil style:buttonItemStyle];
+    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:nil style:buttonItemStyle] autorelease];
     [self.tableView setYCBackgroundStyle:tableViewBgStyle];
     [self.tableView reloadData];
 }

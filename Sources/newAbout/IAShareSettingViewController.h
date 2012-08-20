@@ -18,6 +18,9 @@
     UITableViewCell *_twitterCell;   //twitter
     UITableViewCell *_kxCell;        //开心网
     
+    UITableViewCell *_defaultSkinCell;
+    UITableViewCell *_silverSkinCell;
+    
 }
 
 - (id)initWithStyle:(UITableViewStyle)style shareAppEngine:(YCShareAppEngine *)theShareAppEngine;

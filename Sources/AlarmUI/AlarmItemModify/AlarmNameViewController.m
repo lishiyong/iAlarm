@@ -77,7 +77,7 @@
     [self setSkinWithType:[IAParam sharedParam].skinType];
     
     //[self registerNotifications];
-
+    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initBackWithTitle:nil style:YCBarButtonItemStyleDefault] autorelease];
 }
 
 - (void)viewWillAppear:(BOOL)animated

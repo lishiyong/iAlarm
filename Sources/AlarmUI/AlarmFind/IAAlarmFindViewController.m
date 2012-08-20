@@ -69,19 +69,27 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
     YCBarButtonItemStyle buttonItemStyle = YCBarButtonItemStyleDefault;
     YCTableViewBackgroundStyle tableViewBgStyle = YCTableViewBackgroundStyleDefault;
     YCBarStyle barStyle = YCBarStyleDefault;
+    YCSegmentedControlStyle sgStyle = YCSegmentedControlStyleDefault;
+    UIStatusBarStyle statusBarStyle = UIStatusBarStyleDefault;
     if (IASkinTypeDefault == type) {
         buttonItemStyle = YCBarButtonItemStyleDefault;
         tableViewBgStyle = YCTableViewBackgroundStyleDefault;
         barStyle = YCBarStyleDefault;
+        sgStyle = YCSegmentedControlStyleDefault;
+        statusBarStyle = UIStatusBarStyleDefault;
     }else {
         buttonItemStyle = YCBarButtonItemStyleSilver;
         tableViewBgStyle = YCTableViewBackgroundStyleSilver;
         barStyle = YCBarStyleSilver;
+        sgStyle = YCSegmentedControlStyleSilver;
+        statusBarStyle = UIStatusBarStyleBlackOpaque;
     }
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:nil style:buttonItemStyle];
-    [self.navigationController.navigationBar setYCBarStyle:YCBarStyleSilver];
+    [self.navigationController.navigationBar setYCBarStyle:barStyle];
     //[self.tableView setYCBackgroundStyle:tableViewBgStyle];
     [self.doneButtonItem setYCStyle:buttonItemStyle];
+    [self.upDownBarItem setUpDownYCStyle:buttonItemStyle];
+    
+    [YCAlarmStatusBar shareStatusBarWithStyle:statusBarStyle];
     
 }
 
@@ -108,6 +116,7 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
 
 - (id)upDownBarItem{
     if (!upDownBarItem) {
+        /*
         UISegmentedControl *segmentedControl = [[[UISegmentedControl alloc] initWithItems:
                                                 [NSArray arrayWithObjects:
                                                  [UIImage imageNamed:@"UIButtonBarArrowUpSmall.png"],
@@ -120,7 +129,9 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
         segmentedControl.momentary = YES;
         
         upDownBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
+         */
         
+        upDownBarItem = [[UIBarButtonItem alloc] initUpDownWithYCStyle:YCBarButtonItemStyleDefault target:self action:@selector(segmentAction:)];
     }
     return upDownBarItem;
 }
@@ -306,23 +317,6 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
     }else{
         self.titleLabel.text = @" . . . ";
     }
-    /*
-    if (curLocation && CLLocationCoordinate2DIsValid(viewedAlarmNotification.alarm.realCoordinate)) {
-        
-        CLLocationCoordinate2D theRealCoordinate = viewedAlarmNotification.alarm.realCoordinate;        
-        NSString *distanceString = [curLocation distanceStringFromCoordinate:theRealCoordinate withFormat1:KTextPromptDistanceCurrentLocation withFormat2:KTextPromptCurrentLocation];
-        
-        if (![self.titleLabel.text isEqualToString:distanceString]){
-            
-            [UIView transitionWithView:self.titleLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
-                self.titleLabel.text = distanceString;
-            } completion:NULL];
-        }
-        
-    }else{
-        self.titleLabel.text = @" . . . ";
-    }
-     */
     
 }
 
@@ -348,9 +342,11 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
     
     //SegmentedControl
     UISegmentedControl *sc = (UISegmentedControl*)self.upDownBarItem.customView;
+    [sc setEnabled:YES];
     if (alarmNotifitions.count <= 1) {
         [sc setEnabled:NO forSegmentAtIndex:0];
         [sc setEnabled:NO forSegmentAtIndex:1];
+        [sc setEnabled:NO];
     }else if (0 == index){
         [sc setEnabled:NO forSegmentAtIndex:0];
         [sc setEnabled:YES forSegmentAtIndex:1];
@@ -738,7 +734,7 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
     self.navigationItem.rightBarButtonItem = self.upDownBarItem;
     
     //设置cell拖拽后显示背景
-    self.backgroundTableView.backgroundView.backgroundColor = [UIColor tableViewBackgroundViewBackgroundColor];
+    self.backgroundTableView.backgroundView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];//[UIColor tableViewBackgroundViewBackgroundColor];
     self.backgroundTableView.leftShadowView.hidden = YES;
     self.backgroundTableView.rightShadowView.hidden = YES;
     self.backgroundTableView.topShadowView.bounds = (CGRect){{0,0},{320,20}};

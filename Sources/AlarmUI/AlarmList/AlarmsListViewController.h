@@ -19,6 +19,8 @@
     IBOutlet UITableView *alarmListTableView;
 	IBOutlet UILabel *backgroundTextLabel;  //无闹钟时候的背景文字
 	IBOutlet UIView *backgroundView;
+    IBOutlet UIImageView *backgroundImageView;
+    IBOutlet UIImageView *backgroundShadowTop;
 }
 
 
@@ -28,5 +30,7 @@
 @property (nonatomic, retain) IBOutlet UITableView *alarmListTableView;
 @property (nonatomic, retain) IBOutlet UILabel *backgroundTextLabel;
 @property (nonatomic, retain) IBOutlet UIView *backgroundView;
+@property (nonatomic, retain) IBOutlet UIImageView *backgroundImageView;
+@property (nonatomic, retain) IBOutlet UIImageView *backgroundShadowTop;
 
 @end

@@ -8,6 +8,7 @@
 //#import "iAlarmAppDelegate.h"
 //#import "UIApplication-YC.h"
 
+#import "IAAlarm.h"
 #import "YCLib.h"
 #import "IARegionsCenter.h"
 #import "YCSystemStatus.h"
@@ -35,6 +36,39 @@
 @synthesize backgroundView;
 @synthesize alarmListTableView;
 @synthesize backgroundTextLabel;
+@synthesize backgroundImageView;
+@synthesize backgroundShadowTop;
+
+- (void)setSkinWithType:(IASkinType)type{
+    
+    //
+    if (IASkinTypeDefault == type) {
+        self.backgroundImageView.image = [UIImage imageNamed:@"list_background.png"];
+        //self.backgroundTextLabel.shadowOffset = CGSizeMake(0,-1);
+        self.backgroundTextLabel.shadowColor = [UIColor darkGrayColor];
+        self.backgroundShadowTop.alpha = 0.6;
+    }else {
+        self.backgroundImageView.image = [UIImage imageNamed:@"list_background_silver.png"];
+        //self.backgroundTextLabel.shadowOffset = CGSizeMake(0,1);
+        self.backgroundTextLabel.shadowColor = [UIColor blackColor];
+        self.backgroundShadowTop.alpha = 0.4;
+    }
+    
+    //第一个和最后一个，拖拽结束后识别
+    NSArray *visibleCells = self.alarmListTableView.visibleCells;
+    for (NSInteger indexOfVisibleRows = 0; indexOfVisibleRows < visibleCells.count; indexOfVisibleRows++) {
+        AlarmsListCell *aCell = [visibleCells objectAtIndex:indexOfVisibleRows];
+        if (IASkinTypeDefault == type) {
+            aCell.index = 1;
+        }else {
+            if (indexOfVisibleRows == 3) 
+                indexOfVisibleRows = NSIntegerMax;
+            aCell.index = indexOfVisibleRows;
+        }
+        
+    }
+}
+
 
 
 - (AlarmDetailTableViewController *)detailController
@@ -99,6 +133,12 @@
 	self.navigationItem.titleView = nil;
 }
 
+- (void)IASkinStyleDidChange:(NSNotification*)notification{	
+    //skin Style
+    NSNumber *styleObj = [notification.userInfo objectForKey:IASkinStyleKey];
+    [self setSkinWithType:[styleObj integerValue]];
+}
+
 - (void) registerNotifications {
 	
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -117,6 +157,11 @@
 						   selector: @selector (handle_applicationWillResignActive:)
 							   name: UIApplicationWillResignActiveNotification
 							 object: nil];
+    
+    [notificationCenter addObserver: self
+						   selector: @selector (IASkinStyleDidChange:)
+							   name: IASkinStyleDidChange
+							 object: nil];
 }
 
 - (void)unRegisterNotifications{
@@ -124,6 +169,7 @@
 	[notificationCenter removeObserver:self	name: IAAlarmListEditStateDidChangeNotification object: nil];
 	[notificationCenter removeObserver:self	name: IAAlarmsDataListDidChangeNotification object: nil];
 	[notificationCenter removeObserver:self	name: UIApplicationWillResignActiveNotification object: nil];
+    [notificationCenter removeObserver:self	name: IASkinStyleDidChange object: nil];
 }
 
 
@@ -157,6 +203,8 @@
 	self.backgroundTextLabel.hidden = (count > 0); //背景文字
 	self.backgroundTextLabel.text = KTextPromptNoiAlarms;
     
+    //skin Style
+    [self setSkinWithType:[IAParam sharedParam].skinType];
 }
 
 
@@ -195,9 +243,29 @@
     [super viewWillDisappear:animated];
 }
 
+#pragma mark UIScrollViewDelegate
 
- 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    //第一个和最后一个，在开始拖拽时候都设置成普通cell
+    if (IASkinTypeSilver == [IAParam sharedParam].skinType) {
+        for (AlarmsListCell *aCell in self.alarmListTableView.visibleCells) {
+            aCell.index = 1;
+        }
+    }
+}
 
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    //第一个和最后一个，拖拽结束后识别
+    if (IASkinTypeSilver == [IAParam sharedParam].skinType) {
+        NSArray *visibleCells = self.alarmListTableView.visibleCells;
+        for (NSInteger indexOfVisibleRows = 0; indexOfVisibleRows < visibleCells.count; indexOfVisibleRows++) {
+            AlarmsListCell *aCell = [visibleCells objectAtIndex:indexOfVisibleRows];
+            if (indexOfVisibleRows == 3) 
+                indexOfVisibleRows = NSIntegerMax;
+            aCell.index = indexOfVisibleRows;
+        }
+    }
+}
 
 #pragma mark -
 #pragma mark Table view data source
@@ -206,7 +274,6 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
-
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -244,6 +311,20 @@
 		cell.topShadowView.hidden = NO;
 	}
 	
+    //第一个和最后一个
+    if (IASkinTypeSilver == [IAParam sharedParam].skinType) {
+        if (tableView.dragging) {//拖拽中，都做成普通cell
+            cell.index = 1;
+        }else {
+            NSInteger indexOfVisibleRows = [tableView.indexPathsForVisibleRows indexOfObject:indexPath];
+            if (indexOfVisibleRows == 3) 
+                indexOfVisibleRows = NSIntegerMax;
+            cell.index = indexOfVisibleRows;
+        }
+    }else {
+        cell.index = 1;
+    }
+
     
 	return cell;
 	
@@ -296,7 +377,17 @@
                 aCell.bottomShadowView.hidden = YES;
             }
             
+            //第一个和最后一个
+            if (IASkinTypeSilver == [IAParam sharedParam].skinType) {
+                NSInteger indexOfVisibleRows = [tableView.indexPathsForVisibleRows indexOfObject:toIndexPath];
+                if (indexOfVisibleRows == 3) 
+                    indexOfVisibleRows = NSIntegerMax;
+                aCell.index = indexOfVisibleRows;
+            }
+
         }
+        
+        
  
     }];
         
@@ -380,6 +471,8 @@
     self.alarmListTableView = nil;
 	self.backgroundTextLabel = nil;
 	self.backgroundView = nil;
+    self.backgroundImageView = nil;
+    self.backgroundShadowTop = nil;
 }
 
 
@@ -392,6 +485,8 @@
     [alarmListTableView release];
 	[backgroundTextLabel release];
 	[backgroundView release];
+    [backgroundImageView release];
+    [backgroundShadowTop release];
     [super dealloc];
 }
 

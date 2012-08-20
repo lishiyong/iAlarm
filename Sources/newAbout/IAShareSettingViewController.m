@@ -47,8 +47,7 @@
         tableViewBgStyle = YCTableViewBackgroundStyleSilver;
         barStyle = YCBarStyleSilver;
     }
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:nil style:buttonItemStyle];
-    [self.navigationController.navigationBar setYCBarStyle:YCBarStyleSilver];
+    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:nil style:buttonItemStyle] autorelease];
     [self.tableView setYCBackgroundStyle:tableViewBgStyle];
 }
 
@@ -178,6 +177,7 @@
     //skin Style
     NSNumber *styleObj = [notification.userInfo objectForKey:IASkinStyleKey];
     [self setSkinWithType:[styleObj integerValue]];
+    [self.tableView reloadData];
 }
 
 - (void)registerNotifications 
@@ -268,10 +268,30 @@
     }else {
         shareSettingSection = [NSArray arrayWithObjects:self.facebookCell, self.twitterCell, nil];
     }
-    _sections = [[NSMutableArray arrayWithObjects:shareSettingSection, nil] retain];
+    
+    //
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) {
+        
+        _defaultSkinCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
+        _silverSkinCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
+        _defaultSkinCell.textLabel.text = @"经典蓝色";
+        _silverSkinCell.textLabel.text = @"银色";
+        NSArray *skinStylesSection = [NSArray arrayWithObjects:_defaultSkinCell, _silverSkinCell, nil];
+        
+        _sections = [[NSMutableArray arrayWithObjects:shareSettingSection, skinStylesSection, nil] retain];
+        
+    }else {
+        _sections = [[NSMutableArray arrayWithObjects:shareSettingSection, nil] retain];
+    }
     
     //skin Style
+    if (IASkinTypeSilver == [IAParam sharedParam].skinType) {
+        [_silverSkinCell setAccessoryType:UITableViewCellAccessoryCheckmark];
+    }else {
+        [_defaultSkinCell setAccessoryType:UITableViewCellAccessoryCheckmark];
+    }
     [self setSkinWithType:[IAParam sharedParam].skinType];
+    
         
     [self registerNotifications];
 }
@@ -295,6 +315,41 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
      return 50.0;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    //反选
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    //√
+    UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+    [selectedCell setAccessoryType:UITableViewCellAccessoryCheckmark];
+    
+    IASkinType skinType = IASkinTypeDefault;
+    if (selectedCell == _defaultSkinCell) {
+        [_silverSkinCell setAccessoryType:UITableViewCellAccessoryNone];
+        skinType = IASkinTypeDefault;
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+    }else {
+        [_defaultSkinCell setAccessoryType:UITableViewCellAccessoryNone];
+        skinType = IASkinTypeSilver;
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+    }
+    
+    //保存
+    [IAParam sharedParam].skinType = skinType;
+    
+    //发通知
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    NSNotification *aNotification = [NSNotification notificationWithName:IASkinStyleDidChange 
+                                                                  object:self
+                                                                userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:skinType] forKey:IASkinStyleKey]];
+    //[notificationCenter postNotification:aNotification];
+    [notificationCenter performSelector:@selector(postNotification:) withObject:aNotification afterDelay:0.5];
+    
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+    [[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:0.5];
+    
 }
  
 #pragma mark - memory manager

@@ -26,7 +26,7 @@
 
 @implementation AlarmsListCell
 
-@synthesize alarm = _alarm;
+@synthesize alarm = _alarm, index = _index;//, first = _first, last = _last;
 @synthesize alarmTitleLabel, alarmDetailLabel, isEnabledLabel, flagImageView, topShadowView, bottomShadowView, clockImageView;
 
 - (void)setAlarm:(IAAlarm *)alarm{
@@ -35,10 +35,35 @@
     _alarm = alarm;
 }
 
+- (void)setIndex:(NSInteger )index{
+    _index = index;
+    
+    NSString *imageName = nil;
+    switch (_index) {
+        case 0:
+            imageName = @"iAlarmList_row_first";
+            break;
+        case NSIntegerMax:
+            imageName = @"iAlarmList_row_last";
+            break;
+        default:
+            imageName = @"iAlarmList_row";
+            break;
+    }
+
+    NSBundle *nibBundle = [NSBundle mainBundle];
+    NSString *backgroundImagePath = [nibBundle pathForResource:imageName ofType:@"png"];
+    UIImage *backgroundImage = [[UIImage imageWithContentsOfFile:backgroundImagePath] stretchableImageWithLeftCapWidth:0.0 topCapHeight:1.0];
+	self.backgroundView = [[[UIImageView alloc] initWithImage:backgroundImage] autorelease];
+	self.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	self.backgroundView.frame = self.bounds;
+}
+
 - (void)updateCell{
     //可用状态时候就更新距离
     _subTitleIsDistanceString = self.alarm.enabled;
     [self updateCellWithLocation:[YCSystemStatus sharedSystemStatus].lastLocation];
+    self.topShadowView.hidden = NO;
 }
 
 - (void)updateCellWithLocation:(CLLocation*)location{
@@ -135,11 +160,14 @@
 		}
 	}
 	
+    /*
 	NSString *backgroundImagePath = [nibBundle pathForResource:@"iAlarmList_row" ofType:@"png"];
     UIImage *backgroundImage = [[UIImage imageWithContentsOfFile:backgroundImagePath] stretchableImageWithLeftCapWidth:0.0 topCapHeight:1.0];
 	cell.backgroundView = [[[UIImageView alloc] initWithImage:backgroundImage] autorelease];
 	cell.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	cell.backgroundView.frame = cell.bounds;
+     */
+    cell.index = 1;
     
 	return cell; 
 }

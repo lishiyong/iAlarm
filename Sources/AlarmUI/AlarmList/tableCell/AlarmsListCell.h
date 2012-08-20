@@ -15,6 +15,9 @@
 }
 
 @property(nonatomic,retain) IAAlarm *alarm;
+@property(nonatomic) NSInteger index; //cell在tableView的位置
+//@property(nonatomic) BOOL first;
+//@property(nonatomic) BOOL last;
 @property(nonatomic,retain) IBOutlet UILabel *alarmTitleLabel;
 @property(nonatomic,retain) IBOutlet UILabel *alarmDetailLabel;
 @property(nonatomic,retain) IBOutlet UILabel *isEnabledLabel;
@@ -22,6 +25,8 @@
 @property(nonatomic,retain) IBOutlet UIView *topShadowView;
 @property(nonatomic,retain) IBOutlet UIView *bottomShadowView;
 @property(nonatomic,retain) IBOutlet UIImageView *clockImageView;
+
+
 
 + (id)viewWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle;
 

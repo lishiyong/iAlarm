@@ -42,24 +42,27 @@
     YCBarButtonItemStyle buttonItemStyle = YCBarButtonItemStyleDefault;
     YCTableViewBackgroundStyle tableViewBgStyle = YCTableViewBackgroundStyleDefault;
     YCBarStyle barStyle = YCBarStyleDefault;
+    UIActivityIndicatorViewStyle activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
     if (IASkinTypeDefault == type) {
         buttonItemStyle = YCBarButtonItemStyleDefault;
         tableViewBgStyle = YCTableViewBackgroundStyleDefault;
         barStyle = YCBarStyleDefault;
+        activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
     }else {
         buttonItemStyle = YCBarButtonItemStyleSilver;
         tableViewBgStyle = YCTableViewBackgroundStyleSilver;
         barStyle = YCBarStyleSilver;
-    }
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:nil style:buttonItemStyle];
-    
-    [self.navigationController.navigationBar setYCBarStyle:YCBarStyleSilver];
-    [self.navigationController.toolbar setYCBarStyle:YCBarStyleSilver forToolbarPosition:UIToolbarPositionBottom];
+        activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+    }    
+    [self.navigationController.navigationBar setYCBarStyle:barStyle];
+    [self.navigationController.toolbar setYCBarStyle:barStyle forToolbarPosition:UIToolbarPositionBottom];
+    //self.navigationController.toolbar.barStyle = UIBarStyleBlackTranslucent ;
     [self.searchBar setYCBarStyle:barStyle];
     
     [self.editButtonItem setYCStyle:buttonItemStyle];
     [self.doneButtonItem setYCStyle:buttonItemStyle];
     [self.addButtonItem setYCStyle:buttonItemStyle];
+    
     
 	[currentLocationBarButtonItem setYCStyle:buttonItemStyle];
 	[focusBarButtonItem setYCStyle:buttonItemStyle];
@@ -67,8 +70,9 @@
 	[locationingBarItem setYCStyle:buttonItemStyle];   
     [switchBarButtonItem setSwitchButtonYCStyle:buttonItemStyle];
     
+    
     ////////////
-    [infoBarButtonItem release];
+    //白、灰信息按钮转换
     UIButton *infoButton = nil;
     if (IASkinTypeDefault == type) {
         infoButton =  [UIButton buttonWithType:UIButtonTypeInfoLight];
@@ -76,9 +80,37 @@
         infoButton =  [UIButton buttonWithType:UIButtonTypeInfoDark];
     }
     [infoButton addTarget:self action:@selector(infoButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    infoBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:infoButton];
+    infoBarButtonItem.customView = infoButton;
     ////////////
+     
+    /////////////
+    //白、灰等待圈转换
+    UIActivityIndicatorView *progressInd = (UIActivityIndicatorView*)locationingBarItem.customView;
+    progressInd.activityIndicatorViewStyle = activityIndicatorViewStyle;
+    /////////////
+    
+    /////////////
+    //bar阴影
+    if (IASkinTypeDefault == type) {
+        self.navigationController.navigationBar.layer.masksToBounds = YES;
+        self.navigationController.navigationBar.layer.shadowColor = NULL;
 
+        self.navigationController.toolbar.layer.masksToBounds = YES;
+        self.navigationController.toolbar.layer.shadowColor = NULL;
+    }else {
+        self.navigationController.navigationBar.layer.masksToBounds = NO;
+        self.navigationController.navigationBar.layer.shadowOpacity = 0.15;
+        self.navigationController.navigationBar.layer.shadowColor = [UIColor blackColor].CGColor;
+        self.navigationController.navigationBar.layer.shadowOffset = CGSizeMake(0.0, 1.0);
+        self.navigationController.navigationBar.layer.shadowRadius = 2.0;
+        
+        self.navigationController.toolbar.layer.masksToBounds = NO;
+        self.navigationController.toolbar.layer.shadowOpacity = 0.15;
+        self.navigationController.toolbar.layer.shadowColor = [UIColor blackColor].CGColor;
+        self.navigationController.toolbar.layer.shadowOffset = CGSizeMake(0.0, -1.0);
+        self.navigationController.toolbar.layer.shadowRadius = 2.0;
+    }
+     
 }
 
 - (id)editButtonItem{
@@ -183,6 +215,7 @@
 		UIActivityIndicatorView *progressInd = [[[UIActivityIndicatorView alloc] initWithFrame:frame] autorelease];
 		self->locationingBarItem = [[UIBarButtonItem alloc] initWithCustomView:progressInd];
 		[progressInd startAnimating];
+        progressInd.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
 	}
 	
 	return self->locationingBarItem;
