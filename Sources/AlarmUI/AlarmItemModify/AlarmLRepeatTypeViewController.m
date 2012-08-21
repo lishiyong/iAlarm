@@ -48,7 +48,6 @@
         tableViewBgStyle = YCTableViewBackgroundStyleSilver;
         barStyle = YCBarStyleSilver;
     }
-    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:nil style:buttonItemStyle] autorelease];
     [self.tableView setYCBackgroundStyle:tableViewBgStyle];
     [self.tableView reloadData];
 }
@@ -455,6 +454,10 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[_sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    if (IASkinTypeDefault == [IAParam sharedParam].skinType) 
+        cell.backgroundColor = [UIColor iPhoneTableCellGroupedBackgroundColor];
+    else 
+        cell.backgroundColor = [UIColor iPadTableCellGroupedBackgroundColor];
     return cell;
 }
 

@@ -139,6 +139,10 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[_sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    if (IASkinTypeDefault == [IAParam sharedParam].skinType) 
+        cell.backgroundColor = [UIColor iPhoneTableCellGroupedBackgroundColor];
+    else 
+        cell.backgroundColor = [UIColor iPadTableCellGroupedBackgroundColor];
     return cell;
 }
 

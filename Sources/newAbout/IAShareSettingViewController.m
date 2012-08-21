@@ -38,17 +38,22 @@
     YCBarButtonItemStyle buttonItemStyle = YCBarButtonItemStyleDefault;
     YCTableViewBackgroundStyle tableViewBgStyle = YCTableViewBackgroundStyleDefault;
     YCBarStyle barStyle = YCBarStyleDefault;
+    UIColor *cellBackgroundColor = nil;
     if (IASkinTypeDefault == type) {
         buttonItemStyle = YCBarButtonItemStyleDefault;
         tableViewBgStyle = YCTableViewBackgroundStyleDefault;
         barStyle = YCBarStyleDefault;
+        cellBackgroundColor = [UIColor iPhoneTableCellGroupedBackgroundColor];
     }else {
         buttonItemStyle = YCBarButtonItemStyleSilver;
         tableViewBgStyle = YCTableViewBackgroundStyleSilver;
         barStyle = YCBarStyleSilver;
+        cellBackgroundColor = [UIColor iPadTableCellGroupedBackgroundColor];
     }
-    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:nil style:buttonItemStyle] autorelease];
+    [self.navigationItem.leftBarButtonItem setCustomBackButtonYCStyle:buttonItemStyle];
     [self.tableView setYCBackgroundStyle:tableViewBgStyle];
+    [[self.tableView visibleCells] makeObjectsPerformSelector:@selector(setBackgroundColor:) withObject:cellBackgroundColor];
+    [self.tableView performSelector:@selector(reloadData) withObject:nil afterDelay:0.1];//
 }
 
 
@@ -309,7 +314,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[_sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    cell.backgroundColor = [UIColor whiteColor]; //SDK5.0 cell默认竟然是浅灰
+
+    if (IASkinTypeDefault == [IAParam sharedParam].skinType) 
+        cell.backgroundColor = [UIColor iPhoneTableCellGroupedBackgroundColor];
+    else 
+        cell.backgroundColor = [UIColor iPadTableCellGroupedBackgroundColor];
+    
     return cell;
 }
 

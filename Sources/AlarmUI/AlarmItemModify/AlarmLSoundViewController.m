@@ -174,6 +174,11 @@
 			cell.textLabel.textColor = [UIColor darkTextColor];
 		}
 	}
+    
+    if (IASkinTypeDefault == [IAParam sharedParam].skinType) 
+        cell.backgroundColor = [UIColor iPhoneTableCellGroupedBackgroundColor];
+    else 
+        cell.backgroundColor = [UIColor iPadTableCellGroupedBackgroundColor];
 	
 	return cell;
 	

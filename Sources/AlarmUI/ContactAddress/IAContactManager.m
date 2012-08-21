@@ -326,7 +326,9 @@
 
 - (void)pushContactViewControllerWithAlarm:(IAAlarm*)theAlarm{
     
-    [(UINavigationController*)_currentViewController setDelegate:self]; 
+    //[(UINavigationController*)_currentViewController performSelector:@selector(setDelegate:) withObject:self afterDelay:0.1];//为backButton留出时间
+    [(UINavigationController*)_currentViewController setDelegate:self];
+    
     [_alarm release];
     _alarm = [theAlarm retain];
     
@@ -833,6 +835,10 @@
 
 #pragma mark - UINavigationControllerDelegate
 
+- (void)navBarBackButtonPressed:(id)sender{
+    [(UINavigationController*)_currentViewController popViewControllerAnimated:YES];
+}
+
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
     
     //
@@ -843,11 +849,22 @@
     
 }
 
-
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
     
-    //skin Style
+    
     if (viewController == _unknownPersonVC || viewController == _personVC) {
+        //back按钮
+        YCBarButtonItemStyle barButtonItemStyle = YCBarButtonItemStyleDefault;
+        if ([IAParam sharedParam].skinType == IASkinTypeDefault) {
+            barButtonItemStyle = YCBarButtonItemStyleDefault;
+        }else {
+            barButtonItemStyle = YCBarButtonItemStyleSilver;
+        }
+        
+        viewController.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initCustomBackButtonWithTitle:nil style:barButtonItemStyle target:self action:@selector(navBarBackButtonPressed:)] autorelease];
+        
+        
+        //skin Style
         IASkinType type = [IAParam sharedParam].skinType;
         YCTableViewBackgroundStyle tableViewBgStyle = YCTableViewBackgroundStyleDefault;
         if (IASkinTypeDefault == type) {

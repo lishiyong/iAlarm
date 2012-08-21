@@ -24,7 +24,7 @@ typedef enum {
 @class YClocationServicesUsableAlert;
 @class IAContactManager;
 @interface AlarmDetailTableViewController : UITableViewController
-<CLLocationManagerDelegate,AVAudioPlayerDelegate,UIAlertViewDelegate>
+<CLLocationManagerDelegate, AVAudioPlayerDelegate, UIAlertViewDelegate, UINavigationControllerDelegate>
 {
 	YClocationServicesUsableAlert *locationServicesUsableAlert;  //测定位服务用
 	

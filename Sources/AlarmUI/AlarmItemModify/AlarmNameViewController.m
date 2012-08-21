@@ -77,7 +77,6 @@
     [self setSkinWithType:[IAParam sharedParam].skinType];
     
     //[self registerNotifications];
-    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initBackWithTitle:nil style:YCBarButtonItemStyleDefault] autorelease];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -117,6 +116,11 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (IASkinTypeDefault == [IAParam sharedParam].skinType) 
+        self.alarmNameTextCell.backgroundColor = [UIColor iPhoneTableCellGroupedBackgroundColor];
+    else 
+        self.alarmNameTextCell.backgroundColor = [UIColor iPadTableCellGroupedBackgroundColor];
+    
     return self.alarmNameTextCell;
 }
 

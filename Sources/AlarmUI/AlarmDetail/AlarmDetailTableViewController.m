@@ -83,7 +83,6 @@
         tableViewBgStyle = YCTableViewBackgroundStyleSilver;
         barStyle = YCBarStyleSilver;
     }
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:nil style:buttonItemStyle];
     [self.cancelButtonItem setYCStyle:buttonItemStyle];
     [self.saveButtonItem setYCStyle:buttonItemStyle];
     [self.navigationController.navigationBar setYCBarStyle:barStyle];
@@ -1094,6 +1093,8 @@
 	[self.tableView reloadData];
 	
 	isFirstShow = NO;
+    
+    self.navigationController.delegate = self;
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -1124,7 +1125,11 @@
     
 	NSArray *sectionArray = [self.cellDescriptions objectAtIndex:indexPath.section];
     UITableViewCell *cell = ((TableViewCellDescription*)[sectionArray objectAtIndex:indexPath.row]).tableViewCell;
-    cell.backgroundColor = [UIColor whiteColor]; //SDK5.0 cell默认竟然是浅灰
+    //cell.backgroundColor = [UIColor whiteColor]; //SDK5.0 cell默认竟然是浅灰
+    if (IASkinTypeDefault == [IAParam sharedParam].skinType) 
+        cell.backgroundColor = [UIColor iPhoneTableCellGroupedBackgroundColor];
+    else 
+        cell.backgroundColor = [UIColor iPadTableCellGroupedBackgroundColor];
     return cell;
 }
 
@@ -1228,6 +1233,28 @@
 		self.bestEffortAtLocation = nil;
 		[self performSelector:@selector(endLocation) withObject:nil afterDelay:0.1];  //数据更新后，等待x秒
 	}
+}
+
+
+#pragma mark - UINavigationControllerDelegate
+
+- (void)navBarBackButtonPressed:(id)sender{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
+    
+    //back按钮
+    if (viewController != self && viewController.navigationItem.leftBarButtonItem == nil) {
+        YCBarButtonItemStyle barButtonItemStyle = YCBarButtonItemStyleDefault;
+        if ([IAParam sharedParam].skinType == IASkinTypeDefault) {
+            barButtonItemStyle = YCBarButtonItemStyleDefault;
+        }else {
+            barButtonItemStyle = YCBarButtonItemStyleSilver;
+        }
+        
+        viewController.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initCustomBackButtonWithTitle:nil style:barButtonItemStyle target:self action:@selector(navBarBackButtonPressed:)] autorelease];
+    }
 }
 
 #pragma mark -

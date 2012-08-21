@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 
 @class YCShareAppEngine, YCPromptView;
-@interface IAAboutViewController : UITableViewController<MFMailComposeViewControllerDelegate>{
+@interface IAAboutViewController : UITableViewController<MFMailComposeViewControllerDelegate, UINavigationControllerDelegate>{
     
     UIBarButtonItem *_cancelButtonItem;
     YCShareAppEngine *_shareAppEngine;

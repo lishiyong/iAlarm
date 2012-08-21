@@ -74,19 +74,22 @@
     YCBarButtonItemStyle buttonItemStyle = YCBarButtonItemStyleDefault;
     YCTableViewBackgroundStyle tableViewBgStyle = YCTableViewBackgroundStyleDefault;
     YCBarStyle barStyle = YCBarStyleDefault;
+    UIColor *cellBackgroundColor = nil;
     if (IASkinTypeDefault == type) {
         buttonItemStyle = YCBarButtonItemStyleDefault;
         tableViewBgStyle = YCTableViewBackgroundStyleDefault;
         barStyle = YCBarStyleDefault;
+        cellBackgroundColor = [UIColor iPhoneTableCellGroupedBackgroundColor];
     }else {
         buttonItemStyle = YCBarButtonItemStyleSilver;
         tableViewBgStyle = YCTableViewBackgroundStyleSilver;
         barStyle = YCBarStyleSilver;
+        cellBackgroundColor = [UIColor iPadTableCellGroupedBackgroundColor];
     }
-    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:nil style:buttonItemStyle] autorelease];
     [self.navigationController.navigationBar setYCBarStyle:barStyle];
     [self.tableView setYCBackgroundStyle:tableViewBgStyle];
     [self.cancelButtonItem setYCStyle:buttonItemStyle];
+    [[self.tableView visibleCells] makeObjectsPerformSelector:@selector(setBackgroundColor:) withObject:cellBackgroundColor];
     [self.tableView reloadData];
 }
 
@@ -508,6 +511,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.title = KViewTitleAbout; 
+    self.navigationController.delegate = self;
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -528,7 +532,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[_sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    cell.backgroundColor = [UIColor whiteColor]; //SDK5.0 cell默认竟然是浅灰
+    
+    if (IASkinTypeDefault == [IAParam sharedParam].skinType) 
+        cell.backgroundColor = [UIColor iPhoneTableCellGroupedBackgroundColor];
+    else 
+        cell.backgroundColor = [UIColor iPadTableCellGroupedBackgroundColor];
+    
     return cell;
 }
  
@@ -606,6 +615,25 @@
 - (void)unRegisterNotifications{
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter removeObserver:self	name: IASkinStyleDidChange object: nil];
+}
+
+#pragma mark - UINavigationControllerDelegate
+
+- (void)navBarBackButtonPressed:(id)sender{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
+    if (viewController != self && viewController.navigationItem.leftBarButtonItem == nil) {
+        YCBarButtonItemStyle barButtonItemStyle = YCBarButtonItemStyleDefault;
+        if ([IAParam sharedParam].skinType == IASkinTypeDefault) {
+            barButtonItemStyle = YCBarButtonItemStyleDefault;
+        }else {
+            barButtonItemStyle = YCBarButtonItemStyleSilver;
+        }
+        
+        viewController.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initCustomBackButtonWithTitle:nil style:barButtonItemStyle target:self action:@selector(navBarBackButtonPressed:)] autorelease];
+    }
 }
 
 #pragma mark - Memory management
