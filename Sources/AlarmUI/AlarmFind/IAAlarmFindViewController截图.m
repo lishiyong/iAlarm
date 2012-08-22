@@ -104,10 +104,17 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
 - (id)doneButtonItem{
 	
 	if (!self->doneButtonItem) {
+        /*
 		self->doneButtonItem = [[UIBarButtonItem alloc]
 								initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 								target:self
 								action:@selector(doneButtonItemPressed:)];
+         */
+        self->doneButtonItem = [[UIBarButtonItem alloc]
+								initWithTitle:@"" style:UIBarButtonItemStyleBordered
+								target:self
+								action:@selector(doneButtonItemPressed:)];
+        
         doneButtonItem.style = UIBarButtonItemStyleBordered;
 	}
 	
@@ -116,21 +123,6 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
 
 - (id)upDownBarItem{
     if (!upDownBarItem) {
-        /*
-        UISegmentedControl *segmentedControl = [[[UISegmentedControl alloc] initWithItems:
-                                                [NSArray arrayWithObjects:
-                                                 [UIImage imageNamed:@"UIButtonBarArrowUpSmall.png"],
-                                                 [UIImage imageNamed:@"UIButtonBarArrowDownSmall.png"],
-                                                 nil]] autorelease];
-        
-        [segmentedControl addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
-        segmentedControl.frame = CGRectMake(0, 0, 90, 30);
-        segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
-        segmentedControl.momentary = YES;
-        
-        upDownBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
-         */
-        
         upDownBarItem = [[UIBarButtonItem alloc] initUpDownWithYCStyle:YCBarButtonItemStyleDefault target:self action:@selector(segmentAction:)];
     }
     return upDownBarItem;
@@ -257,13 +249,6 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
             notificationBody = [NSString stringWithFormat:@"%@: %@",alertTitle,alarmMessage];
         }
         
-        NSString *notificationImage = nil;
-        if (IASkinTypeDefault == [IAParam sharedParam].skinType) {
-            notificationImage = @"IANotificationBackgroundDefault.png";
-        }else {
-            notificationImage = @"IANotificationBackgroundSilver.png";
-        }
-        
         UIApplication *app = [UIApplication sharedApplication];
         NSInteger badgeNumber = app.applicationIconBadgeNumber + 1; //角标数
         UILocalNotification *notification = [[[UILocalNotification alloc] init] autorelease];
@@ -274,7 +259,6 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
         notification.alertBody = notificationBody;
         notification.applicationIconBadgeNumber = badgeNumber;
         notification.userInfo = userInfo;
-        notification.alertLaunchImage = notificationImage;
         [app scheduleLocalNotification:notification];
     }
     
@@ -781,14 +765,22 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
     self.notesLabel.textColor = [UIColor tableViewFooterTextColor];
     
     //按钮
-    [self.button1 setTitle:kTitleTellFriends forState:UIControlStateNormal];
-    [self.button2 setTitle:kTitleAlarmLater forState:UIControlStateNormal];
+    //[self.button1 setTitle:kTitleTellFriends forState:UIControlStateNormal];
+    //[self.button2 setTitle:kTitleAlarmLater forState:UIControlStateNormal];
     
     
     //留着，tableView的委托要用
     _mapViewCellHeight = self.mapViewCell.bounds.size.height;
     _buttonCellHeight = self.buttonCell.bounds.size.height;
     _notesCellHeight = self.notesCell.bounds.size.height;//根据文本多少调整后才知道
+    
+    
+    
+    
+    
+    MKCoordinateRegion region1 = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(10, 10), 2000, 2000);
+    region1 = [self.mapView regionThatFits:region1];
+    [self.mapView setRegion:region1];
      
     //skin Style
     [self setSkinWithType:[IAParam sharedParam].skinType];
@@ -800,7 +792,7 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     //加载数据
-    [self loadViewDataWithIndexOfNotifications:indexForView]; 
+    //[self loadViewDataWithIndexOfNotifications:indexForView]; 
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

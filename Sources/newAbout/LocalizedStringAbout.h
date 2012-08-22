@@ -42,3 +42,11 @@
 #define kAlertConfirmRateBtnToRate             NSLocalizedStringFromTable(@"kAlertConfirmRateBtnToRate",          @"About",    @"要求评分的提示框的 ‘去评分’按钮 ")
 #define kAlertConfirmRateBtnNoThanks           NSLocalizedStringFromTable(@"kAlertConfirmRateBtnNoThanks",        @"About",    @"要求评分的提示框的 ‘No,Thanks’按钮 ")
 #define kAlertConfirmRateBtnNotToremind        NSLocalizedStringFromTable(@"kAlertConfirmRateBtnNotToremind",     @"About",    @"要求评分的提示框的 ‘Not to remind’按钮 ")
+
+
+#define kTitleShareBinding                     NSLocalizedStringFromTable(@"kTitleShareBinding",                  @"About",    @"共享绑定")
+
+#define kTHTitleThemes                         NSLocalizedStringFromTable(@"kTHTitleThemes",                      @"About",    @"主题")
+#define kTHTitleSilver                         NSLocalizedStringFromTable(@"kTHTitleSilver",                      @"About",    @"清新银色")
+#define kTHTitleBlue                           NSLocalizedStringFromTable(@"kTHTitleBlue",                        @"About",    @"经典蓝色")
+

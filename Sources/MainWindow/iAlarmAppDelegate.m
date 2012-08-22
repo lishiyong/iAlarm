@@ -65,7 +65,7 @@
         
         UIViewController *currentController = self.viewController.modalViewController;
         currentController = currentController ? currentController : self.viewController; 
-        [currentController presentModalViewController:navCtler animated:animated]; //程序在启动中:NO。从后台进入:YES
+        [currentController presentModalViewController:navCtler animated:animated];//程序在启动中:NO。从后台进入:YES
         
         [[IAAlarmNotificationCenter defaultCenter] removeFiredNotification];
     }
@@ -186,7 +186,7 @@
         }
         ///////////////////////////////////
     }else{//第三种情况：程序因响应本地通知而激活
-        animatedView = YES;
+        animatedView = NO;
     }
     
     
@@ -200,6 +200,7 @@
     }else {
          application.statusBarStyle = UIStatusBarStyleDefault;
     }
+    [application setStatusBarHidden:NO];
 	
     [application registerNotifications];
 	[YCSystemStatus sharedSystemStatus]; //一定要有这个初始化
@@ -457,6 +458,13 @@
         notificationBody = [NSString stringWithFormat:@"%@: %@",alertTitle,alarmMessage];
     }
     
+    NSString *notificationImage = nil;
+    if (IASkinTypeDefault == [IAParam sharedParam].skinType) {
+        notificationImage = @"IANotificationBackgroundDefault.png";
+    }else {
+        notificationImage = @"IANotificationBackgroundSilver.png";
+    }
+    
     UIApplication *app = [UIApplication sharedApplication];
     NSInteger badgeNumber = app.applicationIconBadgeNumber + 1; //角标数
     UILocalNotification *notification = [[[UILocalNotification alloc] init] autorelease];
@@ -467,6 +475,7 @@
     notification.applicationIconBadgeNumber = badgeNumber;
     notification.userInfo = userInfo;
     notification.repeatInterval = NSMinuteCalendarUnit; //反复提示
+    notification.alertLaunchImage = notificationImage;
     [app scheduleLocalNotification:notification];
     //[app presentLocalNotificationNow:notification];
 

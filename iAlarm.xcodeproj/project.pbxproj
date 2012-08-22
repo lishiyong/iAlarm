@@ -233,6 +233,14 @@
 		9C56CD0215B7F0BE00E931DA /* AlarmBeginEndViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C56CD0015B7F0BD00E931DA /* AlarmBeginEndViewController.xib */; };
 		9C56CD0315B7F2C800E931DA /* AlarmBeginEndViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C56CCFF15B7F0BD00E931DA /* AlarmBeginEndViewController.m */; };
 		9C56CD0415B7F2CC00E931DA /* AlarmBeginEndViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C56CD0015B7F0BD00E931DA /* AlarmBeginEndViewController.xib */; };
+		9C56D9EF15E517E300DB2E53 /* IANotificationBackgroundSilver.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C56D9EB15E517E300DB2E53 /* IANotificationBackgroundSilver.png */; };
+		9C56D9F015E517E300DB2E53 /* IANotificationBackgroundSilver.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C56D9EB15E517E300DB2E53 /* IANotificationBackgroundSilver.png */; };
+		9C56D9F115E517E300DB2E53 /* IANotificationBackgroundDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C56D9EC15E517E300DB2E53 /* IANotificationBackgroundDefault@2x.png */; };
+		9C56D9F215E517E300DB2E53 /* IANotificationBackgroundDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C56D9EC15E517E300DB2E53 /* IANotificationBackgroundDefault@2x.png */; };
+		9C56D9F315E517E300DB2E53 /* IANotificationBackgroundDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C56D9ED15E517E300DB2E53 /* IANotificationBackgroundDefault.png */; };
+		9C56D9F415E517E300DB2E53 /* IANotificationBackgroundDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C56D9ED15E517E300DB2E53 /* IANotificationBackgroundDefault.png */; };
+		9C56D9F515E517E300DB2E53 /* IANotificationBackgroundSilver@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C56D9EE15E517E300DB2E53 /* IANotificationBackgroundSilver@2x.png */; };
+		9C56D9F615E517E300DB2E53 /* IANotificationBackgroundSilver@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C56D9EE15E517E300DB2E53 /* IANotificationBackgroundSilver@2x.png */; };
 		9C57EF2B15AD438B005CC90A /* hasACoolIdea-Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C57EF2915AD438B005CC90A /* hasACoolIdea-Icon-Small.png */; };
 		9C57EF2C15AD438B005CC90A /* hasACoolIdea-Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C57EF2915AD438B005CC90A /* hasACoolIdea-Icon-Small.png */; };
 		9C57EF2D15AD438B005CC90A /* hasACoolIdea-Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C57EF2A15AD438B005CC90A /* hasACoolIdea-Icon-Small@2x.png */; };
@@ -1586,6 +1594,10 @@
 		9C56CCFE15B7F0BD00E931DA /* AlarmBeginEndViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmBeginEndViewController.h; sourceTree = "<group>"; };
 		9C56CCFF15B7F0BD00E931DA /* AlarmBeginEndViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmBeginEndViewController.m; sourceTree = "<group>"; };
 		9C56CD0015B7F0BD00E931DA /* AlarmBeginEndViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlarmBeginEndViewController.xib; sourceTree = "<group>"; };
+		9C56D9EB15E517E300DB2E53 /* IANotificationBackgroundSilver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IANotificationBackgroundSilver.png; sourceTree = "<group>"; };
+		9C56D9EC15E517E300DB2E53 /* IANotificationBackgroundDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IANotificationBackgroundDefault@2x.png"; sourceTree = "<group>"; };
+		9C56D9ED15E517E300DB2E53 /* IANotificationBackgroundDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IANotificationBackgroundDefault.png; sourceTree = "<group>"; };
+		9C56D9EE15E517E300DB2E53 /* IANotificationBackgroundSilver@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IANotificationBackgroundSilver@2x.png"; sourceTree = "<group>"; };
 		9C57EF2915AD438B005CC90A /* hasACoolIdea-Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hasACoolIdea-Icon-Small.png"; sourceTree = "<group>"; };
 		9C57EF2A15AD438B005CC90A /* hasACoolIdea-Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hasACoolIdea-Icon-Small@2x.png"; sourceTree = "<group>"; };
 		9C5AF2A7134F38FB00547BB0 /* Harp.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Harp.caf; sourceTree = "<group>"; };
@@ -4092,6 +4104,10 @@
 		9CE8942112FFFFD2008FBD45 /* background */ = {
 			isa = PBXGroup;
 			children = (
+				9C56D9EB15E517E300DB2E53 /* IANotificationBackgroundSilver.png */,
+				9C56D9ED15E517E300DB2E53 /* IANotificationBackgroundDefault.png */,
+				9C56D9EE15E517E300DB2E53 /* IANotificationBackgroundSilver@2x.png */,
+				9C56D9EC15E517E300DB2E53 /* IANotificationBackgroundDefault@2x.png */,
 				9C485F4E15E237CD00DFBB87 /* list_background_silver.png */,
 				9C3E118714B94E8100A80FAF /* IAMap@2x.png */,
 				9CF50EFC14999D8B00C814AB /* IAGlassMask@2x.png */,
@@ -5105,6 +5121,10 @@
 				9C7987C315E22AC200B8C1BF /* iAlarmList_row_first@2x.png in Resources */,
 				9C7987C515E22AC200B8C1BF /* iAlarmList_row_last@2x.png in Resources */,
 				9C485F4F15E237CD00DFBB87 /* list_background_silver.png in Resources */,
+				9C56D9EF15E517E300DB2E53 /* IANotificationBackgroundSilver.png in Resources */,
+				9C56D9F115E517E300DB2E53 /* IANotificationBackgroundDefault@2x.png in Resources */,
+				9C56D9F315E517E300DB2E53 /* IANotificationBackgroundDefault.png in Resources */,
+				9C56D9F515E517E300DB2E53 /* IANotificationBackgroundSilver@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5570,6 +5590,10 @@
 				9C7987C415E22AC200B8C1BF /* iAlarmList_row_first@2x.png in Resources */,
 				9C7987C615E22AC200B8C1BF /* iAlarmList_row_last@2x.png in Resources */,
 				9C485F5015E237CD00DFBB87 /* list_background_silver.png in Resources */,
+				9C56D9F015E517E300DB2E53 /* IANotificationBackgroundSilver.png in Resources */,
+				9C56D9F215E517E300DB2E53 /* IANotificationBackgroundDefault@2x.png in Resources */,
+				9C56D9F415E517E300DB2E53 /* IANotificationBackgroundDefault.png in Resources */,
+				9C56D9F615E517E300DB2E53 /* IANotificationBackgroundSilver@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

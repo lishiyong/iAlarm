@@ -13,6 +13,7 @@
 @interface IAShareSettingViewController : UITableViewController{
     YCShareAppEngine *shareAppEngine;
     
+    NSMutableArray *_headers;
     NSMutableArray *_sections;
     UITableViewCell *_facebookCell;  //facebook
     UITableViewCell *_twitterCell;   //twitter

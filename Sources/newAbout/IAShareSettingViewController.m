@@ -279,15 +279,20 @@
         
         _defaultSkinCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
         _silverSkinCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
-        _defaultSkinCell.textLabel.text = @"经典蓝色";
-        _silverSkinCell.textLabel.text = @"银色";
+        _defaultSkinCell.textLabel.text = kTHTitleBlue;
+        _silverSkinCell.textLabel.text = kTHTitleSilver;
         NSArray *skinStylesSection = [NSArray arrayWithObjects:_defaultSkinCell, _silverSkinCell, nil];
         
         _sections = [[NSMutableArray arrayWithObjects:shareSettingSection, skinStylesSection, nil] retain];
         
+        _headers = [[NSMutableArray arrayWithObjects:kTitleShareBinding, kTHTitleThemes, nil] retain];
+        
     }else {
         _sections = [[NSMutableArray arrayWithObjects:shareSettingSection, nil] retain];
+        
+        _headers = [[NSMutableArray arrayWithObjects:kTitleShareBinding, nil] retain];
     }
+    
     
     //skin Style
     if (IASkinTypeSilver == [IAParam sharedParam].skinType) {
@@ -361,6 +366,11 @@
     [[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:0.5];
     
 }
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    NSString *header = (NSString *)[_headers objectAtIndex:section];
+    return header;
+}
  
 #pragma mark - memory manager
 
@@ -376,18 +386,26 @@
 {
     [super viewDidUnload];
     [self unRegisterNotifications];
+    [_headers release]; _headers = nil;
+    [_sections release];_sections = nil;
     [_facebookCell release]; _facebookCell = nil;
     [_twitterCell release]; _twitterCell = nil;
     [_kxCell release]; _kxCell = nil;
+    [_defaultSkinCell release];_defaultSkinCell = nil;
+    [_silverSkinCell release];_silverSkinCell = nil;
 }
 
 - (void)dealloc {
     [self unRegisterNotifications];
     [shareAppEngine release];
     
+    [_headers release];
+    [_sections release];
     [_facebookCell release];
     [_twitterCell release];
     [_kxCell release];
+    [_defaultSkinCell release];
+    [_silverSkinCell release];
     [super dealloc];
 }
 

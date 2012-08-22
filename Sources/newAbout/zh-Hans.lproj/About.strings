@@ -75,3 +75,17 @@
 
 /* 要求评分的提示框的 ‘Not to remind’按钮 */
 "kAlertConfirmRateBtnNotToremind" = "不再提示";
+
+
+/* 共享绑定 */
+"kTitleShareBinding" = "共享绑定";
+
+/* 主题 */
+"kTHTitleThemes" = "主题风格";
+
+/* 清新银色 */
+"kTHTitleSilver" = "清新银色";
+
+/* 经典蓝色 */
+"kTHTitleBlue" = "经典蓝色";
+

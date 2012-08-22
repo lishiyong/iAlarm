@@ -421,6 +421,10 @@
         _alwaysAlarmSchedules = [[NSArray arrayWithArray:temps] retain];
     }
     
+    //使用相同的开始结束时间，字太多了
+    self.sameSwitchCell.textLabel.adjustsFontSizeToFitWidth = YES;
+    self.sameSwitchCell.textLabel.minimumFontSize = 12.0;
+    
     //skin Style
     [self setSkinWithType:[IAParam sharedParam].skinType];
 }
@@ -584,7 +588,12 @@
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section{
     
     if ((_sections.count -1) == section) {
-        NSString *s = [NSString stringWithFormat:@"%@\n%@",KTextWhyTimeSwitch,KTextWhyCanNotAutoLaunch];
+        NSString *s = nil;
+        if (!self.beginEndSwitch.on) {
+            s = KTextWhyTimeSwitch;
+        }else {
+            s = KTextWhyCanNotAutoLaunch;
+        }
         return s;
     }
      

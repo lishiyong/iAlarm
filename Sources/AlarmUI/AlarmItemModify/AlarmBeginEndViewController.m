@@ -105,12 +105,13 @@
     NSArray *heightOfBeginEndSection = [NSArray arrayWithObjects:heightOfBeginCellObj, heightOfEndCellObj, nil];
     [_heightOfCells addObject:heightOfBeginEndSection];
     
-    //选中beginCell
-    NSIndexPath *IndexPathOfbeginCell = [NSIndexPath indexPathForRow:0 inSection:0];
-    [self.tableView selectRowAtIndexPath:IndexPathOfbeginCell animated:NO scrollPosition:UITableViewScrollPositionBottom];
 
     //skin Style
     [self setSkinWithType:[IAParam sharedParam].skinType];
+    
+    //选中beginCell
+    NSIndexPath *IndexPathOfbeginCell = [NSIndexPath indexPathForRow:0 inSection:0];
+    [self.tableView selectRowAtIndexPath:IndexPathOfbeginCell animated:NO scrollPosition:UITableViewScrollPositionBottom];
 
 }
 
