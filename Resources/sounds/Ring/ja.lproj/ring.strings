@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>my-ring:None</key>
+    <string>なし</string>
+
+    <key>my-ring:Toreador Song</key>
+    <string>闘牛士の歌</string>
+    <key>my-ring:Beach Hut</key>
+    <string>海辺</string>
+    <key>my-ring:Buskers</key>
+    <string>大道芸人</string>
+    <key>my-ring:Canon</key>
+    <string>カノン</string>
+    <key>my-ring:Carmen Fantasy</key>
+    <string>カルメン幻想曲</string>
+    <key>my-ring:Crystal Tears</key>
+    <string>水の涙</string>
+    <key>my-ring:Lonely Valley</key>
+    <string>谷</string>
+    <key>my-ring:The Black and White</key>
+    <string>メロディ</string>
+
+
+    <key>apple-sound:Marimba</key>
+    <string>マリソバ</string>
+
+    <key>alarm-system:Alarm1</key>
+    <string>タイムパス</string>
+    <key>alarm-system:Alarm2</key>
+    <string>タイムアップ</string>
+    <key>alarm-system:Alarm3</key>
+    <string>チェックメイト</string>
+    <key>alarm-system:Alarm4</key>
+    <string>ジャンプ</string>
+    <key>alarm-system:Alarm5</key>
+    <string>アップダウン</string>
+    <key>system:Alarm</key>
+    <string>アラーム</string>
+    <key>system:Ascending</key>
+    <string>ステップ</string>
+    <key>system:Bark</key>
+    <string>吠え声</string>
+    <key>system:Bell Tower</key>
+    <string>ベルタワー</string>
+    <key>system:Blues</key>
+    <string>ブルース</string>
+    <key>system:Boing</key>
+    <string>跳ねる音</string>
+    <key>system:Crickets</key>
+    <string>こおろぎ</string>
+    <key>system:Digital</key>
+    <string>デジタル</string>
+    <key>system:Doorbell</key>
+    <string>ドアベル</string>
+    <key>system:Duck</key>
+    <string>アヒル</string>
+    <key>system:Harp</key>
+    <string>ハープ</string>
+    <key>system:Motorcycle</key>
+    <string>オートバイ</string>
+    <key>system:Old Car Horn</key>
+    <string>クラクション</string>
+    <key>system:Old Phone</key>
+    <string>黒電話</string>
+    <key>system:Piano Riff</key>
+    <string>ピアノリフ</string>
+    <key>system:Pinball</key>
+    <string>ピンボール</string>
+    <key>system:Robot</key>
+    <string>ロボット</string>
+    <key>system:Sci-Fi</key>
+    <string>SF</string>
+    <key>system:Sonar</key>
+    <string>ソナー</string>
+    <key>system:Strum</key>
+    <string>ストラム</string>
+    <key>system:Timba</key>
+    <string>ティンバ</string>
+    <key>system:Time Passing</key>
+    <string>タイムパス</string>
+    <key>system:Trill</key>
+    <string>トリル</string>
+    <key>system:Xylophone</key>
+    <string>シロフォン</string>
+    <key>texttone:Anticipate</key>
+    <string>予感</string>
+    <key>texttone:Bell</key>
+    <string>ベル</string>
+    <key>texttone:Bloom</key>
+    <string>ブルーム</string>
+    <key>texttone:Calypso</key>
+    <string>カリプソ</string>
+    <key>texttone:Chime</key>
+    <string>チャイム</string>
+    <key>texttone:Choo Choo</key>
+    <string>機関車</string>
+    <key>texttone:Descent</key>
+    <string>降下</string>
+    <key>texttone:Electronic</key>
+    <string>エレクトロニック</string>
+    <key>texttone:Fanfare</key>
+    <string>ファンファーレ</string>
+    <key>texttone:Glass</key>
+    <string>ガラス</string>
+    <key>texttone:Horn</key>
+    <string>ホーン</string>
+    <key>texttone:Ladder</key>
+    <string>はしご</string>
+    <key>texttone:Minuet</key>
+    <string>メヌエット</string>
+    <key>texttone:News Flash</key>
+    <string>ニュースフラッシュ</string>
+    <key>texttone:Noir</key>
+    <string>ノアール</string>
+    <key>texttone:Sherwood Forest</key>
+    <string>シャーウッドの森</string>
+    <key>texttone:Spell</key>
+    <string>スペル</string>
+    <key>texttone:Suspense</key>
+    <string>サスペンス</string>
+    <key>texttone:Telegraph</key>
+    <string>電報</string>
+    <key>texttone:Tiptoes</key>
+    <string>つま先</string>
+    <key>texttone:Tri-tone</key>
+    <string>トライトーン</string>
+    <key>texttone:Typewriters</key>
+    <string>タイプライター</string>
+    <key>texttone:Update</key>
+    <string>アップデート</string>
+</dict>
+</plist>

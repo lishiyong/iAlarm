@@ -29,6 +29,16 @@
         NSArray *soundPairs = [NSArray 
                                arrayWithObjects
                                :[YCPair pairWithValue:[NSNull null] forKey:@"my-ring:None"]
+                               
+                               ,[YCPair pairWithValue:@"Toreador_Song.caf" forKey:@"my-ring:Toreador Song"]
+                               ,[YCPair pairWithValue:@"Beach_Hut.caf" forKey:@"my-ring:Beach Hut"]
+                               ,[YCPair pairWithValue:@"Buskers.caf" forKey:@"my-ring:Buskers"]
+                               ,[YCPair pairWithValue:@"Canon.caf" forKey:@"my-ring:Canon"]
+                               ,[YCPair pairWithValue:@"Carmen_Fantasy.caf" forKey:@"my-ring:Carmen Fantasy"]
+                               ,[YCPair pairWithValue:@"Crystal_Tears.caf" forKey:@"my-ring:Crystal Tears"]
+                               ,[YCPair pairWithValue:@"Lonely_Valley.caf" forKey:@"my-ring:Lonely Valley"]
+                               ,[YCPair pairWithValue:@"The_Black_and_White.caf" forKey:@"my-ring:The Black and White"]
+                               
                                ,[YCPair pairWithValue:@"Marimba.caf" forKey:@"apple-sound:Marimba"]
                                ,[YCPair pairWithValue:@"Ascending.caf" forKey:@"system:Ascending"]
                                ,[YCPair pairWithValue:@"Bell_Tower.caf" forKey:@"system:Bell Tower"]
@@ -41,7 +51,7 @@
                                ,[YCPair pairWithValue:@"Harp.caf" forKey:@"system:Harp"]
                                ,[YCPair pairWithValue:@"Motorcycle.caf" forKey:@"system:Motorcycle"]
                                ,[YCPair pairWithValue:@"Old_Car_Horn.caf" forKey:@"system:Old Car Horn"]
-                               ,[YCPair pairWithValue:@"Old_Phone.caf" forKey:@"system:Ascending"]
+                               ,[YCPair pairWithValue:@"Old_Phone.caf" forKey:@"system:Old Phone"]
                                ,[YCPair pairWithValue:@"Piano_Riff.caf" forKey:@"system:Piano Riff"]
                                ,[YCPair pairWithValue:@"Pinball.caf" forKey:@"system:Pinball"]
                                ,[YCPair pairWithValue:@"Robot.caf" forKey:@"system:Robot"]
@@ -62,9 +72,7 @@
 			obj.soundName = NSLocalizedStringFromTable((NSString*)aPair.key, @"ring", @"");
 			obj.soundFileName = ((id)aPair.value != [NSNull null]) ? (NSString*)aPair.value : nil;
 			obj.sortId = i;
-            
-            NSLog(@"soundId = %@",obj.soundId);
-			
+            			
 			if (obj.soundFileName) {
 				NSString *soundFilePath =
 				[[NSBundle mainBundle] pathForResource: [obj.soundFileName nameInFullFileName]

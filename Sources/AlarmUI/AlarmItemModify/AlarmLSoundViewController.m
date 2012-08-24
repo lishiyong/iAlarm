@@ -216,8 +216,6 @@
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
-	//done按钮可用
-	self.navigationItem.rightBarButtonItem.enabled = YES;
 	
 	//播放声音
 	if (indexPath.section == 0) {
@@ -247,6 +245,8 @@
         
 		[self.soundPlayerCurrent stop]; //停止当前播放的声音
 	}
+    
+    [self saveData];
 	
 }
 

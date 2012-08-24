@@ -99,7 +99,7 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
 	
 	if (!self->doneButtonItem) {
 		self->doneButtonItem = [[UIBarButtonItem alloc]
-								initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+								initWithBarButtonSystemItem:UIBarButtonSystemItemDone
 								target:self
 								action:@selector(doneButtonItemPressed:)];
         doneButtonItem.style = UIBarButtonItemStyleBordered;

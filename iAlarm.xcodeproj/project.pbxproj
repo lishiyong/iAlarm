@@ -129,6 +129,22 @@
 		9C1CA8ED15E73ED1005EA1AC /* Strum.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C1CA8D015E73ED0005EA1AC /* Strum.caf */; };
 		9C1CA8EE15E73ED1005EA1AC /* Timba.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C1CA8D115E73ED1005EA1AC /* Timba.caf */; };
 		9C1CA8EF15E73ED1005EA1AC /* Timba.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C1CA8D115E73ED1005EA1AC /* Timba.caf */; };
+		9C1CA90615E75B19005EA1AC /* Beach_Hut.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C1CA8FE15E75B19005EA1AC /* Beach_Hut.caf */; };
+		9C1CA90715E75B19005EA1AC /* Beach_Hut.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C1CA8FE15E75B19005EA1AC /* Beach_Hut.caf */; };
+		9C1CA90815E75B19005EA1AC /* Buskers.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C1CA8FF15E75B19005EA1AC /* Buskers.caf */; };
+		9C1CA90915E75B19005EA1AC /* Buskers.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C1CA8FF15E75B19005EA1AC /* Buskers.caf */; };
+		9C1CA90A15E75B19005EA1AC /* Canon.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C1CA90015E75B19005EA1AC /* Canon.caf */; };
+		9C1CA90B15E75B19005EA1AC /* Canon.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C1CA90015E75B19005EA1AC /* Canon.caf */; };
+		9C1CA90C15E75B19005EA1AC /* Carmen_Fantasy.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C1CA90115E75B19005EA1AC /* Carmen_Fantasy.caf */; };
+		9C1CA90D15E75B19005EA1AC /* Carmen_Fantasy.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C1CA90115E75B19005EA1AC /* Carmen_Fantasy.caf */; };
+		9C1CA90E15E75B19005EA1AC /* Crystal_Tears.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C1CA90215E75B19005EA1AC /* Crystal_Tears.caf */; };
+		9C1CA90F15E75B19005EA1AC /* Crystal_Tears.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C1CA90215E75B19005EA1AC /* Crystal_Tears.caf */; };
+		9C1CA91015E75B19005EA1AC /* Lonely_Valley.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C1CA90315E75B19005EA1AC /* Lonely_Valley.caf */; };
+		9C1CA91115E75B19005EA1AC /* Lonely_Valley.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C1CA90315E75B19005EA1AC /* Lonely_Valley.caf */; };
+		9C1CA91215E75B19005EA1AC /* The_Black_and_White.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C1CA90415E75B19005EA1AC /* The_Black_and_White.caf */; };
+		9C1CA91315E75B19005EA1AC /* The_Black_and_White.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C1CA90415E75B19005EA1AC /* The_Black_and_White.caf */; };
+		9C1CA91415E75B19005EA1AC /* Toreador_Song.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C1CA90515E75B19005EA1AC /* Toreador_Song.caf */; };
+		9C1CA91515E75B19005EA1AC /* Toreador_Song.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9C1CA90515E75B19005EA1AC /* Toreador_Song.caf */; };
 		9C21489D135EAF03004D16F1 /* IAFlagBlueDeep.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C21489A135EAF03004D16F1 /* IAFlagBlueDeep.png */; };
 		9C21489E135EAF03004D16F1 /* IAFlagOrange.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C21489B135EAF03004D16F1 /* IAFlagOrange.png */; };
 		9C2148A3135EAF2E004D16F1 /* IAFlagBlueDeep@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C2148A0135EAF2E004D16F1 /* IAFlagBlueDeep@2x.png */; };
@@ -1544,21 +1560,32 @@
 		9C144697153C79090071EFF2 /* OAuthConsumer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthConsumer.h; sourceTree = "<group>"; };
 		9C144698153C79090071EFF2 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		9C1CA8BA15E71C56005EA1AC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ring.strings; sourceTree = "<group>"; };
-		9C1CA8C315E73ECF005EA1AC /* Ascending.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Ascending.caf; path = Ring/Ascending.caf; sourceTree = "<group>"; };
-		9C1CA8C415E73ED0005EA1AC /* Bell_Tower.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Bell_Tower.caf; path = Ring/Bell_Tower.caf; sourceTree = "<group>"; };
-		9C1CA8C515E73ED0005EA1AC /* Blues.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Blues.caf; path = Ring/Blues.caf; sourceTree = "<group>"; };
-		9C1CA8C615E73ED0005EA1AC /* Boing.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Boing.caf; path = Ring/Boing.caf; sourceTree = "<group>"; };
-		9C1CA8C715E73ED0005EA1AC /* Crickets.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Crickets.caf; path = Ring/Crickets.caf; sourceTree = "<group>"; };
-		9C1CA8C815E73ED0005EA1AC /* Digital.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Digital.caf; path = Ring/Digital.caf; sourceTree = "<group>"; };
-		9C1CA8C915E73ED0005EA1AC /* Doorbell.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Doorbell.caf; path = Ring/Doorbell.caf; sourceTree = "<group>"; };
-		9C1CA8CA15E73ED0005EA1AC /* Duck.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Duck.caf; path = Ring/Duck.caf; sourceTree = "<group>"; };
-		9C1CA8CB15E73ED0005EA1AC /* Motorcycle.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Motorcycle.caf; path = Ring/Motorcycle.caf; sourceTree = "<group>"; };
-		9C1CA8CC15E73ED0005EA1AC /* Old_Car_Horn.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Old_Car_Horn.caf; path = Ring/Old_Car_Horn.caf; sourceTree = "<group>"; };
-		9C1CA8CD15E73ED0005EA1AC /* Piano_Riff.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Piano_Riff.caf; path = Ring/Piano_Riff.caf; sourceTree = "<group>"; };
-		9C1CA8CE15E73ED0005EA1AC /* Pinball.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Pinball.caf; path = Ring/Pinball.caf; sourceTree = "<group>"; };
-		9C1CA8CF15E73ED0005EA1AC /* Robot.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Robot.caf; path = Ring/Robot.caf; sourceTree = "<group>"; };
-		9C1CA8D015E73ED0005EA1AC /* Strum.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Strum.caf; path = Ring/Strum.caf; sourceTree = "<group>"; };
-		9C1CA8D115E73ED1005EA1AC /* Timba.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Timba.caf; path = Ring/Timba.caf; sourceTree = "<group>"; };
+		9C1CA8C315E73ECF005EA1AC /* Ascending.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ascending.caf; sourceTree = "<group>"; };
+		9C1CA8C415E73ED0005EA1AC /* Bell_Tower.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Bell_Tower.caf; sourceTree = "<group>"; };
+		9C1CA8C515E73ED0005EA1AC /* Blues.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Blues.caf; sourceTree = "<group>"; };
+		9C1CA8C615E73ED0005EA1AC /* Boing.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Boing.caf; sourceTree = "<group>"; };
+		9C1CA8C715E73ED0005EA1AC /* Crickets.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Crickets.caf; sourceTree = "<group>"; };
+		9C1CA8C815E73ED0005EA1AC /* Digital.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Digital.caf; sourceTree = "<group>"; };
+		9C1CA8C915E73ED0005EA1AC /* Doorbell.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Doorbell.caf; sourceTree = "<group>"; };
+		9C1CA8CA15E73ED0005EA1AC /* Duck.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Duck.caf; sourceTree = "<group>"; };
+		9C1CA8CB15E73ED0005EA1AC /* Motorcycle.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Motorcycle.caf; sourceTree = "<group>"; };
+		9C1CA8CC15E73ED0005EA1AC /* Old_Car_Horn.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Old_Car_Horn.caf; sourceTree = "<group>"; };
+		9C1CA8CD15E73ED0005EA1AC /* Piano_Riff.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Piano_Riff.caf; sourceTree = "<group>"; };
+		9C1CA8CE15E73ED0005EA1AC /* Pinball.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Pinball.caf; sourceTree = "<group>"; };
+		9C1CA8CF15E73ED0005EA1AC /* Robot.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Robot.caf; sourceTree = "<group>"; };
+		9C1CA8D015E73ED0005EA1AC /* Strum.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Strum.caf; sourceTree = "<group>"; };
+		9C1CA8D115E73ED1005EA1AC /* Timba.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Timba.caf; sourceTree = "<group>"; };
+		9C1CA8FE15E75B19005EA1AC /* Beach_Hut.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Beach_Hut.caf; sourceTree = "<group>"; };
+		9C1CA8FF15E75B19005EA1AC /* Buskers.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Buskers.caf; sourceTree = "<group>"; };
+		9C1CA90015E75B19005EA1AC /* Canon.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Canon.caf; sourceTree = "<group>"; };
+		9C1CA90115E75B19005EA1AC /* Carmen_Fantasy.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Carmen_Fantasy.caf; sourceTree = "<group>"; };
+		9C1CA90215E75B19005EA1AC /* Crystal_Tears.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Crystal_Tears.caf; sourceTree = "<group>"; };
+		9C1CA90315E75B19005EA1AC /* Lonely_Valley.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Lonely_Valley.caf; sourceTree = "<group>"; };
+		9C1CA90415E75B19005EA1AC /* The_Black_and_White.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = The_Black_and_White.caf; sourceTree = "<group>"; };
+		9C1CA90515E75B19005EA1AC /* Toreador_Song.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Toreador_Song.caf; sourceTree = "<group>"; };
+		9C1CA91615E760E7005EA1AC /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/ring.strings; sourceTree = "<group>"; };
+		9C1CA91715E760E7005EA1AC /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/ring.strings"; sourceTree = "<group>"; };
+		9C1CA91815E760E8005EA1AC /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/ring.strings"; sourceTree = "<group>"; };
 		9C21489A135EAF03004D16F1 /* IAFlagBlueDeep.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IAFlagBlueDeep.png; sourceTree = "<group>"; };
 		9C21489B135EAF03004D16F1 /* IAFlagOrange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IAFlagOrange.png; sourceTree = "<group>"; };
 		9C2148A0135EAF2E004D16F1 /* IAFlagBlueDeep@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAFlagBlueDeep@2x.png"; sourceTree = "<group>"; };
@@ -2661,6 +2688,21 @@
 			path = Crypto;
 			sourceTree = "<group>";
 		};
+		9C1CA8FD15E75B19005EA1AC /* myrings */ = {
+			isa = PBXGroup;
+			children = (
+				9C1CA8FE15E75B19005EA1AC /* Beach_Hut.caf */,
+				9C1CA8FF15E75B19005EA1AC /* Buskers.caf */,
+				9C1CA90015E75B19005EA1AC /* Canon.caf */,
+				9C1CA90115E75B19005EA1AC /* Carmen_Fantasy.caf */,
+				9C1CA90215E75B19005EA1AC /* Crystal_Tears.caf */,
+				9C1CA90315E75B19005EA1AC /* Lonely_Valley.caf */,
+				9C1CA90415E75B19005EA1AC /* The_Black_and_White.caf */,
+				9C1CA90515E75B19005EA1AC /* Toreador_Song.caf */,
+			);
+			path = myrings;
+			sourceTree = "<group>";
+		};
 		9C23012A150DB15D005E5E08 /* newAbout */ = {
 			isa = PBXGroup;
 			children = (
@@ -2740,12 +2782,28 @@
 		9C5AF2A6134F38FB00547BB0 /* Ring */ = {
 			isa = PBXGroup;
 			children = (
+				9C1CA8BB15E71C56005EA1AC /* ring.strings */,
+				9C1CA8FD15E75B19005EA1AC /* myrings */,
+				9C1CA8C315E73ECF005EA1AC /* Ascending.caf */,
+				9C1CA8C415E73ED0005EA1AC /* Bell_Tower.caf */,
+				9C1CA8C515E73ED0005EA1AC /* Blues.caf */,
+				9C1CA8C615E73ED0005EA1AC /* Boing.caf */,
+				9C1CA8C715E73ED0005EA1AC /* Crickets.caf */,
+				9C1CA8C815E73ED0005EA1AC /* Digital.caf */,
+				9C1CA8C915E73ED0005EA1AC /* Doorbell.caf */,
+				9C1CA8CA15E73ED0005EA1AC /* Duck.caf */,
+				9C1CA8CB15E73ED0005EA1AC /* Motorcycle.caf */,
+				9C1CA8CC15E73ED0005EA1AC /* Old_Car_Horn.caf */,
+				9C1CA8CD15E73ED0005EA1AC /* Piano_Riff.caf */,
+				9C1CA8CE15E73ED0005EA1AC /* Pinball.caf */,
+				9C1CA8CF15E73ED0005EA1AC /* Robot.caf */,
+				9C1CA8D015E73ED0005EA1AC /* Strum.caf */,
+				9C1CA8D115E73ED1005EA1AC /* Timba.caf */,
 				9C5AF2A7134F38FB00547BB0 /* Harp.caf */,
 				9C5AF2A8134F38FB00547BB0 /* Old_Phone.caf */,
 				9C5AF2A9134F38FB00547BB0 /* Marimba.caf */,
 				9C5AF2AA134F38FB00547BB0 /* Trill.caf */,
 				9C5AF2AB134F38FB00547BB0 /* Xylophone.caf */,
-				9C1CA8BB15E71C56005EA1AC /* ring.strings */,
 			);
 			path = Ring;
 			sourceTree = "<group>";
@@ -4304,21 +4362,6 @@
 		9CE8949F12FFFFD2008FBD45 /* sounds */ = {
 			isa = PBXGroup;
 			children = (
-				9C1CA8C315E73ECF005EA1AC /* Ascending.caf */,
-				9C1CA8C415E73ED0005EA1AC /* Bell_Tower.caf */,
-				9C1CA8C515E73ED0005EA1AC /* Blues.caf */,
-				9C1CA8C615E73ED0005EA1AC /* Boing.caf */,
-				9C1CA8C715E73ED0005EA1AC /* Crickets.caf */,
-				9C1CA8C815E73ED0005EA1AC /* Digital.caf */,
-				9C1CA8C915E73ED0005EA1AC /* Doorbell.caf */,
-				9C1CA8CA15E73ED0005EA1AC /* Duck.caf */,
-				9C1CA8CB15E73ED0005EA1AC /* Motorcycle.caf */,
-				9C1CA8CC15E73ED0005EA1AC /* Old_Car_Horn.caf */,
-				9C1CA8CD15E73ED0005EA1AC /* Piano_Riff.caf */,
-				9C1CA8CE15E73ED0005EA1AC /* Pinball.caf */,
-				9C1CA8CF15E73ED0005EA1AC /* Robot.caf */,
-				9C1CA8D015E73ED0005EA1AC /* Strum.caf */,
-				9C1CA8D115E73ED1005EA1AC /* Timba.caf */,
 				9C5AF2A6134F38FB00547BB0 /* Ring */,
 			);
 			path = sounds;
@@ -5205,6 +5248,14 @@
 				9C1CA8EA15E73ED1005EA1AC /* Robot.caf in Resources */,
 				9C1CA8EC15E73ED1005EA1AC /* Strum.caf in Resources */,
 				9C1CA8EE15E73ED1005EA1AC /* Timba.caf in Resources */,
+				9C1CA90615E75B19005EA1AC /* Beach_Hut.caf in Resources */,
+				9C1CA90815E75B19005EA1AC /* Buskers.caf in Resources */,
+				9C1CA90A15E75B19005EA1AC /* Canon.caf in Resources */,
+				9C1CA90C15E75B19005EA1AC /* Carmen_Fantasy.caf in Resources */,
+				9C1CA90E15E75B19005EA1AC /* Crystal_Tears.caf in Resources */,
+				9C1CA91015E75B19005EA1AC /* Lonely_Valley.caf in Resources */,
+				9C1CA91215E75B19005EA1AC /* The_Black_and_White.caf in Resources */,
+				9C1CA91415E75B19005EA1AC /* Toreador_Song.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5690,6 +5741,14 @@
 				9C1CA8EB15E73ED1005EA1AC /* Robot.caf in Resources */,
 				9C1CA8ED15E73ED1005EA1AC /* Strum.caf in Resources */,
 				9C1CA8EF15E73ED1005EA1AC /* Timba.caf in Resources */,
+				9C1CA90715E75B19005EA1AC /* Beach_Hut.caf in Resources */,
+				9C1CA90915E75B19005EA1AC /* Buskers.caf in Resources */,
+				9C1CA90B15E75B19005EA1AC /* Canon.caf in Resources */,
+				9C1CA90D15E75B19005EA1AC /* Carmen_Fantasy.caf in Resources */,
+				9C1CA90F15E75B19005EA1AC /* Crystal_Tears.caf in Resources */,
+				9C1CA91115E75B19005EA1AC /* Lonely_Valley.caf in Resources */,
+				9C1CA91315E75B19005EA1AC /* The_Black_and_White.caf in Resources */,
+				9C1CA91515E75B19005EA1AC /* Toreador_Song.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6174,6 +6233,9 @@
 			isa = PBXVariantGroup;
 			children = (
 				9C1CA8BA15E71C56005EA1AC /* en */,
+				9C1CA91615E760E7005EA1AC /* ja */,
+				9C1CA91715E760E7005EA1AC /* zh-Hans */,
+				9C1CA91815E760E8005EA1AC /* zh-Hant */,
 			);
 			name = ring.strings;
 			sourceTree = "<group>";

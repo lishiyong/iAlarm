@@ -5,6 +5,24 @@
     <key>my-ring:None</key>
     <string>None</string>
 
+    <key>my-ring:Toreador Song</key>
+    <string>Toreador Song</string>
+    <key>my-ring:Beach Hut</key>
+    <string>Beach Hut</string>
+    <key>my-ring:Buskers</key>
+    <string>Buskers</string>
+    <key>my-ring:Canon</key>
+    <string>Canon</string>
+    <key>my-ring:Carmen Fantasy</key>
+    <string>Carmen Fantasy</string>
+    <key>my-ring:Crystal Tears</key>
+    <string>Crystal Tears</string>
+    <key>my-ring:Lonely Valley</key>
+    <string>Lonely Valley</string>
+    <key>my-ring:The Black and White</key>
+    <string>Melody</string>
+
+
     <key>apple-sound:Marimba</key>
     <string>Marimba</string>
 
