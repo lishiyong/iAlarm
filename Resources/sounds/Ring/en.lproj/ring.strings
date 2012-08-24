@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>my-ring:None</key>
+    <string>None</string>
+
+    <key>apple-sound:Marimba</key>
+    <string>Marimba</string>
+
+	<key>alarm-system:Alarm1</key>
+	<string>Time Passing</string>
+	<key>alarm-system:Alarm2</key>
+	<string>Time&apos;s Up</string>
+	<key>alarm-system:Alarm3</key>
+	<string>Checkmate</string>
+	<key>alarm-system:Alarm4</key>
+	<string>Jump</string>
+	<key>alarm-system:Alarm5</key>
+	<string>Up Down</string>
+	<key>system:Alarm</key>
+	<string>Alarm</string>
+	<key>system:Ascending</key>
+	<string>Ascending</string>
+	<key>system:Bark</key>
+	<string>Bark</string>
+	<key>system:Bell Tower</key>
+	<string>Bell Tower</string>
+	<key>system:Blues</key>
+	<string>Blues</string>
+	<key>system:Boing</key>
+	<string>Boing</string>
+	<key>system:Crickets</key>
+	<string>Crickets</string>
+	<key>system:Digital</key>
+	<string>Digital</string>
+	<key>system:Doorbell</key>
+	<string>Doorbell</string>
+	<key>system:Duck</key>
+	<string>Duck</string>
+	<key>system:Harp</key>
+	<string>Harp</string>
+	<key>system:Motorcycle</key>
+	<string>Motorcycle</string>
+	<key>system:Old Car Horn</key>
+	<string>Old Car Horn</string>
+	<key>system:Old Phone</key>
+	<string>Old Phone</string>
+	<key>system:Piano Riff</key>
+	<string>Piano Riff</string>
+	<key>system:Pinball</key>
+	<string>Pinball</string>
+	<key>system:Robot</key>
+	<string>Robot</string>
+	<key>system:Sci-Fi</key>
+	<string>Sci-Fi</string>
+	<key>system:Sonar</key>
+	<string>Sonar</string>
+	<key>system:Strum</key>
+	<string>Strum</string>
+	<key>system:Timba</key>
+	<string>Timba</string>
+	<key>system:Time Passing</key>
+	<string>Time Passing</string>
+	<key>system:Trill</key>
+	<string>Trill</string>
+	<key>system:Xylophone</key>
+	<string>Xylophone</string>
+	<key>texttone:Anticipate</key>
+	<string>Anticipate</string>
+	<key>texttone:Bell</key>
+	<string>Bell</string>
+	<key>texttone:Bloom</key>
+	<string>Bloom</string>
+	<key>texttone:Calypso</key>
+	<string>Calypso</string>
+	<key>texttone:Chime</key>
+	<string>Chime</string>
+	<key>texttone:Choo Choo</key>
+	<string>Choo Choo</string>
+	<key>texttone:Descent</key>
+	<string>Descent</string>
+	<key>texttone:Electronic</key>
+	<string>Electronic</string>
+	<key>texttone:Fanfare</key>
+	<string>Fanfare</string>
+	<key>texttone:Glass</key>
+	<string>Glass</string>
+	<key>texttone:Horn</key>
+	<string>Horn</string>
+	<key>texttone:Ladder</key>
+	<string>Ladder</string>
+	<key>texttone:Minuet</key>
+	<string>Minuet</string>
+	<key>texttone:News Flash</key>
+	<string>News Flash</string>
+	<key>texttone:Noir</key>
+	<string>Noir</string>
+	<key>texttone:Sherwood Forest</key>
+	<string>Sherwood Forest</string>
+	<key>texttone:Spell</key>
+	<string>Spell</string>
+	<key>texttone:Suspense</key>
+	<string>Suspense</string>
+	<key>texttone:Telegraph</key>
+	<string>Telegraph</string>
+	<key>texttone:Tiptoes</key>
+	<string>Tiptoes</string>
+	<key>texttone:Tri-tone</key>
+	<string>Tri-tone</string>
+	<key>texttone:Typewriters</key>
+	<string>Typewriters</string>
+	<key>texttone:Update</key>
+	<string>Update</string>
+</dict>
+</plist>

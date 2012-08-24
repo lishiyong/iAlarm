@@ -60,16 +60,10 @@
 
 - (void)setSkinWithType:(IASkinType)type{
     YCBarButtonItemStyle buttonItemStyle = YCBarButtonItemStyleDefault;
-    YCTableViewBackgroundStyle tableViewBgStyle = YCTableViewBackgroundStyleDefault;
-    YCBarStyle barStyle = YCBarStyleDefault;
     if (IASkinTypeDefault == type) {
         buttonItemStyle = YCBarButtonItemStyleDefault;
-        tableViewBgStyle = YCTableViewBackgroundStyleDefault;
-        barStyle = YCBarStyleDefault;
     }else {
         buttonItemStyle = YCBarButtonItemStyleSilver;
-        tableViewBgStyle = YCTableViewBackgroundStyleSilver;
-        barStyle = YCBarStyleSilver;
     }
     [self._cancelButtonItem setYCStyle:buttonItemStyle];
     

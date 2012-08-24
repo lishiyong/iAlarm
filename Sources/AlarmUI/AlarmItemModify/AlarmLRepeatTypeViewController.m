@@ -36,17 +36,11 @@
 @synthesize sameSwitchCell = _sameSwitchCell, sameSwitch = _sameSwitch;
 
 - (void)setSkinWithType:(IASkinType)type{
-    YCBarButtonItemStyle buttonItemStyle = YCBarButtonItemStyleDefault;
     YCTableViewBackgroundStyle tableViewBgStyle = YCTableViewBackgroundStyleDefault;
-    YCBarStyle barStyle = YCBarStyleDefault;
     if (IASkinTypeDefault == type) {
-        buttonItemStyle = YCBarButtonItemStyleDefault;
         tableViewBgStyle = YCTableViewBackgroundStyleDefault;
-        barStyle = YCBarStyleDefault;
     }else {
-        buttonItemStyle = YCBarButtonItemStyleSilver;
         tableViewBgStyle = YCTableViewBackgroundStyleSilver;
-        barStyle = YCBarStyleSilver;
     }
     [self.tableView setYCBackgroundStyle:tableViewBgStyle];
     [self.tableView reloadData];

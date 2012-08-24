@@ -37,17 +37,14 @@
     
     YCBarButtonItemStyle buttonItemStyle = YCBarButtonItemStyleDefault;
     YCTableViewBackgroundStyle tableViewBgStyle = YCTableViewBackgroundStyleDefault;
-    YCBarStyle barStyle = YCBarStyleDefault;
     UIColor *cellBackgroundColor = nil;
     if (IASkinTypeDefault == type) {
         buttonItemStyle = YCBarButtonItemStyleDefault;
         tableViewBgStyle = YCTableViewBackgroundStyleDefault;
-        barStyle = YCBarStyleDefault;
         cellBackgroundColor = [UIColor iPhoneTableCellGroupedBackgroundColor];
     }else {
         buttonItemStyle = YCBarButtonItemStyleSilver;
         tableViewBgStyle = YCTableViewBackgroundStyleSilver;
-        barStyle = YCBarStyleSilver;
         cellBackgroundColor = [UIColor iPadTableCellGroupedBackgroundColor];
     }
     [self.navigationItem.leftBarButtonItem setCustomBackButtonYCStyle:buttonItemStyle];
@@ -277,8 +274,8 @@
     //
     if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) {
         
-        _defaultSkinCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
-        _silverSkinCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
+        _defaultSkinCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+        _silverSkinCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         _defaultSkinCell.textLabel.text = kTHTitleBlue;
         _silverSkinCell.textLabel.text = kTHTitleSilver;
         NSArray *skinStylesSection = [NSArray arrayWithObjects:_defaultSkinCell, _silverSkinCell, nil];
@@ -344,11 +341,11 @@
     if (selectedCell == _defaultSkinCell) {
         [_silverSkinCell setAccessoryType:UITableViewCellAccessoryNone];
         skinType = IASkinTypeDefault;
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];//状态栏
     }else {
         [_defaultSkinCell setAccessoryType:UITableViewCellAccessoryNone];
         skinType = IASkinTypeSilver;
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];//状态栏
     }
     
     //保存
@@ -364,6 +361,7 @@
     
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     [[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:0.5];
+     
     
 }
 

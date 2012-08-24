@@ -25,56 +25,45 @@
 
 	if (!soundDic) 
 	{
-		NSString* names[ksoundCount] = 
-		{
-			KDicSoundName000,
-			KDicSoundName001,
-			KDicSoundName002,
-			KDicSoundName003,
-			KDicSoundName004,
-			KDicSoundName005
-		};
-		
-		NSString* fileNames[ksoundCount] = 
-		{
-			nil,
-			@"Marimba.caf",
-			@"Xylophone.caf",
-			@"Harp.caf",
-			@"Old_Phone.caf",
-			@"Trill.caf"
-			
-		};
-		
-		NSString* ids[ksoundCount] = 
-		{
-			@"s000",
-			@"s001",
-			@"s002",
-			@"s003",
-			@"s004",
-			@"s005"
-		};
-		
-		NSUInteger sortIds[ksoundCount] = 
-		{
-			0,
-			1,
-			2,
-			3,
-			4,
-			5
-		};
+        
+        NSArray *soundPairs = [NSArray 
+                               arrayWithObjects
+                               :[YCPair pairWithValue:[NSNull null] forKey:@"my-ring:None"]
+                               ,[YCPair pairWithValue:@"Marimba.caf" forKey:@"apple-sound:Marimba"]
+                               ,[YCPair pairWithValue:@"Ascending.caf" forKey:@"system:Ascending"]
+                               ,[YCPair pairWithValue:@"Bell_Tower.caf" forKey:@"system:Bell Tower"]
+                               ,[YCPair pairWithValue:@"Blues.caf" forKey:@"system:Blues"]
+                               ,[YCPair pairWithValue:@"Boing.caf" forKey:@"system:Boing"]
+                               ,[YCPair pairWithValue:@"Crickets.caf" forKey:@"system:Crickets"]
+                               ,[YCPair pairWithValue:@"Digital.caf" forKey:@"system:Digital"]
+                               ,[YCPair pairWithValue:@"Doorbell.caf" forKey:@"system:Doorbell"]
+                               ,[YCPair pairWithValue:@"Duck.caf" forKey:@"system:Duck"]
+                               ,[YCPair pairWithValue:@"Harp.caf" forKey:@"system:Harp"]
+                               ,[YCPair pairWithValue:@"Motorcycle.caf" forKey:@"system:Motorcycle"]
+                               ,[YCPair pairWithValue:@"Old_Car_Horn.caf" forKey:@"system:Old Car Horn"]
+                               ,[YCPair pairWithValue:@"Old_Phone.caf" forKey:@"system:Ascending"]
+                               ,[YCPair pairWithValue:@"Piano_Riff.caf" forKey:@"system:Piano Riff"]
+                               ,[YCPair pairWithValue:@"Pinball.caf" forKey:@"system:Pinball"]
+                               ,[YCPair pairWithValue:@"Robot.caf" forKey:@"system:Robot"]
+                               ,[YCPair pairWithValue:@"Strum.caf" forKey:@"system:Strum"]
+                               ,[YCPair pairWithValue:@"Timba.caf" forKey:@"system:Timba"]
+                               ,[YCPair pairWithValue:@"Trill.caf" forKey:@"system:Trill"]
+                               ,[YCPair pairWithValue:@"Xylophone.caf" forKey:@"system:Xylophone"]
+                               , nil];
+        
 		
 		soundDic = [[NSMutableDictionary alloc] init];
-		for (int i=0; i<ksoundCount; i++) 
+		for (int i=0; i<soundPairs.count; i++) 
 		{
+            YCPair *aPair = [soundPairs objectAtIndex:i];
+            
 			YCSound *obj = [[YCSound alloc] init];
-			obj.soundId = ids[i];
-			obj.soundName = names[i];
-			obj.soundFileName = fileNames[i];
-			obj.sortId = sortIds[i];
-			obj.customSound = NO;
+			obj.soundId = [NSString stringWithFormat:@"s%.3d",i];
+			obj.soundName = NSLocalizedStringFromTable((NSString*)aPair.key, @"ring", @"");
+			obj.soundFileName = ((id)aPair.value != [NSNull null]) ? (NSString*)aPair.value : nil;
+			obj.sortId = i;
+            
+            NSLog(@"soundId = %@",obj.soundId);
 			
 			if (obj.soundFileName) {
 				NSString *soundFilePath =
@@ -86,7 +75,7 @@
 
 			
 
-			[soundDic setObject:obj forKey:ids[i]];
+			[soundDic setObject:obj forKey:obj.soundId];
 			[obj release];
 		}
 		

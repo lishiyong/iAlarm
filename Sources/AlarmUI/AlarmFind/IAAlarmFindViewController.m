@@ -67,21 +67,15 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
 - (void)setSkinWithType:(IASkinType)type{
     
     YCBarButtonItemStyle buttonItemStyle = YCBarButtonItemStyleDefault;
-    YCTableViewBackgroundStyle tableViewBgStyle = YCTableViewBackgroundStyleDefault;
     YCBarStyle barStyle = YCBarStyleDefault;
-    YCSegmentedControlStyle sgStyle = YCSegmentedControlStyleDefault;
     UIStatusBarStyle statusBarStyle = UIStatusBarStyleDefault;
     if (IASkinTypeDefault == type) {
         buttonItemStyle = YCBarButtonItemStyleDefault;
-        tableViewBgStyle = YCTableViewBackgroundStyleDefault;
         barStyle = YCBarStyleDefault;
-        sgStyle = YCSegmentedControlStyleDefault;
         statusBarStyle = UIStatusBarStyleDefault;
     }else {
         buttonItemStyle = YCBarButtonItemStyleSilver;
-        tableViewBgStyle = YCTableViewBackgroundStyleSilver;
         barStyle = YCBarStyleSilver;
-        sgStyle = YCSegmentedControlStyleSilver;
         statusBarStyle = UIStatusBarStyleBlackOpaque;
     }
     [self.navigationController.navigationBar setYCBarStyle:barStyle];
@@ -549,7 +543,7 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
                                       initWithAnnotation:theAnnotation
                                          reuseIdentifier:annotationIdentifier] autorelease];
          */
-        pinView = [[IAFlagAnnotationView alloc] initWithAnnotation:theAnnotation reuseIdentifier:annotationIdentifier];
+        pinView = [[[IAFlagAnnotationView alloc] initWithAnnotation:theAnnotation reuseIdentifier:annotationIdentifier] autorelease];
         pinView.flagColor = IAFlagAnnotationColorChecker;
         
         //[pinView setPinColor:MKPinAnnotationColorPurple];
