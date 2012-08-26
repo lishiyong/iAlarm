@@ -217,23 +217,25 @@
         case IAAnnotationStatusReversFinished:
         {//反转完成 titel：名称，subtitle：长地址(如果名称是地址，那么subtitle显示距离)
             //如果不等待，calloutView有裂缝
-            [self performSelector:@selector(setTitle:) withObject:self.alarm.title afterDelay:0.35];
+            //[self performSelector:@selector(setTitle:) withObject:self.alarm.title afterDelay:0.35];            
+            NSString *title = self.alarm.title;
+            NSString *subtitle = nil;
+            
             if (self.alarm.name) {
-                self.subtitle = self.alarm.position;
+                subtitle = self.alarm.position;
                 _subTitleIsDistanceString = NO;
             }else{
                 
-                if (distanceString) {
-                    if (![self.subtitle isEqualToString:distanceString]){
-                        self.subtitle = nil;
-                        self.subtitle = distanceString;
-                    }
-                }else{
-                    self.subtitle = nil;
-                }
+                subtitle = distanceString;
                 _subTitleIsDistanceString = YES;
                 
             }
+            
+            if (![self.title isEqualToString:title]) 
+                self.title = title;
+            if (![self.subtitle isEqualToString:subtitle]) 
+                self.subtitle = subtitle;
+             
             break;
         }
         default:
@@ -242,7 +244,7 @@
 }
 
 - (void)dealloc {
-    NSLog(@"IAAnnotation dealloc");
+    //NSLog(@"IAAnnotation dealloc");
     [self unRegisterNotifications];
     [_identifier release];
     [_alarm release];

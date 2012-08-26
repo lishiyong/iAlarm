@@ -178,7 +178,7 @@ static int kDownloadFBFriendLimit = 50;
 	
 	NSString *limit = [NSString stringWithFormat:@"%d",kDownloadFBFriendLimit];
 	NSString *offset = [NSString stringWithFormat:@"%d",[[YCFacebookGlobalData globalData].friends count]];
-	NSLog(@"offset = %@",offset);
+	//NSLog(@"offset = %@",offset);
 	NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 								   @"id,name,picture,gender", @"fields"
 								   ,limit, @"limit"       //一次取friend的数量

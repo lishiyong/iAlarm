@@ -1,6 +1,6 @@
 
 /* 购买完全版cell的标签 */
-"KLabelCellBuyFullVersion" = "DownLoad FullVersion";
+"KLabelCellBuyFullVersion" = "完全版のダウンロード";
 
 /* 邮件 cell的标签 */
 "KLabelCellEmail" = "メール";
@@ -9,13 +9,13 @@
 "KLabelCellFacebook" = "Facebook";
 
 /* 在twitter跟随我们 cell的标签 */
-"KLabelCellFollowUsOnTwitter" = "Follow Us on Twitter";
+"KLabelCellFollowUsOnTwitter" = "Twitterでフォローする";
 
 /* 发现了一个问题 cell的标签 */
-"KLabelCellFoundABug" = "Found a Bug";
+"KLabelCellFoundABug" = "バグの発見通報";
 
 /* 我有一个好主意 cell的标签 */
-"KLabelCellHasACoolIdea" = "Have a Cool Idea";
+"KLabelCellHasACoolIdea" = "アイデア提供";
 
 /* 短信 cell的标签 */
 "KLabelCellMessages" = "SMS/MMS";
@@ -24,7 +24,7 @@
 "KLabelCellRateAndReview" = "レビューを書く";
 
 /* 打个招呼 cell的标签 */
-"KLabelCellSayHi" = "Just Want to Say Hi";
+"KLabelCellSayHi" = "挨拶";
 
 /* 设置的 cell的标签 */
 "KLabelCellSetting" = "設定";
@@ -39,7 +39,7 @@
 "KLabelCellVersion" = "バージョン";
 
 /* 在facebook访问我们 cell的标签 */
-"KLabelCellVisitUsOnFacebook" = "Visit Us on Facebook";
+"KLabelCellVisitUsOnFacebook" = "Facebookで訪問する";
 
 /* 版本Section的脚 */
 "KLabelSectionFooterVersion" = "";

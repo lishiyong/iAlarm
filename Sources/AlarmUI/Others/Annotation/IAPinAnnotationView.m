@@ -254,7 +254,7 @@
 
 - (void)dealloc 
 {
-    NSLog(@"IAPinAnnotationView dealloc");
+    //NSLog(@"IAPinAnnotationView dealloc");
     [self removeObserver:self forKeyPath:@"annotation.alarm.enabled"];
     [self removeObserver:self forKeyPath:@"editing"];
     [minusButton release];

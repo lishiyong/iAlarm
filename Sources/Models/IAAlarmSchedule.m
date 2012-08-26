@@ -155,6 +155,7 @@
     _notification.userInfo = notificationUserInfo;
     _notification.applicationIconBadgeNumber = 1;//
     _notification.alertAction = KTitleLaunch;
+    _notification.alertLaunchImage = @"Default.png";
     
     UIApplication *app = [UIApplication sharedApplication];
     [app scheduleLocalNotification:_notification];
@@ -260,7 +261,7 @@
 
 
 - (void)dealloc{
-    NSLog(@"IAAlarmCalendar dealloc");
+    //NSLog(@"IAAlarmCalendar dealloc");
     [self cancelLocalNotification]; //如果发送过，就需要取消
     
     [_name release];

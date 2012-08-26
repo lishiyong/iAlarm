@@ -552,7 +552,7 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 #pragma mark - Memory management
 
 - (void)viewDidUnload {
-    NSLog(@"AlarmPositionMapViewController viewDidUnload");
+    //NSLog(@"AlarmPositionMapViewController viewDidUnload");
     [super viewDidUnload];
     [self unRegisterNotifications];
     /*
@@ -564,7 +564,7 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 }
 
 - (void)dealloc {
-    NSLog(@"AlarmPositionMapViewController dealloc");
+    //NSLog(@"AlarmPositionMapViewController dealloc");
     [_checkNetAlert dismissWithClickedButtonIndex:_checkNetAlert.cancelButtonIndex animated:NO];
     [self unRegisterNotifications];
     [_checkNetAlert release];

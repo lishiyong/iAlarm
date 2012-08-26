@@ -613,7 +613,7 @@
 }
 
 - (void)dealloc {
-    NSLog(@"AlarmLRepeatTypeViewController dealloc");
+    //NSLog(@"AlarmLRepeatTypeViewController dealloc");
     [_beginEndSwitchCell release];
     [_beginEndCell release];
     [_beginEndSwitch release];

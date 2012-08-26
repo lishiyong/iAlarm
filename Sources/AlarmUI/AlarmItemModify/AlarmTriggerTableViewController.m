@@ -83,7 +83,6 @@
 	if (triggerType) {
 		NSString *string = triggerType.positionTypeName;
 		cell.textLabel.text = string;
-		NSLog(@"%@",string);
 		
 		if ([triggerType.positionTypeId isEqualToString:self.alarm.positionType.positionTypeId]) {
 			cell.accessoryType = UITableViewCellAccessoryCheckmark;

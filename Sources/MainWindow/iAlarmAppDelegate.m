@@ -127,7 +127,7 @@
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-    NSLog(@"didReceiveLocalNotification ");
+    //NSLog(@"didReceiveLocalNotification ");
     
     //测试按钮会禁用
     if ([UIApplication sharedApplication].isIgnoringInteractionEvents) 
@@ -193,14 +193,13 @@
 }
  
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {  
-    NSLog(@"didFinishLaunchingWithOptions ");
+    //NSLog(@"didFinishLaunchingWithOptions ");
     
-    if (IASkinTypeSilver == [IAParam sharedParam].skinType) {
-        application.statusBarStyle = UIStatusBarStyleBlackOpaque;
-    }else {
-         application.statusBarStyle = UIStatusBarStyleDefault;
-    }
-    [application setStatusBarHidden:NO];
+    UIStatusBarStyle statusBarStyle = (IASkinTypeSilver == [IAParam sharedParam].skinType) ? UIStatusBarStyleBlackOpaque : UIStatusBarStyleDefault;
+    [application setStatusBarStyle:statusBarStyle animated:YES];
+    
+    //[application setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    
 	
     [application registerNotifications];
 	[YCSystemStatus sharedSystemStatus]; //一定要有这个初始化

@@ -866,7 +866,7 @@
 
 - (void)mapTypeButtonPressed:(id)sender{
     //debug
-    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    //[[UIApplication sharedApplication] cancelAllLocalNotifications];
     
     
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -876,7 +876,7 @@
 
 - (void)infoButtonPressed:(id)sender{
     //debug
-    [[IARegionsCenter sharedRegionCenter] debug];
+    //[[IARegionsCenter sharedRegionCenter] debug];
     
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	NSNotification *aNotification = [NSNotification notificationWithName:IAInfoButtonPressedNotification object:self userInfo:nil];

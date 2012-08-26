@@ -35,7 +35,7 @@
                                ,[YCPair pairWithValue:@"Buskers.caf" forKey:@"my-ring:Buskers"]
                                ,[YCPair pairWithValue:@"Canon.caf" forKey:@"my-ring:Canon"]
                                ,[YCPair pairWithValue:@"Carmen_Fantasy.caf" forKey:@"my-ring:Carmen Fantasy"]
-                               ,[YCPair pairWithValue:@"Crystal_Tears.caf" forKey:@"my-ring:Crystal Tears"]
+                               ,[YCPair pairWithValue:@"Crystal_Drops.caf" forKey:@"my-ring:Crystal Drops"]
                                ,[YCPair pairWithValue:@"Lonely_Valley.caf" forKey:@"my-ring:Lonely Valley"]
                                ,[YCPair pairWithValue:@"The_Black_and_White.caf" forKey:@"my-ring:The Black and White"]
                                

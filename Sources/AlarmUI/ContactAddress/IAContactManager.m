@@ -516,7 +516,7 @@
         }else if ([theAnimation.delegate animationKind] == 2){
             
             //释放地图view
-            NSLog(@"_alarmPositionVC.retainCount = %d",_alarmPositionVC.retainCount);
+            //NSLog(@"_alarmPositionVC.retainCount = %d",_alarmPositionVC.retainCount);
             [_alarmPositionVC release];
             _alarmPositionVC = nil;
             

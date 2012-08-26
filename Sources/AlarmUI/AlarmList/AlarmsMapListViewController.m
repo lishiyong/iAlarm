@@ -1482,6 +1482,7 @@
         alarm.locationAccuracy = kCLLocationAccuracyBest;
         
         annotation.annotationStatus = IAAnnotationStatusReversFinished;
+        //[annotation performSelector:@selector(setAnnotationStatus:) withInteger:IAAnnotationStatusReversFinished afterDelay:0.25];//
         if (!alarm.nameChanged) //把以前版本生成的名称冲掉
             alarm.alarmName = nil;
         
@@ -1747,7 +1748,7 @@
 }
 
 - (void)viewDidUnload {
-    NSLog(@"AlarmsMapListViewController dealloc");
+    //NSLog(@"AlarmsMapListViewController dealloc");
     [super viewDidUnload];
 	[self unRegisterNotifications];
     
@@ -1772,7 +1773,7 @@
 
 
 - (void)dealloc {
-    NSLog(@"AlarmsMapListViewController dealloc");
+    //NSLog(@"AlarmsMapListViewController dealloc");
 	[self unRegisterNotifications];
 	
 	[mapView release];            

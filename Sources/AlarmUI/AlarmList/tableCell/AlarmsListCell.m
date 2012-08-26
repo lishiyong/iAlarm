@@ -173,7 +173,7 @@
 }
 
 - (void)dealloc {
-    NSLog(@"AlarmsListCell dealloc");
+    //NSLog(@"AlarmsListCell dealloc");
     [self unRegisterNotifications];    
 	[_alarm release];
     [alarmTitleLabel release];

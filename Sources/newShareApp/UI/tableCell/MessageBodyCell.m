@@ -51,7 +51,7 @@
 }
 */
 - (void)scrollViewWillBeginZooming:(UIScrollView *)scrollView withView:(UIView *)view{
-	NSLog(@"scrollViewWillBeginZooming");
+	//NSLog(@"scrollViewWillBeginZooming");
 
 }
 

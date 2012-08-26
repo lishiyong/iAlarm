@@ -139,6 +139,10 @@
     [self setSkinWithType:[styleObj integerValue]];
 }
 
+- (void)handleApplicationDidBecomeActive: (NSNotification*) notification{
+    [self.alarmListTableView reloadData];
+}
+
 - (void) registerNotifications {
 	
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -162,6 +166,11 @@
 						   selector: @selector (IASkinStyleDidChange:)
 							   name: IASkinStyleDidChange
 							 object: nil];
+    
+    [notificationCenter addObserver: self
+						   selector: @selector (handleApplicationDidBecomeActive:)
+							   name: UIApplicationDidBecomeActiveNotification
+                             object: nil];
 }
 
 - (void)unRegisterNotifications{
@@ -170,6 +179,8 @@
 	[notificationCenter removeObserver:self	name: IAAlarmsDataListDidChangeNotification object: nil];
 	[notificationCenter removeObserver:self	name: UIApplicationWillResignActiveNotification object: nil];
     [notificationCenter removeObserver:self	name: IASkinStyleDidChange object: nil];
+    [notificationCenter removeObserver:self	name: UIApplicationDidBecomeActiveNotification object: nil];
+
 }
 
 
@@ -462,7 +473,7 @@
 }
 
 - (void)viewDidUnload {
-	NSLog(@"AlarmsListViewController dealloc");
+	//NSLog(@"AlarmsListViewController dealloc");
     [super viewDidUnload];
 	[self unRegisterNotifications];	 
     
@@ -477,7 +488,7 @@
 
 
 - (void)dealloc {
-    NSLog(@"AlarmsListViewController dealloc");
+    //NSLog(@"AlarmsListViewController dealloc");
 	[self unRegisterNotifications];	 
 	
 	[detailController release];

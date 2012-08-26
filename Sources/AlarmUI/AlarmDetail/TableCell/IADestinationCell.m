@@ -353,7 +353,7 @@
 
 
 - (void)dealloc {
-    NSLog(@"IADestinationCell dealloc");
+    //NSLog(@"IADestinationCell dealloc");
     [self unRegisterNotifications];
 
 	[locatingImageView release];

@@ -6,6 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "IAParam.h"
 #import "LocalizedString.h"
 #import "YCLib.h"
 #import "IAPerson.h"
@@ -14,7 +15,20 @@
 #import "IARecentAddressViewController.h"
 #import "IABookmarkManager.h"
 
+@interface IABookmarkManager (private)
+
+//把状态栏改程序需要的
+- (void)modifyStatusBar;
+
+@end
+
 @implementation IABookmarkManager
+
+- (void)modifyStatusBar{
+    UIStatusBarStyle style = (IASkinTypeDefault == [IAParam sharedParam].skinType) ? UIStatusBarStyleDefault : UIStatusBarStyleBlackOpaque;
+    if (style != [UIApplication sharedApplication].statusBarStyle)
+        [[UIApplication sharedApplication] setStatusBarStyle:style animated:YES];
+}
 
 @synthesize currentViewController = _currentViewController, searchDisplayManager = _searchDisplayManager;
 
@@ -25,6 +39,9 @@
     }else{
         [_currentViewController dismissModalViewControllerAnimated:YES];
     }
+    
+    //把状态栏改程序需要的
+    [self modifyStatusBar];
 }
 
 
@@ -63,6 +80,10 @@
     }else{
         [self.currentViewController presentModalViewController:_tabToolbarController animated:YES];
     }
+    
+    //把状态栏改成银色的
+    if (UIStatusBarStyleDefault != [UIApplication sharedApplication].statusBarStyle)
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
     
 }
 
@@ -166,6 +187,8 @@
     }else{
         [self.currentViewController dismissModalViewControllerAnimated:YES];
     }
+    //把状态栏改程序需要的
+    [self modifyStatusBar];
 }
 
 #pragma mark - ABPersonViewControllerDelegate
@@ -198,6 +221,8 @@
     }else{
         [self.currentViewController dismissModalViewControllerAnimated:YES];
     }
+    //把状态栏改程序需要的
+    [self modifyStatusBar];
 }
 
 - (BOOL)recentAddressPickerNavigationController:(IARecentAddressViewController *)recentAddressPicker shouldContinueAfterSelectingPerson:(YCPlacemark*)placemark{
@@ -242,6 +267,15 @@
         
         UIBarButtonItem *cancelButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonItemPressed:)] autorelease];
         viewController.navigationItem.rightBarButtonItem = cancelButtonItem;
+        
+        //把状态栏改成银色的
+        if (UIStatusBarStyleDefault != [UIApplication sharedApplication].statusBarStyle)
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+    }else {
+        //把状态栏改回去
+        UIStatusBarStyle style = (IASkinTypeDefault == [IAParam sharedParam].skinType) ? UIStatusBarStyleDefault : UIStatusBarStyleBlackOpaque;
+        if (style != [UIApplication sharedApplication].statusBarStyle)
+            [[UIApplication sharedApplication] setStatusBarStyle:style animated:YES];
     }
 }
 

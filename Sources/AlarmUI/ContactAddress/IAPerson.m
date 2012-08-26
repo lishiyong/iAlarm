@@ -574,7 +574,7 @@
 #pragma mark - Override super
 
 - (void)dealloc{
-    NSLog(@"IAPerson dealloc");
+    //NSLog(@"IAPerson dealloc");
     [_personName release];
     [_organization release];
     [_addressDictionaries release];

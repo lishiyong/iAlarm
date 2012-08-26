@@ -1271,14 +1271,14 @@
 }
 
 - (void)viewDidUnload {
-    NSLog(@"AlarmDetailTableViewController viewDidUnload");
+    //NSLog(@"AlarmDetailTableViewController viewDidUnload");
 	[super viewDidUnload];
 	[self freeResouceRecreated];
 }
 
 
 - (void)dealloc {
-	NSLog(@"AlarmDetailTableViewController dealloc");
+	//NSLog(@"AlarmDetailTableViewController dealloc");
 	[self freeResouceRecreated];
 	//取消所有定时执行的函数
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;

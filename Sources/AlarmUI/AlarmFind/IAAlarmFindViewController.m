@@ -98,11 +98,20 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
 - (id)doneButtonItem{
 	
 	if (!self->doneButtonItem) {
-		self->doneButtonItem = [[UIBarButtonItem alloc]
+        /*
+		doneButtonItem = [[UIBarButtonItem alloc]
 								initWithBarButtonSystemItem:UIBarButtonSystemItemDone
 								target:self
 								action:@selector(doneButtonItemPressed:)];
         doneButtonItem.style = UIBarButtonItemStyleBordered;
+
+         */
+        doneButtonItem = [[UIBarButtonItem alloc] initWithTitle:KTitleDone 
+                                                          style:UIBarButtonItemStyleBordered 
+                                                         target:self 
+                                                         action:@selector(doneButtonItemPressed:)];
+        
+        
 	}
 	
 	return self->doneButtonItem;
