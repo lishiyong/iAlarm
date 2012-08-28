@@ -187,7 +187,7 @@ NSString *IARegionKey = @"IARegionKey";
 }
 
 - (NSArray*)checkAlarmsForAddWithCurrentLocation:(CLLocation*)currentLocation{
-    NSLog(@"checkAlarmsForAddWithCurrentLocation = %@",currentLocation);
+    //NSLog(@"checkAlarmsForAddWithCurrentLocation = %@",currentLocation);
     NSArray *alarms = [IAAlarm alarmArray];
     NSMutableArray *temps = nil;
     
@@ -195,7 +195,7 @@ NSString *IARegionKey = @"IARegionKey";
         
         if ([_regions objectForKey:anAlarm.alarmId] == nil && anAlarm.shouldWorking) {
             
-            NSLog(@"anAlarm.shouldWorking");
+            //NSLog(@"anAlarm.shouldWorking");
             
             //先取消通知，再发。为了取消本次提醒
             [anAlarm.alarmSchedules makeObjectsPerformSelector:@selector(cancelLocalNotification)];
@@ -235,7 +235,7 @@ NSString *IARegionKey = @"IARegionKey";
 #pragma mark - Init
 
 - (id)init{
-    NSLog(@"IARegionsCenter init");
+    //NSLog(@"IARegionsCenter init");
     self = [super init];
     if (self) {
         

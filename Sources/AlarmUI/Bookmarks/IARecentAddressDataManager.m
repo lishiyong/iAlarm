@@ -16,6 +16,8 @@
 #define kMaxNumberOfRecentAddress  200
 
 - (void)addObject:(id)object forKey:(NSString*)key{
+    if (key == nil || object == nil) 
+        return;
     
     @try {
         

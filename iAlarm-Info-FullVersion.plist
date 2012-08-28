@@ -16,8 +16,6 @@
 		<string>icon-FullVersion@2x.png</string>
 		<string>icon-FullVersion-Small.png</string>
 		<string>icon-FullVersion-Small@2x.png</string>
-		<string>icon-FullVersion-Small-50.png</string>
-		<string>icon-FullVersion-72.png</string>
 	</array>
 	<key>CFBundleIdentifier</key>
 	<string>com.yicheng.iAlarmFullVersion</string>
@@ -56,23 +54,21 @@
 		<string>location</string>
 	</array>
 	<key>UIFileSharingEnabled</key>
-	<true/>
+	<false/>
 	<key>UIPrerenderedIcon</key>
 	<true/>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>location-services</string>
 		<string>gps</string>
-		<string>armv7</string>
-		<string>telephony</string>
 	</array>
+	<key>UIStatusBarHidden</key>
+	<false/>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleBlackOpaque</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-	<key>UIStatusBarHidden</key>
-	<false/>
-    <key>UIStatusBarStyle</key>
-	<string>UIStatusBarStyleBlackOpaque</string>
 </dict>
 </plist>

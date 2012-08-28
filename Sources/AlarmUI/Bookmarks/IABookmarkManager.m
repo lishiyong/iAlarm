@@ -30,16 +30,20 @@
         [[UIApplication sharedApplication] setStatusBarStyle:style animated:YES];
 }
 
-@synthesize currentViewController = _currentViewController, searchDisplayManager = _searchDisplayManager;
-
-- (void)cancelButtonItemPressed:(id)sender{
+- (void)dismissModalViewController{
     //ABPersonViewController 控制器的取消按钮。点击后，回到地图界面。
     if ([_currentViewController respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]) {
         [_currentViewController dismissViewControllerAnimated:YES completion:NULL];
     }else{
         [_currentViewController dismissModalViewControllerAnimated:YES];
     }
-    
+}
+
+@synthesize currentViewController = _currentViewController, searchDisplayManager = _searchDisplayManager;
+
+- (void)cancelButtonItemPressed:(id)sender{
+    //关视图，回到地图界面
+    [self dismissModalViewController];
     //把状态栏改程序需要的
     [self modifyStatusBar];
 }
@@ -99,16 +103,14 @@
     
     
     //关闭本视图控制器
-    if ([self.currentViewController respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]) {
-        [self.currentViewController dismissViewControllerAnimated:YES completion:NULL];
-    }else{
-        [self.currentViewController dismissModalViewControllerAnimated:YES];
-    }
+    [self dismissModalViewController];
+    //把状态栏改程序需要的
+    [self modifyStatusBar];
     
     [self performBlock:^{
         
         if ([self.searchDisplayManager.delegate respondsToSelector:@selector(searchWithaddressDictionary:personName:personId:)]) {
-            [self.searchDisplayManager.searchDisplayController hidesSearchResultsTableViewWithAnimated:YES]; //搜索时候，把tableView去掉
+            [self.searchDisplayManager.searchDisplayController hidesSearchResultsTableViewWithAnimated:NO]; //搜索时候，把tableView去掉
             [self.searchDisplayManager.delegate searchWithaddressDictionary:addressDictionary personName:personName personId:personId];
         }
         
@@ -124,15 +126,13 @@
     [self.searchDisplayManager.searchDisplayController.searchBar setShowsSearchingView:YES];
     
     //关闭本视图控制器
-    if ([self.currentViewController respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]) {
-        [self.currentViewController dismissViewControllerAnimated:YES completion:NULL];
-    }else{
-        [self.currentViewController dismissModalViewControllerAnimated:YES];
-    }
+    [self dismissModalViewController];
+    //把状态栏改程序需要的
+    [self modifyStatusBar];
     
     [self performBlock:^{
         if ([self.searchDisplayManager.delegate respondsToSelector:@selector(searchWithString:)]) {
-            [self.searchDisplayManager.searchDisplayController hidesSearchResultsTableViewWithAnimated:YES]; //搜索时候，把tableView去掉
+            [self.searchDisplayManager.searchDisplayController hidesSearchResultsTableViewWithAnimated:NO]; //搜索时候，把tableView去掉
             [self.searchDisplayManager.delegate searchWithString:searchString];
         }
     } afterDelay:0.1];
@@ -182,11 +182,8 @@
 }
 
 - (void)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker{
-    if ([self.currentViewController respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]) {
-        [self.currentViewController dismissViewControllerAnimated:YES completion:NULL];
-    }else{
-        [self.currentViewController dismissModalViewControllerAnimated:YES];
-    }
+    //关视图，回到地图界面
+    [self dismissModalViewController];
     //把状态栏改程序需要的
     [self modifyStatusBar];
 }
@@ -216,11 +213,8 @@
 #pragma mark - IARecentAddressViewControllerDelegate
 
 - (void)recentAddressPickerNavigationControllerDidCancel:(IARecentAddressViewController *)recentAddressPicker{
-    if ([self.currentViewController respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]) {
-        [self.currentViewController dismissViewControllerAnimated:YES completion:NULL];
-    }else{
-        [self.currentViewController dismissModalViewControllerAnimated:YES];
-    }
+    //关视图，回到地图界面
+    [self dismissModalViewController];
     //把状态栏改程序需要的
     [self modifyStatusBar];
 }
@@ -231,15 +225,14 @@
         [self.currentViewController performSelector:@selector(resetAnnotationWithPlacemark:) withObject:placemark];
     }
     
-    if ([self.currentViewController respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]) {
-        [self.currentViewController dismissViewControllerAnimated:YES completion:NULL];
-    }else{
-        [self.currentViewController dismissModalViewControllerAnimated:YES];
-    }
+    //关视图，回到地图界面
+    [self dismissModalViewController];
+    //把状态栏改程序需要的
+    [self modifyStatusBar];
     
     return NO;
 }
-
+ 
 - (BOOL)recentAddressPickerNavigationController:(IARecentAddressViewController *)recentAddressPicker shouldContinueAfterSelectingRecentAddressData:(YCPair*)anRecentAddressData{
     
     NSString *key = (NSString*)anRecentAddressData.key; //查询串或人名

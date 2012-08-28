@@ -220,12 +220,14 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
         IAAlarm *alarmForNotif = viewedAlarmNotification.alarm;
         
         //保存到文件
+        NSString *delayString = nil;
         NSTimeInterval secs = 0;
         if (0 == buttonIndex) {//延时1
             secs = 60*5;//5分钟
-            
+            delayString = @"5";
         }else if (1 == buttonIndex) {//延时2
             secs = 60*30;//30分钟
+            delayString = @"30";
         }
         NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:secs];
 
@@ -245,12 +247,12 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
         if (alarmMessage) 
             [userInfo setObject:alarmMessage forKey:@"kMessageStringKey"];
         
-        NSString *iconString = nil;//这是钟表🕘
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) 
-            iconString = @"\U0001F558";
-        else 
-            iconString = @"\ue02c";
+        //为了下面能取消它
+        NSString *alarmIdDelayString = [NSString stringWithFormat:@"%@-%@",alarmForNotif.alarmId,delayString];
+        NSString *alarmIdDelayStringKey = @"alarmIdDelayStringKey";
+        [userInfo setObject:alarmIdDelayString forKey:alarmIdDelayStringKey];        
         
+        NSString *iconString = [NSString stringEmojiClockFaceNine];//这是钟表🕘
         alertTitle =  [NSString stringWithFormat:@"%@%@",iconString,alertTitle]; 
         [userInfo setObject:iconString forKey:@"kIconStringKey"];
         
@@ -268,6 +270,16 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
         }
         
         UIApplication *app = [UIApplication sharedApplication];
+        
+        //如果有相同的先取消
+        [app.scheduledLocalNotifications enumerateObjectsUsingBlock:^(UILocalNotification *obj, NSUInteger idx, BOOL *stop) {
+            NSString *anAlarmIdDelayString = [obj.userInfo objectForKey:alarmIdDelayStringKey];
+            if ([anAlarmIdDelayString isEqualToString:alarmIdDelayString]) {
+                [app performSelector:@selector(cancelLocalNotification:) withObject:obj afterDelay:0.0];
+            }
+        }];
+        
+        
         NSInteger badgeNumber = app.applicationIconBadgeNumber + 1; //角标数
         UILocalNotification *notification = [[[UILocalNotification alloc] init] autorelease];
         notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:secs];
@@ -455,19 +467,19 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
 
 - (void)reloadTimeIntervalLabel{
     //转换动画 timeIntervalLabel的宽度调整
-    [UIView transitionWithView:self.timeIntervalLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^()
-     {
-         NSString *s = YCTimeIntervalStringSinceNow(viewedAlarmNotification.createTimeStamp);
-         self.timeIntervalLabel.text = s;
-         
-         [self.timeIntervalLabel sizeToFit];//bounds调整到合适
-         self.timeIntervalLabel.bounds = CGRectInset(self.timeIntervalLabel.bounds, -6, -2); //在字的周围留有空白
-         //position在父view的左下角向上8像素
-         CGSize superViewSize = self.timeIntervalLabel.superview.bounds.size;
-         CGPoint thePosition = CGPointMake(superViewSize.width-8, superViewSize.height-8); //timeIntervalLabel调整后的Position
-         self.timeIntervalLabel.layer.position = thePosition;
-         
-     } completion:NULL];
+    //[UIView animateWithDuration:0.25 animations:^{
+        
+        NSString *s = YCTimeIntervalStringSinceNow(viewedAlarmNotification.createTimeStamp);
+        self.timeIntervalLabel.text = s;
+        
+        [self.timeIntervalLabel sizeToFit];//bounds调整到合适
+        self.timeIntervalLabel.bounds = CGRectInset(self.timeIntervalLabel.bounds, -6, -2); //在字的周围留有空白
+        //position在父view的左下角向上8像素
+        CGSize superViewSize = self.timeIntervalLabel.superview.bounds.size;
+        CGPoint thePosition = CGPointMake(superViewSize.width-8, superViewSize.height-8); //timeIntervalLabel调整后的Position
+        self.timeIntervalLabel.layer.position = thePosition;
+        
+    //}];
     
     self.watchImageView.hidden =  (viewedAlarmNotification.soureAlarmNotification) ? NO : YES; //延时提醒，显示时钟
     if (!watchImageView.hidden) {

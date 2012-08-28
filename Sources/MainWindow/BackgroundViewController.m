@@ -82,7 +82,7 @@
      
     /////////////
     //白、灰等待圈转换
-    UIActivityIndicatorView *progressInd = (UIActivityIndicatorView*)locationingBarItem.customView;
+    UIActivityIndicatorView *progressInd = (UIActivityIndicatorView*)(self.locationingBarItem.customView);
     progressInd.activityIndicatorViewStyle = activityIndicatorViewStyle;
     /////////////
     
@@ -212,7 +212,7 @@
 		UIActivityIndicatorView *progressInd = [[[UIActivityIndicatorView alloc] initWithFrame:frame] autorelease];
 		self->locationingBarItem = [[UIBarButtonItem alloc] initWithCustomView:progressInd];
 		[progressInd startAnimating];
-        progressInd.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+        progressInd.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
 	}
 	
 	return self->locationingBarItem;

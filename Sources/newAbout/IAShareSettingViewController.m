@@ -294,8 +294,10 @@
     //skin Style
     if (IASkinTypeSilver == [IAParam sharedParam].skinType) {
         [_silverSkinCell setAccessoryType:UITableViewCellAccessoryCheckmark];
+        _silverSkinCell.textLabel.textColor = [UIColor tableCellBlueTextYCColor];
     }else {
         [_defaultSkinCell setAccessoryType:UITableViewCellAccessoryCheckmark];
+         _defaultSkinCell.textLabel.textColor = [UIColor tableCellBlueTextYCColor];
     }
     [self setSkinWithType:[IAParam sharedParam].skinType];
     
@@ -336,14 +338,17 @@
     //√
     UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
     [selectedCell setAccessoryType:UITableViewCellAccessoryCheckmark];
+    selectedCell.textLabel.textColor = [UIColor tableCellBlueTextYCColor];
     
     IASkinType skinType = IASkinTypeDefault;
     if (selectedCell == _defaultSkinCell) {
         [_silverSkinCell setAccessoryType:UITableViewCellAccessoryNone];
+        _silverSkinCell.textLabel.textColor = [UIColor darkTextColor];
         skinType = IASkinTypeDefault;
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];//状态栏
     }else {
         [_defaultSkinCell setAccessoryType:UITableViewCellAccessoryNone];
+        _defaultSkinCell.textLabel.textColor = [UIColor darkTextColor];
         skinType = IASkinTypeSilver;
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];//状态栏
     }
