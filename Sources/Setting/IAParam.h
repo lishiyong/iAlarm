@@ -15,6 +15,9 @@ enum {
 	YCDeviceTypeiPodTouch,
 	YCDeviceTypeiPad,
 	YCDeviceTypeUnKnown,
+    
+    YCDeviceTypeIPhone4Inch,
+	YCDeviceTypeiPodTouch4Inch
 };
 typedef NSUInteger YCDeviceType;
 

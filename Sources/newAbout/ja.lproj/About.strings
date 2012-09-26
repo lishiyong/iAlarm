@@ -78,14 +78,14 @@
 
 
 /* 共享绑定 */
-"kTitleShareBinding" = "Share";
+"kTitleShareBinding" = "Account for Sharing";
 
 /* 主题 */
 "kTHTitleThemes" = "テーマ";
 
 /* 清新银色 */
-"kTHTitleSilver" = "Light Silver";
+"kTHTitleSilver" = "ライトシルバー";
 
 /* 经典蓝色 */
-"kTHTitleBlue" = "Classic Blue";
+"kTHTitleBlue" = "クラシックブルー";
 

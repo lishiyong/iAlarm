@@ -83,7 +83,12 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
     [self.doneButtonItem setYCStyle:buttonItemStyle];
     [self.upDownBarItem setUpDownYCStyle:buttonItemStyle];
     
-    [YCAlarmStatusBar shareStatusBarWithStyle:statusBarStyle];
+    //iPad总是黑色不透明的状态bar
+    if ([IAParam sharedParam].deviceType == YCDeviceTypeiPad) {
+        [YCAlarmStatusBar shareStatusBarWithStyle:UIStatusBarStyleBlackOpaque];
+    }else{
+        [YCAlarmStatusBar shareStatusBarWithStyle:statusBarStyle];
+    }
     
 }
 
@@ -447,8 +452,8 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
     self.notesLabel.bounds = boundsOfnotesLabel;
     
     CGFloat notesCellH = self.notesCell.bounds.size.height + (newNotesLabelH - oldNotesLabelH);
-    CGRect boundsOfnotesCell = self.notesCell.bounds;
-    boundsOfnotesCell.size.height = notesCellH;
+    //CGRect boundsOfnotesCell = self.notesCell.bounds;
+    //boundsOfnotesCell.size.height = notesCellH;
     _notesCellHeight = notesCellH;//notesCell高度调整后，更新
 
     
@@ -688,19 +693,41 @@ NSString* YCTimeIntervalStringSinceNow(NSDate *date){
         return 0.0;
     }
     
-    switch (section) {
-        case 0:
-            return 10.0;
-            break;
-        case 1:
-            return 13.0;
-            break;
-        case 2:
-            return 13.0;
-            break;
-        default:
-            return 10.0;
-            break;
+    //长屏幕
+    if ([IAParam sharedParam].deviceType == YCDeviceTypeIPhone4Inch) {
+        
+        switch (section) {
+            case 0:
+                return 10.0;
+                break;
+            case 1:
+                return 18.0;
+                break;
+            case 2:
+                return 18.0;
+                break;
+            default:
+                return 10.0;
+                break;
+        }
+        
+    }else{
+        
+        switch (section) {
+            case 0:
+                return 10.0;
+                break;
+            case 1:
+                return 13.0;
+                break;
+            case 2:
+                return 13.0;
+                break;
+            default:
+                return 10.0;
+                break;
+        }
+        
     }
     
 }

@@ -124,7 +124,14 @@
     return viewFrame.size.height/2 - self.alarmNameTextCell.bounds.size.height/2;
      */
     
-    return 65.0;
+    //长屏幕
+    if ([IAParam sharedParam].deviceType == YCDeviceTypeIPhone4Inch) {
+        return 65.0 + 88.0/2;
+    }else{
+        return 65.0;
+    }
+    
+    
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{

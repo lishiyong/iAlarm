@@ -64,6 +64,8 @@
 
 - (void)setSkinWithType:(IASkinType)type;
 
+- (BOOL)canSendMail;
+
 @end
 
 
@@ -91,6 +93,19 @@
     [self.cancelButtonItem setYCStyle:buttonItemStyle];
     [[self.tableView visibleCells] makeObjectsPerformSelector:@selector(setBackgroundColor:) withObject:cellBackgroundColor];
     [self.tableView reloadData];
+}
+
+- (BOOL)canSendMail{
+	Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
+	if (mailClass != nil)
+	{   // We must always check whether the current device is configured for sending emails
+		if ([mailClass canSendMail])
+		{
+			return YES;
+		}
+		
+	}
+	return NO;
 }
 
 #pragma mark - property
@@ -462,7 +477,6 @@
     self.title = KViewTitleAbout;
     self.navigationItem.leftBarButtonItem = self.cancelButtonItem;
     
-    
     ///评分
     NSArray *rateAndReviewSection = [NSArray arrayWithObjects:self.rateAndReviewCell, nil];
     //tw跟随,fb关注,shareApp
@@ -471,7 +485,6 @@
     NSArray *feedbackSection = [NSArray arrayWithObjects:self.foundABugCell, self.hasACoolIdeaCell, self.sayHiCell, nil]; 
     //其他
     NSArray *otherSection = [NSArray arrayWithObjects:self.settingCell, self.versionCell, nil];
-    _sections = [[NSMutableArray arrayWithObjects:rateAndReviewSection, followSection, feedbackSection, otherSection, nil] retain];
     
     
     //cell响应的事件
@@ -490,7 +503,8 @@
                                  [NSValue valueWithSelector:@selector(didSelectSettingCell:)]
                                , [NSNull null]
                                , nil];
-    _selectors = [[NSMutableArray arrayWithObjects:rateAndReviewSelectors, followSelectors, feedbackSelectors, otherSelectors, nil] retain];
+    
+ 
     
     
     //section脚
@@ -501,6 +515,27 @@
                        ,[NSNull null]
                        ,copyright
                        ,nil] retain];
+    
+    
+    if ([self canSendMail]) {
+        _sections = [[NSMutableArray arrayWithObjects:rateAndReviewSection, followSection, feedbackSection, otherSection, nil] retain];
+        _selectors = [[NSMutableArray arrayWithObjects:rateAndReviewSelectors, followSelectors, feedbackSelectors, otherSelectors, nil] retain];
+        _sectionFooters = [[NSArray arrayWithObjects:
+                            [NSNull null]
+                            ,[NSNull null]
+                            ,[NSNull null]
+                            ,copyright
+                            ,nil] retain];
+    }else {//不能发送邮件
+        _sections = [[NSMutableArray arrayWithObjects:rateAndReviewSection, followSection, otherSection, nil] retain];
+        _selectors = [[NSMutableArray arrayWithObjects:rateAndReviewSelectors, followSelectors, otherSelectors, nil] retain];
+        _sectionFooters = [[NSArray arrayWithObjects:
+                            [NSNull null]
+                            ,[NSNull null]
+                            ,copyright
+                            ,nil] retain];
+        
+    }
     
     //skin Style
     [self setSkinWithType:[IAParam sharedParam].skinType];

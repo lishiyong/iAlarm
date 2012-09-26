@@ -14,6 +14,7 @@
 		9C02E507157310B6007D2A98 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C02E506157310B6007D2A98 /* AddressBookUI.framework */; };
 		9C0706DD152C036000AC4207 /* IAAlarmNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0706DB152C036000AC4207 /* IAAlarmNotification.m */; };
 		9C0706E1152C086900AC4207 /* IAAlarmNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0706DF152C086900AC4207 /* IAAlarmNotificationCenter.m */; };
+		9C0A40FB1608BD3700F7D490 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0A40FA1608BD3600F7D490 /* Default-568h@2x.png */; };
 		9C0B129F154187FF00729060 /* YCRing.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0B129A154187FE00729060 /* YCRing.png */; };
 		9C0B12A1154187FF00729060 /* YCRing@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0B129B154187FE00729060 /* YCRing@2x.png */; };
 		9C0B12A3154187FF00729060 /* YCRingClear.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0B129C154187FE00729060 /* YCRingClear.png */; };
@@ -25,6 +26,7 @@
 		9C0BBC951529CD3D002509F3 /* UIPopoverButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0BBC8D1529CD3D002509F3 /* UIPopoverButtonPressed.png */; };
 		9C0C44C415C8F4A40007C93B /* checkerFlag@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0C44C115C8F4A30007C93B /* checkerFlag@2x.png */; };
 		9C0C44C615C8F4A40007C93B /* checkerFlag.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0C44C215C8F4A40007C93B /* checkerFlag.png */; };
+		9C112B7716094F5600DC8F63 /* IAAlarmFindViewController568h.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C112B7616094F5600DC8F63 /* IAAlarmFindViewController568h.xib */; };
 		9C14469A153C79090071EFF2 /* NSMutableURLRequest+Parameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C144671153C79090071EFF2 /* NSMutableURLRequest+Parameters.m */; };
 		9C14469C153C79090071EFF2 /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C144673153C79090071EFF2 /* NSString+URLEncoding.m */; };
 		9C14469E153C79090071EFF2 /* NSURL+Base.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C144675153C79090071EFF2 /* NSURL+Base.m */; };
@@ -76,6 +78,10 @@
 		9C2B806214F690C000B2CC53 /* AlarmNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2B805F14F690C000B2CC53 /* AlarmNotesViewController.m */; };
 		9C2B806414F690C000B2CC53 /* AlarmNotesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C2B806014F690C000B2CC53 /* AlarmNotesViewController.xib */; };
 		9C2E7DF7159C1FF300FFCEA1 /* AlarmLRepeatTypeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C2E7DF5159C1FF300FFCEA1 /* AlarmLRepeatTypeViewController.xib */; };
+		9C2F8B4C15F1D61C0077774F /* UISegmentBarButtonSilver.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C2F8B4A15F1D61A0077774F /* UISegmentBarButtonSilver.png */; };
+		9C2F8B4D15F1D61C0077774F /* UISegmentBarButtonSilver@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C2F8B4B15F1D61B0077774F /* UISegmentBarButtonSilver@2x.png */; };
+		9C2F8B5415F1D6C60077774F /* UISegmentBarButtonHighlightedSilver.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C2F8B5215F1D6C50077774F /* UISegmentBarButtonHighlightedSilver.png */; };
+		9C2F8B5515F1D6C60077774F /* UISegmentBarButtonHighlightedSilver@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C2F8B5315F1D6C50077774F /* UISegmentBarButtonHighlightedSilver@2x.png */; };
 		9C332AE415DCD64200A940CB /* UISegmentedControl+YC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C332AE215DCD64200A940CB /* UISegmentedControl+YC.m */; };
 		9C332AEF15DCE08400A940CB /* YCSegmentOptionsButtonSelectedSilver.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C332AE615DCE08400A940CB /* YCSegmentOptionsButtonSelectedSilver.png */; };
 		9C332AF115DCE08400A940CB /* YCSegmentOptionsButtonSelectedSilver@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C332AE715DCE08400A940CB /* YCSegmentOptionsButtonSelectedSilver@2x.png */; };
@@ -124,6 +130,7 @@
 		9C3E39A315ED05D200B8A6E7 /* YCAlertTableViewCellRowFirst.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E39A015ED05D200B8A6E7 /* YCAlertTableViewCellRowFirst.png */; };
 		9C3E39A415ED05D200B8A6E7 /* YCAlertTableViewCellRowLast.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E39A115ED05D200B8A6E7 /* YCAlertTableViewCellRowLast.png */; };
 		9C3E39A515ED05D200B8A6E7 /* YCAlertTableViewCellRowNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E39A215ED05D200B8A6E7 /* YCAlertTableViewCellRowNormal.png */; };
+		9C4081B515F20CB300F94AD0 /* IAButtonBarLists@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C4081B415F20CB300F94AD0 /* IAButtonBarLists@2x.png */; };
 		9C410ED1156E5907007F3761 /* AlarmDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C410ECE156E5907007F3761 /* AlarmDetailTableViewController.m */; };
 		9C410ED4156E594F007F3761 /* AlarmRadiusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C410ED2156E594F007F3761 /* AlarmRadiusViewController.m */; };
 		9C4290A215C66793003830FF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C03968E15C6676500C8C2EE /* Localizable.strings */; };
@@ -552,7 +559,6 @@
 		9CA484EB1519AD6900B9C8D6 /* YCFacebookGlobalData.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA484211519AD6900B9C8D6 /* YCFacebookGlobalData.m */; };
 		9CA484ED1519AD6900B9C8D6 /* YCFacebookPeople.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA484231519AD6900B9C8D6 /* YCFacebookPeople.m */; };
 		9CA484EF1519AD6900B9C8D6 /* YCShareContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA484251519AD6900B9C8D6 /* YCShareContent.m */; };
-		9CA484F11519AD6900B9C8D6 /* MailShareImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9CA484281519AD6900B9C8D6 /* MailShareImage.jpg */; };
 		9CA484F31519AD6900B9C8D6 /* Share-Complete.aif in Resources */ = {isa = PBXBuildFile; fileRef = 9CA4842A1519AD6900B9C8D6 /* Share-Complete.aif */; };
 		9CA484F51519AD6900B9C8D6 /* Share-Error.aif in Resources */ = {isa = PBXBuildFile; fileRef = 9CA4842B1519AD6900B9C8D6 /* Share-Error.aif */; };
 		9CA484F71519AD6900B9C8D6 /* Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA4842F1519AD6900B9C8D6 /* Facebook.m */; };
@@ -626,12 +632,13 @@
 		9CAE0C9415CC2C39006B0F55 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9CAE0C9615CC2C39006B0F55 /* InfoPlist.strings */; };
 		9CC011F113C6E3ED0042D744 /* BackgroundViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC011EC13C6E3ED0042D744 /* BackgroundViewController.m */; };
 		9CC011F213C6E3ED0042D744 /* BackgroundViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CC011ED13C6E3ED0042D744 /* BackgroundViewController.xib */; };
+		9CC2A40916097FCA0072E4E9 /* NavBar6_Base.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CC2A40716097FCA0072E4E9 /* NavBar6_Base.png */; };
+		9CC2A40A16097FCA0072E4E9 /* NavBar6_Base@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CC2A40816097FCA0072E4E9 /* NavBar6_Base@2x.png */; };
 		9CC6E5C515B915F2002D3BD3 /* IAAlarmSchedule.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC6E5C315B915F2002D3BD3 /* IAAlarmSchedule.m */; };
 		9CCF8797157228C6007C7680 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CCF8796157228C6007C7680 /* AddressBook.framework */; };
 		9CD5AF0113F2561B00A718B6 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CD5AF0013F2561B00A718B6 /* Security.framework */; };
 		9CD5AF1413F2567200A718B6 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CD5AF1313F2567200A718B6 /* MessageUI.framework */; };
 		9CD89EF914106A60000570C8 /* IAButtonBarLists.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD89EEF14106A60000570C8 /* IAButtonBarLists.png */; };
-		9CD89EFA14106A60000570C8 /* IAButtonBarLists@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD89EF014106A60000570C8 /* IAButtonBarLists@2x.png */; };
 		9CD89EFB14106A60000570C8 /* IAButtonBarMaps.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD89EF114106A60000570C8 /* IAButtonBarMaps.png */; };
 		9CD89EFC14106A60000570C8 /* IAButtonBarMaps@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD89EF214106A60000570C8 /* IAButtonBarMaps@2x.png */; };
 		9CE00EFF14985412000B0546 /* TrackingDot.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE00EF614985412000B0546 /* TrackingDot.png */; };
@@ -643,6 +650,8 @@
 		9CE1453E141200FE003A1D96 /* IADestinationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE1453C141200FE003A1D96 /* IADestinationCell.m */; };
 		9CE145411412015B003A1D96 /* IADestinationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CE1453F1412015B003A1D96 /* IADestinationCell.xib */; };
 		9CE466AE13FCF0C800EDB448 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CE466AA13FCF09D00EDB448 /* libxml2.dylib */; };
+		9CE74F6D1608C37500375A25 /* AlarmsListViewController568h.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CE74F6C1608C37500375A25 /* AlarmsListViewController568h.xib */; };
+		9CE74F6F1608D0FC00375A25 /* AlarmsMapListViewController568h.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CE74F6E1608D0FB00375A25 /* AlarmsMapListViewController568h.xib */; };
 		9CE9ED5715DD296400325358 /* YCButtonBarArrowDownSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE9ED4A15DD295500325358 /* YCButtonBarArrowDownSmall.png */; };
 		9CE9ED5915DD296400325358 /* YCButtonBarArrowDownSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE9ED4B15DD295600325358 /* YCButtonBarArrowDownSmall@2x.png */; };
 		9CE9ED5B15DD296400325358 /* YCButtonBarArrowUpSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE9ED4C15DD295700325358 /* YCButtonBarArrowUpSmall.png */; };
@@ -735,6 +744,7 @@
 		9C0706DB152C036000AC4207 /* IAAlarmNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAAlarmNotification.m; sourceTree = "<group>"; };
 		9C0706DE152C086900AC4207 /* IAAlarmNotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAAlarmNotificationCenter.h; sourceTree = "<group>"; };
 		9C0706DF152C086900AC4207 /* IAAlarmNotificationCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAAlarmNotificationCenter.m; sourceTree = "<group>"; };
+		9C0A40FA1608BD3600F7D490 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		9C0B129A154187FE00729060 /* YCRing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCRing.png; sourceTree = "<group>"; };
 		9C0B129B154187FE00729060 /* YCRing@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YCRing@2x.png"; sourceTree = "<group>"; };
 		9C0B129C154187FE00729060 /* YCRingClear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCRingClear.png; sourceTree = "<group>"; };
@@ -747,6 +757,7 @@
 		9C0BBC8D1529CD3D002509F3 /* UIPopoverButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIPopoverButtonPressed.png; sourceTree = "<group>"; };
 		9C0C44C115C8F4A30007C93B /* checkerFlag@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkerFlag@2x.png"; sourceTree = "<group>"; };
 		9C0C44C215C8F4A40007C93B /* checkerFlag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkerFlag.png; sourceTree = "<group>"; };
+		9C112B7616094F5600DC8F63 /* IAAlarmFindViewController568h.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IAAlarmFindViewController568h.xib; sourceTree = "<group>"; };
 		9C144670153C79090071EFF2 /* NSMutableURLRequest+Parameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+Parameters.h"; sourceTree = "<group>"; };
 		9C144671153C79090071EFF2 /* NSMutableURLRequest+Parameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+Parameters.m"; sourceTree = "<group>"; };
 		9C144672153C79090071EFF2 /* NSString+URLEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+URLEncoding.h"; sourceTree = "<group>"; };
@@ -827,6 +838,10 @@
 		9C2B805F14F690C000B2CC53 /* AlarmNotesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmNotesViewController.m; sourceTree = "<group>"; };
 		9C2B806014F690C000B2CC53 /* AlarmNotesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlarmNotesViewController.xib; sourceTree = "<group>"; };
 		9C2E7DF5159C1FF300FFCEA1 /* AlarmLRepeatTypeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlarmLRepeatTypeViewController.xib; sourceTree = "<group>"; };
+		9C2F8B4A15F1D61A0077774F /* UISegmentBarButtonSilver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UISegmentBarButtonSilver.png; sourceTree = "<group>"; };
+		9C2F8B4B15F1D61B0077774F /* UISegmentBarButtonSilver@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UISegmentBarButtonSilver@2x.png"; sourceTree = "<group>"; };
+		9C2F8B5215F1D6C50077774F /* UISegmentBarButtonHighlightedSilver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UISegmentBarButtonHighlightedSilver.png; sourceTree = "<group>"; };
+		9C2F8B5315F1D6C50077774F /* UISegmentBarButtonHighlightedSilver@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UISegmentBarButtonHighlightedSilver@2x.png"; sourceTree = "<group>"; };
 		9C332AE115DCD64200A940CB /* UISegmentedControl+YC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UISegmentedControl+YC.h"; sourceTree = "<group>"; };
 		9C332AE215DCD64200A940CB /* UISegmentedControl+YC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UISegmentedControl+YC.m"; sourceTree = "<group>"; };
 		9C332AE615DCE08400A940CB /* YCSegmentOptionsButtonSelectedSilver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCSegmentOptionsButtonSelectedSilver.png; sourceTree = "<group>"; };
@@ -879,6 +894,7 @@
 		9C3E39A015ED05D200B8A6E7 /* YCAlertTableViewCellRowFirst.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCAlertTableViewCellRowFirst.png; sourceTree = "<group>"; };
 		9C3E39A115ED05D200B8A6E7 /* YCAlertTableViewCellRowLast.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCAlertTableViewCellRowLast.png; sourceTree = "<group>"; };
 		9C3E39A215ED05D200B8A6E7 /* YCAlertTableViewCellRowNormal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YCAlertTableViewCellRowNormal.png; sourceTree = "<group>"; };
+		9C4081B415F20CB300F94AD0 /* IAButtonBarLists@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAButtonBarLists@2x.png"; sourceTree = "<group>"; };
 		9C410ECE156E5907007F3761 /* AlarmDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmDetailTableViewController.m; sourceTree = "<group>"; };
 		9C410ECF156E5907007F3761 /* AlarmDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmDetailTableViewController.h; sourceTree = "<group>"; };
 		9C410ED2156E594F007F3761 /* AlarmRadiusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmRadiusViewController.m; sourceTree = "<group>"; };
@@ -1358,7 +1374,6 @@
 		9CA484231519AD6900B9C8D6 /* YCFacebookPeople.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCFacebookPeople.m; sourceTree = "<group>"; };
 		9CA484241519AD6900B9C8D6 /* YCShareContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCShareContent.h; sourceTree = "<group>"; };
 		9CA484251519AD6900B9C8D6 /* YCShareContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCShareContent.m; sourceTree = "<group>"; };
-		9CA484281519AD6900B9C8D6 /* MailShareImage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = MailShareImage.jpg; sourceTree = "<group>"; };
 		9CA4842A1519AD6900B9C8D6 /* Share-Complete.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Share-Complete.aif"; sourceTree = "<group>"; };
 		9CA4842B1519AD6900B9C8D6 /* Share-Error.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Share-Error.aif"; sourceTree = "<group>"; };
 		9CA4842E1519AD6900B9C8D6 /* Facebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Facebook.h; sourceTree = "<group>"; };
@@ -1487,6 +1502,8 @@
 		9CC224AE1300591C00245DAC /* AlarmsMapListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AlarmsMapListViewController.xib; sourceTree = "<group>"; };
 		9CC224B01300594D00245DAC /* AlarmsMapListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmsMapListViewController.h; sourceTree = "<group>"; };
 		9CC224B11300594D00245DAC /* AlarmsMapListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmsMapListViewController.m; sourceTree = "<group>"; };
+		9CC2A40716097FCA0072E4E9 /* NavBar6_Base.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NavBar6_Base.png; sourceTree = "<group>"; };
+		9CC2A40816097FCA0072E4E9 /* NavBar6_Base@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NavBar6_Base@2x.png"; sourceTree = "<group>"; };
 		9CC6E5C215B915F2002D3BD3 /* IAAlarmSchedule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAAlarmSchedule.h; sourceTree = "<group>"; };
 		9CC6E5C315B915F2002D3BD3 /* IAAlarmSchedule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAAlarmSchedule.m; sourceTree = "<group>"; };
 		9CCF8796157228C6007C7680 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
@@ -1500,7 +1517,6 @@
 		9CD83509133A356A00B081E2 /* IABuyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IABuyManager.h; sourceTree = "<group>"; };
 		9CD8350A133A356A00B081E2 /* IABuyManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IABuyManager.m; sourceTree = "<group>"; };
 		9CD89EEF14106A60000570C8 /* IAButtonBarLists.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IAButtonBarLists.png; sourceTree = "<group>"; };
-		9CD89EF014106A60000570C8 /* IAButtonBarLists@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAButtonBarLists@2x.png"; sourceTree = "<group>"; };
 		9CD89EF114106A60000570C8 /* IAButtonBarMaps.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IAButtonBarMaps.png; sourceTree = "<group>"; };
 		9CD89EF214106A60000570C8 /* IAButtonBarMaps@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IAButtonBarMaps@2x.png"; sourceTree = "<group>"; };
 		9CDB21E813679A2B004A7C72 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -1520,6 +1536,8 @@
 		9CE2D263138376FB006FD30C /* IAGlobal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAGlobal.m; sourceTree = "<group>"; };
 		9CE436271367A42E0012C9B1 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		9CE466AA13FCF09D00EDB448 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
+		9CE74F6C1608C37500375A25 /* AlarmsListViewController568h.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlarmsListViewController568h.xib; sourceTree = "<group>"; };
+		9CE74F6E1608D0FB00375A25 /* AlarmsMapListViewController568h.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlarmsMapListViewController568h.xib; sourceTree = "<group>"; };
 		9CE8942312FFFFD2008FBD45 /* IAGlassMask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IAGlassMask.png; sourceTree = "<group>"; };
 		9CE8942612FFFFD2008FBD45 /* list_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = list_background.png; sourceTree = "<group>"; };
 		9CE8944512FFFFD2008FBD45 /* UIPickerTableCellChecked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIPickerTableCellChecked@2x.png"; sourceTree = "<group>"; };
@@ -1738,6 +1756,7 @@
 				9CAE0C9615CC2C39006B0F55 /* InfoPlist.strings */,
 				9CE436271367A42E0012C9B1 /* Default@2x.png */,
 				9CDB21E813679A2B004A7C72 /* Default.png */,
+				9C0A40FA1608BD3600F7D490 /* Default-568h@2x.png */,
 				9CE8973813000454008FBD45 /* main.m */,
 				9CE8972A130003DF008FBD45 /* iAlarm_Prefix.pch */,
 				9CE8972B130003DF008FBD45 /* iAlarm.xcdatamodeld */,
@@ -2070,6 +2089,7 @@
 				9C85F38314FBA99F00B49FF4 /* IAAlarmFindViewController.h */,
 				9C85F38414FBA99F00B49FF4 /* IAAlarmFindViewController.m */,
 				9C85F38514FBA99F00B49FF4 /* IAAlarmFindViewController.xib */,
+				9C112B7616094F5600DC8F63 /* IAAlarmFindViewController568h.xib */,
 			);
 			path = AlarmFind;
 			sourceTree = "<group>";
@@ -2460,6 +2480,8 @@
 		9C8C480115D626D300FB6A2E /* YCAlarmStatusBar */ = {
 			isa = PBXGroup;
 			children = (
+				9CC2A40716097FCA0072E4E9 /* NavBar6_Base.png */,
+				9CC2A40816097FCA0072E4E9 /* NavBar6_Base@2x.png */,
 				9CA6FBF115DDE6C500A2C961 /* YCTranslucent_Base.png */,
 				9CA6FBF215DDE6C500A2C961 /* YCTranslucent_Base@2x.png */,
 				9CA6FBE515DDE39E00A2C961 /* YCBlack_Base.png */,
@@ -2863,6 +2885,10 @@
 		9C8C4A9C15D62D3600FB6A2E /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				9C2F8B4A15F1D61A0077774F /* UISegmentBarButtonSilver.png */,
+				9C2F8B4B15F1D61B0077774F /* UISegmentBarButtonSilver@2x.png */,
+				9C2F8B5215F1D6C50077774F /* UISegmentBarButtonHighlightedSilver.png */,
+				9C2F8B5315F1D6C50077774F /* UISegmentBarButtonHighlightedSilver@2x.png */,
 				9CE9ED4A15DD295500325358 /* YCButtonBarArrowDownSmall.png */,
 				9CE9ED4C15DD295700325358 /* YCButtonBarArrowUpSmall.png */,
 				9CE9ED4B15DD295600325358 /* YCButtonBarArrowDownSmall@2x.png */,
@@ -2983,7 +3009,6 @@
 		9CA484271519AD6900B9C8D6 /* images */ = {
 			isa = PBXGroup;
 			children = (
-				9CA484281519AD6900B9C8D6 /* MailShareImage.jpg */,
 			);
 			path = images;
 			sourceTree = "<group>";
@@ -3246,7 +3271,7 @@
 			isa = PBXGroup;
 			children = (
 				9CD89EEF14106A60000570C8 /* IAButtonBarLists.png */,
-				9CD89EF014106A60000570C8 /* IAButtonBarLists@2x.png */,
+				9C4081B415F20CB300F94AD0 /* IAButtonBarLists@2x.png */,
 				9CD89EF114106A60000570C8 /* IAButtonBarMaps.png */,
 				9CD89EF214106A60000570C8 /* IAButtonBarMaps@2x.png */,
 			);
@@ -3548,9 +3573,11 @@
 				9CC224B01300594D00245DAC /* AlarmsMapListViewController.h */,
 				9CC224B11300594D00245DAC /* AlarmsMapListViewController.m */,
 				9CC224AE1300591C00245DAC /* AlarmsMapListViewController.xib */,
+				9CE74F6E1608D0FB00375A25 /* AlarmsMapListViewController568h.xib */,
 				9CE894BC12FFFFD2008FBD45 /* AlarmsListViewController.h */,
 				9CE894BD12FFFFD2008FBD45 /* AlarmsListViewController.m */,
 				9CE894BE12FFFFD2008FBD45 /* AlarmsListViewController.xib */,
+				9CE74F6C1608C37500375A25 /* AlarmsListViewController568h.xib */,
 				9CE894BF12FFFFD2008FBD45 /* tableCell */,
 			);
 			path = AlarmList;
@@ -3897,7 +3924,6 @@
 				9C36926D13D5008100F3258C /* focusPoint.png in Resources */,
 				9C36927213D5013E00F3258C /* focusPoint@2x.png in Resources */,
 				9CD89EF914106A60000570C8 /* IAButtonBarLists.png in Resources */,
-				9CD89EFA14106A60000570C8 /* IAButtonBarLists@2x.png in Resources */,
 				9CD89EFB14106A60000570C8 /* IAButtonBarMaps.png in Resources */,
 				9CD89EFC14106A60000570C8 /* IAButtonBarMaps@2x.png in Resources */,
 				9CE145411412015B003A1D96 /* IADestinationCell.xib in Resources */,
@@ -3924,7 +3950,6 @@
 				9C2B806414F690C000B2CC53 /* AlarmNotesViewController.xib in Resources */,
 				9C85F38914FBA99F00B49FF4 /* IAAlarmFindViewController.xib in Resources */,
 				9CF8D04014FDE13400E87446 /* horizontal_etched_line.png in Resources */,
-				9CA484F11519AD6900B9C8D6 /* MailShareImage.jpg in Resources */,
 				9CA484F31519AD6900B9C8D6 /* Share-Complete.aif in Resources */,
 				9CA484F51519AD6900B9C8D6 /* Share-Error.aif in Resources */,
 				9CA484F91519AD6900B9C8D6 /* FBDialog.bundle in Resources */,
@@ -4292,6 +4317,17 @@
 				9C3E39A315ED05D200B8A6E7 /* YCAlertTableViewCellRowFirst.png in Resources */,
 				9C3E39A415ED05D200B8A6E7 /* YCAlertTableViewCellRowLast.png in Resources */,
 				9C3E39A515ED05D200B8A6E7 /* YCAlertTableViewCellRowNormal.png in Resources */,
+				9C2F8B4C15F1D61C0077774F /* UISegmentBarButtonSilver.png in Resources */,
+				9C2F8B4D15F1D61C0077774F /* UISegmentBarButtonSilver@2x.png in Resources */,
+				9C2F8B5415F1D6C60077774F /* UISegmentBarButtonHighlightedSilver.png in Resources */,
+				9C2F8B5515F1D6C60077774F /* UISegmentBarButtonHighlightedSilver@2x.png in Resources */,
+				9C4081B515F20CB300F94AD0 /* IAButtonBarLists@2x.png in Resources */,
+				9C0A40FB1608BD3700F7D490 /* Default-568h@2x.png in Resources */,
+				9CE74F6D1608C37500375A25 /* AlarmsListViewController568h.xib in Resources */,
+				9CE74F6F1608D0FC00375A25 /* AlarmsMapListViewController568h.xib in Resources */,
+				9C112B7716094F5600DC8F63 /* IAAlarmFindViewController568h.xib in Resources */,
+				9CC2A40916097FCA0072E4E9 /* NavBar6_Base.png in Resources */,
+				9CC2A40A16097FCA0072E4E9 /* NavBar6_Base@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4626,11 +4662,12 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: li shiyong (G46T6DCB7F)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_THUMB_SUPPORT = NO;
+				GCC_VERSION = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IBC_ERRORS = YES;
 				IBC_WARNINGS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "97ADCFC9-B6C7-41CB-842B-F524A4DEA95C";
@@ -4638,6 +4675,7 @@
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
+				VALID_ARCHS = "armv6 armv7 armv7s";
 			};
 			name = "Release FullVersion";
 		};
@@ -4645,16 +4683,21 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					armv6,
+					"$(ARCHS_STANDARD_32_BIT)",
+				);
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: li shiyong (G46T6DCB7F)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: li shiyong";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iAlarm_Prefix.pch;
 				GCC_THUMB_SUPPORT = NO;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = "iAlarm-Info-FullVersion.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_CFLAGS = (
 					"-DFULL_VERSION=1",
@@ -4662,11 +4705,12 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = iAlarm;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1B818F5F-B378-4C97-8313-B82D0B00190F";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E55AB192-F3F9-4BB7-B806-9041C620168E";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "armv6 armv7 armv7s";
 			};
 			name = "Release FullVersion";
 		};
@@ -4682,11 +4726,12 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: li shiyong";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_THUMB_SUPPORT = NO;
+				GCC_VERSION = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IBC_ERRORS = YES;
 				IBC_WARNINGS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				PROVISIONING_PROFILE = "E55AB192-F3F9-4BB7-B806-9041C620168E";
@@ -4695,6 +4740,7 @@
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
+				VALID_ARCHS = "armv6 armv7 armv7s";
 			};
 			name = "Distribution FullVersion";
 		};
@@ -4712,9 +4758,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iAlarm_Prefix.pch;
 				GCC_THUMB_SUPPORT = NO;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = "iAlarm-Info-FullVersion.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_CFLAGS = (
 					"-DFULL_VERSION=1",
@@ -4727,6 +4774,7 @@
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "armv6 armv7 armv7s";
 			};
 			name = "Distribution FullVersion";
 		};
@@ -4740,18 +4788,20 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: li shiyong (G46T6DCB7F)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_THUMB_SUPPORT = NO;
+				GCC_VERSION = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				IBC_ERRORS = YES;
 				IBC_WARNINGS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "97ADCFC9-B6C7-41CB-842B-F524A4DEA95C";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
+				VALID_ARCHS = "armv6 armv7 armv7s";
 			};
 			name = "Debug FullVersion";
 		};
@@ -4759,6 +4809,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					armv6,
+					"$(ARCHS_STANDARD_32_BIT)",
+				);
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: li shiyong (G46T6DCB7F)";
@@ -4768,18 +4822,20 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iAlarm_Prefix.pch;
 				GCC_THUMB_SUPPORT = NO;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = "iAlarm-Info-FullVersion.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_CFLAGS = "-DFULL_VERSION=1";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = iAlarm;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1B818F5F-B378-4C97-8313-B82D0B00190F";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D9D67FE2-E6F5-4496-A830-46495E4C0E3C";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "armv6 armv7 armv7s";
 			};
 			name = "Debug FullVersion";
 		};

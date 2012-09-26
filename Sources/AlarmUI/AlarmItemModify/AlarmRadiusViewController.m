@@ -6,6 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import "IAParam.h"
 #import "YCLib.h"
 #import "IAGlobal.h"
 #import "CustomPickerController.h"
@@ -291,6 +292,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    //长屏幕
+    if ([IAParam sharedParam].deviceType == YCDeviceTypeIPhone4Inch) {
+        self.mapViewContainer.frame = CGRectMake(0, 0, 320, 288);
+    }else{
+    }
+    
 	self.mapView.delegate = self;
 	self.title = KViewTitleAlarmRadius;
     middlePointAnnotion = [[YCMapPointAnnotation alloc] initWithCoordinate:kCLLocationCoordinate2DInvalid title:nil subTitle:nil];

@@ -40,14 +40,23 @@ const CGFloat detailTitleViewW = 206.0; // 固定宽度
 	CGRect titleLabelFrame = CGRectMake(0.0,0.0,detailTitleViewW,44.0);
 	UILabel *titleLabel = [[[UILabel alloc] initWithFrame:titleLabelFrame] autorelease];
 	titleLabel.backgroundColor = [UIColor clearColor];
-	titleLabel.textColor = [UIColor colorWithRed:18.0/256.0 green:35.0/256.0 blue:70.0/256.0 alpha:1.0];
 	titleLabel.text = content;
 	titleLabel.font = [UIFont systemFontOfSize:14.0];
 	titleLabel.adjustsFontSizeToFitWidth = YES;
 	titleLabel.minimumFontSize = 10.0;
-	titleLabel.shadowColor = [UIColor lightTextColor];
-	titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
 	titleLabel.textAlignment = UITextAlignmentCenter;
+    
+    
+    if (IASkinTypeDefault == [IAParam sharedParam].skinType){
+        titleLabel.textColor = [UIColor colorWithRed:18.0/256.0 green:35.0/256.0 blue:70.0/256.0 alpha:1.0];
+        titleLabel.shadowColor = [UIColor lightTextColor];
+        titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    }else{
+        titleLabel.textColor = [UIColor navigationBarSilverTitleColor];
+        titleLabel.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.5];
+        titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    }
+
     
 	return titleLabel;
 }

@@ -444,18 +444,7 @@
 }
 
 - (void)handle_addIAlarmButtonPressed:(NSNotification*)notification{
-	/*
-#ifndef FULL_VERSION 
-	//购买
-	YCParam *param = [YCParam paramSingleInstance];
-	if (!param.isProUpgradePurchased  && [IAAlarm alarmArray].count >=1) {
-		[[IABuyManager shareBuyManager] buyWithAlert];
-		return;
-	}
-#endif
-	 */
-	
-	
+
 	IAAlarm *alarm = [[notification userInfo] objectForKey:IAAlarmAddedKey];
 	if (IAMapsViewController == curViewControllerType) {
 
@@ -468,8 +457,6 @@
 	}else {
 		[self performSelector:@selector(showAddAlarmView:) withObject:alarm afterDelay:0.0];
 	}
-
-
 	 
 }
 
@@ -601,7 +588,13 @@
 
 - (void)handle_alarmDidView:(NSNotification*)notification{
     
-    IAAlarmFindViewController *ctler = [[[IAAlarmFindViewController alloc] initWithNibName:@"IAAlarmFindViewController" bundle:nil] autorelease];
+    IAAlarmFindViewController *ctler = nil;
+    //长屏幕
+    if ([IAParam sharedParam].deviceType == YCDeviceTypeIPhone4Inch) {
+        ctler = [[[IAAlarmFindViewController alloc] initWithNibName:@"IAAlarmFindViewController568h" bundle:nil] autorelease];
+    }else{
+        ctler = [[[IAAlarmFindViewController alloc] initWithNibName:@"IAAlarmFindViewController" bundle:nil] autorelease];
+    }
     UINavigationController *navCtler = [[[UINavigationController alloc] initWithRootViewController:ctler] autorelease];
 	[self presentModalViewController:navCtler animated:YES];
 	
@@ -890,7 +883,6 @@
 }
 
 
-
 - (void)addButtonPressed:(id)sender{
     
 	IAAlarm *alarm = [[[IAAlarm alloc] init] autorelease];
@@ -956,7 +948,16 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     
-    [super viewDidLoad];    
+    [super viewDidLoad];
+    
+    //长屏幕
+    if ([IAParam sharedParam].deviceType == YCDeviceTypeIPhone4Inch) {
+        listViewController = [[AlarmsListViewController alloc] initWithNibName:@"AlarmsListViewController568h" bundle:nil];
+        mapsViewController = [[AlarmsMapListViewController alloc] initWithNibName:@"AlarmsMapListViewController568h" bundle:nil];
+    }else{
+        listViewController = [[AlarmsListViewController alloc] initWithNibName:@"AlarmsListViewController" bundle:nil];
+        mapsViewController = [[AlarmsMapListViewController alloc] initWithNibName:@"AlarmsMapListViewController" bundle:nil];
+    }
     
     //self.navBar =self.navigationController.navigationBar;
     BOOL navigationBarHidden = self.navigationController.navigationBarHidden;

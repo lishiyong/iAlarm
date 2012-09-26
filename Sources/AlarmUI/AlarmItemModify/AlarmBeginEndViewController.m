@@ -87,6 +87,16 @@
     [super viewDidLoad];
     self.title = KAPTitleBeginTimeAndEndTime;
     
+    //长屏幕
+    if ([IAParam sharedParam].deviceType == YCDeviceTypeIPhone4Inch) {
+        CGFloat tableViewH = self.tableView.bounds.size.height;
+        self.tableView.frame = CGRectMake(0, 0, 320, tableViewH+88);
+        CGFloat timePickerY = self.timePicker.frame.origin.y;
+        self.timePicker.frame = CGRectMake(0, timePickerY+88, 320, 216);
+    }else{
+    }
+    
+    
     [self _updateUI];
         
     self.beginCell.textLabel.text = KAPTitleBeginTime;
@@ -163,7 +173,13 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 56.0;
+    
+    //长屏幕
+    if ([IAParam sharedParam].deviceType == YCDeviceTypeIPhone4Inch) {
+        return 56.0 + 88.0/2;
+    }else{
+        return 56.0;
+    }
 }
 
 

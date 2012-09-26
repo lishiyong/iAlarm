@@ -36,6 +36,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    //长屏幕
+    if ([IAParam sharedParam].deviceType == YCDeviceTypeIPhone4Inch) {
+        CGFloat h = self.textViewCell.bounds.size.height;
+        self.textViewCell.bounds = CGRectMake(0, 0, 320, h+88-10);
+    }else{
+    }
    
     self.title = KAPTitleNote;
 	self.textView.textColor = [UIColor tableCellBlueTextYCColor];

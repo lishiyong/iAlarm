@@ -510,10 +510,12 @@
             
             NSDate *date = [NSDate date];
             //if ([[[UIDevice currentDevice] systemVersion] floatValue] < 4.2) 
-            {//before 4.2， addAnnotation后 等一会才能选中，等多久，不知道！    
-                while (![self.mapView isSelectedForAnnotation:annotation] && fabs([date timeIntervalSinceNow]) < 5.0) {
-                    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-                    [self.mapView selectAnnotation:annotation];
+            {//before 4.2， addAnnotation后 等一会才能选中，等多久，不知道！  
+                if ([self isViewAppeared]) {//地图在显示中，才有等待的意义
+                    while (![self.mapView isSelectedForAnnotation:annotation] && fabs([date timeIntervalSinceNow]) < 5.0) {
+                        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+                        [self.mapView selectAnnotation:annotation];
+                    }
                 }
             }
 			
@@ -542,9 +544,11 @@
             NSDate *date = [NSDate date];
             //if ([[[UIDevice currentDevice] systemVersion] floatValue] < 4.2) 
             {//before 4.2， addAnnotation后 等一会才能选中，等多久，不知道！所有的版本都检测一下也没坏处 
-                while (![self.mapView isSelectedForAnnotation:annotation] && fabs([date timeIntervalSinceNow]) < 5.0) {
-                    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-                    [self.mapView selectAnnotation:annotation];
+                if ([self isViewAppeared]) {//地图在显示中，才有等待的意义
+                    while (![self.mapView isSelectedForAnnotation:annotation] && fabs([date timeIntervalSinceNow]) < 5.0) {
+                        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+                        [self.mapView selectAnnotation:annotation];
+                    }
                 }
             }
             
@@ -606,94 +610,92 @@
 }
 
 //为了延时调用
-- (void)focusToPoint:(CGPoint)focusWhere{
-		
+- (void)focusToCoordinate:(CLLocationCoordinate2D)focusCoordinate{
+    
+    CGPoint focusWhere = [self.mapView convertCoordinate:focusCoordinate toPointToView:self.mapView];
+    
 	//动画期间不允许拖动地图，不允许其他事件
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-
+    
 	//加上聚焦点
 	[NSObject cancelPreviousPerformRequestsWithTarget:self.mapView selector:@selector(removeOverlay:) object:foucusOverlay];
     if (foucusOverlay)
         [self.mapView removeOverlay:foucusOverlay];
 	[self.mapView addOverlay:[self foucusOverlay:focusWhere]];
-
+    
 	
-	CALayer *rootLayer=self.mapView.layer; 
+	CALayer *rootLayer=self.mapView.layer;
 	self.focusBox.position= focusWhere;
 	[rootLayer addSublayer :self.focusBox];
 	
 	//先把动画都删除了
 	[self.focusBox removeAllAnimations];
 	[rootLayer removeAllAnimations];
-
+    
 	
 	[CATransaction begin];
-	[ CATransaction setValue:[ NSNumber numberWithFloat: 1.0 ] forKey: kCATransactionAnimationDuration];  
+	[ CATransaction setValue:[ NSNumber numberWithFloat: 1.0 ] forKey: kCATransactionAnimationDuration];
 	
 	//聚焦框动画
-	CABasicAnimation *focusAnimation=[ CABasicAnimation animationWithKeyPath: @"transform.scale" ];  
+	CABasicAnimation *focusAnimation=[ CABasicAnimation animationWithKeyPath: @"transform.scale" ];
 	focusAnimation.delegate = self;
-	focusAnimation.timingFunction= [ CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseInEaseOut];  
+	focusAnimation.timingFunction= [ CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseInEaseOut];
 	focusAnimation.fromValue= [NSNumber numberWithFloat:1.0];
-	focusAnimation.toValue= [NSNumber numberWithFloat:0.0];   
-	focusAnimation.duration=1.0 ;  
-	focusAnimation.fillMode=kCAFillModeForwards;  
+	focusAnimation.toValue= [NSNumber numberWithFloat:0.0];
+	focusAnimation.duration=1.0 ;
+	focusAnimation.fillMode=kCAFillModeForwards;
 	focusAnimation.removedOnCompletion=NO;
 	[self.focusBox addAnimation :focusAnimation forKey :@"focus" ];
 	
 	[CATransaction commit];
 	
 	//丢下个大头针
-	CLLocationCoordinate2D focusCoordinate = [self.mapView convertPoint:focusWhere toCoordinateFromView:self.mapView];
 	MKPlacemark *annotationTemp = [[[MKPlacemark alloc] initWithCoordinate:focusCoordinate addressDictionary:nil] autorelease];
 	[self.mapView performSelector:@selector(addAnnotation:) withObject:annotationTemp afterDelay:0.75];
 	[self.mapView performSelector:@selector(removeAnnotation:) withObject:annotationTemp afterDelay:2.5];
 }
 
-
-//显示聚焦情况
 - (void)handle_addIAlarmButtonPressed:(NSNotification*)notification{
 	
 	//还没加载
 	if (![self isViewLoaded]) return;
 	
-	CGRect viewFrame= self.mapView.frame;  
-	CALayer *rootLayer=self.mapView.layer;  
+	CGRect viewFrame= self.mapView.frame;
+	CALayer *rootLayer=self.mapView.layer;
 	rootLayer.frame=viewFrame;
 	
 	IAAlarm *alarm = [[notification userInfo] objectForKey:IAAlarmAddedKey];
-	CGPoint focusWhere;
+	CLLocationCoordinate2D focusCoordinate;
 	if (CLLocationCoordinate2DIsValid(alarm.visualCoordinate)) {
 		//使用闹钟里的坐标
-        focusWhere = [self.mapView convertCoordinate:alarm.visualCoordinate toPointToView:self.mapView];
+        focusCoordinate = alarm.visualCoordinate;
 	}else {
-        focusWhere = CGPointMake(viewFrame.size.width/ 2 , viewFrame.size.height/ 2 );
+        focusCoordinate = self.mapView.centerCoordinate;
 	}
 	
-	//判断聚焦点是否在可视范围内
-	CLLocationCoordinate2D focusCoordinate = [self.mapView convertPoint:focusWhere toCoordinateFromView:self.mapView];
+
+    //延时执行,等待地图停止滑动
+    SEL selector = @selector(focusToCoordinate:);
+    NSMethodSignature *signature = [self methodSignatureForSelector:selector];
+    NSInvocation *invocaton = [NSInvocation invocationWithMethodSignature:signature];
+    [invocaton setTarget:self];
+    [invocaton setSelector:selector];
+    [invocaton setArgument:&focusCoordinate atIndex:2];  //self,_cmd分别占据0、1
+    [invocaton performSelector:@selector(invoke) withObject:nil afterDelay:0.25];
+    
+    
+    //判断聚焦点是否在可视范围内
 	MKMapPoint focusMapPoint = MKMapPointForCoordinate(focusCoordinate);
 	MKMapRect visibleRect = [self.mapView visibleMapRect];
-	if (!MKMapRectContainsPoint(visibleRect,focusMapPoint)){
+    if (!MKMapRectContainsPoint(visibleRect,focusMapPoint)){
+        //[self focusToCoordinate:focusCoordinate];
 		[self.mapView setCenterCoordinate:focusCoordinate animated:YES];//先把聚焦的点移到中心位置
-		focusWhere = CGPointMake(viewFrame.size.width/ 2 , viewFrame.size. height/ 2 );
-		
-		//延时执行
-		SEL selector = @selector(focusToPoint:);
-		NSMethodSignature *signature = [self methodSignatureForSelector:selector];
-		NSInvocation *invocaton = [NSInvocation invocationWithMethodSignature:signature];
-		[invocaton setTarget:self];
-		[invocaton setSelector:selector];
-		[invocaton setArgument:&focusWhere atIndex:2];  //self,_cmd分别占据0、1
-		[invocaton performSelector:@selector(invoke) withObject:nil afterDelay:0.25];
-		 
-		
-	}else {
-		[self focusToPoint:focusWhere];
-	}
-
-
+    }else{
+        
+    }
+	
 }
+
 
 - (void)handle_currentLocationButtonPressed:(NSNotification*)notification{
 	MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(self.mapView.userLocation.location.coordinate,kDefaultLatitudinalMeters,kDefaultLongitudinalMeters);

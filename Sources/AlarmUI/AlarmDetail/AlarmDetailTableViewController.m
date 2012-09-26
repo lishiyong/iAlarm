@@ -1031,9 +1031,16 @@
 	self.navigationItem.rightBarButtonItem = self.saveButtonItem;
 	
 
+    /*
 	if (self.newAlarm && CLLocationCoordinate2DIsValid(self.alarmTemp.realCoordinate) && !self.alarmTemp.usedCoordinateAddress) //新alarm而且不用反转地址
         self.saveButtonItem.enabled = YES;
     else 
+        self.saveButtonItem.enabled = NO;
+     */
+    
+    if (CLLocationCoordinate2DIsValid(self.alarmTemp.realCoordinate)) //坐标有效
+        self.saveButtonItem.enabled = YES;
+    else
         self.saveButtonItem.enabled = NO;
 	
 	

@@ -60,7 +60,15 @@
     //弹出显示曾经的通知
     NSArray *notifications =[[IAAlarmNotificationCenter defaultCenter] notificationsForFired:YES];
     if (notifications.count > 0) {
-        IAAlarmFindViewController *ctler = [[[IAAlarmFindViewController alloc] initWithNibName:@"IAAlarmFindViewController" bundle:nil alarmNotifitions:notifications indexForView:indexForView] autorelease];
+        
+        IAAlarmFindViewController *ctler = nil;
+        //长屏幕
+        if ([IAParam sharedParam].deviceType == YCDeviceTypeIPhone4Inch) {
+            ctler = [[[IAAlarmFindViewController alloc] initWithNibName:@"IAAlarmFindViewController568h" bundle:nil alarmNotifitions:notifications indexForView:indexForView] autorelease];
+        }else{
+            ctler = [[[IAAlarmFindViewController alloc] initWithNibName:@"IAAlarmFindViewController" bundle:nil alarmNotifitions:notifications indexForView:indexForView] autorelease];
+        }
+        
         UINavigationController *navCtler = [[[UINavigationController alloc] initWithRootViewController:ctler] autorelease];
         
         UIViewController *currentController = self.viewController.modalViewController;
@@ -207,6 +215,11 @@
     [IARegionsCenter sharedRegionCenter];
     locationManager = [[IALocationAlarmManager alloc] initWithDelegate:self];
     
+    //长屏幕
+    if ([IAParam sharedParam].deviceType == YCDeviceTypeIPhone4Inch) {
+        self.window.bounds = CGRectMake(0, 0, 320, 568);
+    }
+     
     
     self.window.backgroundColor = [UIColor clearColor]; //为了自定义状态栏
 	self.window.rootViewController = self.viewController;
@@ -295,7 +308,7 @@
                                                     otherButtonTitles:kAlertConfirmRateBtnToRate,kAlertConfirmRateBtnNotToremind,nil];
         }
         
-        [confirmRateAlertView showWaitUntilBecomeKeyWindow:self.window afterDelay:4.0];
+        [confirmRateAlertView showWaitUntilBecomeKeyWindow:self.window afterDelay:8.0];
 	}
     
     [self performBlock:^{

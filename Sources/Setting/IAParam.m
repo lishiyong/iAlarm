@@ -29,9 +29,10 @@ extern NSString *IAInAppPurchaseProUpgradeProductId;
 	if (YCDeviceTypeUnKnown == deviceType) {
 		
 		NSString *model = [[UIDevice currentDevice] model];
-		
+        
 		NSArray *array = [NSArray arrayWithObjects:@"iPhone",@"iPodTouch",@"iPad",nil];
 		for (NSString *oneObj in array) {
+            
 			NSComparisonResult result = [model compare:oneObj 
 											   options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) 
 												 range:NSMakeRange(0, [oneObj length])];
@@ -42,6 +43,17 @@ extern NSString *IAInAppPurchaseProUpgradeProductId;
             
 		}
 	}
+    
+    //长屏幕的设备
+    CGRect mainScreenBounds = [UIScreen mainScreen].bounds;
+    if (YCDeviceTypeIPhone == deviceType) {
+        if (mainScreenBounds.size.height > 500.0)
+            deviceType = YCDeviceTypeIPhone4Inch;
+    }
+    if (YCDeviceTypeiPodTouch == deviceType) {
+        if (mainScreenBounds.size.height > 500.0)
+            deviceType = YCDeviceTypeiPodTouch4Inch;
+    }
 	
 	return deviceType;
 }
